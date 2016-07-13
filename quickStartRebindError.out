@@ -1,0 +1,3 @@
+
+
+/Users/sporring/repositories/fsharpNotes/quickStartRebindError.fsx(2,5): error FS0037: Duplicate definition of value 'a'
