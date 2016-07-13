@@ -1,5 +1,0 @@
-find . -name '*.fsx' | while read -r file; do
-     echo $file
-     i=`echo $file | sed 's/.fsx//'`
-     fsharpi $i.fsx > $i.out 2>&1
-done
