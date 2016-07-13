@@ -1,0 +1,39 @@
+\chapter{Functions and procedures}
+
+A function is a mapping between an input and output domain. F\# is a functional first programming language, and offers a number of alternative methods for specifying parameters. A simple example is,
+\fs{functionDeclarationMul}{}
+which declares a function of a tuple and returns their multiplication. The types are inferred from its first use in the second line, i.e., \texttt{mul} is \texttt{val mul : x:int * y:int -> int}.  An argument may be of generic type for input, which need not be inferred without sacrificing type safety, e.g.,
+\fs{functionDeclarationGeneric}{}
+Here the function \texttt{second} does not use the first element in the tuple, \texttt{x}, and the type of the second element, \texttt{y}, can safely be anything.
+
+Functions may be anonymously declared using the \texttt{fun} keyword,
+\fs{functionDeclarationAnonymous}{}
+Anonymous functions are often used as arguments to other functions, e.g.,
+\fs{functionDeclarationAnonymousAdvanced}{}
+This is a powerfull concept, but can make programs hard to read, and overly use is not recommended.
+
+Functions may be declared using pattern matching, which is a flexible method for declaring output depending on conditions on the input value. The most common pattern matching method is by use of the \texttt{match with} syntax,
+\fs{functionDeclarationMatchWith}{}
+
+A short-hand only for functions of 1 parameter is the \texttt{function} syntax,
+\fs{functionDeclarationFunction}{}
+Note that the name given in the match, here \texttt{n}, is not used in the first line, and is arbitrary at the line of pattern matchin, and may even be different on each line. For these reasons is this syntax discouraged.
+
+Functions may be declared from other functions
+\fs{functionDeclarationTupleCurrying}{}
+For functions of more than 1 argument, there exists a short notation, which is called \idx{currying} in tribute of Haskell Curry,
+\fs{functionDeclarationCurrying}{}
+Here \texttt{mul 2.0} is a partial specification of the function \texttt{mul x y}, where the first argument is fixed, and hence, \texttt{double} is a function of 1 argument being the second argument of \texttt{mul}. Currying is often used in functional programming, but generally currying should be used carefully, since currying may seriously reduce readability of code.
+
+\section{Procedures}
+A \idx{procedure} is a generalisation of the concept of functions, and in contrast to functions procedures need not return values. An example, we've already seen is the \texttt{printfn}, which is used to print text on the console, but does not return a value. Coincidentally, since the console is a state, printing to it is a side-effect. Above we examined 
+%\begin{fse}
+%   let updateFactor factor = 
+%    factor := 2
+%\end{fse}
+\fse{mutableAssignReturnSideEffectStump}{}
+which also does not have a return value. Procedural thinking is useful for encapsulation, but is prone to side-effects and should be minimized by being replaced by functional thinking.
+
+%%% Local Variables:
+%%% TeX-master: "fsharpNotes"
+%%% End:

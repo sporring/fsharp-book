@@ -1,0 +1,1 @@
+i=fsharpNotes; pdflatex fsharpNotes; bibtex fsharpNotes; pdflatex fsharpNotes; makeindex fsharpNotes; pdflatex fsharpNotes

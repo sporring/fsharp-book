@@ -1,0 +1,101 @@
+\chapter{Executing F\# code}
+
+\section{Source code}
+F\# is a functional first programming language that also supports imperativ and object oriented programming. It also has strong support for parallel programming and information rich programs. It was originally developed for Microsoft's .Net platform, but is available as open source for many operating systems through Mono. In this text we consider F\# 4.0 and its Mono implementation, which is different from .Net mainly in terms of the number of libraries accessible. The complete language specification is described in \url{http://fsharp.org/specs/language-spec/4.0/FSharpSpec-4.0-latest.pdf}. 
+
+F\# has 2 modes of execution, \idx{interactive} and \idx{compiled}. Interactive mode is well suited for small experiments or back-of-an-envelope calculations, but not for programming in general. In Mono, the interactive system is started by calling \texttt{fsharpi} from the \idx{console}, while compilation is performed with \texttt{fshparc} and execution of the compiled code is performed using the \texttt{mono} command. The various forms of fsharp programs are identified by suffixes:
+\begin{description}
+\item[\texttt{.fs}] An \idx{implementation file}
+\item[\texttt{.fsi}] A \idx{signature file}
+\item[\texttt{.fsx}] A \idx{script file}
+\item[\texttt{.fscript}] Same as \texttt{.fsx}
+\item[\texttt{.exe}] An \idx{executable file}
+\end{description}
+% \begin{table}
+%   \centering
+%   \begin{tabular}{|l|l|}
+%     \hline
+%     Suffix & Description\\
+%     \hline
+%     \texttt{.fs} & An \idx{implementation file}\\
+%     \texttt{.fsi} & A \idx{signature file}\\
+%     \texttt{.fsx} & A \idx{script file}\\
+%     \texttt{.fscript} & Same as \texttt{.fsx}\\
+%     \texttt{.exe} & An \idx{executable file}\\
+%     \hline
+%   \end{tabular}
+%   \caption{Source file suffixes in F\#}
+%   \label{tab:suffix}
+% \end{table}
+The implementation, signature, and script files are all typically compiled to produce an executable file, but syntactical correct code can also be entered into the interactive system, in which case these are called \idx{script-fragments}. The implementation and signature files are special kinds of script files used for building \idx{modules}.
+
+\section{Executing programs}
+Programs may either be executed by the interpreter or by compiling and executing the compiled code. 
+
+In \texttt{Mono} the interpreter is called \texttt{fsharpi} and can be used in 2 ways: interactively, where a user enters 1 or more script-fragments separated by the "\verb|;;|" token, or to execute a script file treated as a single script-fragment. To illustrate the difference, consider the following program, which declares a value \texttt{a} to be the decimal value 3.0 and finally print it to the console:
+\fse{gettingStartedStump}{}
+An interactive session is obtained by starting the console, typing the \texttt{fsharpi} command, typing the lines of the program, and ending the script-fragment with the "\verb|;;|" token:
+\begin{lstlisting}[language=console]
+$ fsharpi
+
+F# Interactive for F# 4.0 (Open Source Edition)
+Freely distributed under the Apache 2.0 Open Source License
+
+For help type #help;;
+
+> let a = 3.0
+- printfn "%g" a;;
+3
+
+val a : float = 3.0
+val it : unit = ()
+
+> #quit;;
+\end{lstlisting}
+The interpreter is stopped by pressing \texttt{ctrl-d} or typing "\verb|#quit;;|". Conversely, executing the file with the interpreter as follows,
+\begin{lstlisting}
+$ fsharpi gettingStartedStump.fsx
+3
+\end{lstlisting}
+Finally, compiling and executing the code is performed as,
+\begin{lstlisting}
+$ fsharpc gettingStartedStump.fsx 
+F# Compiler for F# 4.0 (Open Source Edition)
+Freely distributed under the Apache 2.0 Open Source License
+$ mono gettingStartedStump.exe 
+3
+\end{lstlisting}
+Both the interpreter and the compiler translates the source code into a format, which can be executed by the computer. While the compiler performs this translation once and stores the result in the executable file, the interpreter translates the code every time the code is executed. Thus, to run the program again with the interpreter, then it must be retranslated as "\verb|$fsharpi gettingStartedStump.fsx|'', but since the program has been compiled, then the compile-execute only needs the be re-executed "\verb|$ mono gettingStartedStump.exe|". On a Macbook Pro, with a 2.9 Ghz Intel Core i5, the time the various stages takes for this script are.
+\begin{center}
+  \begin{tabular}{|l|l|}
+    \hline
+    Command & Time\\
+    \hline
+    \verb|fsharpi gettingStartedStump.fsx| & 1.88s\\
+    \verb|fsharpc gettingStartedStump.fsx| & 1.90s\\
+    \verb|mono randomTextOrder0.exe| & 0.05s\\
+    \hline
+\end{tabular}
+\end{center}
+I.e., executing the script with \verb|fsharpi| is slightly faster than by first compiling it with \verb|fsharpc| and then executing the result with \verb|mono|, $1.88\text{s} < 0.05\text{s}+1.90\text{s}$ , if the script were to be executed only once, but every future execution of the script using the compiled version requires only the use of \verb|mono|, which is much faster than \verb|fsharpi|, $1.88\text{s}\gg 0.05\text{s}$.
+
+The interactive session results in extra output on the \idx{type inference} performed, which is very useful for debugging and development of code-fragments, but both executing programs with the interpreted directly from a file and compiling and executing the program is much preferred for programming complete programs, since the starting state is well defined, and since this better supports \idx{unit-testing} a tool for debugging programs consisting of many code-fragments.
+
+\begin{comment}
+  \section{Behind the scene}
+  \jon{I'm not sure, whether it will be a good idea to describe this. Could be used as the umbrella for the specifikation of the program.} When a program is compiled or interpreted the following steps are performed by the system
+  \begin{enumerate}
+  \item Decoding
+  \item Tokenization
+  \item Lexical Filtering
+  \item Parsing
+  \item Importing
+  \item Checking
+  \item Elaboration
+  \item Execution
+  \end{enumerate}
+\end{comment}
+
+%%% Local Variables:
+%%% TeX-master: "fsharpNotes"
+%%% End:

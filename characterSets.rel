@@ -1,0 +1,34 @@
+;; RefTeX parse info file
+;; File: /Users/sporring/Desktop/fsharpNotes/characterSets.tex
+;; User: sporring (Jon Sporring)
+
+(set reftex-docstruct-symbol '(
+
+
+(xr nil "\\\\\\\\\\\\")
+
+(index-tags)
+
+(is-multi nil)
+
+(bibview-cache)
+
+(master-dir . "/Users/sporring/Desktop/fsharpNotes/")
+
+(label-numbers)
+
+(bof "/Users/sporring/Desktop/fsharpNotes/characterSets.tex")
+
+(toc "toc" "  1 ASCII, Unicode and other character sets" "/Users/sporring/Desktop/fsharpNotes/characterSets.tex" nil 1 "1" "\\chapter{ASCII, Unicode and other character sets}" 1)
+
+(toc "toc" "    1.1 ASCII" "/Users/sporring/Desktop/fsharpNotes/characterSets.tex" nil 2 "1.1" "\\section{ASCII}" 110)
+
+("tab:ascii" "t" "ASCII" "/Users/sporring/Desktop/fsharpNotes/characterSets.tex" nil)
+
+(toc "toc" "    1.2 ISO Code pages" "/Users/sporring/Desktop/fsharpNotes/characterSets.tex" nil 2 "1.2" "\\section{ISO Code pages}" 5291)
+
+("tab:latin1" "t" "ISO-8859-1 (latin1)" "/Users/sporring/Desktop/fsharpNotes/characterSets.tex" nil)
+
+(eof "/Users/sporring/Desktop/fsharpNotes/characterSets.tex")
+))
+

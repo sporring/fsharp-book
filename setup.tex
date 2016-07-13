@@ -1,0 +1,159 @@
+% Character set
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} % ensure that all the characters in characterSets.tex prints
+
+% Page setup
+\usepackage[margin=25mm,outer=35mm,marginparsep=5mm]{geometry}
+
+% Extra math stuff
+\usepackage{amsmath}
+
+% clickable url
+\usepackage{url}
+
+% figures
+\usepackage{subfigure}
+
+% paragraphs in tables
+\usepackage{tabularx}
+
+% formatting lists
+\usepackage{enumitem}
+%\setlist[description]{leftmargin=0pt,labelindent=0pt,itemindent=0pt}
+\setlist[description]{itemindent=-\leftmargin}
+
+% latex comment environment
+\usepackage{comment}
+
+% Margin notes
+%\usepackage{marginnote}
+
+% Clickable table of content
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+% List of indices
+\usepackage{makeidx}
+\newcommand{\idxs}[1]{\index{#1}\marginpar{#1}}
+\newcommand{\idx}[1]{\emph{#1}\idxs{#1}}
+\makeindex
+
+%% lstlisting stuff
+\usepackage{upquote}
+\usepackage{listings}
+\usepackage[framemethod=tikz]{mdframed}
+\surroundwithmdframed[
+  skipabove=10pt,
+  innertopmargin=0pt,
+%  rightmargin=0pt,
+%  innerrightmargin=0pt,
+  skipbelow=0pt,
+  innerbottommargin=0pt
+%  leftmargin=0pt,
+%  innerleftmargin=0pt,
+  ]{lstlisting}
+
+\usepackage{color}
+\definecolor{alternateKeywordsColor}{rgb}{0.13,1,0.13}
+\definecolor{keywordsColor}{rgb}{0.13,0.13,1}
+%\definecolor{commentsColor}{rgb}{0,0.5,0}
+\definecolor{commentsColor}{rgb}{0,0.5,0}
+%\definecolor{stringsColor}{rgb}{0.9,0,0}
+\definecolor{stringsColor}{rgb}{0,0,0.5}
+\definecolor{light-gray}{gray}{0.95}
+
+\lstdefinelanguage{FSharp}%
+{morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, % 
+and, for, while, true, false, in, do, begin, end, fun, function, return, yield, try, %
+mutable, if, then, else, cloud, async, static, use, abstract, interface, inherit, finally },
+  otherkeywords={ let!, return!, do!, yield!, use!, var, from, select,
+    where, order, by, elif },
+  keywordstyle=\color{keywordsColor},
+  sensitive=true,
+  basicstyle=\ttfamily,
+	breaklines=true,
+  morecomment=[l][\color{commentsColor}]{///},
+  morecomment=[l][\color{commentsColor}]{//},
+  morecomment=[s][\color{commentsColor}]{{(*}{*)}},
+  morestring=[b]",
+  showstringspaces=false,
+  literate={`}{\`}1,
+  stringstyle=\color{stringsColor},
+  aboveskip=0pt, 
+  belowskip=0pt,
+  resetmargins=true,
+}
+\lstdefinelanguage{EBNF}%
+{keywords={},
+  morekeywords={},
+  otherkeywords={},
+  %otherkeywords={=, |, \{, \}, [, ], (, ), ;, (*, *)},
+  keywordstyle=\color{keywordsColor},
+  % keywordstyle={[2]\color{alternateKeywordsColor}},
+  sensitive=true,
+  basicstyle=\ttfamily, breaklines=true,
+  morecomment=[s][\color{commentsColor}]{{(*}{*)}},
+  morestring=[b]",
+  morestring=[b]',
+  showstringspaces=false,
+  stringstyle=\color{stringsColor},
+  resetmargins=true,
+}
+\lstdefinelanguage{console}%
+{keywords={},
+  morekeywords={},
+  otherkeywords={},
+  basicstyle=\ttfamily, breaklines=true,
+  %xleftmargin=\parindent,
+  showstringspaces=false,
+  resetmargins=true,
+}
+\lstset{language=console}
+
+\usepackage{verbdef}
+\verbdef{\cmdl}{>}
+
+\mdfsetup{% 
+  backgroundcolor=lightgray!10,
+  roundcorner=5pt}
+
+\newcommand{\fs}[2]{
+ % \par\vspace{\baselineskip}\noindent
+  \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
+%    \begin{minipage}{1\linewidth}
+      \lstinputlisting[language=FSharp]{#1.fsx}
+      \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+      \cmdl\texttt{ fsharpi #1.fsx}
+      \lstinputlisting[language=console,caption={#2},label=#1,captionpos=b]{#1.out}
+%    \end{minipage}
+  \end{mdframed}
+  %\par\vspace{\baselineskip}\noindent\hspace*{-2.5mm}
+}
+\newcommand{\fse}[2]{
+%  \par\vspace{\baselineskip}\noindent
+  \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
+    \begin{minipage}{1\linewidth}
+      \lstinputlisting[language=FSharp,caption={#2},label=#1,captionpos=b]{#1.fsx}
+    \end{minipage}
+  \end{mdframed}
+%  \par\vspace{\baselineskip}\noindent\hspace*{-2.5mm}
+}
+
+% highlighted text snippets
+\newcommand{\advice}[1]{#1\marginpar{Advice!}}
+\newcommand{\advanced}[1]{#1\marginpar{Advanced material}}
+
+% Notes to self
+\newcommand{\jon}[1]{\marginpar{#1}}
+%\renewcommand{\jon}[1]{}
+
+
+%%% Local Variables:
+%%% TeX-master: "fsharpNotes"
+%%% End:

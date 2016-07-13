@@ -1,0 +1,48 @@
+\chapter{Numbers, Characters, and Strings}
+
+\dots
+
+\section{Mutable Data}
+The most common syntax for a value definition is
+\begin{lstlisting}[language=EBNF]
+"let'' [ "mutable" ] ident [":" type] "=" expr "in" expr
+\end{lstlisting}
+or alternatively
+\begin{lstlisting}[language=EBNF]
+"let" ["mutable"] ident [":" type] "=" expr ["in"]
+  expr
+\end{lstlisting}
+In the above, \texttt{ident} may be replaced with a more complicated pattern, but this is outside the scope of this text. If a value has been defined as mutable, then it's value may be changed using the following syntax,
+\begin{lstlisting}[language=EBNF]
+expr "<-" expr
+\end{lstlisting}
+
+\idx{Mutable data} is synonymous with the term \idx{variable}. A variable an area in the computers working memory associated with a name and a type, and this area may be read from and written to during program execution. For example,
+\fs{mutableAssignReassing}{}
+Here a area in memory was denoted \texttt{x}, declared as type integer and assigned a default value.  Later, this value of of \texttt{x} was replaced with another integer and yet another integer. The operator '\verb|<-|' is used to distinguish the statement from the mathematical concept of equality. A short-hand for the above is available as,
+\fs{mutableAssignReassingShort}{}
+where the assignment of the default value was skipped, and the type was inferred from the assignment operation. However, it's important to note, that when the variable is declared, then the '\verb|=|' operator must be used, while later reassignments must use the '\verb|<-|'  operator. Type mismatches will result in an error, 
+\fs{mutableAssignReassingTypeError}{}
+
+A typical variable is a counter of type integer, and a typical use of counters is to increment them, i.e., erasing a new value to be one more that its previous value. For example,
+\fs{mutableAssignIncrement}{}
+An function that elegantly implements the incrementation operation may be constructed as,
+\fs{mutableAssignIncrementEncapsulation}{}
+\jon{Explain why this works!} Here the output of \texttt{incr} is an anonymous function, that takes no argument, increments the variable of \texttt{incr} and returns the new value of the counter. This construction is called \idx{encapsulation}, since the variable \texttt{counter} is hidden by the function \texttt{incr} from the user, i.e., the user need not be concerned with how the increment operator is implemented and the variable name used by \texttt{incr} does not clutter the scope where it is used.
+
+Variables cannot be returned from functions, that is,
+\fs{mutableAssignReturnValue}{}
+declares a function that has no arguments and returns the value 0, while the same for a variable is illegal,
+\fs{mutableAssignReturnVariable}{}
+There is a workaround for this by using \idx{reference cells} by the build-in function \texttt{ref} and operators \verb|!| and \verb|:=|,
+\fs{mutableAssignReturnRefCell}{}
+That is, the \texttt{ref} function creates a reference variable, the '\verb|!|' and the '\verb|:=|' operators reads and writes its value. Reference cells are in some language called pointers, and their use is strongly discouraged, since they may cause \idx{side-effects}, which is the effect that one function changes the state of another, such as the following example demonstrates,
+\fs{mutableAssignReturnSideEffect}{}
+In the example, the function \texttt{updateFactor} changes a variable in the scope of \texttt{multiplyWithFactor}, which is prone to errors, since the style of programming does not follow the usual assignment syntax. Better style of programming is,
+\fs{mutableAssignReturnWithoutSideEffect}{}
+Here there can be no doubt in \texttt{multiplyWithFactor} that the value of '\texttt{a}' is changing. Side-effects do have their use, but should in general be avoided at almost all costs, and in general it is advised to refrain from using ref cells.
+
+
+%%% Local Variables:
+%%% TeX-master: "fsharpNotes"
+%%% End:

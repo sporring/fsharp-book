@@ -1,0 +1,108 @@
+\chapter{A brief introduction to Extended Backus-Naur Form}
+\label{sec:ebnf}
+\idx{Extended Backus-Naur Form} (\idx{EBNF}) is a language to specify programming languages in. The name is a tribute to John Backus who used it to describe the syntax of ALGOL58 and Peter Nauer for his work on ALGOL 60.
+
+An EBNF consists of \idx{terminal symbols} and \idx{production rules}. Examples of typical terminal symbol are characters, numbers, punctuation marks, and whitespaces, e.g.,
+\begin{lstlisting}[language=EBNF]
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+\end{lstlisting}
+A production rule specifies a method of combining other production rules and terminal symbols, e.g.,
+\begin{lstlisting}[language=EBNF]
+number = { digit } ;
+\end{lstlisting}
+A proposed standard for EBNF (proposal ISO/IEC 14977, \url{http://www.cl.cam.ac.uk/~mgk25/iso-14977.pdf}) is,
+\begin{description}
+\item '\verb|=|' definition, e.g., 
+  \begin{lstlisting}[language=EBNF]
+zero = "0" ;
+  \end{lstlisting}
+  here \verb|zero| is the terminal symbol \verb|0|.
+\item '\verb|,|' concatenation, e.g.,
+  \begin{lstlisting}[language=EBNF]
+one = "1" ;
+eleven = one, one ;
+  \end{lstlisting}
+  here \verb|eleven| is the terminal symbol \verb|11|.
+\item '\verb|;|' termination of line
+\item '\verb!|!' alternative options, e.g.,
+  \begin{lstlisting}[language=EBNF]
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+  \end{lstlisting}
+  here \verb|digit| is the single character terminal symbol, such as \verb|3|.
+\item '\verb|[ ... ]|' optional, e.g.,
+  \begin{lstlisting}[language=EBNF]
+zero = "0" ;
+nonZeroDigit = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+nonZero = [ zero ], nonZeroDigit
+  \end{lstlisting}
+  here \verb|nonZero| is a non-zero digit possibly preceded by zero, such as \verb|02|.
+\item '\verb|{ ... }|' repetition zero or more times, e.g., 
+  \begin{lstlisting}[language=EBNF]
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+number = digit, { digit }
+  \end{lstlisting}
+  here \verb|number| is a word consisting of 1 or more digits, such as \verb|12|.
+\item '\verb|( ... )|' grouping, e.g.,
+  \begin{lstlisting}[language=EBNF]
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+number = digit, { digit }
+expression = number, { ( "+" | "-" ), number };
+  \end{lstlisting}
+  here \verb|expression| is a number or a sum of numbers such as \verb|3 + 5|.
+\item '\verb|" ... "|' a terminal string, e.g.,
+  \begin{lstlisting}[language=EBNF]
+string = "abc"' ;
+  \end{lstlisting}
+\item "\verb|' ... '|" a terminal string, e.g.,
+  \begin{lstlisting}[language=EBNF]
+string = 'abc' ;
+  \end{lstlisting}
+\item '\verb|(* ... *)|' a comment (* ... *) 
+  \begin{lstlisting}[language=EBNF]
+(* a binary digit *) digit = "0" | "1" (* from this all numbers may be constructed *) ;
+  \end{lstlisting}
+  Everything inside the comments are not part of the formal definition.
+\item '\verb|? ... ?|' special sequence, a notation reserved for future extensions of EBNF.
+\item '\verb|-|' exception, e.g.,
+  \begin{lstlisting}[language=EBNF]
+letter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" 
+  | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" 
+  | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" ;
+vowel = "A" | "E" | "I" | "O" | "U" ; 
+consonant = letter - vowel ;
+  \end{lstlisting}
+  here \verb|consonant| are all letters except vowels.
+\end{description}
+The proposal allows for identifies that includes space, but often a reduced form is used, where identifiers are single words, in which case the concatenation symbol \verb|,| is omitted. Likewise, the termination symbol \verb|;| is often replaced with the new-line character, and if long lines must be broken, then indentation is used to signify continuation.
+
+In this relaxed EBNF, the EBNF syntax itself can be expressed in EBNF as,
+\begin{lstlisting}[language=EBNF]
+letter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" 
+  | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" 
+  | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+  | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" 
+  | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" 
+  | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" 
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" 
+symbol = "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"
+  | "'" | '"' | "=" | "|" | "." | "," | ";" 
+underscore = "_" 
+identifier = letter  { letter | digit | underscore } 
+character = letter | digit | symbol | underscore 
+string = character  { character } 
+terminal = "'"  string  "'" | '"'  string  '"' 
+rhs = identifier
+  | terminal
+  | "["  rhs  "]"
+  | "{"  rhs  "}"
+  | "("  rhs  ")"
+  | rhs  "|"  rhs
+(*  | rhs  ","  rhs  *)
+rule = identifier  "="  rhs  (* ";" *)
+grammar = rule { rule } 
+\end{lstlisting}
+Here the comments demonstrate, the relaxed modification.
+
+%%% Local Variables:
+%%% TeX-master: "fsharpNotes"
+%%% End:

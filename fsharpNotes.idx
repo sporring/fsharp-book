@@ -1,0 +1,74 @@
+\indexentry{interactive|hyperpage}{3}
+\indexentry{compiled|hyperpage}{3}
+\indexentry{console|hyperpage}{3}
+\indexentry{implementation file|hyperpage}{3}
+\indexentry{signature file|hyperpage}{3}
+\indexentry{script file|hyperpage}{3}
+\indexentry{executable file|hyperpage}{3}
+\indexentry{script-fragments|hyperpage}{3}
+\indexentry{modules|hyperpage}{3}
+\indexentry{type inference|hyperpage}{5}
+\indexentry{unit-testing|hyperpage}{5}
+\indexentry{statement|hyperpage}{6}
+\indexentry{keyword|hyperpage}{6}
+\indexentry{expression|hyperpage}{6}
+\indexentry{format string|hyperpage}{6}
+\indexentry{string|hyperpage}{6}
+\indexentry{type|hyperpage}{6}
+\indexentry{primitive types|hyperpage}{6}
+\indexentry{decimal numbers|hyperpage}{8}
+\indexentry{binary numbers|hyperpage}{8}
+\indexentry{type cast|hyperpage}{9}
+\indexentry{down casting|hyperpage}{9}
+\indexentry{scope|hyperpage}{10}
+\indexentry{operator|hyperpage}{12}
+\indexentry{operands|hyperpage}{12}
+\indexentry{Mutable data|hyperpage}{13}
+\indexentry{variable|hyperpage}{13}
+\indexentry{encapsulation|hyperpage}{15}
+\indexentry{reference cells|hyperpage}{16}
+\indexentry{side-effects|hyperpage}{16}
+\indexentry{currying|hyperpage}{20}
+\indexentry{procedure|hyperpage}{20}
+\indexentry{slicing|hyperpage}{27}
+\indexentry{jagged arrays|hyperpage}{28}
+\indexentry{Imperativ programming|hyperpage}{39}
+\indexentry{statements|hyperpage}{39}
+\indexentry{states|hyperpage}{39}
+\indexentry{Procedural programming|hyperpage}{39}
+\indexentry{Object oriented programming|hyperpage}{39}
+\indexentry{machine code|hyperpage}{39}
+\indexentry{Functional programming|hyperpage}{39}
+\indexentry{decimal number|hyperpage}{46}
+\indexentry{base|hyperpage}{46}
+\indexentry{decimal point|hyperpage}{46}
+\indexentry{digit|hyperpage}{46}
+\indexentry{bit|hyperpage}{46}
+\indexentry{binary|hyperpage}{46}
+\indexentry{byte|hyperpage}{46}
+\indexentry{word|hyperpage}{46}
+\indexentry{octal|hyperpage}{46}
+\indexentry{hexadecimal|hyperpage}{46}
+\indexentry{reals|hyperpage}{46}
+\indexentry{IEEE 754 double precision floating-point format|hyperpage}{46}
+\indexentry{binary64|hyperpage}{46}
+\indexentry{double|hyperpage}{46}
+\indexentry{subnormals|hyperpage}{48}
+\indexentry{NaN|hyperpage}{48}
+\indexentry{not a number|hyperpage}{48}
+\indexentry{American Standard Code for Information Interchange|hyperpage}{50}
+\indexentry{ASCII|hyperpage}{50}
+\indexentry{ASCIIbetical order|hyperpage}{50}
+\indexentry{Latin1|hyperpage}{50}
+\indexentry{Unicode Standard|hyperpage}{51}
+\indexentry{code point|hyperpage}{51}
+\indexentry{blocks|hyperpage}{51}
+\indexentry{Basic Multilingual plane|hyperpage}{51}
+\indexentry{Basic Latin block|hyperpage}{51}
+\indexentry{Latin-1 Supplement block|hyperpage}{51}
+\indexentry{UTF-8|hyperpage}{51}
+\indexentry{UTF-16|hyperpage}{51}
+\indexentry{Extended Backus-Naur Form|hyperpage}{54}
+\indexentry{EBNF|hyperpage}{54}
+\indexentry{terminal symbols|hyperpage}{54}
+\indexentry{production rules|hyperpage}{54}
