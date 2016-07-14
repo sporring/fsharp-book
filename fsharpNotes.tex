@@ -10,12 +10,24 @@
 %\includeonly{quickStartGuide}
 %\includeonly{numbers}
 %\includeonly{functions}
+%\includeonly{introduction}
 
 \begin{document}
+\pagenumbering{Alph}
+\begin{titlepage}
 \maketitle
+\thispagestyle{empty}
+\end{titlepage}
+\pagenumbering{arabic}
 
 \tableofcontents
 
+\include{Preface}
+
+\include{introduction}
+
+\part{F\# basics}
+\label{part:basics}
 \include{gettingStartedFsharp}
 
 \include{quickStartGuide}
@@ -27,6 +39,9 @@
 \include{flow}
 
 \include{tuplesListsArraysSequences}
+
+\part{Imperative programming}
+\label{part:imperative}
 
 \include{exceptions}
 
@@ -40,10 +55,18 @@
 
 \include{imperativeProgramming}
 
+\part{Declarative programming}
+\label{part:declarative}
+
 \include{functionalProgramming}
+
+\part{Structured programming}
+\label{part:structured}
 
 \include{objectOrientedProgramming}
 
+\part{Appendix}
+\label{part:appendix}
 \appendix
 \include{numberSystems}
 

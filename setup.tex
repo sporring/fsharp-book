@@ -20,7 +20,7 @@
 % formatting lists
 \usepackage{enumitem}
 %\setlist[description]{leftmargin=0pt,labelindent=0pt,itemindent=0pt}
-\setlist[description]{itemindent=-\leftmargin}
+%\setlist[description]{itemindent=-\leftmargin}
 
 % latex comment environment
 \usepackage{comment}
@@ -29,7 +29,7 @@
 %\usepackage{marginnote}
 
 % Clickable table of content
-\usepackage{hyperref}
+\usepackage[pdfpagelabels]{hyperref}
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -40,7 +40,7 @@
 
 % List of indices
 \usepackage{makeidx}
-\newcommand{\idxs}[1]{\index{#1}\marginpar{#1}}
+\newcommand{\idxs}[1]{\index{#1}\marginpar{$\cdot$~\parbox[t]{25mm}{\raggedright #1}}}
 \newcommand{\idx}[1]{\emph{#1}\idxs{#1}}
 \makeindex
 
@@ -149,8 +149,11 @@ mutable, if, then, else, cloud, async, static, use, abstract, interface, inherit
 \newcommand{\advice}[1]{#1\marginpar{Advice!}}
 \newcommand{\advanced}[1]{#1\marginpar{Advanced material}}
 
+% paragraph indentation is stupid
+\setlength\parindent{0pt}
+
 % Notes to self
-\newcommand{\jon}[1]{\marginpar{#1}}
+\newcommand{\jon}[1]{\marginpar{\raggedright\textbf{#1}}}
 %\renewcommand{\jon}[1]{}
 
 
