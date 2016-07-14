@@ -41,7 +41,13 @@
 % List of indices
 \usepackage{makeidx}
 \newcommand{\idxs}[1]{\index{#1}\marginpar{$\cdot$~\parbox[t]{25mm}{\raggedright #1}}}
-\newcommand{\idx}[1]{\emph{#1}\idxs{#1}}
+% Define a new command idx with an optional parameter, which if given is the key to the index
+\makeatletter
+\def\idx{\@ifnextchar[{\@with}{\@without}}
+\def\@with[#1]#2{\emph{#2}\idxs{#1}}
+\def\@without#1{\emph{#1}\idxs{#1}}
+\makeatother
+%\newcommand{\idx}[1]{\emph{#1}\idxs{#1}}
 \makeindex
 
 %% lstlisting stuff
@@ -68,16 +74,17 @@
 \definecolor{stringsColor}{rgb}{0,0,0.5}
 \definecolor{light-gray}{gray}{0.95}
 
-\lstdefinelanguage{FSharp}%
+\lstdefinelanguage{fsharp}%
 {morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, % 
 and, for, while, true, false, in, do, begin, end, fun, function, return, yield, try, %
-mutable, if, then, else, cloud, async, static, use, abstract, interface, inherit, finally },
+mutable, if, then, else, cloud, async, static, use, abstract,
+interface, inherit, finally, val, int, float},
   otherkeywords={ let!, return!, do!, yield!, use!, var, from, select,
     where, order, by, elif },
   keywordstyle=\color{keywordsColor},
   sensitive=true,
   basicstyle=\ttfamily,
-	breaklines=true,
+  breaklines=true,
   morecomment=[l][\color{commentsColor}]{///},
   morecomment=[l][\color{commentsColor}]{//},
   morecomment=[s][\color{commentsColor}]{{(*}{*)}},
@@ -88,8 +95,9 @@ mutable, if, then, else, cloud, async, static, use, abstract, interface, inherit
   aboveskip=0pt, 
   belowskip=0pt,
   resetmargins=true,
+  captionpos=b
 }
-\lstdefinelanguage{EBNF}%
+\lstdefinelanguage{ebnf}%
 {keywords={},
   morekeywords={},
   otherkeywords={},
@@ -103,7 +111,10 @@ mutable, if, then, else, cloud, async, static, use, abstract, interface, inherit
   morestring=[b]',
   showstringspaces=false,
   stringstyle=\color{stringsColor},
+  aboveskip=0pt, 
+  belowskip=0pt,
   resetmargins=true,
+  captionpos=b
 }
 \lstdefinelanguage{console}%
 {keywords={},
@@ -112,9 +123,15 @@ mutable, if, then, else, cloud, async, static, use, abstract, interface, inherit
   basicstyle=\ttfamily, breaklines=true,
   %xleftmargin=\parindent,
   showstringspaces=false,
+  aboveskip=0pt, 
+  belowskip=0pt,
   resetmargins=true,
+  captionpos=b
 }
 \lstset{language=console}
+\usepackage{caption}
+\DeclareCaptionStyle{listing} [justification=raggedright, labelfont=bf]{}
+\captionsetup[lstlisting]{style=listing}
 
 \usepackage{verbdef}
 \verbdef{\cmdl}{>}
@@ -124,25 +141,20 @@ mutable, if, then, else, cloud, async, static, use, abstract, interface, inherit
   roundcorner=5pt}
 
 \newcommand{\fs}[2]{
- % \par\vspace{\baselineskip}\noindent
-  \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
-%    \begin{minipage}{1\linewidth}
-      \lstinputlisting[language=FSharp]{#1.fsx}
-      \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
-      \cmdl\texttt{ fsharpi #1.fsx}
-      \lstinputlisting[language=console,caption={#2},label=#1,captionpos=b]{#1.out}
-%    \end{minipage}
+  %\begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
+  \begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
+    \lstinputlisting[language=fsharp]{#1.fsx}
+    \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+    %\cmdl\texttt{ fsharpi #1.fsx}
+    \lstinputlisting[language=console,caption={#1.fsx: #2},label=#1]{#1.out}
   \end{mdframed}
-  %\par\vspace{\baselineskip}\noindent\hspace*{-2.5mm}
 }
 \newcommand{\fse}[2]{
-%  \par\vspace{\baselineskip}\noindent
   \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
     \begin{minipage}{1\linewidth}
-      \lstinputlisting[language=FSharp,caption={#2},label=#1,captionpos=b]{#1.fsx}
+      \lstinputlisting[language=fsharp,caption={#2},label=#1]{#1.fsx}
     \end{minipage}
   \end{mdframed}
-%  \par\vspace{\baselineskip}\noindent\hspace*{-2.5mm}
 }
 
 % highlighted text snippets
@@ -151,6 +163,9 @@ mutable, if, then, else, cloud, async, static, use, abstract, interface, inherit
 
 % paragraph indentation is stupid
 \setlength\parindent{0pt}
+
+% We want to emphasize problem formulation
+\newenvironment{problem}{\begin{quote}}{\end{quote}}
 
 % Notes to self
 \newcommand{\jon}[1]{\marginpar{\raggedright\textbf{#1}}}

@@ -1,9 +1,9 @@
 \chapter{Quick-start guide}
 Programming is the art of solving problems by writing a program to be executed by a computer. For example, to solve the following problem,
-\begin{quote}
+\begin{problem}
   What is the sum of 357 and 864?
-\end{quote}
-we could write the following program in F\#,
+\end{problem}
+we have written the following program in F\#,
 %
 \fs{quickStartSum}{A script to add 2 numbers and print the result to the console.}
 %
@@ -55,7 +55,7 @@ Types are a central concept in F\#. The language contains a number of built-in t
   \end{table}
 \end{comment}
 In the script \ref{quickStartSum} we bound values of types \lstinline|int| and \lstinline|string| to names. The values were not declared to have these types, instead the types were inferred by F\#. Had we typed these statements line by line in an interactive session, then we would have seen the inferred types:
-\begin{lstlisting}[language=console]
+\begin{comment}
 $ fsharpi
 
 F# Interactive for F# 4.0 (Open Source Edition)
@@ -63,6 +63,11 @@ Freely distributed under the Apache 2.0 Open Source License
 
 For help type #help;;
 
+\end{comment}
+\begin{comment}
+  $
+\end{comment}
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
 > let a = 357;;         
 
 val a : int = 357
@@ -78,28 +83,30 @@ val c : int = 1221
 > printfn "%A" c;;
 1221
 val it : unit = ()
+\end{lstlisting}
+\begin{comment}
 
 > #quit;;
-\end{lstlisting}
-The an interactive session displays the type using the \lstinline|val| keyword. Using Extended Backus-Naur form (see Appendix~\ref{sec:ebnf}), the response from the the interpreter follows the syntax: 
+\end{comment}
+ The an interactive session displays the type using the \lstinline|val| keyword. Using Extended Backus-Naur form (see Appendix~\ref{sec:ebnf}), the response from the the interpreter follows the syntax: 
 \begin{lstlisting}[language=ebnf]
   "val" name ":" type "=" value
 \end{lstlisting}
 Since the value is also responded, then the last \lstinline|printfn| statement is superfluous. However, \advice{it is ill adviced to design programs to be run in an interactive session, since the scripts needs to be manually copied every time it is to be run, and since the starting state may be unclear.}
 
 Were we to solve a slightly different problem,
-\begin{quote}
+\begin{problem}
   What is the sum of 357.6 and 863.4?
-\end{quote}
+\end{problem}
 then we would have to use floating point arithmatic instead of integers. A subtle point here is that the above problem is stated in using base 10 numbers, while almost all computers perform their calculations in base 2 numbers. E.g., the number 357.6 in base 10 can be considere the sum,
 \begin{equation}
   357.6 = 3\cdot 10^2 + 5\cdot 10^1 + 7\cdot 10^0 + 6\cdot 10^{-1},
 \end{equation}
-and in general any base 10 number, also known as \idx{decimal numbers}, has the representation $a_n a_{n-1} a_{n-2} \dots a_{-m}$ for $n+1$ digits to the left and $m$ digits to the right of the period, and where $0 \leq a_i \leq 9$, and which translate to the equation
+and in general any base 10 number, also known as \idx[decimal number]{decimal numbers}, has the representation $a_n a_{n-1} a_{n-2} \dots a_{-m}$ for $n+1$ digits to the left and $m$ digits to the right of the period, and where $0 \leq a_i \leq 9$, and which translate to the equation
 \begin{equation}
   v = \sum_{i=-m}^{n} a_i10^i.
 \end{equation}
-Base 2 numbers, also known as \idx{binary numbers}, has the general form
+Base 2 numbers, also known as \idx[binary number]{binary numbers}, has the general form
 \begin{equation}
   v = \sum_{i=-p}^{q} b_i2^i,
 \end{equation}
@@ -112,14 +119,7 @@ where alle terms with coefficient 0 have been removed for brevity. The example i
 Note that although the response is an integer, it has type \lstinline|float| which is indicated by \lstinline|1221.0| instead of \lstinline|1221|.
 
 F\# is very picky about types, and generally does not allow types to be mixed. E.g., in an interactive session,
-\begin{lstlisting}[language=console]
-$ fsharpi
-
-F# Interactive for F# 4.0 (Open Source Edition)
-Freely distributed under the Apache 2.0 Open Source License
-
-For help type #help;;
-
+\begin{lstlisting}[language=fsharp,caption=fsharpi]
 > let a = 357;;
 
 val a : int = 357
@@ -134,33 +134,25 @@ val b : float = 863.4
   ------------^
 
 /Users/sporring/Desktop/fsharpNotes/stdin(3,13): error FS0001: The type 'float' does not match the type 'int'
-> #quit;;
 \end{lstlisting}
 we see that binding a name to a number without a decimal point is inferred to be integer, while when binding to a number with a decimal point, then the type is inferred to be a float, and when trying to add values of integer and floating point, then we get an error. The result is floating point, so to perform the sum, we must convert the integer to floating point, and we could either write the floating point equivalent to the integer \lstinline|357|,
 \begin{quote}
-  \lstinline|let a = 357.0|
+  \lstinline[language=fsharp]|let a = 357.0|
 \end{quote}
-or \idx{type cast} the integer to the float type as
+or \idx{typecast} the integer to the float type as
 \begin{quote}
-  \lstinline|let a = float 357|
+  \lstinline[language=fsharp]|let a = float 357|
 \end{quote}
-Type casting is a potential destructive operation, e.g., type casting a float to int removes the part after the decimal point without rounding,
-\fs{quickStartDownCast}{Type casting is potentially a destructive action, here the fractional part is removed.}
-The type casting in the example is sometimes called \idx{down casting}, since the floating time is casted to a lesser type, in the sense that floating point numbers can represents more numbers than integers.
+Typecasting is a potential destructive operation, e.g., typecasting a float to int removes the part after the decimal point without rounding,
+\fs{quickStartDownCast}{Typecasting is potentially a destructive action, here the fractional part is removed.}
+The typecasting in the example is sometimes called \idx{downcasting}, since the floating time is casted to a lesser type, in the sense that floating point numbers can represents more numbers than integers.
 
 F\# is a functional first programming language, and one implication is that names are constant and cannot be changed. If attempted, then F\# will return an error as, e.g.,
 %
 \fs{quickStartRebindError}{A name cannot be rebound.}
 %
 However, if the same was performed in an interactive session,
-\begin{lstlisting}[language=console]
-$ fsharpi
-
-F# Interactive for F# 4.0 (Open Source Edition)
-Freely distributed under the Apache 2.0 Open Source License
-
-For help type #help;;
-
+\begin{lstlisting}[language=fsharp,caption=fsharpi]
 > let a = 357;;
 
 val a : int = 357
@@ -168,18 +160,9 @@ val a : int = 357
 > let a = 864;;
 
 val a : int = 864
-
-> #quit;;
 \end{lstlisting}
 then apparently rebinding is legal. The difference is that the \lstinline|;;| token defines a new nested \idx{scope}. A scope is an area in a program, where a binding is valid. Scopes can be nested, and in F\# a binding may reuse names in a nested scope, in which case the previous value is overshadowed. I.e., attempting the same without \lstinline|;;| between the two let statements results in an error, e.g.,
-\begin{lstlisting}[language=console]
-$ fsharpi
-
-F# Interactive for F# 4.0 (Open Source Edition)
-Freely distributed under the Apache 2.0 Open Source License
-
-For help type #help;;
-
+\begin{lstlisting}[language=fsharp,caption=fsharpi]
 > let a = 357
 - let a = 864;;
 
@@ -187,7 +170,6 @@ For help type #help;;
   ----^
 
 /Users/sporring/Desktop/fsharpNotes/stdin(2,5): error FS0037: Duplicate definition of value 'a'
-> #quit;;
 \end{lstlisting}
 This is yet another reason why the interactive session should be avoided except for back-of-an-envelope experiment.  Scopes can as nested squares as shown in Figure~\ref{fig:scope}.
 \begin{figure}
@@ -223,14 +205,7 @@ In F\# functions are also values, and to define a function, we use the syntax
 where \lstinline|arg| is a list of argument names, and \lstinline|expr| is an expression. Defining a function \lstinline|sum| as part of the solution to the above program gives,
 \fs{quickStartSumFct}{A script to add 2 numbers using a user defined function.}
 Entering the function into an interactive session will illustrate the inferred type, the function \lstinline|sum| has: \lstinline{val sum : x:int * y:int -> int}, by which is meant that \lstinline|sum| is a mapping from the set product of the set of integers with integers into integers. Type inference in F\# may cause problems, since, e.g., the type of a function is based on the context in which it is defined. E.g., in an interactive session, defining the sum in one scope on a single line will default the types to integers, F\#'s favorite type, which will give an error, if it in a nested scope is to be used for floats. E.g.,
-\begin{lstlisting}[language=console]
-$ fsharpi
-
-F# Interactive for F# 4.0 (Open Source Edition)
-Freely distributed under the Apache 2.0 Open Source License
-
-For help type #help;;
-
+\begin{lstlisting}[language=fsharp,caption=fsharpi]
 > let sum x y = x + y;;
 
 val sum : x:int -> y:int -> int
@@ -244,23 +219,14 @@ val sum : x:int -> y:int -> int
     int    
 but here has type
     float    
-> #quit;;
 \end{lstlisting}
 A remedy is to either define the function in the same scope as its use,
-\begin{lstlisting}[language=console]
-$ fsharpi
-
-F# Interactive for F# 4.0 (Open Source Edition)
-Freely distributed under the Apache 2.0 Open Source License
-
-For help type #help;;
-
+\begin{lstlisting}[language=fsharp,caption=fsharpi]
 > let sum x y = x + y
 - let c = sum 357.6 863.4;;
 
 val sum : x:float -> y:float -> float
 val c : float = 1221.0
-> #quit;;
 \end{lstlisting}
 or specify the type of the function at point of definition using the notation,
 \begin{lstlisting}[language=ebnf]
@@ -268,14 +234,7 @@ or specify the type of the function at point of definition using the notation,
   argWType = arg | "(" arg ":" type ")"
 \end{lstlisting}
 where not all types need to be declared, just sufficent for F\# to be able to infer the types for the full statement. In the example, one sufficent specification is,
-\begin{lstlisting}[language=console]
-$ fsharpi
-
-F# Interactive for F# 4.0 (Open Source Edition)
-Freely distributed under the Apache 2.0 Open Source License
-
-For help type #help;;
-
+\begin{lstlisting}[language=fsharp,caption=fsharpi]
 > let sum (x : float) (y : float) = x + y;;
 
 val sum : x:float -> y:float -> float
@@ -283,18 +242,16 @@ val sum : x:float -> y:float -> float
 > let c = sum 357.6 863.4;;
 
 val c : float = 1221.0
-
-> #quit;;
 \end{lstlisting}
 but alternatively we could have specified the type of the result,
-\begin{lstlisting}[language=FSharp]
+\begin{lstlisting}[language=fsharp]
   let sum x y : float = x + y
 \end{lstlisting}
 or even just one of the arguments,
-\begin{lstlisting}[language=FSharp]
+\begin{lstlisting}[language=fsharp]
   let sum (x : float) y = x + y
 \end{lstlisting}
-In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx{operands} of the same type, then when the type of either the result, any or both operands are declared, then the type of the remaining follows directly.
+In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx[operand]{operands} of the same type, then when the type of either the result, any or both operands are declared, then the type of the remaining follows directly.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
