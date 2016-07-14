@@ -11,8 +11,7 @@ echo "Previously ignoring:"
 svn propget svn:ignore | tee $TMPFILE
 
 echo "Now also ignoring:"
-list=`svn status | grep "^\?"`
-echo list | awk "{print \$2}" >> $TMPFILE
+svn status | grep "^\?" | awk "{print \$2}" | tee -a $TMPFILE
 svn propset svn:ignore -F $TMPFILE .
 
 rm $TMPFILE
