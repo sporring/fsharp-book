@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Query svn for present list of ignored files and add the currently unadded files to svn's ignore list.
+#
+# Jon Sporring, 2016/07/14
+
+tempfoo=`basename $0`
+TMPFILE=`mktemp /tmp/${tempfoo}.XXXXXX` || exit 1
+
+echo "Previously ignoring:"
+svn propget svn:ignore | tee $TMPFILE
+
+echo "Now also ignoring:"
+list=`svn status | grep "^\?"`
+echo list | awk "{print \$2}" >> $TMPFILE
+svn propset svn:ignore -F $TMPFILE .
+
+rm $TMPFILE
+echo "Commit when ready"
