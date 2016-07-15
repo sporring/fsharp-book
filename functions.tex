@@ -1,5 +1,41 @@
 \chapter{Functions and procedures}
 
+to define a function, we use the syntax
+\begin{lstlisting}[language=ebnf]
+  "let" name arg { arg } "=" expr
+\end{lstlisting}
+where \lstinline|arg| is a list of argument names, and \lstinline|expr| is an expression. D
+
+
+or specify the type of the function at point of definition using the notation,
+\begin{lstlisting}[language=ebnf]
+  "let" name argWType { argWType } [ ":" type ] "=" expr
+  argWType = arg | "(" arg ":" type ")"
+\end{lstlisting}
+where not all types need to be declared, just sufficent for F\# to be able to infer the types for the full statement. In the example, one sufficent specification is,
+\begin{lstlisting}[language=fsharp,caption=fsharpi]
+> let sum (x : float) (y : float) = x + y;;
+
+val sum : x:float -> y:float -> float
+
+> let c = sum 357.6 863.4;;
+
+val c : float = 1221.0
+\end{lstlisting}
+but alternatively we could have specified the type of the result,
+\begin{lstlisting}[language=fsharp]
+  let sum x y : float = x + y
+\end{lstlisting}
+or even just one of the arguments,
+\begin{lstlisting}[language=fsharp]
+  let sum (x : float) y = x + y
+\end{lstlisting}
+In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx[operand]{operands} of the same type, then when the type of either the result, any or both operands are declared, then the type of the remaining follows directly.
+
+
+
+
+
 A function is a mapping between an input and output domain. F\# is a functional first programming language, and offers a number of alternative methods for specifying parameters. A simple example is,
 \fs{functionDeclarationMul}{}
 which declares a function of a tuple and returns their multiplication. The types are inferred from its first use in the second line, i.e., \texttt{mul} is \texttt{val mul : x:int * y:int -> int}.  An argument may be of generic type for input, which need not be inferred without sacrificing type safety, e.g.,

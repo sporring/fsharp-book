@@ -1,4 +1,192 @@
 \chapter{Numbers, Characters, and Strings}
+All programs rely on processing of data, and an essential property of data is its \idx{type}. F\# contains a number of built-in types, and it designed such that it is easy to define new types. The simplest types are called \idx{primitive types}, and a table of some of the most commonly used primitive types are shown in Table~\ref{tab:primitiveTypes}.
+\begin{table}
+  \centering
+  \begin{tabularx}{0.9\textwidth}{|l|l|l|l|X|}
+    \hline
+    Metatype & Type name & Suffix & Literal & Description\\
+    \hline
+    Boolean & bool & none & true & Boolean values true or false \\
+    \hline
+    Integer & \textbf{int} & none or l & 3 & Integer values from -2,147,483,648 to 2,147,483,647 \\
+             &byte & uy  & 3uy &Integer values from 0 to 255\\
+             &sbyte & y 7& 3y &Integer values from -128 to 12\\
+             &int16 & s  & 3s &Integer values from -32768 to 32767\\
+             &uint16 & us 5& 3us &Integer values from 0 to 6553\\
+             &int32 & none or l  & 3 &Synonymous with int\\
+             &uint32 & u or ul  & 3u & Integer values from 0 to 4,294,967,295\\
+             &int64 & L  & 3L &Integer values from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807\\
+             &uint64 & UL  & 3UL &Integer values from 0 to 18,446,744,073,709,551,615\\
+             &bigint & I s& 3I &Integer not limited to 64 bit\\
+             &nativeint & n r& 3n &A native pointer as a signed intege\\
+             &unativeint & un  &3un &A native pointer as an unsigned integer\\
+    \hline
+    Real & \textbf{float} & none  & 3.0 & 64-bit IEEE 754 floating point value from $-\infty$ to $\infty$\\
+             & double &none & 3.0 & Synonumous with float\\
+             & single & F or f  & 3.0f &A 32-bit floating point type\\
+             &float32 & F or f  & 3.0f &Synonymous with single\\
+             &decimal &M or m & 3.0m &A floating point data type that has at least 28 significant digits\\
+    \hline
+    Character &\textbf{char} & none  & 'c' &Unicode character\\
+             &byte & B  & 'c'B & ASCII character\\
+             &\textbf{string} & none  & "abc" & Unicode sequence of characters\\
+             &byte[] & B  & "abc"B & Unicode sequence of characters\\
+             &string or byte[] & @  & @"\textbackslash n" & Verbatim string\\
+    \hline
+    None &\textbf{unit} &none & \texttt{()} & No value denoted\\
+             %&void &none  &  &Indicates no type or value\\
+    \hline
+  \end{tabularx}
+  \caption{List of primitive types and the corresponding literal. The most commonly used types are highlighted in bold. Note that string verbatim uses a prefix instead of suffix notation. For at description of floating point numbers see Appendix~\ref{sec:floatingPoint} and for ASCII and Unicode charaters see Appendix~\ref{sec:characterSets}.}
+  \label{tab:primitiveTypes}
+\end{table}
+A \idx{literal} is a fixed value such as "3", and F\# supports \idx[literal type]{literal types} which are indicated by a suffix in most cases and as shown in the table.
+
+A name is bound to a value by the syntax,
+\begin{lstlisting}[language=ebnf]
+  "let" name [ ":" type ] "="  expr
+\end{lstlisting}
+That is, the \idx{\keyword{let}} keyword indicates that the following is a binding of a name with an expression, and that the type may be specified with the \idx{\token{:}} token. The simplest example of an expression is a \idx{literal}, i.e., a constant such as the number 3 or a function. Functions will be discussed in detail in Chapter~\ref{chap:functions}. Examples of let statements with \idx{literals}
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a = 3 
+- let b = 4u
+- let c = 5.6
+- let d = 7.9f
+- let e = 'A'
+- let f = 'B'B
+- let g = "ABC"
+- let h = ();;
+
+val a : int = 3
+val b : uint32 = 4u
+val c : float = 5.6
+val d : float32 = 7.9000001f
+val e : char = 'A'
+val f : byte = 66uy
+val g : string = "ABC"
+val h : unit = ()
+\end{lstlisting}
+Here \verb|a|, \verb|b|, \dots, \verb|h| are names that we have chosen, and which by the binding operation are made equivalent to the corresponding values. Note that we did not specity the type of the name, and that F\# interpreted the type from the literal form of the right-hand-side. When specifying the type, then the type and the literal form must match, i.e., mixing types and literals gives an error,
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a : float = 3;;
+
+  let a : float = 3;;
+  ----------------^
+
+/Users/sporring/repositories/fsharpNotes/stdin(50,17): error FS0001: This expression was expected to have type
+    float    
+but here has type
+    int    
+\end{lstlisting}
+since the left-hand-side is a name of type float while the right-hand-side is a literal of type integer.
+
+Many primitive types are compatible and may changed to each other by \idx{type casting}. E.g.,
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a = float 3;;
+
+val a : float = 3.0
+\end{lstlisting}
+where the left-hand-side is inferred to by of type float, since the integer number \verb|3| is casted to float resulting in a similar floating point value, in this case the float point number \verb|3.0|. As a particular note, the boolean values are often treated as the integer values 0 and 1, however casting can only be performed with built-in functions, e.g., \begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a = System.Convert.ToBoolean 1    
+- let b = System.Convert.ToBoolean 0    
+- let c = System.Convert.ToInt32 true   
+- let d = System.Convert.ToInt32 false;;
+
+val a : bool = true
+val b : bool = false
+val c : int = 1
+val d : int = 0
+\end{lstlisting}
+Here \verb|System.Convert.ToBoolean| is the name of a function \verb|ToBoolean|, which is a \idx{member} of the \idx{class} \verb|Convert| that is included in the \idx{namespace} \verb|System|. Namespaces, classes and members are all part of Structure programming to be discussed in Part~\ref{part:structured}. For more on functions see Section~\ref{chap:functions}
+
+Typecasting is often a destructive operation, e.g., typecasting a float to int removes the part after the decimal point without rounding,
+%
+\fs{quickStartDownCast}{Fractional part is removed by downcasting.}
+%
+The typecasting in the example is called \idx{downcasting}, since the floating time is casted to a lesser type, in the sense that integers is a subset of floats. The opposite is called \idx{upcasting} is often non-destructive, as the previous example showed, where an integer was casted to a float while retaining its value.
+ 
+Types matter, since the operations that can be performed on integers are quite different from those that can be performed on characters and strings. Hence, in the following example,
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a = 3
+- let b = 3.0 
+- let c = '3' 
+- let d = "3";;
+
+val a : int = 3
+val b : float = 3.0
+val c : char = '3'
+val d : string = "3"
+\end{lstlisting}
+the variables \verb|a|, \verb|b|, \verb|c|, and \verb|d| all represent the number 3, their types are different, and hence they are quite different values.
+
+To perform calculations values, names, and other programming constructs are often combined into expressions, e.g., in
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a = 3 + 4 * 5;;
+
+val a : int = 23
+\end{lstlisting}
+the arithmetic expression \verb|3 + 4 * 5| is evaluated and the result is bound to the name \verb|a|. Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} symbols \token{+} and \token{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \verb|3 + (4 * 5)| or \verb|(3 + 4) * 5|, which gives different results. For integer arithmatic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Some built-in operators are shown in Table~\ref{tab:operatorPrecedence}.
+\begin{table}
+  \centering
+  \begin{tabularx}{0.9\linewidth}{|l|l|l|X|}
+    \hline
+    Operator & Associativity & Example & Description\\
+    \hline
+    \lstinline|f x| & Left & \lstinline|f 3| & Function evaluation\\
+    \lstinline|+op|, \lstinline|-op| & Left & \lstinline|-3| & Unary operator\\
+    {\lstinline|&&|} & Left & {\lstinline|true && true|} & Boolean and\\
+    \lstinline+||+ & Left & \lstinline+true || true+ & Boolean or\\
+    \lstinline|op**op|, & Right & \lstinline| 3.0 ** 2.0| & Exponent\\ 
+    \lstinline|op*op|, \lstinline|op/op|, {\lstinline!op\%op!}, 
+             & Left & \lstinline| 3.0 / 2.0| & Multiplication, division and remainder\\
+    \lstinline|op+op|, \lstinline|op-op| & Left & \lstinline|3.0 + 2.0| & Addition and subtraction binary operators\\
+    \hline
+  \end{tabularx}
+  \caption{Some common operators, their precedence, and their associativity.}
+  \label{tab:operatorPrecedence}
+\end{table}
+In the table, the rows are shown from highest to lowest precedencens, and operators in the same row has same precedence. Associativity implies the order in which calculations are performed for operators of same precendence. E.g., the multiplication operator associates to the left which means that the expression \verb|3 * 4 * 5| is evaluated as \verb|(3 * 4) * 5| while the exponentation operator associates to the right implying that \verb|3 ** 4 ** 5| is evaluated as \verb|3 ** (4 ** 5)|.
+
+\section{Integers}
+Integer types can also be written in binary, octal, or hexadecimal format using the prefixes \verb|0b|, \verb|0o|, and \verb|0x|, e.g.,
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+>   let a = 0b1011
+-   let b = 0o13
+-   let c = 0xb;;
+
+val a : int = 11
+val b : int = 11
+val c : int = 11
+\end{lstlisting}
+For a description of binary representations see Appendix~\ref{sec:binary}.
+
+
+ Using Extended Backus-Naur form (see Appendix~\ref{sec:ebnf}), the response from the the interpreter follows the syntax: 
+\begin{lstlisting}[language=ebnf]
+  "val" name ":" type "=" value
+\end{lstlisting}
+
+ A subtle point here is that the above problem is stated in using base 10 numbers, while almost all computers perform their calculations in base 2 numbers. E.g., the number 357.6 in base 10 can be considere the sum,
+\begin{equation}
+  357.6 = 3\cdot 10^2 + 5\cdot 10^1 + 7\cdot 10^0 + 6\cdot 10^{-1},
+\end{equation}
+and in general any base 10 number, also known as \idx[decimal number]{decimal numbers}, has the representation $a_n a_{n-1} a_{n-2} \dots a_{-m}$ for $n+1$ digits to the left and $m$ digits to the right of the period, and where $0 \leq a_i \leq 9$, and which translate to the equation
+\begin{equation}
+  v = \sum_{i=-m}^{n} a_i10^i.
+\end{equation}
+Base 2 numbers, also known as \idx[binary number]{binary numbers}, has the general form
+\begin{equation}
+  v = \sum_{i=-p}^{q} b_i2^i,
+\end{equation}
+where $0 \leq b_i \leq 1$ are binary digits, and where $357.6_{10} = 101100101.\overline{10011}_2$, using subscript to denote base. and where the bar notation means that the digits are repeated infinitely many times. I.e.,
+\begin{equation}
+  357.6 = 1\cdot 10^8  + 1\cdot 10^6 + 1\cdot 10^5 + 1\cdot 10^2 + 1\cdot 10^0 + 1\cdot 10^{-1} + 1\cdot 10^{-4} + 1\cdot 10^{-5}\dots 
+\end{equation}
+where alle terms with coefficient 0 have been removed for brevity. The example illustrates that while the number $357.6$ is short to write in decimal, it has infinte number of digits in binary, and since any computer only has finite memory, then we must use an approximation. Floating point numbers is a popular approximation, whose type is \lstinline|float| which is synonymous with \lstinline|double| in F\#, and which implements the IEEE 754 floating point standard for doubles. 
+
+
+
+
 
 \dots
 

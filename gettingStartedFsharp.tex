@@ -79,7 +79,10 @@ Both the interpreter and the compiler translates the source code into a format, 
 \end{center}
 I.e., executing the script with \verb|fsharpi| is slightly faster than by first compiling it with \verb|fsharpc| and then executing the result with \verb|mono|, $1.88\text{s} < 0.05\text{s}+1.90\text{s}$ , if the script were to be executed only once, but every future execution of the script using the compiled version requires only the use of \verb|mono|, which is much faster than \verb|fsharpi|, $1.88\text{s}\gg 0.05\text{s}$.
 
-The interactive session results in extra output on the \idx{type inference} performed, which is very useful for debugging and development of code-fragments, but both executing programs with the interpreted directly from a file and compiling and executing the program is much preferred for programming complete programs, since the starting state is well defined, and since this better supports \idx{unit-testing} a tool for debugging programs consisting of many code-fragments.
+\jon{Remember to add something about the \textt{it} value in
+  interactive mode.}
+
+The interactive session results in extra output on the \idx{type inference} performed, which is very useful for \idx{debugging} and development of code-fragments, but both executing programs with the interpreted directly from a file and compiling and executing the program is much preferred for programming complete programs, since the starting state is well defined, and since this better supports \idx{unit-testing} a method for debugging programs.
 
 \begin{comment}
   \section{Behind the scene}

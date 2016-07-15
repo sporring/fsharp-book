@@ -48,6 +48,8 @@
 \def\@without#1{\emph{#1}\idxs{#1}}
 \makeatother
 %\newcommand{\idx}[1]{\emph{#1}\idxs{#1}}
+\newcommand{\keyword}[1]{\lstinline[language=fsharp]|#1|}
+\newcommand{\token}[1]{\lstinline[language=fsharp]|#1|}
 \makeindex
 
 %% lstlisting stuff
@@ -74,11 +76,11 @@
 \definecolor{stringsColor}{rgb}{0,0,0.5}
 \definecolor{light-gray}{gray}{0.95}
 
-\lstdefinelanguage{fsharp}%
-{morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, % 
-and, for, while, true, false, in, do, begin, end, fun, function, return, yield, try, %
-mutable, if, then, else, cloud, async, static, use, abstract,
-interface, inherit, finally, val, int, float},
+\lstdefinelanguage{fsharp}{%
+  morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, % 
+    and, for, while, true, false, in, do, begin, end, fun, function, return, yield, try, %
+    mutable, if, then, else, cloud, async, static, use, abstract,
+    interface, inherit, finally, val, int, float},
   otherkeywords={ let!, return!, do!, yield!, use!, var, from, select,
     where, order, by, elif },
   keywordstyle=\color{keywordsColor},
@@ -97,8 +99,8 @@ interface, inherit, finally, val, int, float},
   resetmargins=true,
   captionpos=b
 }
-\lstdefinelanguage{ebnf}%
-{keywords={},
+\lstdefinelanguage{ebnf}{%
+  keywords={},
   morekeywords={},
   otherkeywords={},
   %otherkeywords={=, |, \{, \}, [, ], (, ), ;, (*, *)},
@@ -116,11 +118,12 @@ interface, inherit, finally, val, int, float},
   resetmargins=true,
   captionpos=b
 }
-\lstdefinelanguage{console}%
-{keywords={},
+\lstdefinelanguage{console}{%
+  keywords={},
   morekeywords={},
   otherkeywords={},
-  basicstyle=\ttfamily, breaklines=true,
+  basicstyle=\ttfamily, 
+  breaklines=true,
   %xleftmargin=\parindent,
   showstringspaces=false,
   aboveskip=0pt, 
@@ -130,7 +133,7 @@ interface, inherit, finally, val, int, float},
 }
 \lstset{language=console}
 \usepackage{caption}
-\DeclareCaptionStyle{listing} [justification=raggedright, labelfont=bf]{}
+\DeclareCaptionStyle{listing} [justification=raggedright,labelfont=bf]{}
 \captionsetup[lstlisting]{style=listing}
 
 \usepackage{verbdef}
@@ -146,11 +149,12 @@ interface, inherit, finally, val, int, float},
     \lstinputlisting[language=fsharp]{#1.fsx}
     \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
     %\cmdl\texttt{ fsharpi #1.fsx}
-    \lstinputlisting[language=console,caption={#1.fsx: #2},label=#1]{#1.out}
+    \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{#1.out}
   \end{mdframed}
 }
 \newcommand{\fse}[2]{
-  \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
+  % \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
+  \begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
     \begin{minipage}{1\linewidth}
       \lstinputlisting[language=fsharp,caption={#2},label=#1]{#1.fsx}
     \end{minipage}
@@ -168,7 +172,7 @@ interface, inherit, finally, val, int, float},
 \newenvironment{problem}{\begin{quote}}{\end{quote}}
 
 % Notes to self
-\newcommand{\jon}[1]{\marginpar{\raggedright\textbf{#1}}}
+\newcommand{\jon}[1]{\footnote{\textbf{#1}}}
 %\renewcommand{\jon}[1]{}
 
 
