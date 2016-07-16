@@ -55,6 +55,7 @@
 %% lstlisting stuff
 \usepackage{upquote}
 \usepackage{listings}
+\usepackage{chngcntr}
 \usepackage[framemethod=tikz]{mdframed}
 \surroundwithmdframed[
   skipabove=10pt,
@@ -80,9 +81,9 @@
   morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, % 
     and, for, while, true, false, in, do, begin, end, fun, function, return, yield, try, %
     mutable, if, then, else, cloud, async, static, use, abstract,
-    interface, inherit, finally, val, int, float},
-  otherkeywords={ let!, return!, do!, yield!, use!, var, from, select,
+    interface, inherit, finally, val, bool, int, byte, sbyte, int16, uin16, int32, uint32, int64, uint64, bigint, nativint, unativeint, float, double, single, float32, decimal, char, string, unit, var, from, select,
     where, order, by, elif },
+  otherkeywords={ let!, return!, do!, yield!, use!},
   keywordstyle=\color{keywordsColor},
   sensitive=true,
   basicstyle=\ttfamily,
@@ -131,7 +132,7 @@
   resetmargins=true,
   captionpos=b
 }
-\lstset{language=console}
+\lstset{language=fsharp}
 \usepackage{caption}
 \DeclareCaptionStyle{listing} [justification=raggedright,labelfont=bf]{}
 \captionsetup[lstlisting]{style=listing}
