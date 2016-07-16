@@ -386,7 +386,7 @@ Boolean arithmatic is the basis of almost all computers and particularly importa
   \caption{Truth table for boolean 'and', 'or', and 'not' operators. Value 0 is false and 1 is true.}
   \label{tab:truthTable}
 \end{table}
-That is, the multiplication and addition are good mnemonics for remembering the result of the 'and' and 'or' operators. In F\# the values \lstinline|true| and \lstinline|false| are used, and the operators \lstinline|\&\&| for 'and', \lstinline+||+ for 'or', and the function \lstinline|not| for 'not', such that the above table is reproduced by,
+That is, the multiplication and addition are good mnemonics for remembering the result of the 'and' and 'or' operators. In F\# the values \lstinline|true| and \lstinline|false| are used, and the operators \lstinline|&&| for 'and', \lstinline+||+ for 'or', and the function \lstinline|not| for 'not', such that the above table is reproduced by,
 \begin{lstlisting}[language=fsharp,caption={fsharpi}]
 > let t = true
 - let f = false
@@ -408,24 +408,14 @@ val it : unit = ()
 Careful spacing in the format string of the \lstinline|printfn| function was used to align columns. Next section will discuss more elegant formatting options.
 
 \section{Chars and Strings}
+\dots
 
-
-\section{Mutable Data}
+\section{Mutable bindings}
 \label{sec:mutableValues}
-The most common syntax for a value definition is
+The \keyword{mutable} in \keyword{let} bindings means that the name may be rebound to a new value using the following syntax,
 \begin{lstlisting}[language=EBNF]
-"let'' [ "mutable" ] ident [":" type] "=" expr "in" expr
+ident "<-" expr
 \end{lstlisting}
-or alternatively
-\begin{lstlisting}[language=EBNF]
-"let" ["mutable"] ident [":" type] "=" expr ["in"]
-  expr
-\end{lstlisting}
-In the above, \texttt{ident} may be replaced with a more complicated pattern, but this is outside the scope of this text. If a value has been defined as mutable, then it's value may be changed using the following syntax,
-\begin{lstlisting}[language=EBNF]
-expr "<-" expr
-\end{lstlisting}
-
 \idx{Mutable data} is synonymous with the term \idx{variable}. A variable an area in the computers working memory associated with a name and a type, and this area may be read from and written to during program execution. For example,
 \fs{mutableAssignReassing}{}
 Here a area in memory was denoted \texttt{x}, declared as type integer and assigned a default value.  Later, this value of of \texttt{x} was replaced with another integer and yet another integer. The operator '\token|<-|' is used to distinguish the statement from the mathematical concept of equality. A short-hand for the above is available as,
