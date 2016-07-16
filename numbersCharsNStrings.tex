@@ -228,15 +228,22 @@ val whole : int = 2
 val remainder : int = 1
 val y : int = 7
 \end{lstlisting}
+And we see that \lstinline|x| and \lstinline|y| is bound to the same value.
 \end{description}
-And we see that \lstinline|x| and \lstinline|y| is bound to the same value.  Integer exponentiation is not defined as an operator, but this is available the built-in function \lstinline|pown|, e.g.,
+Integer exponentiation is not defined as an operator, but this is available the built-in function \lstinline|pown|, e.g.,
 \begin{lstlisting}[language=fsharp,caption={fsharpi}]
 > pown 2 5;;
 val it : int = 32
 \end{lstlisting}
-which is equal to $2^5$.
- 
-Performing arithmetic operations on \keyword{int} types requires extra care, since the result may cause \idx{overflow} and \idx{underflow}, e.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the following example,
+which is equal to $2^5$. Note that when no let statement is used in conjunction with an expression then F\# automatically binds the result to the \idx{\lstinline|it|} name, i.e., the above is equal to
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+  > let it = pown 2 5;;
+
+val it : int = 32
+\end{lstlisting}
+Rumor has it, that the name \lstinline|it| is an abreviation for 'irrelevant'.
+
+Performing arithmetic operations on \keyword{int} types requires extra care, since the result may cause \idx{overflow}, \idx{underflow}, and even exceptions, e.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the following example,
 \begin{lstlisting}[language=fsharp,caption={fsharpi},label=overflow]
   > let a = 100y - let b = 30y - let c = a+b;;
 
@@ -255,12 +262,22 @@ val b : sbyte = -30y
 val c : sbyte = 126y
 \end{lstlisting}
 Notice that neither overflow nor underflow error gave rise to an error message, which is why such bugs are difficult to find. 
+ Dividing any non-zero number with 0 is infinite, which is also outside the domain of any of the integer types, but in this case, F\# casts an\idx{exception},
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> 3/0;; 
+System.DivideByZeroException: Attempted to divide by zero.
+  at <StartupCode$FSI_0007>.$FSI_0007.main@ () <0x6b78180 + 0x0000e> in <filename unknown>:0 
+  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&)
+  at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) <0x1a55ba0 + 0x000a1> in <filename unknown>:0 
+Stopped due to error
+\end{lstlisting}
+The output looks daunting at first sight, but the first and last line of the error message are the most important parts, which tells us what exception was cast and why the program stopped. The middle are technical details concerning which part of the program caused this, and can be ignored for the time being. Exceptions are a type of \idx{run-time error}, and are treated in Chapter~\ref{chap:exceptions}
 
 Integers can also be written in binary, octal, or hexadecimal format using the prefixes \lstinline|0b|, \lstinline|0o|, and \lstinline|0x|, e.g.,
 \begin{lstlisting}[language=fsharp,caption={fsharpi}]
->   let a = 0b1011
--   let b = 0o13
--   let c = 0xb;;
+> let a = 0b1011
+- let b = 0o13
+- let c = 0xb;;
 
 val a : int = 11
 val b : int = 11
@@ -275,6 +292,60 @@ val a : byte = 130uy
 val b : sbyte = -126y
 \end{lstlisting}
 That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$ causes the left-most bit to be used, then this is wrongly interpreted as a negative number, when stored in an \lstinline{sbyte}.
+
+For floating point numbers the following arithmetic operators are defined: 
+\begin{description}
+\item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a = 5.0 
+- let b = -a;;
+
+val a : float = 5.0
+val b : float = -5.0
+\end{lstlisting}
+\item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|, \lstinline|op / op|:] These are binary operators, where addition, subtraction, multiplication, and division performs the usual operations, 
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a = 7.0 + 3.0
+- let b = 7.0 - 3.0
+- let c = 7.0 * 3.0
+- let d = 7.0 / 3.0;;
+
+val a : float = 10.0
+val b : float = 4.0
+val c : float = 21.0
+val d : float = 2.333333333
+\end{lstlisting}
+\item[\lstinline|op \% op|:] The binary remainder operator, and division performs integer division, where the fractional part is discarded after division, and the \lstinline|\%| is the remainder operator, which calculates the remainder after integer division,
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a = 7.0 / 3.0
+- let b = 7.0 % 3.0;;
+
+val a : int = 2.0
+val b : int = 1.0
+\end{lstlisting}
+The remainder for floating point numbers can be fractional, but division, rounding, and remainder is still a lossless representation of the original number as,
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let x = 7.0
+- let division = x / 3.2
+- let whole = float (int (division + 0.5))
+- let remainder = x % 3.2
+- let y = whole * 3.2 + remainder;;
+
+val x : float = 7.0
+val division : float = 2.1875
+val whole : float = 2.0
+val remainder : float = 0.6
+val y : float = 7.0
+\end{lstlisting}
+And we see that \lstinline|x| and \lstinline|y| is bound to the same value.  
+\item[\texttt{op ** op}:] In spite of an unusual notation, the binary exponentiation operator performs the usual calculation,
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let a = 2.0 ** 5.0;;
+
+val a : float = 32.0
+\end{lstlisting}
+which is equal to $2^5$.
+\end{description}
 
 Arithmetic using \lstinline|float| will not cause over- and underflow problems, since the IEEE 754 standard includes the special numbers $\pm\infty$ and NaN. E.g.,
 \begin{lstlisting}[language=fsharp,caption={fsharpi}]
@@ -298,8 +369,43 @@ val d : float = 5.684341886e-14
 \end{lstlisting}
 Hence, although \lstinline|c| appears to be correctly calculated, by the subtraction we see, that the value bound in \lstinline|c| is not exactly the same as \lstinline|358.0|, and the reason is that the neither \lstinline|357.8| nor \lstinline|0.1| are exactly representable as a \lstinline|float|, which is why the repeated addition accumulates a small representation error.
 
-\dots
 \section{Booleans}
+Boolean arithmatic is the basis of almost all computers and particularly important for controling program flow, which will be discussed in Chapter~\ref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Two basic operations on boolean values are '\idx{and}' often also written as multiplication, and '\idx{or}' often written as addition, and '\idx{not}' often written as a bar above the value. All possible combination of input on these values can be written on tabular form, known as a \idx{truth table}, shown in Table~\ref{tab:truthTable}.
+\begin{table}
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    $a$ & $b$ & $a\cdot b$& $a + b$&$\bar{a}$\\
+    \hline
+    0&0&0&0&1\\
+    0&1&0&1&1\\
+    1&0&0&1&0\\
+    1&1&1&1&0\\
+    \hline
+  \end{tabular}
+  \caption{Truth table for boolean 'and', 'or', and 'not' operators. Value 0 is false and 1 is true.}
+  \label{tab:truthTable}
+\end{table}
+That is, the multiplication and addition are good mnemonics for remembering the result of the 'and' and 'or' operators. In F\# the values \lstinline|true| and \lstinline|false| are used, and the operators \lstinline|\&\&| for 'and', \lstinline+||+ for 'or', and the function \lstinline|not| for 'not', such that the above table is reproduced by,
+\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+> let t = true
+- let f = false
+- printfn "a     b     a*b   a+b   not a"                                       
+- printfn "%A %A %A %A %A" f f (f && f) (f || f) (not f)
+- printfn "%A %A  %A %A  %A" f t (f && t) (f || t) (not f)
+- printfn "%A  %A %A %A  %A" t f (t && f) (t || f) (not t)
+- printfn "%A  %A  %A  %A  %A" t t (t && t) (t || t) (not t);;
+a     b     a*b   a+b   not a
+false false false false true
+false true  false true  true
+true  false false true  false
+true  true  true  true  false
+
+val t : bool = true
+val f : bool = false
+val it : unit = ()
+\end{lstlisting}
+Careful spacing in the format string of the \lstinline|printfn| function was used to align columns. Next section will discuss more elegant formatting options.
 
 \section{Chars and Strings}
 
