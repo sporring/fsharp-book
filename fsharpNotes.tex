@@ -5,25 +5,31 @@
 \title{Learning to program with F\#}
 \author{Jon Sporring}
 
-% \includeonly{%preface
-%   % ,introduction
-%   % ,gettingStartedFsharp
-%   ,quickStartGuide
-%   ,numbersCharsNStrings
-%   % ,functions
-%   % ,flow
-%   % ,tuplesListsArraysSequences
-%   % ,exceptions
-%   % ,testing
-%   % ,IO
-%   % ,windows
-%   % ,collection%,imperativeProgramming
-%   % ,functionalProgramming
-%   % ,objectOrientedProgramming
-%   % ,numberSystems
-%   % ,characterSets
-%   % ,extendedBackusNaurForm
-% }
+\includeonly{%preface
+   ,introduction
+   ,part1Intro 
+   ,gettingStartedFsharp
+   ,quickStartGuide
+  ,numbersCharsNStrings
+  % ,functions
+  % ,flow
+  % ,tuplesListsArraysSequences
+  % ,part2Intro 
+  % ,exceptions
+  % ,testing
+  % ,IO
+  % ,windows
+  % ,collection
+  % ,imperativeProgramming
+  % ,part3Intro 
+  % ,functionalProgramming
+  % ,part4Intro 
+  % ,objectOrientedProgramming
+   ,part5Intro 
+   ,numberSystems
+   ,characterSets
+   ,extendedBackusNaurForm
+}
 
 \begin{document}
 \counterwithin{lstlisting}{chapter} % Fix reference bug in listing package
@@ -33,15 +39,14 @@
 \thispagestyle{empty}
 \end{titlepage}
 \pagenumbering{arabic}
-
 \tableofcontents
 
 \include{Preface}
 
 \include{introduction}
 
-\part{F\# basics}
-\label{part:basics}
+\include{part1Intro}
+
 \include{gettingStartedFsharp}
 
 \include{quickStartGuide}
@@ -54,8 +59,7 @@
 
 \include{tuplesListsArraysSequences}
 
-\part{Imperative programming}
-\label{part:imperative}
+\include{part2Intro}
 
 \include{exceptions}
 
@@ -69,19 +73,16 @@
 
 \include{imperativeProgramming}
 
-\part{Declarative programming}
-\label{part:declarative}
+\include{part3Intro}
 
 \include{functionalProgramming}
 
-\part{Structured programming}
-\label{part:structured}
+\include{part4Intro}
 
 \include{objectOrientedProgramming}
 
-\part{Appendix}
-\label{part:appendix}
-\appendix
+\include{part5Intro}
+
 \include{numberSystems}
 
 \include{characterSets}

@@ -1,5 +1,130 @@
 \chapter{The Collection}
 
+\section{\texttt{System.String}}
+\label{sec:system.string}
+The list of built-in methods accessible with the dot notation is defined in \lstinline|System.String| class and is long. Here follows short descriptions of some useful methods:
+\begin{description}
+%\item[\texttt{Clone}] Returns a reference to this instance of String.
+\item[\texttt{Compare(String, String)}] Compares two specified String objects and returns an integer that indicates their relative position in the sort order.
+%\item[\texttt{Compare(String, String, Boolean)}] Compares two specified String objects, ignoring or honoring their case, and returns an integer that indicates their relative position in the sort order.
+%\item[\texttt{Compare(String, String, StringComparison)}] Compares two specified String objects using the specified rules, and returns an integer that indicates their relative position in the sort order.
+%\item[\texttt{Compare(String, String, Boolean, CultureInfo)}] Compares two specified String objects, ignoring or honoring their case, and using culture-specific information to influence the comparison, and returns an integer that indicates their relative position in the sort order.
+%\item[\texttt{Compare(String, String, CultureInfo, CompareOptions)}] Compares two specified String objects using the specified comparison options and culture-specific information to influence the comparison, and returns an integer that indicates the relationship of the two strings to each other in the sort order.
+%\item[\texttt{Compare(String, Int32, String, Int32, Int32)}] Compares substrings of two specified String objects and returns an integer that indicates their relative position in the sort order.
+%\item[\texttt{Compare(String, Int32, String, Int32, Int32, Boolean)}] Compares substrings of two specified String objects, ignoring or honoring their case, and returns an integer that indicates their relative position in the sort order.
+%\item[\texttt{Compare(String, Int32, String, Int32, Int32, StringComparison)}] Compares substrings of two specified String objects using the specified rules, and returns an integer that indicates their relative position in the sort order.
+%\item[\texttt{Compare(String, Int32, String, Int32, Int32, Boolean, CultureInfo)}] Compares substrings of two specified String objects, ignoring or honoring their case and using culture-specific information to influence the comparison, and returns an integer that indicates their relative position in the sort order.
+%\item[\texttt{Compare(String, Int32, String, Int32, Int32, CultureInfo, CompareOptions)}] Compares substrings of two specified String objects using the specified comparison options and culture-specific information to influence the comparison, and returns an integer that indicates the relationship of the two substrings to each other in the sort order.
+\item[\texttt{CompareOrdinal(String, String)}] Compares two specified String objects by evaluating the numeric values of the corresponding Char objects in each string.
+\item[\texttt{CompareOrdinal(String, Int32, String, Int32, Int32)}] Compares substrings of two specified String objects by evaluating the numeric values of the corresponding Char objects in each substring.
+\item[\texttt{CompareTo(Object)}] Compares this instance with a specified Object and indicates whether this instance precedes, follows, or appears in the same position in the sort order as the specified Object.
+\item[\texttt{CompareTo(String)}] Compares this instance with a specified String object and indicates whether this instance precedes, follows, or appears in the same position in the sort order as the specified String.
+\item[\texttt{Concat(Object)}] Creates the string representation of a specified object.
+\item[\texttt{Concat(Object[])}] Concatenates the string representations of the elements in a specified Object array.
+\item[\texttt{Concat(IEnumerable(String))}] Concatenates the members of a constructed IEnumerable(T) collection of type String.
+\item[\texttt{Concat(String[])}] Concatenates the elements of a specified String array.
+\item[\texttt{Concat(Object, Object)}] Concatenates the string representations of two specified objects.
+\item[\texttt{Concat(String, String)}] Concatenates two specified instances of String.
+\item[\texttt{Concat(Object, Object, Object)}] Concatenates the string representations of three specified objects.
+\item[\texttt{Concat(String, String, String)}] Concatenates three specified instances of String.
+\item[\texttt{Concat(Object, Object, Object, Object)}] Concatenates the string representations of four specified objects and any objects specified in an optional variable length parameter list.
+\item[\texttt{Concat(String, String, String, String)}] Concatenates four specified instances of String.
+\item[\texttt{Concat(T)(IEnumerable(T))}] Concatenates the members of an IEnumerable(T) implementation.
+\item[\texttt{Contains}] Returns a value indicating whether the specified String object occurs within this string.
+\item[\texttt{Copy}] Creates a new instance of String with the same value as a specified String.
+\item[\texttt{CopyTo}] Copies a specified number of characters from a specified position in this instance to a specified position in an array of Unicode characters.
+\item[\texttt{EndsWith(String)}] Determines whether the end of this string instance matches the specified string.
+\item[\texttt{EndsWith(String, StringComparison)}] Determines whether the end of this string instance matches the specified string when compared using the specified comparison option.
+\item[\texttt{EndsWith(String, Boolean, CultureInfo)}] Determines whether the end of this string instance matches the specified string when compared using the specified culture.
+\item[\texttt{Equals(Object)}] Determines whether this instance and a specified object, which must also be a String object, have the same value. (Overrides Object.Equals(Object).)
+\item[\texttt{Equals(String)}] Determines whether this instance and another specified String object have the same value.
+\item[\texttt{Equals(String, String)}] Determines whether two specified String objects have the same value.
+\item[\texttt{Equals(String, StringComparison)}] Determines whether this string and a specified String object have the same value. A parameter specifies the culture, case, and sort rules used in the comparison.
+\item[\texttt{Equals(String, String, StringComparison)}] Determines whether two specified String objects have the same value. A parameter specifies the culture, case, and sort rules used in the comparison.
+\item[\texttt{Finalize}] Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection. (Inherited from Object.)
+\item[\texttt{Format(String, Object)}] Replaces one or more format items in a specified string with the string representation of a specified object.
+\item[\texttt{Format(String, Object[])}] Replaces the format item in a specified string with the string representation of a corresponding object in a specified array.
+\item[\texttt{Format(IFormatProvider, String, Object[])}] Replaces the format item in a specified string with the string representation of a corresponding object in a specified array. A specified parameter supplies culture-specific formatting information.
+\item[\texttt{Format(String, Object, Object)}] Replaces the format items in a specified string with the string representation of two specified objects.
+\item[\texttt{Format(String, Object, Object, Object)}] Replaces the format items in a specified string with the string representation of three specified objects.
+\item[\texttt{GetEnumerator}] Retrieves an object that can iterate through the individual characters in this string.
+\item[\texttt{GetHashCode}] Returns the hash code for this string. (Overrides Object.GetHashCode().)
+\item[\texttt{GetType}] Gets the Type of the current instance. (Inherited from Object.)
+\item[\texttt{GetTypeCode}] Returns the TypeCode for class String.
+\item[\texttt{IndexOf(Char)}] Reports the zero-based index of the first occurrence of the specified Unicode character in this string.
+\item[\texttt{IndexOf(String)}] Reports the zero-based index of the first occurrence of the specified string in this instance.
+\item[\texttt{IndexOf(Char, Int32)}] Reports the zero-based index of the first occurrence of the specified Unicode character in this string. The search starts at a specified character position.
+\item[\texttt{IndexOf(String, Int32)}] Reports the zero-based index of the first occurrence of the specified string in this instance. The search starts at a specified character position.
+\item[\texttt{IndexOf(String, StringComparison)}] Reports the zero-based index of the first occurrence of the specified string in the current String object. A parameter specifies the type of search to use for the specified string.
+\item[\texttt{IndexOf(Char, Int32, Int32)}] Reports the zero-based index of the first occurrence of the specified character in this instance. The search starts at a specified character position and examines a specified number of character positions.
+\item[\texttt{IndexOf(String, Int32, Int32)}] Reports the zero-based index of the first occurrence of the specified string in this instance. The search starts at a specified character position and examines a specified number of character positions.
+\item[\texttt{IndexOf(String, Int32, StringComparison)}] Reports the zero-based index of the first occurrence of the specified string in the current String object. Parameters specify the starting search position in the current string and the type of search to use for the specified string.
+\item[\texttt{IndexOf(String, Int32, Int32, StringComparison)}] Reports the zero-based index of the first occurrence of the specified string in the current String object. Parameters specify the starting search position in the current string, the number of characters in the current string to search, and the type of search to use for the specified string.
+\item[\texttt{IndexOfAny(Char[])}] Reports the zero-based index of the first occurrence in this instance of any character in a specified array of Unicode characters.
+\item[\texttt{IndexOfAny(Char[], Int32)}] Reports the zero-based index of the first occurrence in this instance of any character in a specified array of Unicode characters. The search starts at a specified character position.
+\item[\texttt{IndexOfAny(Char[], Int32, Int32)}] Reports the zero-based index of the first occurrence in this instance of any character in a specified array of Unicode characters. The search starts at a specified character position and examines a specified number of character positions.
+\item[\texttt{Insert}] Returns a new string in which a specified string is inserted at a specified index position in this instance.
+\item[\texttt{Intern}] Retrieves the system's reference to the specified String.
+\item[\texttt{IsInterned}] Retrieves a reference to a specified String.
+\item[\texttt{IsNormalized()}] Indicates whether this string is in Unicode normalization form C.
+\item[\texttt{IsNormalized(NormalizationForm)}] Indicates whether this string is in the specified Unicode normalization form.
+\item[\texttt{IsNullOrEmpty}] Indicates whether the specified string is a null reference (Nothing in Visual Basic) or an Empty string.
+\item[\texttt{IsNullOrWhiteSpace}] Indicates whether a specified string is a null reference (Nothing in Visual Basic), empty, or consists only of white-space characters.
+\item[\texttt{Join(String, IEnumerable(String))}] Concatenates the members of a constructed IEnumerable(T) collection of type String, using the specified separator between each member.
+\item[\texttt{Join(String, Object[])}] Concatenates the elements of an object array, using the specified separator between each element.
+\item[\texttt{Join(String, String[])}] Concatenates all the elements of a string array, using the specified separator between each element.
+\item[\texttt{Join(String, String[], Int32, Int32)}] Concatenates the specified elements of a string array, using the specified separator between each element.
+\item[\texttt{Join(T)(String, IEnumerable(T))}] Concatenates the members of a collection, using the specified separator between each member.
+\item[\texttt{LastIndexOf(Char)}] Reports the zero-based index position of the last occurrence of a specified Unicode character within this instance.
+\item[\texttt{LastIndexOf(String)}] Reports the zero-based index position of the last occurrence of a specified string within this instance.
+\item[\texttt{LastIndexOf(Char, Int32)}] Reports the zero-based index position of the last occurrence of a specified Unicode character within this instance. The search starts at a specified character position.
+\item[\texttt{LastIndexOf(String, Int32)}] Reports the zero-based index position of the last occurrence of a specified string within this instance. The search starts at a specified character position.
+\item[\texttt{LastIndexOf(String, StringComparison)}] Reports the zero-based index of the last occurrence of a specified string within the current String object. A parameter specifies the type of search to use for the specified string.
+\item[\texttt{LastIndexOf(Char, Int32, Int32)}] Reports the zero-based index position of the last occurrence of the specified Unicode character in a substring within this instance. The search starts at a specified character position and examines a specified number of character positions.
+\item[\texttt{LastIndexOf(String, Int32, Int32)}] Reports the zero-based index position of the last occurrence of a specified string within this instance. The search starts at a specified character position and examines a specified number of character positions.
+\item[\texttt{LastIndexOf(String, Int32, StringComparison)}] Reports the zero-based index of the last occurrence of a specified string within the current String object. Parameters specify the starting search position in the current string, and type of search to use for the specified string.
+\item[\texttt{LastIndexOf(String, Int32, Int32, StringComparison)}] Reports the zero-based index position of the last occurrence of a specified string within this instance. Parameters specify the starting search position in the current string, the number of characters in the current string to search, and the type of search to use for the specified string.
+\item[\texttt{LastIndexOfAny(Char[])}] Reports the zero-based index position of the last occurrence in this instance of one or more characters specified in a Unicode array.
+\item[\texttt{LastIndexOfAny(Char[], Int32)}] Reports the zero-based index position of the last occurrence in this instance of one or more characters specified in a Unicode array. The search starts at a specified character position.
+\item[\texttt{LastIndexOfAny(Char[], Int32, Int32)}] Reports the zero-based index position of the last occurrence in this instance of one or more characters specified in a Unicode array. The search starts at a specified character position and examines a specified number of character positions.
+\item[\texttt{MemberwiseClone}] Creates a shallow copy of the current Object. (Inherited from Object.)
+\item[\texttt{Normalize()}] Returns a new string whose textual value is the same as this string, but whose binary representation is in Unicode normalization form C.
+\item[\texttt{Normalize(NormalizationForm)}] Returns a new string whose textual value is the same as this string, but whose binary representation is in the specified Unicode normalization form.
+\item[\texttt{PadLeft(Int32)}] Returns a new string that right-aligns the characters in this instance by padding them with spaces on the left, for a specified total length.
+\item[\texttt{PadLeft(Int32, Char)}] Returns a new string that right-aligns the characters in this instance by padding them on the left with a specified Unicode character, for a specified total length.
+\item[\texttt{PadRight(Int32)}] Returns a new string that left-aligns the characters in this string by padding them with spaces on the right, for a specified total length.
+\item[\texttt{PadRight(Int32, Char)}] Returns a new string that left-aligns the characters in this string by padding them on the right with a specified Unicode character, for a specified total length.
+\item[\texttt{Remove(Int32)}] Returns a new string in which all the characters in the current instance, beginning at a specified position and continuing through the last position, have been deleted.
+\item[\texttt{Remove(Int32, Int32)}] Returns a new string in which a specified number of characters in this instance beginning at a specified position have been deleted.
+\item[\texttt{Replace(Char, Char)}] Returns a new string in which all occurrences of a specified Unicode character in this instance are replaced with another specified Unicode character.
+\item[\texttt{Replace(String, String)}] Returns a new string in which all occurrences of a specified string in the current instance are replaced with another specified string.
+\item[\texttt{Split(Char[])}] Returns a string array that contains the substrings in this instance that are delimited by elements of a specified Unicode character array.
+\item[\texttt{Split(Char[], Int32)}] Returns a string array that contains the substrings in this instance that are delimited by elements of a specified Unicode character array. A parameter specifies the maximum number of substrings to return.
+\item[\texttt{Split(Char[], StringSplitOptions)}] Returns a string array that contains the substrings in this string that are delimited by elements of a specified Unicode character array. A parameter specifies whether to return empty array elements.
+\item[\texttt{Split(String[], StringSplitOptions)}] Returns a string array that contains the substrings in this string that are delimited by elements of a specified string array. A parameter specifies whether to return empty array elements.
+\item[\texttt{Split(Char[], Int32, StringSplitOptions)}] Returns a string array that contains the substrings in this string that are delimited by elements of a specified Unicode character array. Parameters specify the maximum number of substrings to return and whether to return empty array elements.
+\item[\texttt{Split(String[], Int32, StringSplitOptions)}] Returns a string array that contains the substrings in this string that are delimited by elements of a specified string array. Parameters specify the maximum number of substrings to return and whether to return empty array elements.
+\item[\texttt{StartsWith(String)}] Determines whether the beginning of this string instance matches the specified string.
+\item[\texttt{StartsWith(String, StringComparison)}] Determines whether the beginning of this string instance matches the specified string when compared using the specified comparison option.
+\item[\texttt{StartsWith(String, Boolean, CultureInfo)}] Determines whether the beginning of this string instance matches the specified string when compared using the specified culture.
+\item[\texttt{Substring(Int32)}] Retrieves a substring from this instance. The substring starts at a specified character position.
+\item[\texttt{Substring(Int32, Int32)}] Retrieves a substring from this instance. The substring starts at a specified character position and has a specified length.
+\item[\texttt{ToCharArray()}] Copies the characters in this instance to a Unicode character array.
+\item[\texttt{ToCharArray(Int32, Int32)}] Copies the characters in a specified substring in this instance to a Unicode character array.
+\item[\texttt{ToLower()}] Returns a copy of this string converted to lowercase.
+\item[\texttt{ToLower(CultureInfo)}] Returns a copy of this string converted to lowercase, using the casing rules of the specified culture.
+\item[\texttt{ToLowerInvariant}] Returns a copy of this String object converted to lowercase using the casing rules of the invariant culture.
+\item[\texttt{ToString()}] Returns this instance of String; no actual conversion is performed. (Overrides Object.ToString().)
+\item[\texttt{ToString(IFormatProvider)}] Returns this instance of String; no actual conversion is performed.
+\item[\texttt{ToUpper()}] Returns a copy of this string converted to uppercase.
+\item[\texttt{ToUpper(CultureInfo)}] Returns a copy of this string converted to uppercase, using the casing rules of the specified culture.
+\item[\texttt{ToUpperInvariant}] Returns a copy of this String object converted to uppercase using the casing rules of the invariant culture.
+\item[\texttt{Trim()}] Removes all leading and trailing white-space characters from the current String object.
+\item[\texttt{Trim(Char[])}] Removes all leading and trailing occurrences of a set of characters specified in an array from the current String object.
+\item[\texttt{TrimEnd}] Removes all trailing occurrences of a set of characters specified in an array from the current String object.
+\item[\texttt{TrimStart}] Removes all leading occurrences of a set of characters specified in an array from the current String object.
+\end{description}
+
 \section{Mutable Collections}
 \verb|System.Collections.Generic|
 \subsection{Mutable lists}

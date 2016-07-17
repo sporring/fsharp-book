@@ -42,18 +42,30 @@ All programs rely on processing of data, and an essential property of data is it
 \end{table}
 A \idx{literal} is a fixed value such as "3", and F\# supports \idx[literal type]{literal types} which are indicated by a suffix in most cases and as shown in the table.
 
-A name is bound to a value by the syntax,
+An identifier is bound to an expression by the syntax,
+%
 \begin{lstlisting}[language=EBNF]
 "let" [ "mutable" ] ident [":" type] "=" expr ["in" expr]
 \end{lstlisting}
 \begin{comment}
 or alternatively
+%
 \begin{lstlisting}[language=EBNF]
-"let" ["mutable"] ident [":" type] "=" expr [["in"] LF indent exp]
+"let" ["mutable"] ident [":" type] "=" expr ["in" LF indent exp]
 \end{lstlisting}
 \end{comment}
-That is, the \idx{\keyword{let}} keyword indicates that the following is a binding of a name with an expression, and that the type may be specified with the \idx{\token{:}} token. The binding may be mutable, which will be discussed in Section~\ref{sec:mutableValues}, and the binding may only be for the last expression as indicated by the \idx{\keyword{in}}. The simplest example of an expression is a \idx{literal}, i.e., a constant such as the number 3 or a function. Functions will be discussed in detail in Chapter~\ref{chap:functions}. Examples of let statements with \idx{literals}
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+That is, the \idx{\keyword{let}} keyword indicates that the following is a binding of an identifier with an expression, and that the type may be specified with the \idx{\token{:}} token. An identifier must start with a letter, but can be followed by zero or more of letters, digits, and a range of special characters. For characters in the Basic Latin Block, i.e., the first 128 code points alias ASCII characters, an ident is,
+%
+\begin{lstlisting}[language=EBNF]
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+letter = "A" | "B" | ... |  "Z" | "a" | "b" | ... | "z"
+special-char = "_"
+ident = (letter | "_") {letter | digit | special-char}
+\end{lstlisting}
+%
+Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=EBNF]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=EBNF]{special-char = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=EBNF]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=EBNF]{special-char} category.  The binding may be mutable, which will be discussed in Section~\ref{sec:mutableValues}, and the binding may only be for the last expression as indicated by the \idx{\keyword{in}} keyword. The simplest example of an expression is a \idx{literal}, i.e., a constant such as the number 3. Examples of let statements with \idx{literals} are
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, binding identifiers and literals.}]
 > let a = 3 
 - let b = 4u 
 - let c = 5.6 
@@ -72,8 +84,10 @@ val f : byte = 66uy
 val g : string = "ABC"
 val h : unit = ()
 \end{lstlisting}
-Here \lstinline|a|, \lstinline|b|, \dots, \lstinline|h| are names that we have chosen, and which by the binding operation are made equivalent to the corresponding values. Note that we did not specify the type of the name, and that F\# interpreted the type from the literal form of the right-hand-side. Types matter, since the operations that can be performed on integers are quite different from those that can be performed on characters and strings. I.e.,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+%
+Here \lstinline|a|, \lstinline|b|, \dots, \lstinline|h| are identifiers that we have chosen, and which by the binding operation are made equivalent to the corresponding literal. Note that we did not specify the type of the identifier, and that F\# interpreted the type from the literal form of the right-hand-side. Types matter, since the operations that can be performed on integers are quite different from those that can be performed on characters and strings. I.e.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, many representations of the number 3 but using different types.}]
 > let a = 3
 - let b = 3.0 
 - let c = '3' 
@@ -84,8 +98,9 @@ val b : float = 3.0
 val c : char = '3'
 val d : string = "3"
 \end{lstlisting}
-the variables \lstinline|a|, \lstinline|b|, \lstinline|c|, and \lstinline|d| all represent the number 3, but their types are different, and hence they are quite different values. When specifying the type, then the type and the literal form must match, i.e., mixing types and literals gives an error,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+the variables \lstinline|a|, \lstinline|b|, \lstinline|c|, and \lstinline|d| all represent the number 3, but their types are different, and hence they are quite different values. When specifying the type, the type and the literal form must match, i.e., mixing types and literals gives an error,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, binding error due to type mismatch.}]
   > let a : float = 3;;
 
   let a : float = 3;;
@@ -96,15 +111,18 @@ the variables \lstinline|a|, \lstinline|b|, \lstinline|c|, and \lstinline|d| all
 but here has type
     int    
 \end{lstlisting}
-since the left-hand-side is a name of type float while the right-hand-side is a literal of type integer.
+since the left-hand-side is an identifier of type float, while the right-hand-side is a literal of type integer.
 
-Many primitive types are compatible and may changed to each other by \idx{type casting}. E.g.,
-\begin{lstlisting}[language=fsharp,caption={fsharpi},label=upcasting]
+Many primitive types are compatible and the type of a literal may be changed by \idx{type casting}. E.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, casting an integer to a floating point number.},label=upcasting]
 > let a = float 3;;
 
 val a : float = 3.0
 \end{lstlisting}
-where the left-hand-side is inferred to by of type float, since the integer number \lstinline|3| is casted to float resulting in a similar floating point value, in this case the float point number \lstinline|3.0|. As a particular note, the boolean values are often treated as the integer values 0 and 1, however casting can only be performed with built-in functions, e.g., \begin{lstlisting}[language=fsharp,caption={fsharpi}]
+where the left-hand-side is inferred to by of type float, since the integer number \lstinline|3| is casted to float resulting in a similar floating point value, in this case the float point number \lstinline|3.0|. As a technical detail, \lstinline|float| is here a function rather than a type, which takes the argument \lstinline|3| and returns the value \lstinline|3.0|.  For more on functions see Section~\ref{chap:functions}. Boolean values are often treated as the integer values 0 and 1, but no short-hand function names exists for their conversions. Instead use,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, casting booleans.}]
 > let a = System.Convert.ToBoolean 1    
 - let b = System.Convert.ToBoolean 0    
 - let c = System.Convert.ToInt32 true   
@@ -115,20 +133,21 @@ val b : bool = false
 val c : int = 1
 val d : int = 0
 \end{lstlisting}
-Here \lstinline|System.Convert.ToBoolean| is the name of a function \lstinline|ToBoolean|, which is a \idx{member} of the \idx{class} \lstinline|Convert| that is included in the \idx{namespace} \lstinline|System|. Namespaces, classes, and members are all part of Structured programming to be discussed in Part~\ref{part:structured}. For more on functions see Section~\ref{chap:functions}
+Here \lstinline|System.Convert.ToBoolean| is the identifier of a function \lstinline|ToBoolean|, which is a \idx{member} of the \idx{class} \lstinline|Convert| that is included in the \idx{namespace} \lstinline|System|. Namespaces, classes, and members are all part of Structured programming to be discussed in Part~\ref{part:structured}.
 
-Typecasting is often a destructive operation, e.g., typecasting a float to int removes the part after the decimal point without rounding,
+Type casting is often a destructive operation, e.g., type casting a \lstinline{float} to \lstinline{int} removes the part after the decimal point without rounding,
 %
 \fs{quickStartDownCast}{Fractional part is removed by downcasting.}
 %
-Here we typecasted to a lesser type, in the sense that integers is a subset of floats, which is called \idx{downcasting}. The opposite is called \idx{upcasting} is often non-destructive, as Listing~\ref{upcasting} showed, where an integer was casted to a float while retaining its value. As a side note, \idx{rounding} a number $y.x$, where $y$ is the whole part and $x$ is the fractional part, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$ and $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting as follows,
+Here we type casted to a lesser type, in the sense that integers is a subset of floating point numbers, which is called \idx{downcasting}. The opposite is called \idx{upcasting} is often non-destructive, as Listing~\ref{upcasting} showed, where an integer was casted to a float while retaining its value. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$ and $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting as follows,
 %
 \fs{rounding}{The rounding function may be obtained by downcasting.}
 %
 since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasting removes the fractional part resulting in $y$. And if $y.x\in [y.5, y+1)$, then $y.x+0.5\in [y+1,y+1.5)$, from which downcasting removes the fractional part resulting in $y+1$. Hence, the result is rounding. 
 
-If parentheses are ommitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int a) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., typecasting takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int a) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, a simple arithmetic expression.}]
 > let a = 3 + 4 * 5;;
 
 val a : int = 23
@@ -140,21 +159,38 @@ Here, the addition and multiplication functions are shown in \idx{infix notation
     \hline
     Operator & Associativity & Example & Description\\
     \hline
-    \lstinline|f x| & Left & \lstinline|f 3| & Function evaluation\\
-    \lstinline|+op|, \lstinline|-op| & Left & \lstinline|-3| & Unary operator\\
-    {\lstinline|&&|} & Left & {\lstinline|true && true|} & Boolean and\\
-    \lstinline+||+ & Left & \lstinline+true || true+ & Boolean or\\
+     \lstinline|+op|, \lstinline|-op|, \lstinline|\~\~\~op| & Left & \lstinline|-3| & Unary identity, negation, and bitwise negation operator\\
+     \hline
+    \lstinline|f x| & Left & \lstinline|f 3| & Function application\\
+    \hline
     \lstinline|op ** op| & Right & \lstinline| 3.0 ** 2.0| & Exponent\\ 
-    \lstinline|op * op|, \lstinline|op / op|, \lstinline|op \% op| 
-             & Left & \lstinline| 3.0 / 2.0| & Multiplication, division and remainder\\
+    \hline
+    \lstinline|op * op|, \lstinline|op / op|, \lstinline|op \% op| & Left & \lstinline| 3.0 / 2.0| & Multiplication, division and remainder\\
+    \hline
     \lstinline|op + op|, \lstinline|op - op| & Left & \lstinline|3.0 + 2.0| & Addition and subtraction binary operators\\
+    \hline
+     \lstinline|op \^\^\^ op| & Right & \lstinline|0xAAuy \^\^\^ 0xFFuy| & bitwise exclucive or\\
+    \hline
+    \begin{minipage}[t]{0.25\linewidth}
+      \lstinline|op < op|, \lstinline|op <= op|,\\
+      \lstinline|op > op|, \lstinline|op >= op|,\\
+      \lstinline|op = op|, \lstinline|op <> op|,\\
+      \lstinline|op <<< op|, \lstinline|op >>> op|,\\
+      {\lstinline|op &&& op|}, \lstinline!op ||| op!,\\
+    \end{minipage}
+    & Left & \lstinline|3 > 5| & Comparison operators, bitwise shift, and bitwise 'and' and 'or'.\\
+    \hline
+    {\lstinline|&&|} & Left & {\lstinline|true && true|} & Boolean and\\
+    \hline
+    \lstinline+||+ & Left & \lstinline+true || true+ & Boolean or\\
     \hline
   \end{tabularx}
   \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|op * op| has higher precedence than \lstinline|op + op|. Operators in the same row has same precedence. }
   \label{tab:operatorPrecedence}
 \end{table}
-Associativity implies the order in which calculations are performed for operators of same precedence. For some operators and type combinations association matters little, e.g., multiplication associates to the left and exponentiation associates to the right, e.g., in
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+Associativity implies the order in which calculations are performed for operators of same precedence. For some operators and type combinations association matters little, e.g., multiplication associates to the left and exponentiation associates to the right, e.g., in\jon{Spec-4.0, Table 18.2.1 appears to be missing boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, precedences rules define implicite parantheses.}]
 > let a = 3.0*4.0*5.0
 - let b = (3.0*4.0)*5.0
 - let c = 3.0*(4.0*5.0);;
@@ -175,202 +211,18 @@ the expression for \lstinline|a| is interpreted as \lstinline|b| but gives the s
 
 A less common notation is to define bindings for expressions using the \idx{\keyword{in}} keyword, e.g.,
 %
-\fs{numbersIn}{The name \lstinline!p! is only bound in the nested scope following the keyword \keyword{in}.}
+\fs{numbersIn}{The identifier \lstinline!p! is only bound in the nested scope following the keyword \keyword{in}.}
 %
 Here \lstinline|p| is only bound in the \idx{scope} of the expression following the \keyword{in} keyword, in this the \lstinline|printfn| statement, and \lstinline|p| is unbound in lines that follows.
 \begin{comment}
   Here the use of indentation to define a sequence of expressions
   % 
-  \fs{numbersInWIndentation}{The name \lstinline!p! is only bound in the nested scope following the keyword \keyword{in}.}
+  \fs{numbersInWIndentation}{The identifier \lstinline!p! is only bound in the nested scope following the keyword \keyword{in}.}
   % 
 \end{comment}
 
-\section{Integers and Reals}
-The set of integers and reals are infinitely large, and since all computers have limited resources, it is not possible to represent these sets in their entirety. The various integer and floating point types listed in Table~\ref{tab:primitiveTypes} are finite subset where the integer types have been reduced by limiting their ranges and the floating point types have been reduced by sampling the space of reals. An in-depth description of integer and floating point implementations can be found in Appendix~\ref{app:numbers}. The \keyword{int} and \keyword{float} are the most common types. 
-
-For integers the following arithmetic operators are defined: 
-\begin{description}
-\item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 5       
-- let b = -a;;
-
-val a : int = 5
-val b : int = -5
-\end{lstlisting}
-\item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|:] These are binary operators, where addition, subtraction and multiplication performs the usual operations, 
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 7 + 3
-- let b = 7 - 3
-- let c = 7 * 3;;
-
-val a : int = 10
-val b : int = 4
-val c : int = 21
-\end{lstlisting}
-\item[\lstinline|op / op|, \lstinline|op \% op|:] These are binary operators, and division performs integer division, where the fractional part is discarded after division, and the \lstinline|\%| is the remainder operator, which calculates the remainder after integer division,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 7 / 3
-- let b = 7 % 3;;
-
-val a : int = 2
-val b : int = 1
-\end{lstlisting}
-Together integer division and remainder is a lossless representation of the original number as,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let x = 7
-- let whole = x / 3
-- let remainder = x % 3
-- let y = whole * 3 + remainder;;
-
-val x : int = 7
-val whole : int = 2
-val remainder : int = 1
-val y : int = 7
-\end{lstlisting}
-And we see that \lstinline|x| and \lstinline|y| is bound to the same value.
-\end{description}
-Integer exponentiation is not defined as an operator, but this is available the built-in function \lstinline|pown|, e.g.,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> pown 2 5;;
-val it : int = 32
-\end{lstlisting}
-which is equal to $2^5$. Note that when no let statement is used in conjunction with an expression then F\# automatically binds the result to the \idx{\lstinline{it}} name, i.e., the above is equal to
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-  > let it = pown 2 5;;
-
-val it : int = 32
-\end{lstlisting}
-Rumor has it, that the name \lstinline|it| is an abreviation for 'irrelevant'.
-
-Performing arithmetic operations on \keyword{int} types requires extra care, since the result may cause \idx{overflow}, \idx{underflow}, and even exceptions, e.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the following example,
-\begin{lstlisting}[language=fsharp,caption={fsharpi},label=overflow]
-  > let a = 100y - let b = 30y - let c = a+b;;
-
-val a : sbyte = 100y
-val b : sbyte = 30y
-val c : sbyte = -126y
-\end{lstlisting}
-Here $100+30=130$, which is larger than the biggest \lstinline|sbyte|, and the result is an overflow. Similarly, we get an underflow, when the arithmetic result falls below the smallest value storable in an \lstinline|sbyte|,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = -100y  
-- let b = -30y  
-- let c = a+b;;
-
-val a : sbyte = -100y
-val b : sbyte = -30y
-val c : sbyte = 126y
-\end{lstlisting}
-Notice that neither overflow nor underflow error gave rise to an error message, which is why such bugs are difficult to find. 
- Dividing any non-zero number with 0 is infinite, which is also outside the domain of any of the integer types, but in this case, F\# casts an\idx{exception},
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> 3/0;; 
-System.DivideByZeroException: Attempted to divide by zero.
-  at <StartupCode$FSI_0007>.$FSI_0007.main@ () <0x6b78180 + 0x0000e> in <filename unknown>:0 
-  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&)
-  at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) <0x1a55ba0 + 0x000a1> in <filename unknown>:0 
-Stopped due to error
-\end{lstlisting}
-The output looks daunting at first sight, but the first and last line of the error message are the most important parts, which tells us what exception was cast and why the program stopped. The middle are technical details concerning which part of the program caused this, and can be ignored for the time being. Exceptions are a type of \idx{run-time error}, and are treated in Chapter~\ref{chap:exceptions}
-
-Integers can also be written in binary, octal, or hexadecimal format using the prefixes \lstinline|0b|, \lstinline|0o|, and \lstinline|0x|, e.g.,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 0b1011
-- let b = 0o13
-- let c = 0xb;;
-
-val a : int = 11
-val b : int = 11
-val c : int = 11
-\end{lstlisting}
-For a description of binary representations see Appendix~\ref{sec:binary}. The overflow error in Listing~\ref{overflow} can be understood in terms of the binary representation of integers: In binary, $130=10000010_2$, and this binary pattern is interpreted differently as \lstinline{byte} and \lstinline{sbyte},
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 0b10000010uy
-- let b = 0b10000010y;;
-
-val a : byte = 130uy
-val b : sbyte = -126y
-\end{lstlisting}
-That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$ causes the left-most bit to be used, then this is wrongly interpreted as a negative number, when stored in an \lstinline{sbyte}.
-
-For floating point numbers the following arithmetic operators are defined: 
-\begin{description}
-\item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 5.0 
-- let b = -a;;
-
-val a : float = 5.0
-val b : float = -5.0
-\end{lstlisting}
-\item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|, \lstinline|op / op|:] These are binary operators, where addition, subtraction, multiplication, and division performs the usual operations, 
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 7.0 + 3.0
-- let b = 7.0 - 3.0
-- let c = 7.0 * 3.0
-- let d = 7.0 / 3.0;;
-
-val a : float = 10.0
-val b : float = 4.0
-val c : float = 21.0
-val d : float = 2.333333333
-\end{lstlisting}
-\item[\lstinline|op \% op|:] The binary remainder operator, and division performs integer division, where the fractional part is discarded after division, and the \lstinline|\%| is the remainder operator, which calculates the remainder after integer division,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 7.0 / 3.0
-- let b = 7.0 % 3.0;;
-
-val a : int = 2.0
-val b : int = 1.0
-\end{lstlisting}
-The remainder for floating point numbers can be fractional, but division, rounding, and remainder is still a lossless representation of the original number as,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let x = 7.0
-- let division = x / 3.2
-- let whole = float (int (division + 0.5))
-- let remainder = x % 3.2
-- let y = whole * 3.2 + remainder;;
-
-val x : float = 7.0
-val division : float = 2.1875
-val whole : float = 2.0
-val remainder : float = 0.6
-val y : float = 7.0
-\end{lstlisting}
-And we see that \lstinline|x| and \lstinline|y| is bound to the same value.  
-\item[\texttt{op ** op}:] In spite of an unusual notation, the binary exponentiation operator performs the usual calculation,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 2.0 ** 5.0;;
-
-val a : float = 32.0
-\end{lstlisting}
-which is equal to $2^5$.
-\end{description}
-
-Arithmetic using \lstinline|float| will not cause over- and underflow problems, since the IEEE 754 standard includes the special numbers $\pm\infty$ and NaN. E.g.,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 1.0/0.0  
-- let b = 0.0/0.0;;
-
-val a : float = infinity
-val b : float = nan
-\end{lstlisting}
-However, the \lstinline|float| type has limite precision, since there is only a finite number of numbers that can be stored in a float. E.g.,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 357.8      
-- let b = a+0.1      
-- let c = b+0.1      
-- let d = c - 358.0;;
-
-val a : float = 357.8
-val b : float = 357.9
-val c : float = 358.0
-val d : float = 5.684341886e-14
-\end{lstlisting}
-Hence, although \lstinline|c| appears to be correctly calculated, by the subtraction we see, that the value bound in \lstinline|c| is not exactly the same as \lstinline|358.0|, and the reason is that the neither \lstinline|357.8| nor \lstinline|0.1| are exactly representable as a \lstinline|float|, which is why the repeated addition accumulates a small representation error.
-
 \section{Booleans}
-Boolean arithmatic is the basis of almost all computers and particularly important for controling program flow, which will be discussed in Chapter~\ref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Two basic operations on boolean values are '\idx{and}' often also written as multiplication, and '\idx{or}' often written as addition, and '\idx{not}' often written as a bar above the value. All possible combination of input on these values can be written on tabular form, known as a \idx{truth table}, shown in Table~\ref{tab:truthTable}.
+Boolean arithmetic is the basis of almost all computers and particularly important for controlling program flow, which will be discussed in Chapter~\ref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Two basic operations on boolean values are '\idx{and}' often also written as multiplication, and '\idx{or}' often written as addition, and '\idx{not}' often written as a bar above the value. All possible combination of input on these values can be written on tabular form, known as a \idx{truth table}, shown in Table~\ref{tab:truthTable}.
 \begin{table}
   \centering
   \begin{tabular}{|c|c|c|c|c|}
@@ -387,7 +239,8 @@ Boolean arithmatic is the basis of almost all computers and particularly importa
   \label{tab:truthTable}
 \end{table}
 That is, the multiplication and addition are good mnemonics for remembering the result of the 'and' and 'or' operators. In F\# the values \lstinline|true| and \lstinline|false| are used, and the operators \lstinline|&&| for 'and', \lstinline+||+ for 'or', and the function \lstinline|not| for 'not', such that the above table is reproduced by,
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, boolean operators and truth tables.}]
 > let t = true
 - let f = false
 - printfn "a     b     a*b   a+b   not a"                                       
@@ -405,42 +258,526 @@ val t : bool = true
 val f : bool = false
 val it : unit = ()
 \end{lstlisting}
+%
 Careful spacing in the format string of the \lstinline|printfn| function was used to align columns. Next section will discuss more elegant formatting options.
 
+\section{Integers and Reals}
+The set of integers and reals are infinitely large, and since all computers have limited resources, it is not possible to represent these sets in their entirety. The various integer and floating point types listed in Table~\ref{tab:primitiveTypes} are finite subset where the integer types have been reduced by limiting their ranges and the floating point types have been reduced by sampling the space of reals. An in-depth description of integer and floating point implementations can be found in Appendix~\ref{app:numbers}. The \keyword{int} and \keyword{float} are the most common types. 
+
+For integers the following arithmetic operators are defined: 
+\begin{description}
+\item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, unary integer negation operator.}]
+> let a = 5       
+- let b = -a;;
+
+val a : int = 5
+val b : int = -5
+\end{lstlisting}
+\item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|:] These are binary operators, where addition, subtraction and multiplication performs the usual operations, 
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer addition, subtraction, and multiplication operators.}]
+> let a = 7 + 3
+- let b = 7 - 3
+- let c = 7 * 3;;
+
+val a : int = 10
+val b : int = 4
+val c : int = 21
+\end{lstlisting}
+\item[\lstinline|op / op|, \lstinline|op \% op|:] These are binary operators, and division performs integer division, where the fractional part is discarded after division, and the \lstinline|\%| is the remainder operator, which calculates the remainder after integer division,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer division and remainder operators.}]
+> let a = 7 / 3
+- let b = 7 % 3;;
+
+val a : int = 2
+val b : int = 1
+\end{lstlisting}
+Together integer division and remainder is a lossless representation of the original number as,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, binary division and remainder is a lossless representation of an integer.}]
+> let x = 7
+- let whole = x / 3
+- let remainder = x % 3
+- let y = whole * 3 + remainder;;
+
+val x : int = 7
+val whole : int = 2
+val remainder : int = 1
+val y : int = 7
+\end{lstlisting}
+And we see that \lstinline|x| and \lstinline|y| is bound to the same value.
+\end{description}
+Integer exponentiation is not defined as an operator, but this is available the built-in function \lstinline|pown|, e.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, integer exponentiation function, and the irrelevant identifier.}]
+> pown 2 5;;
+val it : int = 32
+\end{lstlisting}
+which is equal to $2^5$. Note that when no let statement is used in conjunction with an expression then F\# automatically binds the result to the \idx{\lstinline{it}} identifier, i.e., the above is equal to
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, the equivalent to the irrelevant identifier.}]
+  > let it = pown 2 5;;
+
+val it : int = 32
+\end{lstlisting}
+Rumor has it, that the identifier \lstinline|it| is an abbreviation for 'irrelevant'.
+
+Performing arithmetic operations on \keyword{int} types requires extra care, since the result may cause \idx{overflow}, \idx{underflow}, and even exceptions, e.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the following example,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, adding integers may cause overflow.},label=overflow]
+> let a = 100y 
+- let b = 30y 
+- let c = a+b;;
+
+val a : sbyte = 100y
+val b : sbyte = 30y
+val c : sbyte = -126y
+\end{lstlisting}
+Here $100+30=130$, which is larger than the biggest \lstinline|sbyte|, and the result is an overflow. Similarly, we get an underflow, when the arithmetic result falls below the smallest value storable in an \lstinline|sbyte|,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, subtracting integers may cause underflow}]
+> let a = -100y  
+- let b = -30y  
+- let c = a+b;;
+
+val a : sbyte = -100y
+val b : sbyte = -30y
+val c : sbyte = 126y
+\end{lstlisting}
+Notice that neither overflow nor underflow error gave rise to an error message, which is why such bugs are difficult to find. 
+ Dividing any non-zero number with 0 is infinite, which is also outside the domain of any of the integer types, but in this case, F\# casts an\idx{exception},
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, integer division by zero causes an exception run-time error.}]
+> 3/0;; 
+System.DivideByZeroException: Attempted to divide by zero.
+  at <StartupCode$FSI_0007>.$FSI_0007.main@ () <0x6b78180 + 0x0000e> in <filename unknown>:0 
+  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&)
+  at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) <0x1a55ba0 + 0x000a1> in <filename unknown>:0 
+Stopped due to error
+\end{lstlisting}
+The output looks daunting at first sight, but the first and last line of the error message are the most important parts, which tells us what exception was cast and why the program stopped. The middle are technical details concerning which part of the program caused this, and can be ignored for the time being. Exceptions are a type of \idx{run-time error}, and are treated in Chapter~\ref{chap:exceptions}
+
+Integers can also be written in binary, octal, or hexadecimal format using the prefixes \lstinline|0b|, \lstinline|0o|, and \lstinline|0x|, e.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, integer types may be specified as binary, octal, and hexadecimal numbers.}]
+> let a = 0b1011
+- let b = 0o13
+- let c = 0xb;;
+
+val a : int = 11
+val b : int = 11
+val c : int = 11
+\end{lstlisting}
+For a description of binary representations see Appendix~\ref{sec:binary}. The overflow error in Listing~\ref{overflow} can be understood in terms of the binary representation of integers: In binary, $130=10000010_2$, and this binary pattern is interpreted differently as \lstinline{byte} and \lstinline{sbyte},
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
+> let a = 0b10000010uy
+- let b = 0b10000010y;;
+
+val a : byte = 130uy
+val b : sbyte = -126y
+\end{lstlisting}
+That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$ causes the left-most bit to be used, then this is wrongly interpreted as a negative number, when stored in an \lstinline{sbyte}.
+
+For binary arithmatic on integers, the following operators are available:
+\begin{description}
+\item[\texttt{op $<<<$ n}:] Bitwise left shift, shifts any integer bit pattern \lstinline|n| positions to the left insert 0's to right.
+\item[\texttt{op $>>>$ n}:] Bitwise left right, shifts any integer bit pattern \lstinline|n| positions to the right insert 0's to left.
+\item[\texttt{op1 \&\&\& op2}:] Bitwise 'and', returns the result of taking the boolean 'and' operator position-wise.
+\item[\texttt{op ||| op}:] Bitwise 'or', as 'and' but using the boolean 'or' operator
+\item[\texttt{op1 $\sim\sim\sim$ op1}:] Bitwise xor, which is returns the result of the boolean 'xor' operator defined by,
+  \begin{center}
+    \begin{tabular}{|l|l|l|}
+      a&b& a xor b\\
+      0 & 0 & 0\\
+      0 & 1 & 1\\
+      1 & 0 & 1\\
+      0 & 1 & 0\\
+    \end{tabular}
+  \end{center}
+position-wise. 
+\end{description}
+Unfortunately, there are no built-ind functions outputting integers on binary form, so to understand the output of the following program,
+\begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
+> let a = 0b11000011uy  
+- let b = a <<< 1
+- let c = a >>> 1
+- let d = ~~~a
+- let e = a ^^^0b11111111uy;;
+
+val a : byte = 195uy
+val b : byte = 134uy
+val c : byte = 97uy
+val d : byte = 60uy
+val e : byte = 60uy
+\end{lstlisting}
+we must consider the 8-bit binary form of the unsigned integers: $195 = 11000011_2$, $134 = 10000110_2$, $97 = 01100001_2$, and $60 = 00111100_2$, which agrees with the definitions. \jon{mention somewhere that comparison operators will be treated later.}
+
+For floating point numbers the following arithmetic operators are defined: 
+\begin{description}
+\item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, unary floating point negation operator.}]
+> let a = 5.0 
+- let b = -a;;
+
+val a : float = 5.0
+val b : float = -5.0
+\end{lstlisting}
+\item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|, \lstinline|op / op|:] These are binary operators, where addition, subtraction, multiplication, and division performs the usual operations, 
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point addition, subtraction, multiplication, and division operators.}]
+> let a = 7.0 + 3.0
+- let b = 7.0 - 3.0
+- let c = 7.0 * 3.0
+- let d = 7.0 / 3.0;;
+
+val a : float = 10.0
+val b : float = 4.0
+val c : float = 21.0
+val d : float = 2.333333333
+\end{lstlisting}
+\item[\lstinline|op \% op|:] The binary remainder operator, and division performs integer division, where the fractional part is discarded after division, and the \lstinline|\%| is the remainder operator, which calculates the remainder after integer division,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point division and remainder operators.}]
+> let a = 7.0 / 3.0
+- let b = 7.0 % 3.0;;
+
+val a : int = 2.0
+val b : int = 1.0
+\end{lstlisting}
+The remainder for floating point numbers can be fractional, but division, rounding, and remainder is still a lossless representation of the original number as,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point division, truncation, and remainder is a lossless representation of a number.}]
+> let x = 7.0
+- let division = x / 3.2
+- let whole = float (int (division + 0.5))
+- let remainder = x % 3.2
+- let y = whole * 3.2 + remainder;;
+
+val x : float = 7.0
+val division : float = 2.1875
+val whole : float = 2.0
+val remainder : float = 0.6
+val y : float = 7.0
+\end{lstlisting}
+And we see that \lstinline|x| and \lstinline|y| is bound to the same value.  
+\item[\texttt{op ** op}:] In spite of an unusual notation, the binary exponentiation operator performs the usual calculation,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point exponentiation.}]
+> let a = 2.0 ** 5.0;;
+
+val a : float = 32.0
+\end{lstlisting}
+which is equal to $2^5$.
+\end{description}
+
+Arithmetic using \lstinline|float| will not cause over- and underflow problems, since the IEEE 754 standard includes the special numbers $\pm\infty$ and NaN. E.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point numbers include infinity and Not-a-Number}]
+> let a = 1.0/0.0  
+- let b = 0.0/0.0;;
+
+val a : float = infinity
+val b : float = nan
+\end{lstlisting}
+However, the \lstinline|float| type has limite precision, since there is only a finite number of numbers that can be stored in a float. E.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point arithmatic has finite precision.}]
+> let a = 357.8      
+- let b = a+0.1      
+- let c = b+0.1      
+- let d = c - 358.0;;
+
+val a : float = 357.8
+val b : float = 357.9
+val c : float = 358.0
+val d : float = 5.684341886e-14
+\end{lstlisting}
+Hence, although \lstinline|c| appears to be correctly calculated, by the subtraction we see, that the value bound in \lstinline|c| is not exactly the same as \lstinline|358.0|, and the reason is that the neither \lstinline|357.8| nor \lstinline|0.1| are exactly representable as a \lstinline|float|, which is why the repeated addition accumulates a small representation error.
+
+F\# allows for assigning \idx{unit of measure} to \keyword{float}, \keyword{float32}, \keyword{decimal} and signed integer such as \keyword{int}.
+%
+\begin{lstlisting}[language=EBNF]
+"[<Measure>] type" unit-name [ "=" measure ]
+\end{lstlisting}
+and then use \lstinline[language=EBNF]|"<" unit-name ">"| as suffix for literals. E.g., defining units of measure 'm' and 's', then we can make calculations like,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point and integer numbers may be assigned units of measure.}]
+> [<Measure>] type m
+- [<Measure>] type s 
+- let a = 3<m/s^2>
+- let b = a * 10<s>
+- let c = 4 * b;;
+
+[<Measure>]
+type m
+[<Measure>]
+type s
+val a : int<m/s ^ 2> = 3
+val b : int<m/s> = 30
+val c : int<m/s> = 120
+\end{lstlisting}
+However, if we mixup units of measure under addition, then we get an error,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, units of measure adds an extra layer of types for syntax checking at compile time.}]
+> [<Measure>] type m 
+- [<Measure>] type s 
+- let a = 1<m>
+- let b = 1<s>
+- let c = a + b;;
+
+  let c = a + b;;
+  ------------^
+
+/Users/sporring/repositories/fsharpNotes/stdin(63,13): error FS0001: The unit of measure 's' does not match the unit of measure 'm'
+\end{lstlisting}
+Units of measure allow for \token{*}, \token{/}, and \token{^}\jon{Spec-4.0: this notation is inconsistent with \texttt{**} for float exponentiation.} for multiplication, division and exponentiation. Values with units can be casted to \idx{unit-less} values by casting, and back again by multiplication as,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, type casting units of measure.}]
+> [<Measure>] type m      
+- let a = 2<m>            
+- let b = int a           
+- let c = b * 1<m>;;
+
+[<Measure>]
+type m
+val a : int<m> = 2
+val b : int = 2
+val c : int<m> = 2
+\end{lstlisting}
+Compound symbols can be declared as,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, aggregated units of measure.}]
+> [<Measure>] type s         
+- [<Measure>] type m
+- [<Measure>] type kg
+- [<Measure>] type N = kg * m / s^2;;
+
+[<Measure>]
+type s
+[<Measure>]
+type m
+[<Measure>]
+type kg
+[<Measure>]
+type N = kg m/s ^ 2
+\end{lstlisting}
+For fans of the metric system there is the International System of Units, and these are built-in in \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols| and give in Table~\ref{tab:siUnits}.
+\begin{table}
+  \centering
+  \begin{tabularx}{0.75\linewidth}{|l|X|}
+    \hline
+    Unit & Description \\
+    \hline
+    \lstinline|A| & Ampere, unit of electric current.\\
+    \lstinline|Bq|&Becquerel, unit of radioactivity.\\
+    \lstinline|C|&Coulomb, unit of electric charge, amount of electricity.\\
+    \lstinline|cd|&Candela, unit of luminous intensity.\\
+    \lstinline|F|&Farad, unit of capacitance.\\
+    \lstinline|Gy|&Gray, unit of an absorbed dose of radiation.\\
+    \lstinline|H|&Henry, unit of inductance.\\
+    \lstinline|Hz|&Hertz, unit of frequency.\\
+    \lstinline|J|&Joule, unit of energy, work, amount of heat.\\
+    \lstinline|K|&Kelvin, unit of thermodynamic (absolute) temperature.\\
+    \lstinline|kat|&Katal, unit of catalytic activity.\\
+    \lstinline|kg|&Kilogram, unit of mass.\\
+    \lstinline|lm|&Lumen, unit of luminous flux.\\
+    \lstinline|lx|&Lux, unit of illuminance.\\
+    \lstinline|m|&Metre, unit of length.\\
+    \lstinline|mol|&Mole, unit of an amount of a substance.\\
+    \lstinline|N|&Newton, unit of force.\\
+    \lstinline|ohm|&Unitnames.o SI unit of electric resistance.\\
+    \lstinline|Pa|&Pascal, unit of pressure, stress.\\
+    \lstinline|s|&Second, unit of time.\\
+    \lstinline|S|&Siemens, unit of electric conductance.\\
+    \lstinline|Sv|&Sievert, unit of dose equivalent.\\
+    \lstinline|T|&Tesla, unit of magnetic flux density.\\
+    \lstinline|V|&Volt, unit of electric potential difference, electromotive force.\\
+    \lstinline|W|&Watt, unit of power, radiant flux.\\
+    \lstinline|Wb|&Weber, unit of magnetic flux.\\
+    \hline
+  \end{tabularx}
+  \caption{International System of Units.}
+  \label{tab:siUnits}
+\end{table}
+Hence, using the predefined unit of seconds, we may write,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, SI units of measure are built-in.}]
+> let a = 10.0<Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols.s>;;
+
+val a : float<Data.UnitSystems.SI.UnitSymbols.s> = 10.0
+\end{lstlisting}
+To make the use of these predefined symbols easier, we can import them into the present scope by the \idx{\keyword{open}} keyword,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, simpler syntax by importing, but beware of namespace polution.}]
+> open Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols;;
+> let a = 10.0<s>;;
+
+val a : float<s> = 10.0
+\end{lstlisting}
+The \keyword{open} keyword should be used with care, since now all the bindings in \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols| have been imported into the present scope, and since we most likely do not know, which bindings have been used by the programmers of \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols|, we do not know which identifiers to avoid, when using \keyword{let} statements. We have obtained, what is known as \idx{namespace pollution}. Read more about namespaces in Part~\ref{part:structured}.
+
+Using units of measure is advisable for calculations involving real-world values, since some semantical errors of arithmetic expressions may be discovered by checking the resulting unit of measure.
+
+\jon{add comparsion operators!}
+
 \section{Chars and Strings}
-\dots
+A character is a Unicode code point, see Appendix~\ref{sec:unicode} for a description of code points, and character literals enclosed in single quotation marks,\jon{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} }
+%
+ \begin{lstlisting}[language=EBNF]
+   char = "'" charOrEscape "'"
+\end{lstlisting}
+% 
+where \lstinline[language=EBNF]{charOrEscape} are code points or escape sequence starting with \textbackslash\ as illustrated in Table~\ref{tab:escapeChar}. Examples are \lstinline{'a'}, \lstinline{'_'}, \lstinline{'\n'}.
+\begin{table}
+  \centering
+  \begin{tabular}{|c|l|l|}
+    \hline
+    Character& Escape sequence & Description\\
+    \hline
+    BS &\lstinline|\b|& Backspace\\
+    LF &\lstinline|\n|&Newline\\
+    CF &\lstinline|\r|&Carriage return\\
+    HT &\lstinline|\t|&Horizontal tabulation\\
+    \textbackslash &\lstinline|\\|&Backslash\\
+     " &\lstinline|\"|&Quotation mark\\
+    ' &\lstinline|\'|&Apostrophe\\
+    BEL&\lstinline|\a|& Bell\\
+    FF&\lstinline|\f|&Form feed\\
+    VT &\lstinline|\v|&Vertical tabulation\\
+    &\lstinline|\uXXXX|, \lstinline|\UXXXXXXXX|, \lstinline|\DDD|&Unicode character\\
+    \hline
+  \end{tabular}
+  \caption{Escape characters. For the unicode characters 'X' are hexadecimal digits, while for tricode characters 'D' is a decimal character.}
+  \label{tab:escapeChar}
+\end{table}
+The trigraph \lstinline|\DDD| uses decimal specification for the first 256 unicode characters. The hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any unicode character.
+
+Character arithmatic is most often done by in integer space. A typical example is conversion of case, e.g., to convert the lowercase character 'z' to uppercase, we use the \idx{ASCIIbetical order} and add the difference between any Basic Latin Block letters in upper- and lowercase as \lstinline{integers} and cast back to \lstinline{char}, e.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, converting case by casting and integer arithmatic.}]
+> char (int 'z' - int 'a' + int 'A');; 
+val it : char = 'Z'
+\end{lstlisting}
+%
+
+A string is a sequence of characters enclosed in double quotation marks,\jon{Spec-4.0 p. 28-29: \texttt{simple-string-char} is undefined, \texttt{string-elem} is unused.}
+%
+ \begin{lstlisting}[language=EBNF]
+   string-expr = '"' { char | LF | SP }  '"'
+\end{lstlisting}
+% 
+Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. Newlines and following whitespaces are taken literal, but may be ignored by a preceding \textbackslash character, and strings literals may be \idx{verbatim} by preceding the string with '@', meaning that the escape sequences are not converted to their code point, e.g., 
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
+> let a = "abc
+- de"
+- let b = "abc\
+-   de"
+- let c = "abc\nde"
+- let d = "abcde"
+- let e = @"abc\nde";;
+
+val a : string = "abc
+de"
+val b : string = "abcde"
+val c : string = "abc
+de"
+val d : string = "abcde"
+val e : string = "abc\nde"
+\end{lstlisting}
+%
+The response is shown in double quotation marks, which are not part of the string. Verbatim literals containing double quotation marks are escaped with an extra double quotation mark, or the alternative tripple double quotation mark may be used, e.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, example of double quotation marks in verbatim string literals.}]
+> let a = @"This is a verbatim ""quote""."   
+- let b = """This is a verbatim "quote".""";;
+
+val a : string = "This is a verbatim "quote"."
+val b : string = "This is a verbatim "quote"."
+\end{lstlisting}
+%
+
+Operations on \lstinline{string} is quite rich. The most simple is concatenation using \token{+} token, e.g.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, example of string concatenation.}]
+> let a = "hello"      
+- let b = "world"      
+- let c = a + " " + b;;
+
+val a : string = "hello"
+val b : string = "world"
+val c : string = "hello world"
+\end{lstlisting}
+%
+Characters and strings cannot be concatenated, which is why the above example used the string of  a space \lstinline|" "| instead of the space character \lstinline|' '|. The characters of a string may be indexed as,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, example of string indexing.}]
+> let a = "abcdefg"
+- let b = a.[0]
+- let c = a.[3]
+- ;;
+
+val a : string = "abcdefg"
+val b : char = 'a'
+val c : char = 'd'
+\end{lstlisting}
+%
+The \idx{dot notation} is an example of Structured programming, where technically \lstinline|a| is an immutable \idx{object} of \idx{class} \lstinline|string|, and \lstinline|[]| is an object \idx{method}. For more on object, classes, and methods see Chapter~\ref{chap:oop}.  Notice, that the first character has index 0, and to get the last character in a string, we use the string's lenght property as,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, string length attribute and string indexing.}]
+> let a = "abcdefg"                                                                             
+- let l = a.Length                                                       
+- let first = a.[0]
+- let last = a.[l-1];;
+
+val a : string = "abcdefg"
+val l : int = 7
+val first : char = 'a'
+val last : char = 'g'
+\end{lstlisting}
+%
+Notice, since index counting starts at 0, and the string length is 7, then the index of the last character is 6. An alternative notation for indexing is to use the property \lstinline|Char|, and in the example \lstinline|a.[3]| is the same as \lstinline|a.Char 3|. The is a long list of built-in functions in \lstinline|System.String| for working with strings, some of which will be discussed in Chapter~\ref{sec:system.string}.
 
 \section{Mutable bindings}
 \label{sec:mutableValues}
-The \keyword{mutable} in \keyword{let} bindings means that the name may be rebound to a new value using the following syntax,
+The \keyword{mutable} in \keyword{let} bindings means that the identifier may be rebound to a new value using the following syntax,
+%
 \begin{lstlisting}[language=EBNF]
 ident "<-" expr
 \end{lstlisting}
-\idx{Mutable data} is synonymous with the term \idx{variable}. A variable an area in the computers working memory associated with a name and a type, and this area may be read from and written to during program execution. For example,
-\fs{mutableAssignReassing}{}
-Here a area in memory was denoted \texttt{x}, declared as type integer and assigned a default value.  Later, this value of of \texttt{x} was replaced with another integer and yet another integer. The operator '\token|<-|' is used to distinguish the statement from the mathematical concept of equality. A short-hand for the above is available as,
-\fs{mutableAssignReassingShort}{}
-where the assignment of the default value was skipped, and the type was inferred from the assignment operation. However, it's important to note, that when the variable is declared, then the '\token|=|' operator must be used, while later reassignments must use the '\token|<-|'  operator. Type mismatches will result in an error, 
-\fs{mutableAssignReassingTypeError}{}
+\idx{Mutable data} is synonymous with the term \idx{variable}. A variable is an area in the computers working memory associated with an identifier and a type, and this area may be read from and written to during program execution. For example,
+%
+\fs{mutableAssignReassingShort}{A variable is defined and later reassigned a new value.}
+%\fs{mutableAssignReassing}{}
+%
+Here a area in memory was denoted \texttt{x}, initially assigned the integer value 5, hence the type was inferred to be \lstinline|int|.  Later, this value of \texttt{x} was replaced with another integer using the \idx{\token{<-}} token. The \token{<-} token is used to distinguish the assignment from the comparison operator, i.e., if we by mistake had written,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, example of changing the content of a variable.}]
+> let mutable a = 0
+- a = 3;;
+
+val mutable a : int = 0
+val it : bool = false
+\end{lstlisting}
+%
+then we instead would have obtained the default assignment of the result of the comparision of the content of \lstinline|a| with the integer 3, which is false. However, it's important to note, that when the variable is initially defined, then the '\token|=|' operator must be used, while later reassignments must use the \token|<-|  operator. 
+
+Assignment type mismatches will result in an error, 
+%
+\fs{mutableAssignReassingTypeError}{Assignmetn type mismatching causes a compile time error.}
+%
+I.e., once the type of an identifier has been declared or infered, then it cannot be changed.
 
 A typical variable is a counter of type integer, and a typical use of counters is to increment them, i.e., erasing a new value to be one more that its previous value. For example,
-\fs{mutableAssignIncrement}{}
-An function that elegantly implements the incrementation operation may be constructed as,
-\fs{mutableAssignIncrementEncapsulation}{}
-\jon{Explain why this works!} Here the output of \texttt{incr} is an anonymous function, that takes no argument, increments the variable of \texttt{incr} and returns the new value of the counter. This construction is called \idx{encapsulation}, since the variable \texttt{counter} is hidden by the function \texttt{incr} from the user, i.e., the user need not be concerned with how the increment operator is implemented and the variable name used by \texttt{incr} does not clutter the scope where it is used.
-
-Variables cannot be returned from functions, that is,
-\fs{mutableAssignReturnValue}{}
-declares a function that has no arguments and returns the value 0, while the same for a variable is illegal,
-\fs{mutableAssignReturnVariable}{}
-There is a workaround for this by using \idx{reference cells} by the build-in function \texttt{ref} and operators \token|!| and \token|:=|,
-\fs{mutableAssignReturnRefCell}{}
-That is, the \texttt{ref} function creates a reference variable, the '\token|!|' and the '\token|:=|' operators reads and writes its value. Reference cells are in some language called pointers, and their use is strongly discouraged, since they may cause \idx{side-effects}, which is the effect that one function changes the state of another, such as the following example demonstrates,
-\fs{mutableAssignReturnSideEffect}{}
-In the example, the function \texttt{updateFactor} changes a variable in the scope of \texttt{multiplyWithFactor}, which is prone to errors, since the style of programming does not follow the usual assignment syntax. Better style of programming is,
-\fs{mutableAssignReturnWithoutSideEffect}{}
-Here there can be no doubt in \texttt{multiplyWithFactor} that the value of '\texttt{a}' is changing. Side-effects do have their use, but should in general be avoided at almost all costs, and in general it is advised to refrain from using ref cells.
-
+%
+\fs{mutableAssignIncrement}{Variable increment is a common use of variables.}
+%
+which is an example we will return to many times later in this text.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

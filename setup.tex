@@ -78,15 +78,11 @@
 \definecolor{light-gray}{gray}{0.95}
 
 \lstdefinelanguage{fsharp}{%
-  morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, % 
-    and, for, while, true, false, in, do, begin, end, fun, function, return, yield, try, %
-    mutable, if, then, else, cloud, async, static, use, abstract,
-    interface, inherit, finally, val, bool, int, byte, sbyte, int16, uin16, int32, uint32, int64, uint64, bigint, nativint, unativeint, float, double, single, float32, decimal, char, string, unit, var, from, select,
-    where, order, by, elif },
+  keywords={abstract, and, as, assert, base, begin, class, default, delegate, do, done, downcast, downto, elif, else, end, exception, extern, false, finally, for, fun, function, global, if, in, inherit, inline, interface, internal, lazy, let, match, member, module, mutable, namespace, new, null, of, open, or, override, private, public, rec, return, sig, static, struct, then, to, true, try, type, upcast, use, val, void, when, while, with, yield},
   otherkeywords={ let!, return!, do!, yield!, use!},
   keywordstyle=\color{keywordsColor},
   sensitive=true,
-  basicstyle=\ttfamily,
+  basicstyle=\ttfamily\small,
   breaklines=true,
   morecomment=[l][\color{commentsColor}]{///},
   morecomment=[l][\color{commentsColor}]{//},
@@ -108,7 +104,8 @@
   keywordstyle=\color{keywordsColor},
   % keywordstyle={[2]\color{alternateKeywordsColor}},
   sensitive=true,
-  basicstyle=\ttfamily, breaklines=true,
+  basicstyle=\ttfamily\small, 
+  breaklines=true,
   morecomment=[s][\color{commentsColor}]{{(*}{*)}},
   morestring=[b]",
   morestring=[b]',
@@ -123,7 +120,7 @@
   keywords={},
   morekeywords={},
   otherkeywords={},
-  basicstyle=\ttfamily, 
+  basicstyle=\ttfamily\small, 
   breaklines=true,
   %xleftmargin=\parindent,
   showstringspaces=false,
