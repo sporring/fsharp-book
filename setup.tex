@@ -141,20 +141,21 @@
   backgroundcolor=lightgray!10,
   roundcorner=5pt}
 
+\newcommand{\src}{src}
 \newcommand{\fs}[2]{
   %\begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
   \begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
-    \lstinputlisting[language=fsharp]{#1.fsx}
+    \lstinputlisting[language=fsharp]{\src/#1.fsx}
     \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
     %\cmdl\texttt{ fsharpi #1.fsx}
-    \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{#1.out}
+    \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{\src/#1.out}
   \end{mdframed}
 }
 \newcommand{\fse}[2]{
   % \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
   \begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
     \begin{minipage}{1\linewidth}
-      \lstinputlisting[language=fsharp,caption={#2},label=#1]{#1.fsx}
+      \lstinputlisting[language=fsharp,caption={#2},label=#1]{\src/#1.fsx}
     \end{minipage}
   \end{mdframed}
 }
