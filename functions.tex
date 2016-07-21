@@ -1,13 +1,11 @@
 \chapter{Functions and procedures}
 \label{chap:functions}
-
-to define a function, we use the syntax
-\begin{lstlisting}[language=ebnf]
-  "let" name arg { arg } "=" expr
+Function definition follows the same syntax as literal binding,
+%
+\begin{lstlisting}[language=EBNF]
+"let" ["rec"] ident valIdent {valIdent} [":" type] "=" expr ["in" expr]
+valident = ident | "(" ident ":" type ")"
 \end{lstlisting}
-where \lstinline|arg| is a list of argument names, and \lstinline|expr| is an expression. D
-
-\jon{Remember units of measure}
 
 or specify the type of the function at point of definition using the notation,
 \begin{lstlisting}[language=ebnf]
@@ -113,6 +111,9 @@ A \idx{procedure} is a generalisation of the concept of functions, and in contra
 \fse{mutableAssignReturnSideEffectStump}{}
 which also does not have a return value. Procedural thinking is useful for encapsulation, but is prone to side-effects and should be minimized by being replaced by functional thinking.
 
+\jon{Maybe explain the printf function, Spec-4.0 Section 6.3.16
+  'printf' Formats, but also max and min comparison functions and math
+  functions Section 18.2.2 and 18.2.4?}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

@@ -1,46 +1,75 @@
 \chapter{Numbers, Characters, and Strings}
-All programs rely on processing of data, and an essential property of data is its \idx{type}. F\# contains a number of built-in types, and it designed such that it is easy to define new types. The simplest types are called \idx{primitive types}, and a table of some of the most commonly used primitive types are shown in Table~\ref{tab:primitiveTypes}.
+All programs rely on processing of data, and an essential property of data is its \idx{type}. F\# contains a number of built-in types, and it designed such that it is easy to define new types. The simplest types are called \idx{primitive types}, and a table of some of the most commonly used primitive types are shown in Table~\ref{tab:primitiveTypes}\jon{Missing a few, see Spec-4.0 Chapter 3.8}.
 \begin{table}
   \centering
-  \begin{tabularx}{\textwidth}{|l|l|l|l|>{\raggedright\arraybackslash}X|}
+  \begin{tabularx}{\textwidth}{|l|l|>{\raggedright\arraybackslash}X|}
     \hline
-    Metatype & Type name & Suffix & Literal & Description\\
+    Metatype & Type name & Description\\
     \hline
-    Boolean & bool & none & true & Boolean values true or false \\
+    Boolean & bool & Boolean values true or false \\
     \hline
-    Integer & \textbf{int} & none or l & 3 & Integer values from -2,147,483,648 to 2,147,483,647 \\
-             &byte & uy  & 3uy &Integer values from 0 to 255\\
-             &sbyte & y & 3y &Integer values from -128 to 127\\
-             &int16 & s  & 3s &Integer values from -32768 to 32767\\
-             &uint16 & us & 3us &Integer values from 0 to 65535\\
-             &int32 & none or l  & 3 &Synonymous with int\\
-             &uint32 & u or ul  & 3u & Integer values from 0 to 4,294,967,295\\
-             &int64 & L  & 3L &Integer values from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807\\
-             &uint64 & UL  & 3UL &Integer values from 0 to 18,446,744,073,709,551,615\\
-             &bigint & I & 3I &Integer not limited to 64 bits\\
-             &nativeint & n & 3n &A native pointer as a signed integer\\
-             &unativeint & un  &3un &A native pointer as an unsigned integer\\
+    Integer & \textbf{int} & Integer values from -2,147,483,648 to 2,147,483,647 \\
+             & byte &Integer values from 0 to 255\\
+             & sbyte &Integer values from -128 to 127\\
+             & int8 &Synonymous with byte\\
+             & uint8 &Synonymous with sbyte\\
+             & int16 &Integer values from -32768 to 32767\\
+             & uint16 &Integer values from 0 to 65535\\
+             & int32 &Synonymous with int\\
+             & uint32 & Integer values from 0 to 4,294,967,295\\
+             & int64 &Integer values from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807\\
+             & uint64 &Integer values from 0 to 18,446,744,073,709,551,615\\
+             %& bignum &Integer not limited to 64 bits\\
+             & nativeint &A native pointer as a signed integer\\
+             & unativeint &A native pointer as an unsigned integer\\
     \hline
-    Real & \textbf{float} & none  & 3.0 & 64-bit IEEE 754 floating point value from $-\infty$ to $\infty$\\
-             & double &none & 3.0 & Synonymous with float\\
-             & single & F or f  & 3.0f &A 32-bit floating point type\\
-             &float32 & F or f  & 3.0f &Synonymous with single\\
-             &decimal &M or m & 3.0m &A floating point data type that has at least 28 significant digits\\
+    Real &\textbf{float} & 64-bit IEEE 754 floating point value from $-\infty$ to $\infty$\\
+             & double & Synonymous with float\\
+             & single &A 32-bit floating point type\\
+             & float32 &Synonymous with single\\
+             & decimal &A floating point data type that has at least 28 significant digits\\
     \hline
-    Character &\textbf{char} & none  & 'c' &Unicode character\\
-             &byte & B  & 'c'B & ASCII character\\
-             &\textbf{string} & none  & "abc" & Unicode sequence of characters\\
-             &byte[] & B  & "abc"B & Unicode sequence of characters\\
-             &string or byte[] & @  & @"\textbackslash n" & Verbatim string\\
+    Character &\textbf{char} &Unicode character\\
+             &\textbf{string} & Unicode sequence of characters\\
     \hline
-    None &\textbf{unit} &none & \texttt{()} & No value denoted\\
-             %&void &none  &  &Indicates no type or value\\
+    None &\textbf{unit} & No value denoted\\
+    \hline
+    Object &\textbf{obj} & An object\\
+    \hline
+    Exception &\textbf{exn} & An exception\\
     \hline
   \end{tabularx}
-  \caption{List of primitive types and the corresponding literal. The most commonly used types are highlighted in bold. Note that string verbatim uses a prefix instead of suffix notation. For at description of floating point numbers see Appendix~\ref{sec:floatingPoint} and for ASCII and Unicode characters see Appendix~\ref{sec:characterSets}.}
+  \caption{List of primitive types. The most commonly used types are highlighted in bold. For at description of integer see Appendix~\ref{sec:binary}, for floating point numbers see Appendix~\ref{sec:floatingPoint}, for ASCII and Unicode characters see Appendix~\ref{sec:characterSets}, for objects see Chapter~\ref{chap:oop}, and for exceptions see Chapter~\ref{chap:exceptions}.}
   \label{tab:primitiveTypes}
 \end{table}
-A \idx{literal} is a fixed value such as "3", and F\# supports \idx[literal type]{literal types} which are indicated by a suffix in most cases and as shown in the table.
+A \idx{literal} is a fixed value such as "3", and F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix og suffix as shown in the Table~\ref{tab:literalTypes}.\jon{define int, xint, float, Spec-4.0 Section 3.8.}
+\begin{table}
+  \centering
+  \begin{tabularx}{\linewidth}{|l|l|l|X|}
+    \hline
+    type & EBNF & Literal examples & Comment \\
+    \hline
+    \lstinline!int!, \lstinline!int32! & \lstinline[language=ebnf]!(int | xint) ["l"]!  & \lstinline!3! & \\
+    \lstinline!uint32! & \lstinline[language=ebnf]!(int | xint) ("u" | "ul")! & \lstinline!3u! & \\
+    \lstinline!byte!, \lstinline!uint8! & \lstinline[language=ebnf]!((int | xint) "uy") | (char "B")!  & \lstinline!3uy!  & \\
+    \lstinline!byte[]! & \lstinline[language=ebnf]!["@"] string "B"!  & \lstinline!"abc"B! and \lstinline!"@http:\\\\"B!  & \\
+    \lstinline!sbyte!, \lstinline!int8! & \lstinline[language=ebnf]!(int | xint) "y"! & \lstinline!3y!  & \\
+    \lstinline!int16! & \lstinline[language=ebnf]!(int | xint) "s"!  & \lstinline!3s!  & \\
+    \lstinline!uint16! & \lstinline[language=ebnf]!(int | xint) "us"! & \lstinline!3us!  & \\
+    \lstinline!int64! & \lstinline[language=ebnf]!(int | xint) "L"!  & \lstinline!3L!  & \\
+    \lstinline!uint64! & \lstinline[language=ebnf]!(int | xint) ("UL" | "uL")!  & \lstinline!3UL! and \lstinline!3uL!  & \\
+    \lstinline!bignum! & \lstinline[language=ebnf]!int "I"! & \lstinline!3I!  & \lstinline[language=ebnf]!int ("Q"|"R"|"Z"|"N"|"G")! not yet implemented in Mono.\\
+    \lstinline!nativeint! & \lstinline[language=ebnf]!(int | xint) "n"! & \lstinline!3n!  & \\
+    \lstinline!unativeint! & \lstinline[language=ebnf]!(int | xint) "un"!  & \lstinline!3un!  & \\
+    \lstinline!float!, \lstinline!double! & \lstinline[language=ebnf]!float | (xint "LF")!  & \lstinline!3.0!  & \\
+    \lstinline!single!, \lstinline!float32! & \lstinline[language=ebnf]!(float ("F" | "f")) | (xint "lf") !  & \lstinline!3.0f!  & \\
+    \lstinline!decimal! &\lstinline[language=ebnf]!(float | int) ("M" | "m")! & \lstinline!3.0m! and \lstinline!3m!  & \\
+    \lstinline!string! & \lstinline[language=ebnf]!["@"] string!  & \lstinline!"abc"! and \lstinline!"@http:\\\\"!  & \\
+    \hline
+  \end{tabularx}
+  \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix.}
+  \label{tab:literalTypes}
+\end{table}
 
 An identifier is bound to an expression by the syntax,
 %
@@ -51,7 +80,7 @@ An identifier is bound to an expression by the syntax,
 or alternatively
 %
 \begin{lstlisting}[language=EBNF]
-"let" ["mutable"] ident [":" type] "=" expr ["in" LF indent exp]
+"let" ["mutable"] ident [":" type] "=" expr ["in" newline indent exp]
 \end{lstlisting}
 \end{comment}
 That is, the \idx{\keyword{let}} keyword indicates that the following is a binding of an identifier with an expression, and that the type may be specified with the \idx{\token{:}} token. An identifier must start with a letter, but can be followed by zero or more of letters, digits, and a range of special characters. For characters in the Basic Latin Block, i.e., the first 128 code points alias ASCII characters, an ident is,
@@ -63,7 +92,18 @@ special-char = "_"
 ident = (letter | "_") {letter | digit | special-char}
 \end{lstlisting}
 %
-Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=EBNF]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=EBNF]{special-char = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=EBNF]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=EBNF]{special-char} category.  The binding may be mutable, which will be discussed in Section~\ref{sec:mutableValues}, and the binding may only be for the last expression as indicated by the \idx{\keyword{in}} keyword. The simplest example of an expression is a \idx{literal}, i.e., a constant such as the number 3. Examples of let statements with \idx{literals} are
+Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=EBNF]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=EBNF]{special-char = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=EBNF]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=EBNF]{special-char} category. An identifier must not be a keyword or a reserved-keyword, shown in Figure~\ref{fig:keywords} and~\ref{tab:reservedKeywords}.
+\begin{figure}
+  \mbox{\lstinline{abstract},} \mbox{\lstinline{and},} \mbox{\lstinline{as},} \mbox{\lstinline{assert},} \mbox{\lstinline{base},} \mbox{\lstinline{begin},} \mbox{\lstinline{class},} \mbox{\lstinline{default},} \mbox{\lstinline{delegate},} \mbox{\lstinline{do},} \mbox{\lstinline{done},} \mbox{\lstinline{downcast},} \mbox{\lstinline{downto},} \mbox{\lstinline{elif},} \mbox{\lstinline{else},} \mbox{\lstinline{end},} \mbox{\lstinline{exception},} \mbox{\lstinline{extern},} \mbox{\lstinline{false},} \mbox{\lstinline{finally},} \mbox{\lstinline{for},} \mbox{\lstinline{fun},} \mbox{\lstinline{function},} \mbox{\lstinline{global},} \mbox{\lstinline{if},} \mbox{\lstinline{in},} \mbox{\lstinline{inherit},} \mbox{\lstinline{inline},} \mbox{\lstinline{interface},} \mbox{\lstinline{internal},} \mbox{\lstinline{lazy},} \mbox{\lstinline{let},} \mbox{\lstinline{match},} \mbox{\lstinline{member},} \mbox{\lstinline{module},} \mbox{\lstinline{mutable},} \mbox{\lstinline{namespace},} \mbox{\lstinline{new},} \mbox{\lstinline{null},} \mbox{\lstinline{of},} \mbox{\lstinline{open},} \mbox{\lstinline{or},} \mbox{\lstinline{override},} \mbox{\lstinline{private},} \mbox{\lstinline{public},} \mbox{\lstinline{rec},} \mbox{\lstinline{return},} \mbox{\lstinline{sig},} \mbox{\lstinline{static},} \mbox{\lstinline{struct},} \mbox{\lstinline{then},} \mbox{\lstinline{to},} \mbox{\lstinline{true},} \mbox{\lstinline{try},} \mbox{\lstinline{type},} \mbox{\lstinline{upcast},} \mbox{\lstinline{use},} \mbox{\lstinline{val},} \mbox{\lstinline{void},} \mbox{\lstinline{when},} \mbox{\lstinline{while},} \mbox{\lstinline{with},} and \mbox{\lstinline{yield}.}
+  \caption{List of keywords in F\#.}
+  \label{fig:keywords}
+\end{figure}
+\begin{figure}
+  \mbox{\lstinline{atomic},} \mbox{\lstinline{break},} \mbox{\lstinline{checked},} \mbox{\lstinline{component},} \mbox{\lstinline{const},} \mbox{\lstinline{constraint},} \mbox{\lstinline{constructor},} \mbox{\lstinline{continue},} \mbox{\lstinline{eager},} \mbox{\lstinline{fixed},} \mbox{\lstinline{fori},} \mbox{\lstinline{functor},} \mbox{\lstinline{include},} \mbox{\lstinline{measure},} \mbox{\lstinline{method},} \mbox{\lstinline{mixin},} \mbox{\lstinline{object},} \mbox{\lstinline{parallel},} \mbox{\lstinline{params},} \mbox{\lstinline{process},} \mbox{\lstinline{protected},} \mbox{\lstinline{pure},} \mbox{\lstinline{recursive},} \mbox{\lstinline{sealed},} \mbox{\lstinline{tailcall},} \mbox{\lstinline{trait},} \mbox{\lstinline{virtual},} and \mbox{\lstinline{volatile}.}
+  \caption{List of reserved keywords for possible future use in F\#.}
+  \label{fig:reservedKeywords}
+\end{figure}
+The binding may be mutable, which will be discussed in Section~\ref{sec:mutableValues}, and the binding may only be for the last expression as indicated by the \idx{\keyword{in}} keyword. The simplest example of an expression is a \idx{literal}, i.e., a constant such as the number 3. Examples of let statements with \idx{literals} are
 %
 \begin{lstlisting}[language=fsharp,caption={fsharpi, binding identifiers and literals.}]
 > let a = 3 
@@ -499,14 +539,28 @@ val d : float = 5.684341886e-14
 \end{lstlisting}
 Hence, although \lstinline|c| appears to be correctly calculated, by the subtraction we see, that the value bound in \lstinline|c| is not exactly the same as \lstinline|358.0|, and the reason is that the neither \lstinline|357.8| nor \lstinline|0.1| are exactly representable as a \lstinline|float|, which is why the repeated addition accumulates a small representation error.
 
-F\# allows for assigning \idx{unit of measure} to \keyword{float}, \keyword{float32}, \keyword{decimal} and signed integer such as \keyword{int}.
+F\# allows for assigning \idx{unit of measure} to the following types,
+\begin{quote}
+  \mbox{\lstinline{sbyte},}
+  \mbox{\lstinline{int},}
+  \mbox{\lstinline{int16},}
+  \mbox{\lstinline{int32},}
+  \mbox{\lstinline{int64},}
+  \mbox{\lstinline{single},}
+  \mbox{\lstinline{float32},}
+  \mbox{\lstinline{float},} and
+  \mbox{\lstinline{decimal}.}
+\end{quote}
+by using the syntax,
 %
 \begin{lstlisting}[language=EBNF]
 "[<Measure>] type" unit-name [ "=" measure ]
 \end{lstlisting}
-and then use \lstinline[language=EBNF]|"<" unit-name ">"| as suffix for literals. E.g., defining units of measure 'm' and 's', then we can make calculations like,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point and integer numbers may be assigned units of measure.}]
+and then use \lstinline[language=EBNF]|"<" unit-name ">"| as suffix for literals. In Figure~\ref{fig:unitOfMeasureTypes}
+E.g., defining unit of measure 'm' and 's', then we can make calculations like,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point and integer numbers may be assigned unit of measures.}]
 > [<Measure>] type m
 - [<Measure>] type s 
 - let a = 3<m/s^2>
@@ -521,9 +575,9 @@ val a : int<m/s ^ 2> = 3
 val b : int<m/s> = 30
 val c : int<m/s> = 120
 \end{lstlisting}
-However, if we mixup units of measure under addition, then we get an error,
+However, if we mixup unit of measures under addition, then we get an error,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, units of measure adds an extra layer of types for syntax checking at compile time.}]
+\begin{lstlisting}[language=fsharp,caption={fsharpi, unit of measures adds an extra layer of types for syntax checking at compile time.}]
 > [<Measure>] type m 
 - [<Measure>] type s 
 - let a = 1<m>
@@ -535,9 +589,9 @@ However, if we mixup units of measure under addition, then we get an error,
 
 /Users/sporring/repositories/fsharpNotes/stdin(63,13): error FS0001: The unit of measure 's' does not match the unit of measure 'm'
 \end{lstlisting}
-Units of measure allow for \token{*}, \token{/}, and \token{^}\jon{Spec-4.0: this notation is inconsistent with \texttt{**} for float exponentiation.} for multiplication, division and exponentiation. Values with units can be casted to \idx{unit-less} values by casting, and back again by multiplication as,
+Unit of measures allow for \token{*}, \token{/}, and \token{^}\jon{Spec-4.0: this notation is inconsistent with \texttt{**} for float exponentiation.} for multiplication, division and exponentiation. Values with units can be casted to \idx{unit-less} values by casting, and back again by multiplication as,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, type casting units of measure.}]
+\begin{lstlisting}[language=fsharp,caption={fsharpi, type casting unit of measures.}]
 > [<Measure>] type m      
 - let a = 2<m>            
 - let b = int a           
@@ -551,7 +605,7 @@ val c : int<m> = 2
 \end{lstlisting}
 Compound symbols can be declared as,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, aggregated units of measure.}]
+\begin{lstlisting}[language=fsharp,caption={fsharpi, aggregated unit of measures.}]
 > [<Measure>] type s         
 - [<Measure>] type m
 - [<Measure>] type kg
@@ -606,7 +660,7 @@ For fans of the metric system there is the International System of Units, and th
 \end{table}
 Hence, using the predefined unit of seconds, we may write,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, SI units of measure are built-in.}]
+\begin{lstlisting}[language=fsharp,caption={fsharpi, SI unit of measures are built-in.}]
 > let a = 10.0<Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols.s>;;
 
 val a : float<Data.UnitSystems.SI.UnitSymbols.s> = 10.0
@@ -621,7 +675,7 @@ val a : float<s> = 10.0
 \end{lstlisting}
 The \keyword{open} keyword should be used with care, since now all the bindings in \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols| have been imported into the present scope, and since we most likely do not know, which bindings have been used by the programmers of \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols|, we do not know which identifiers to avoid, when using \keyword{let} statements. We have obtained, what is known as \idx{namespace pollution}. Read more about namespaces in Part~\ref{part:structured}.
 
-Using units of measure is advisable for calculations involving real-world values, since some semantical errors of arithmetic expressions may be discovered by checking the resulting unit of measure.
+Using unit of measures is advisable for calculations involving real-world values, since some semantical errors of arithmetic expressions may be discovered by checking the resulting unit of measure.
 
 \jon{add comparsion operators!}
 
@@ -779,6 +833,10 @@ A typical variable is a counter of type integer, and a typical use of counters i
 %
 which is an example we will return to many times later in this text.
 
+\jon{Somewhere I should talk about whitespaces and newlines Spec-4.0
+  Chapter 3.1}
+
+\jon{Somewhere I should possibly talk about Lightweight Syntax, Spec-4.0 Chapter 15.1}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
