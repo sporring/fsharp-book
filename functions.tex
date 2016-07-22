@@ -1,4 +1,100 @@
-\chapter{Functions and procedures}
+\chapter{Identifiers, functions, and variables}
+\label{chap:let}
+An identifier is bound to an expression by the syntax,
+%
+\begin{lstlisting}[language=EBNF]
+"let" [ "mutable" ] ident [":" type] "=" expr ["in" expr]
+\end{lstlisting}
+\begin{comment}
+or alternatively
+%
+\begin{lstlisting}[language=EBNF]
+"let" ["mutable"] ident [":" type] "=" expr ["in" newline indent exp]
+\end{lstlisting}
+\end{comment}
+That is, the \idx{\keyword{let}} keyword indicates that the following is a binding of an identifier with an expression, and that the type may be specified with the \idx{\token{:}} token. An identifier must start with a letter, but can be followed by zero or more of letters, digits, and a range of special characters. For characters in the Basic Latin Block, i.e., the first 128 code points alias ASCII characters, an ident is,
+%
+\begin{lstlisting}[language=EBNF]
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+letter = "A" | "B" | ... |  "Z" | "a" | "b" | ... | "z"
+special-char = "_"
+ident = (letter | "_") {letter | digit | special-char}
+\end{lstlisting}
+%
+Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=EBNF]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=EBNF]{special-char = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=EBNF]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=EBNF]{special-char} category. An identifier must not be a keyword or a reserved-keyword, shown in Figure~\ref{fig:keywords} and~\ref{tab:reservedKeywords}.
+\begin{figure}
+  \mbox{\lstinline{abstract},} \mbox{\lstinline{and},} \mbox{\lstinline{as},} \mbox{\lstinline{assert},} \mbox{\lstinline{base},} \mbox{\lstinline{begin},} \mbox{\lstinline{class},} \mbox{\lstinline{default},} \mbox{\lstinline{delegate},} \mbox{\lstinline{do},} \mbox{\lstinline{done},} \mbox{\lstinline{downcast},} \mbox{\lstinline{downto},} \mbox{\lstinline{elif},} \mbox{\lstinline{else},} \mbox{\lstinline{end},} \mbox{\lstinline{exception},} \mbox{\lstinline{extern},} \mbox{\lstinline{false},} \mbox{\lstinline{finally},} \mbox{\lstinline{for},} \mbox{\lstinline{fun},} \mbox{\lstinline{function},} \mbox{\lstinline{global},} \mbox{\lstinline{if},} \mbox{\lstinline{in},} \mbox{\lstinline{inherit},} \mbox{\lstinline{inline},} \mbox{\lstinline{interface},} \mbox{\lstinline{internal},} \mbox{\lstinline{lazy},} \mbox{\lstinline{let},} \mbox{\lstinline{match},} \mbox{\lstinline{member},} \mbox{\lstinline{module},} \mbox{\lstinline{mutable},} \mbox{\lstinline{namespace},} \mbox{\lstinline{new},} \mbox{\lstinline{null},} \mbox{\lstinline{of},} \mbox{\lstinline{open},} \mbox{\lstinline{or},} \mbox{\lstinline{override},} \mbox{\lstinline{private},} \mbox{\lstinline{public},} \mbox{\lstinline{rec},} \mbox{\lstinline{return},} \mbox{\lstinline{sig},} \mbox{\lstinline{static},} \mbox{\lstinline{struct},} \mbox{\lstinline{then},} \mbox{\lstinline{to},} \mbox{\lstinline{true},} \mbox{\lstinline{try},} \mbox{\lstinline{type},} \mbox{\lstinline{upcast},} \mbox{\lstinline{use},} \mbox{\lstinline{val},} \mbox{\lstinline{void},} \mbox{\lstinline{when},} \mbox{\lstinline{while},} \mbox{\lstinline{with},} and \mbox{\lstinline{yield}.}
+  \caption{List of keywords in F\#.}
+  \label{fig:keywords}
+\end{figure}
+\begin{figure}
+  \mbox{\lstinline{atomic},} \mbox{\lstinline{break},} \mbox{\lstinline{checked},} \mbox{\lstinline{component},} \mbox{\lstinline{const},} \mbox{\lstinline{constraint},} \mbox{\lstinline{constructor},} \mbox{\lstinline{continue},} \mbox{\lstinline{eager},} \mbox{\lstinline{fixed},} \mbox{\lstinline{fori},} \mbox{\lstinline{functor},} \mbox{\lstinline{include},} \mbox{\lstinline{measure},} \mbox{\lstinline{method},} \mbox{\lstinline{mixin},} \mbox{\lstinline{object},} \mbox{\lstinline{parallel},} \mbox{\lstinline{params},} \mbox{\lstinline{process},} \mbox{\lstinline{protected},} \mbox{\lstinline{pure},} \mbox{\lstinline{recursive},} \mbox{\lstinline{sealed},} \mbox{\lstinline{tailcall},} \mbox{\lstinline{trait},} \mbox{\lstinline{virtual},} and \mbox{\lstinline{volatile}.}
+  \caption{List of reserved keywords for possible future use in F\#.}
+  \label{fig:reservedKeywords}
+\end{figure}
+The binding may be mutable, which will be discussed in Section~\ref{sec:mutableValues}, and the binding may only be for the last expression as indicated by the \idx{\keyword{in}} keyword. The simplest example of an expression is a \idx{literal}, i.e., a constant such as the number 3. 
+
+\section{Values (Constant bindings)}
+When specifying the type, the type and the literal form must match, i.e., mixing types and literals gives an error,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, binding error due to type mismatch.}]
+  > let a : float = 3;;
+
+  let a : float = 3;;
+  ----------------^
+
+/Users/sporring/repositories/fsharpNotes/stdin(50,17): error FS0001: This expression was expected to have type
+    float    
+but here has type
+    int    
+\end{lstlisting}
+since the left-hand-side is an identifier of type float, while the right-hand-side is a literal of type integer.
+
+\section{Variables (Mutable bindings)}
+\label{sec:mutableValues}
+The \keyword{mutable} in \keyword{let} bindings means that the identifier may be rebound to a new value using the following syntax,
+%
+\begin{lstlisting}[language=EBNF]
+ident "<-" expr
+\end{lstlisting}
+\idx{Mutable data} is synonymous with the term \idx{variable}. A variable is an area in the computers working memory associated with an identifier and a type, and this area may be read from and written to during program execution. For example,
+%
+\fs{mutableAssignReassingShort}{A variable is defined and later reassigned a new value.}
+%\fs{mutableAssignReassing}{}
+%
+Here a area in memory was denoted \texttt{x}, initially assigned the integer value 5, hence the type was inferred to be \lstinline|int|.  Later, this value of \texttt{x} was replaced with another integer using the \idx{\token{<-}} token. The \token{<-} token is used to distinguish the assignment from the comparison operator, i.e., if we by mistake had written,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, example of changing the content of a variable.}]
+> let mutable a = 0
+- a = 3;;
+
+val mutable a : int = 0
+val it : bool = false
+\end{lstlisting}
+%
+then we instead would have obtained the default assignment of the result of the comparision of the content of \lstinline|a| with the integer 3, which is false. However, it's important to note, that when the variable is initially defined, then the '\token|=|' operator must be used, while later reassignments must use the \token|<-|  operator. 
+
+Assignment type mismatches will result in an error, 
+%
+\fs{mutableAssignReassingTypeError}{Assignmetn type mismatching causes a compile time error.}
+%
+I.e., once the type of an identifier has been declared or infered, then it cannot be changed.
+
+A typical variable is a counter of type integer, and a typical use of counters is to increment them, i.e., erasing a new value to be one more that its previous value. For example,
+%
+\fs{mutableAssignIncrement}{Variable increment is a common use of variables.}
+%
+which is an example we will return to many times later in this text.
+
+\jon{Somewhere I should talk about whitespaces and newlines Spec-4.0
+  Chapter 3.1}
+
+\jon{Somewhere I should possibly talk about Lightweight Syntax, Spec-4.0 Chapter 15.1}
+
+\dots
+
+
+\chapter{Functions and procedures (function bindings)}
 \label{chap:functions}
 Function definition follows the same syntax as literal binding,
 %

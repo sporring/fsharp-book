@@ -1,5 +1,23 @@
-\chapter{Numbers, Characters, and Strings}
-All programs rely on processing of data, and an essential property of data is its \idx{type}. F\# contains a number of built-in types, and it designed such that it is easy to define new types. The simplest types are called \idx{primitive types}, and a table of some of the most commonly used primitive types are shown in Table~\ref{tab:primitiveTypes}\jon{Missing a few, see Spec-4.0 Chapter 3.8}.
+\chapter{Constants, tuples, and types}
+%\chapter{Numbers, Characters, and Strings}
+All programs rely on processing of data, and an essential property of data is its \idx{type}. A \idx{literal} is a fixed value such as "3", and if we type the number \lstinline!3! in an interactive session at the input prompt, then F\# responds as follows,
+\begin{lstlisting}[language=fsharp,caption={fsharpi, typing the number 3.}]
+> 3;;    
+val it : int = 3
+\end{lstlisting}
+What this means is that F\# has inferred the type to be \idx{lstinline!int!} and bound it to the identifier \idx{\lstinline{it}}. Rumor has it, that the identifier \lstinline|it| is an abbreviation for 'irrelevant'. For more on binding and identifiers see Chapter~\ref{chap:let}. Types matter, since the operations that can be performed on integers are quite different from those that can be performed on, e.g., strings. I.e.,
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, many representations of the number 3 but using different types.}]
+> 3;;    
+val it : int = 3
+> 3.0;;
+val it : float = 3.0
+> '3';;
+val it : char = '3'
+> "3";;
+val it : string = "3"
+\end{lstlisting}
+Each literal represent the number 3, but their types are different, and hence they are quite different values. The types \lstinline!int! for integer numbers, \lstinline!float! for floating point numbers, \lstinline!char! for characters, and \lstinline!string! for strings of characters are the most common types of literals. A table of all predefined types is given in Table~\ref{tab:primitiveTypes}.\jon{We should start by giving examples of int, xint, float, char, string literals without literal types. Then then binding to identifiers incl. the it identdifier.}
 \begin{table}
   \centering
   \begin{tabularx}{\textwidth}{|l|l|>{\raggedright\arraybackslash}X|}
@@ -39,10 +57,112 @@ All programs rely on processing of data, and an essential property of data is it
     Exception &\textbf{exn} & An exception\\
     \hline
   \end{tabularx}
-  \caption{List of primitive types. The most commonly used types are highlighted in bold. For at description of integer see Appendix~\ref{sec:binary}, for floating point numbers see Appendix~\ref{sec:floatingPoint}, for ASCII and Unicode characters see Appendix~\ref{sec:characterSets}, for objects see Chapter~\ref{chap:oop}, and for exceptions see Chapter~\ref{chap:exceptions}.}
+  \caption{List of basic types. The most commonly used types are highlighted in bold. For at description of integer see Appendix~\ref{sec:binary}, for floating point numbers see Appendix~\ref{sec:floatingPoint}, for ASCII and Unicode characters see Appendix~\ref{sec:characterSets}, for objects see Chapter~\ref{chap:oop}, and for exceptions see Chapter~\ref{chap:exceptions}.}
   \label{tab:primitiveTypes}
 \end{table}
-A \idx{literal} is a fixed value such as "3", and F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix og suffix as shown in the Table~\ref{tab:literalTypes}.\jon{define int, xint, float, Spec-4.0 Section 3.8.}
+Besides these built-in types, F\# is designed such that it is easy to define new types. 
+
+Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base} 10 means that for a number consisting of a sequence of digits separated by a \idx{decimal point}, where each \idx{digit} can have values $d \in \{0,1,2,\ldots,9\}$, and the value, which each digit represents is proportional to its position. As an example \lstinline!35.7! is a decimal number, whose value is $3\cdot 10^1+5\cdot 10^0+7\cdot 10^{-1}$. In F\# a decimal number is called a \idx{floating point number} and in this text we use \idx{Extended Backus-Naur Form} (\idx{EBNF}) to describe the grammar of F\#, the decimal number just described is given as,
+%
+\begin{lstlisting}[language=EBNF]
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+int = digit {digit}
+float = int "." {digit}
+\end{lstlisting}
+%
+meaning that a digit is either "0'' or "1" or \dots or "9'', an \lstinline!int! is 1 or more digits, and a \lstinline!float! is 1 or more digits, a dot and 0 or more digits. There is no space between the digits and between digits and the dot. So \lstinline!3!, \lstinline!049! are examples of integers, \lstinline!34.89! \lstinline!3.! are examples of floats, while \lstinline!.5! is neither.  Floating point numbers may alternatively be given using exponential notation, such as \lstinline!3.5e-4!, which means the number $3.5 10^{-4} = 0.0035$, so to describe this in EBNF we write
+%
+\begin{lstlisting}[language=EBNF]
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+int = digit {digit}
+simpleFloat = int "." {digit}
+expFloat = int ["." {digit}] ("e" | "E" ) ["+" | "-"] int
+float = simpleFloat | expFloat
+\end{lstlisting}
+%
+
+The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. A \idx{binary} number consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^1=5.25$. Binary numbers are closely related to octal and hexadecimal numbers, where octals uses 8 as basis and can be written in binary using 3 bits, while hexadecimal numbers uses 16 as basis and can be written in binary using 4 bits. Octals and hexadecimals thus conviniently serve as shorthand for the much longer binary representation. F\# has a syntax for wrting integers on binary, octal, decimal, and hexadecimal numbers as,
+%
+\begin{lstlisting}[language=EBNF]
+bDigit = "0" | "1"
+oDigit  = bDigit | "2" | "3" | "4" | "5" | "6" | "7"
+digit = oDigit | "8" | "9"
+xDigit  = 
+  digit 
+  | "A" | "B" | "C" | "D" | "E" | "F" 
+  | "a" | "b" | "c" | "d" | "e" | "f" 
+int = digit {digit}
+bitInt = "0" ("b" | "B") bDigit {bDigit}
+octInt = "0" ("o" | "O") oDigit {oDigit}
+hexInt = "0" ("x" | "X") xDigit {xDigit}
+xint = bitInt | octInt | hexInt
+\end{lstlisting}
+%
+For example \lstinline!367! is an \lstinline[language=EBNF]!int!, \lstinline!0b101101111!, \lstinline!0o557!, and \lstinline!0x16f! are examples of an \lstinline[language=EBNF]!xint! each representing the number 367, while \lstinline!0b12! are \lstinline!ff! neither an \lstinline[language=EBNF]!int! nor an \lstinline[language=EBNF]!xint!.
+
+A character is a Unicode code point, see Appendix~\ref{sec:unicode} for a description of code points, and character literals enclosed in single quotation marks,\jon{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} }
+%
+\begin{lstlisting}[language=EBNF]
+escapeCodePoint = 
+  "\u" xDigit xDigit xDigit xDigit
+  | "\U" xDigit xDigit xDigit xDigit xDigit xDigit xDigit xDigit
+  | "\" digit digit digit 
+escapeChar = 
+  "\" ("b" | "n" | "r" | "t" | "\" | '"' | "'" | "a" | "f" | "v")
+  escapeCodePoint
+char = "'" codePoint | escapeChar "'"
+\end{lstlisting}
+% 
+where \lstinline[language=EBNF]!codePoint! is a UTF8 encoding of a char. The escape characters \lstinline[language=EBNF]{escapeChar} are code points or escape sequence starting with \textbackslash\ as illustrated in Table~\ref{tab:escapeChar}, and the trigraph \lstinline|\DDD| uses decimal specification for the first 256 unicode characters. The hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any unicode character.
+\begin{table}
+  \centering
+  \begin{tabular}{|c|l|l|}
+    \hline
+    Character& Escape sequence & Description\\
+    \hline
+    BS &\lstinline|\b|& Backspace\\
+    LF &\lstinline|\n|&Newline\\
+    CF &\lstinline|\r|&Carriage return\\
+    HT &\lstinline|\t|&Horizontal tabulation\\
+    \textbackslash &\lstinline|\\|&Backslash\\
+     " &\lstinline|\"|&Quotation mark\\
+    ' &\lstinline|\'|&Apostrophe\\
+    BEL&\lstinline|\a|& Bell\\
+    FF&\lstinline|\f|&Form feed\\
+    VT &\lstinline|\v|&Vertical tabulation\\
+    &\lstinline|\uXXXX|, \lstinline|\UXXXXXXXX|, \lstinline|\DDD|&Unicode character\\
+    \hline
+  \end{tabular}
+  \caption{Escape characters. For the unicode characters 'X' are hexadecimal digits, while for tricode characters 'D' is a decimal character.}
+  \label{tab:escapeChar}
+\end{table}
+Examples of a \lstinline[language=ebnf]!char! are \lstinline{'a'}, \lstinline{'_'}, \lstinline{'\n'}, and \lstinline{'\065'}.
+
+A string is a sequence of characters enclosed in double quotation marks,\jon{Spec-4.0 p. 28-29: \texttt{simple-string-char} is undefined, \texttt{string-elem} is unused.}
+%
+ \begin{lstlisting}[language=EBNF]
+   string-expr = '"' { char | LF | SP }  '"'
+\end{lstlisting}
+% 
+Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. Newlines and following whitespaces are taken literally, but may be ignored by a preceding \textbackslash character. Further examples of strings are,
+\begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
+> "abcde";;
+val it : string = "abcde"
+> "abc
+- de";;
+val it : string = "abc
+de"
+> "abc\
+-  de";;
+val it : string = "abcde"
+> "abc\nde";;
+val it : string = "abc
+de"
+\end{lstlisting}
+%
+The response is shown in double quotation marks, which are not part of the string. 
+
+F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix og suffix as shown in the Table~\ref{tab:literalTypes}.
 \begin{table}
   \centering
   \begin{tabularx}{\linewidth}{|l|l|l|X|}
@@ -64,133 +184,89 @@ A \idx{literal} is a fixed value such as "3", and F\# supports \idx[literal type
     \lstinline!float!, \lstinline!double! & \lstinline[language=ebnf]!float | (xint "LF")!  & \lstinline!3.0!  & \\
     \lstinline!single!, \lstinline!float32! & \lstinline[language=ebnf]!(float ("F" | "f")) | (xint "lf") !  & \lstinline!3.0f!  & \\
     \lstinline!decimal! &\lstinline[language=ebnf]!(float | int) ("M" | "m")! & \lstinline!3.0m! and \lstinline!3m!  & \\
-    \lstinline!string! & \lstinline[language=ebnf]!["@"] string!  & \lstinline!"abc"! and \lstinline!"@http:\\\\"!  & \\
+    \lstinline!string! & \lstinline[language=ebnf]!["@"] string!  & \lstinline!"abc"! and \lstinline!@"http:\\\\"!  & \\
     \hline
   \end{tabularx}
   \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix.}
   \label{tab:literalTypes}
 \end{table}
-
-An identifier is bound to an expression by the syntax,
-%
-\begin{lstlisting}[language=EBNF]
-"let" [ "mutable" ] ident [":" type] "=" expr ["in" expr]
-\end{lstlisting}
-\begin{comment}
-or alternatively
-%
-\begin{lstlisting}[language=EBNF]
-"let" ["mutable"] ident [":" type] "=" expr ["in" newline indent exp]
-\end{lstlisting}
-\end{comment}
-That is, the \idx{\keyword{let}} keyword indicates that the following is a binding of an identifier with an expression, and that the type may be specified with the \idx{\token{:}} token. An identifier must start with a letter, but can be followed by zero or more of letters, digits, and a range of special characters. For characters in the Basic Latin Block, i.e., the first 128 code points alias ASCII characters, an ident is,
-%
-\begin{lstlisting}[language=EBNF]
-digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-letter = "A" | "B" | ... |  "Z" | "a" | "b" | ... | "z"
-special-char = "_"
-ident = (letter | "_") {letter | digit | special-char}
+Examples are,
+\begin{lstlisting}[language=fsharp,caption={fsharpi, Named and implied literals.}]
+> 3;;
+val it : int = 3
+> 4u;; 
+val it : uint32 = 4u
+> 5.6;;
+val it : float = 5.6
+> 7.9f;;
+val it : float32 = 7.9000001f
+> 'A';;
+val it : char = 'A'
+> 'B'B;;
+val it : byte = 66uy
+> "ABC";;
+val it : string = "ABC"
 \end{lstlisting}
 %
-Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=EBNF]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=EBNF]{special-char = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=EBNF]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=EBNF]{special-char} category. An identifier must not be a keyword or a reserved-keyword, shown in Figure~\ref{fig:keywords} and~\ref{tab:reservedKeywords}.
-\begin{figure}
-  \mbox{\lstinline{abstract},} \mbox{\lstinline{and},} \mbox{\lstinline{as},} \mbox{\lstinline{assert},} \mbox{\lstinline{base},} \mbox{\lstinline{begin},} \mbox{\lstinline{class},} \mbox{\lstinline{default},} \mbox{\lstinline{delegate},} \mbox{\lstinline{do},} \mbox{\lstinline{done},} \mbox{\lstinline{downcast},} \mbox{\lstinline{downto},} \mbox{\lstinline{elif},} \mbox{\lstinline{else},} \mbox{\lstinline{end},} \mbox{\lstinline{exception},} \mbox{\lstinline{extern},} \mbox{\lstinline{false},} \mbox{\lstinline{finally},} \mbox{\lstinline{for},} \mbox{\lstinline{fun},} \mbox{\lstinline{function},} \mbox{\lstinline{global},} \mbox{\lstinline{if},} \mbox{\lstinline{in},} \mbox{\lstinline{inherit},} \mbox{\lstinline{inline},} \mbox{\lstinline{interface},} \mbox{\lstinline{internal},} \mbox{\lstinline{lazy},} \mbox{\lstinline{let},} \mbox{\lstinline{match},} \mbox{\lstinline{member},} \mbox{\lstinline{module},} \mbox{\lstinline{mutable},} \mbox{\lstinline{namespace},} \mbox{\lstinline{new},} \mbox{\lstinline{null},} \mbox{\lstinline{of},} \mbox{\lstinline{open},} \mbox{\lstinline{or},} \mbox{\lstinline{override},} \mbox{\lstinline{private},} \mbox{\lstinline{public},} \mbox{\lstinline{rec},} \mbox{\lstinline{return},} \mbox{\lstinline{sig},} \mbox{\lstinline{static},} \mbox{\lstinline{struct},} \mbox{\lstinline{then},} \mbox{\lstinline{to},} \mbox{\lstinline{true},} \mbox{\lstinline{try},} \mbox{\lstinline{type},} \mbox{\lstinline{upcast},} \mbox{\lstinline{use},} \mbox{\lstinline{val},} \mbox{\lstinline{void},} \mbox{\lstinline{when},} \mbox{\lstinline{while},} \mbox{\lstinline{with},} and \mbox{\lstinline{yield}.}
-  \caption{List of keywords in F\#.}
-  \label{fig:keywords}
-\end{figure}
-\begin{figure}
-  \mbox{\lstinline{atomic},} \mbox{\lstinline{break},} \mbox{\lstinline{checked},} \mbox{\lstinline{component},} \mbox{\lstinline{const},} \mbox{\lstinline{constraint},} \mbox{\lstinline{constructor},} \mbox{\lstinline{continue},} \mbox{\lstinline{eager},} \mbox{\lstinline{fixed},} \mbox{\lstinline{fori},} \mbox{\lstinline{functor},} \mbox{\lstinline{include},} \mbox{\lstinline{measure},} \mbox{\lstinline{method},} \mbox{\lstinline{mixin},} \mbox{\lstinline{object},} \mbox{\lstinline{parallel},} \mbox{\lstinline{params},} \mbox{\lstinline{process},} \mbox{\lstinline{protected},} \mbox{\lstinline{pure},} \mbox{\lstinline{recursive},} \mbox{\lstinline{sealed},} \mbox{\lstinline{tailcall},} \mbox{\lstinline{trait},} \mbox{\lstinline{virtual},} and \mbox{\lstinline{volatile}.}
-  \caption{List of reserved keywords for possible future use in F\#.}
-  \label{fig:reservedKeywords}
-\end{figure}
-The binding may be mutable, which will be discussed in Section~\ref{sec:mutableValues}, and the binding may only be for the last expression as indicated by the \idx{\keyword{in}} keyword. The simplest example of an expression is a \idx{literal}, i.e., a constant such as the number 3. Examples of let statements with \idx{literals} are
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, binding identifiers and literals.}]
-> let a = 3 
-- let b = 4u 
-- let c = 5.6 
-- let d = 7.9f 
-- let e = 'A'
-- let f = 'B'B 
-- let g = "ABC" 
-- let h = ();;
-
-val a : int = 3
-val b : uint32 = 4u
-val c : float = 5.6
-val d : float32 = 7.9000001f
-val e : char = 'A'
-val f : byte = 66uy
-val g : string = "ABC"
-val h : unit = ()
+Strings literals may be \idx{verbatim} by preceding the string with '@', meaning that the escape sequences are not converted to their code point, e.g., 
+\begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
+> @"abc\nde";;
+val it : string = "abc\nde"
 \end{lstlisting}
 %
-Here \lstinline|a|, \lstinline|b|, \dots, \lstinline|h| are identifiers that we have chosen, and which by the binding operation are made equivalent to the corresponding literal. Note that we did not specify the type of the identifier, and that F\# interpreted the type from the literal form of the right-hand-side. Types matter, since the operations that can be performed on integers are quite different from those that can be performed on characters and strings. I.e.,
+Verbatim literals containing double quotation marks are escaped with an extra double quotation mark, or the alternative tripple double quotation mark may be used, e.g.,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, many representations of the number 3 but using different types.}]
-> let a = 3
-- let b = 3.0 
-- let c = '3' 
-- let d = "3";;
-
-val a : int = 3
-val b : float = 3.0
-val c : char = '3'
-val d : string = "3"
+\begin{lstlisting}[language=fsharp,caption={fsharpi, example of double quotation marks in verbatim string literals.}]
+> @"This is a verbatim ""quote"".";;
+val it : string = "This is a verbatim "quote"."
+> """This is a verbatim "quote".""";; 
+val it : string = "This is a verbatim "quote"."
 \end{lstlisting}
-the variables \lstinline|a|, \lstinline|b|, \lstinline|c|, and \lstinline|d| all represent the number 3, but their types are different, and hence they are quite different values. When specifying the type, the type and the literal form must match, i.e., mixing types and literals gives an error,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, binding error due to type mismatch.}]
-  > let a : float = 3;;
 
-  let a : float = 3;;
-  ----------------^
-
-/Users/sporring/repositories/fsharpNotes/stdin(50,17): error FS0001: This expression was expected to have type
-    float    
-but here has type
-    int    
-\end{lstlisting}
-since the left-hand-side is an identifier of type float, while the right-hand-side is a literal of type integer.
-
-Many primitive types are compatible and the type of a literal may be changed by \idx{type casting}. E.g.,
+Many basic types are compatible and the type of a literal may be changed by \idx{type casting}. E.g.,
 %
 \begin{lstlisting}[language=fsharp,caption={fsharpi, casting an integer to a floating point number.},label=upcasting]
-> let a = float 3;;
-
-val a : float = 3.0
+> float 3;;
+val it : float = 3.0
 \end{lstlisting}
-where the left-hand-side is inferred to by of type float, since the integer number \lstinline|3| is casted to float resulting in a similar floating point value, in this case the float point number \lstinline|3.0|. As a technical detail, \lstinline|float| is here a function rather than a type, which takes the argument \lstinline|3| and returns the value \lstinline|3.0|.  For more on functions see Section~\ref{chap:functions}. Boolean values are often treated as the integer values 0 and 1, but no short-hand function names exists for their conversions. Instead use,
+which is a \lstinline!float!, since the integer number \lstinline|3| is casted to float resulting in a similar floating point value, in this case the float point number \lstinline|3.0|. As a technical detail, \lstinline|float| is here a function rather than a type, which takes the argument \lstinline|3| and returns the value \lstinline|3.0|.  For more on functions see Section~\ref{chap:functions}. Boolean values are often treated as the integer values 0 and 1, but no short-hand function names exists for their conversions. Instead use,
 %
 \begin{lstlisting}[language=fsharp,caption={fsharpi, casting booleans.}]
-> let a = System.Convert.ToBoolean 1    
-- let b = System.Convert.ToBoolean 0    
-- let c = System.Convert.ToInt32 true   
-- let d = System.Convert.ToInt32 false;;
-
-val a : bool = true
-val b : bool = false
-val c : int = 1
-val d : int = 0
+> System.Convert.ToBoolean 1;;
+val it : bool = true
+> System.Convert.ToBoolean 0;;
+val it : bool = false
+> System.Convert.ToInt32 true;;
+val it : int = 1
+> System.Convert.ToInt32 false;;
+val it : int = 0
 \end{lstlisting}
 Here \lstinline|System.Convert.ToBoolean| is the identifier of a function \lstinline|ToBoolean|, which is a \idx{member} of the \idx{class} \lstinline|Convert| that is included in the \idx{namespace} \lstinline|System|. Namespaces, classes, and members are all part of Structured programming to be discussed in Part~\ref{part:structured}.
 
 Type casting is often a destructive operation, e.g., type casting a \lstinline{float} to \lstinline{int} removes the part after the decimal point without rounding,
 %
-\fs{quickStartDownCast}{Fractional part is removed by downcasting.}
+\begin{lstlisting}[language=fsharp,caption={fsharpi, Fractional part is removed by downcasting.}]
+> int 357.6;;
+val it : int = 357
+\end{lstlisting}
+%\fs{quickStartDownCast}{Fractional part is removed by downcasting.}
 %
 Here we type casted to a lesser type, in the sense that integers is a subset of floating point numbers, which is called \idx{downcasting}. The opposite is called \idx{upcasting} is often non-destructive, as Listing~\ref{upcasting} showed, where an integer was casted to a float while retaining its value. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$ and $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting as follows,
 %
-\fs{rounding}{The rounding function may be obtained by downcasting.}
+\begin{lstlisting}[language=fsharp,label=rounding,caption={fsharpi, Fractional part is removed by downcasting.}]
+> int (357.6 + 0.5);;
+val it : int = 358
+\end{lstlisting}
+%\fs{rounding}{The rounding function may be obtained by downcasting.}
 %
 since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasting removes the fractional part resulting in $y$. And if $y.x\in [y.5, y+1)$, then $y.x+0.5\in [y+1,y+1.5)$, from which downcasting removes the fractional part resulting in $y+1$. Hence, the result is rounding. 
 
-If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int a) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
+If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
 %
 \begin{lstlisting}[language=fsharp,caption={fsharpi, a simple arithmetic expression.}]
-> let a = 3 + 4 * 5;;
-
-val a : int = 23
+> 3 + 4 * 5;;
+val it : int = 23
 \end{lstlisting}
 Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} tokens \token{+} and \token{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:operatorPrecedence}, the precedence is shown by the order they are given in the table.
 \begin{table}
@@ -680,36 +756,7 @@ Using unit of measures is advisable for calculations involving real-world values
 \jon{add comparsion operators!}
 
 \section{Chars and Strings}
-A character is a Unicode code point, see Appendix~\ref{sec:unicode} for a description of code points, and character literals enclosed in single quotation marks,\jon{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} }
-%
- \begin{lstlisting}[language=EBNF]
-   char = "'" charOrEscape "'"
-\end{lstlisting}
-% 
-where \lstinline[language=EBNF]{charOrEscape} are code points or escape sequence starting with \textbackslash\ as illustrated in Table~\ref{tab:escapeChar}. Examples are \lstinline{'a'}, \lstinline{'_'}, \lstinline{'\n'}.
-\begin{table}
-  \centering
-  \begin{tabular}{|c|l|l|}
-    \hline
-    Character& Escape sequence & Description\\
-    \hline
-    BS &\lstinline|\b|& Backspace\\
-    LF &\lstinline|\n|&Newline\\
-    CF &\lstinline|\r|&Carriage return\\
-    HT &\lstinline|\t|&Horizontal tabulation\\
-    \textbackslash &\lstinline|\\|&Backslash\\
-     " &\lstinline|\"|&Quotation mark\\
-    ' &\lstinline|\'|&Apostrophe\\
-    BEL&\lstinline|\a|& Bell\\
-    FF&\lstinline|\f|&Form feed\\
-    VT &\lstinline|\v|&Vertical tabulation\\
-    &\lstinline|\uXXXX|, \lstinline|\UXXXXXXXX|, \lstinline|\DDD|&Unicode character\\
-    \hline
-  \end{tabular}
-  \caption{Escape characters. For the unicode characters 'X' are hexadecimal digits, while for tricode characters 'D' is a decimal character.}
-  \label{tab:escapeChar}
-\end{table}
-The trigraph \lstinline|\DDD| uses decimal specification for the first 256 unicode characters. The hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any unicode character.
+***
 
 Character arithmatic is most often done by in integer space. A typical example is conversion of case, e.g., to convert the lowercase character 'z' to uppercase, we use the \idx{ASCIIbetical order} and add the difference between any Basic Latin Block letters in upper- and lowercase as \lstinline{integers} and cast back to \lstinline{char}, e.g.,
 %
@@ -719,42 +766,7 @@ val it : char = 'Z'
 \end{lstlisting}
 %
 
-A string is a sequence of characters enclosed in double quotation marks,\jon{Spec-4.0 p. 28-29: \texttt{simple-string-char} is undefined, \texttt{string-elem} is unused.}
-%
- \begin{lstlisting}[language=EBNF]
-   string-expr = '"' { char | LF | SP }  '"'
-\end{lstlisting}
-% 
-Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. Newlines and following whitespaces are taken literal, but may be ignored by a preceding \textbackslash character, and strings literals may be \idx{verbatim} by preceding the string with '@', meaning that the escape sequences are not converted to their code point, e.g., 
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
-> let a = "abc
-- de"
-- let b = "abc\
--   de"
-- let c = "abc\nde"
-- let d = "abcde"
-- let e = @"abc\nde";;
-
-val a : string = "abc
-de"
-val b : string = "abcde"
-val c : string = "abc
-de"
-val d : string = "abcde"
-val e : string = "abc\nde"
-\end{lstlisting}
-%
-The response is shown in double quotation marks, which are not part of the string. Verbatim literals containing double quotation marks are escaped with an extra double quotation mark, or the alternative tripple double quotation mark may be used, e.g.,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, example of double quotation marks in verbatim string literals.}]
-> let a = @"This is a verbatim ""quote""."   
-- let b = """This is a verbatim "quote".""";;
-
-val a : string = "This is a verbatim "quote"."
-val b : string = "This is a verbatim "quote"."
-\end{lstlisting}
-%
+*****
 
 Operations on \lstinline{string} is quite rich. The most simple is concatenation using \token{+} token, e.g.,
 %
@@ -797,46 +809,6 @@ val last : char = 'g'
 %
 Notice, since index counting starts at 0, and the string length is 7, then the index of the last character is 6. An alternative notation for indexing is to use the property \lstinline|Char|, and in the example \lstinline|a.[3]| is the same as \lstinline|a.Char 3|. The is a long list of built-in functions in \lstinline|System.String| for working with strings, some of which will be discussed in Chapter~\ref{sec:system.string}.
 
-\section{Mutable bindings}
-\label{sec:mutableValues}
-The \keyword{mutable} in \keyword{let} bindings means that the identifier may be rebound to a new value using the following syntax,
-%
-\begin{lstlisting}[language=EBNF]
-ident "<-" expr
-\end{lstlisting}
-\idx{Mutable data} is synonymous with the term \idx{variable}. A variable is an area in the computers working memory associated with an identifier and a type, and this area may be read from and written to during program execution. For example,
-%
-\fs{mutableAssignReassingShort}{A variable is defined and later reassigned a new value.}
-%\fs{mutableAssignReassing}{}
-%
-Here a area in memory was denoted \texttt{x}, initially assigned the integer value 5, hence the type was inferred to be \lstinline|int|.  Later, this value of \texttt{x} was replaced with another integer using the \idx{\token{<-}} token. The \token{<-} token is used to distinguish the assignment from the comparison operator, i.e., if we by mistake had written,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, example of changing the content of a variable.}]
-> let mutable a = 0
-- a = 3;;
-
-val mutable a : int = 0
-val it : bool = false
-\end{lstlisting}
-%
-then we instead would have obtained the default assignment of the result of the comparision of the content of \lstinline|a| with the integer 3, which is false. However, it's important to note, that when the variable is initially defined, then the '\token|=|' operator must be used, while later reassignments must use the \token|<-|  operator. 
-
-Assignment type mismatches will result in an error, 
-%
-\fs{mutableAssignReassingTypeError}{Assignmetn type mismatching causes a compile time error.}
-%
-I.e., once the type of an identifier has been declared or infered, then it cannot be changed.
-
-A typical variable is a counter of type integer, and a typical use of counters is to increment them, i.e., erasing a new value to be one more that its previous value. For example,
-%
-\fs{mutableAssignIncrement}{Variable increment is a common use of variables.}
-%
-which is an example we will return to many times later in this text.
-
-\jon{Somewhere I should talk about whitespaces and newlines Spec-4.0
-  Chapter 3.1}
-
-\jon{Somewhere I should possibly talk about Lightweight Syntax, Spec-4.0 Chapter 15.1}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
