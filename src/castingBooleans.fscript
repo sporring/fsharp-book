@@ -1,0 +1,4 @@
+System.Convert.ToBoolean 1;;
+System.Convert.ToBoolean 0;;
+System.Convert.ToInt32 true;;
+System.Convert.ToInt32 false;;

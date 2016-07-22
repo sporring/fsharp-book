@@ -1,0 +1,7 @@
+let t = true
+let f = false
+printfn "a     b     a*b   a+b   not a"                                       
+printfn "%A %A %A %A %A" f f (f && f) (f || f) (not f)
+printfn "%A %A  %A %A  %A" f t (f && t) (f || t) (not f)
+printfn "%A  %A %A %A  %A" t f (t && f) (t || f) (not t)
+printfn "%A  %A  %A  %A  %A" t t (t && t) (t || t) (not t);;

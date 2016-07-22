@@ -1,10 +1,7 @@
 #!/bin/bash
 
-mv filenamedialogue.fsx filenamedialogue.fscript
-find . -name '*.fsx' | while read -r file; do
-     echo $file
-     i=`echo $file | sed 's/.fsx//'`
-     #     mv $i.out $i.bckp
-     fsharpi $i.fsx > $i.out 2>&1
-done
-mv filenamedialogue.fscript filenamedialogue.fsx
+#mv filenamedialogue.fsx filenamedialogue.fscript
+i=`echo $1 | sed 's/.fsx//'`
+#     mv $i.out $i.bckp
+fsharpi $i.fsx > $i.out 2>&1
+#mv filenamedialogue.fscript filenamedialogue.fsx

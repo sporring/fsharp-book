@@ -1,6 +1,6 @@
 #!/usr/bin/expect -f
 
-set timeout 20
+set timeout 5
 set script [lindex $argv 0];
 
 # Get the commands to run, one per line
@@ -13,11 +13,12 @@ expect "> "
 send ";;\n"
 # Iterate over the commands
 foreach cmd $commands {
-    expect "> "
+    expect "* "
     send "$cmd\n"
 }
 
 # Tidy up
+expect "* "
 close
 #expect "> "
 #send "#quit;;\n"

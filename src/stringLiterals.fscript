@@ -1,0 +1,4 @@
+"abcde";;
+"abc  de";;
+"abc\  de";;
+"abc\nde";;

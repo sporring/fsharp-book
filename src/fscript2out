@@ -1,9 +1,6 @@
 #!/bin/bash
 
-find . -name '*.fscript' | while read -r file; do
-     echo $file
-     i=`echo $file | sed 's/.fscript//'`
-     #     mv $i.out $i.bckp
-     ./automatedFsharpi.exp $i.fscript > /tmp/tmp.out
-     cat /tmp/tmp.out | sed 's/.*H//' | sed 's///' | sed '1,9d' | sed -n -e :a -e '1,1!{P;N;D;};N;ba' > $i.out
-done
+i=`echo $1 | sed 's/.fscript//'`
+#     mv $i.out $i.bckp
+./automatedFsharpi.exp $i.fscript > /tmp/tmp.out
+cat /tmp/tmp.out | sed 's/.*H//' | sed 's///' | sed '1,9d' | sed -n -e :a -e '1,1!{P;N;D;};N;ba' > $i.out
