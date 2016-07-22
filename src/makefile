@@ -1,6 +1,7 @@
 FSCRIPT := $(wildcard *.fscript)
 FSX := $(wildcard *.fsx)
-OBJS := $(patsubst %.fscript,%.out,$(FSCRIPT)) $(patsubst %.fsx,%.out,$(FSX))
+OSCRIPT := $(patsubst %.fscript,%.out,$(FSCRIPT))
+OSX := $(patsubst %.fsx,%.out,$(FSX))
 
 %.out: %.fscript
 	./fscript2out $<
@@ -8,4 +9,10 @@ OBJS := $(patsubst %.fscript,%.out,$(FSCRIPT)) $(patsubst %.fsx,%.out,$(FSX))
 %.out: %.fsx
 	./fsx2out $<
 
-all: $(OBJS)
+cleanfscript:
+	rm $OSCRIPT
+
+cleanfsx:
+	rm $OSX
+
+all: $(OSX) $(OSCRIPT)
