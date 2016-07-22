@@ -5,18 +5,20 @@ All programs rely on processing of data, and an essential property of data is it
 > 3;;    
 val it : int = 3
 \end{lstlisting}
-What this means is that F\# has inferred the type to be \idx{lstinline!int!} and bound it to the identifier \idx{\lstinline{it}}. Rumor has it, that the identifier \lstinline|it| is an abbreviation for 'irrelevant'. For more on binding and identifiers see Chapter~\ref{chap:let}. Types matter, since the operations that can be performed on integers are quite different from those that can be performed on, e.g., strings. I.e.,
+What this means is that F\# has inferred the type to be \idx{\lstinline!int!} and bound it to the identifier \idx{\lstinline{it}}. Rumor has it, that the identifier \lstinline|it| is an abbreviation for 'irrelevant'. For more on binding and identifiers see Chapter~\ref{chap:let}. Types matter, since the operations that can be performed on integers are quite different from those that can be performed on, e.g., strings. I.e.,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, many representations of the number 3 but using different types.}]
-> 3;;    
-val it : int = 3
-> 3.0;;
-val it : float = 3.0
-> '3';;
-val it : char = '3'
-> "3";;
-val it : string = "3"
-\end{lstlisting}
+\fso{typeMatters}{Many representations of the number 3 but using different types.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, many representations of the number 3 but using different types.}]
+% > 3;;    
+% val it : int = 3
+% > 3.0;;
+% val it : float = 3.0
+% > '3';;
+% val it : char = '3'
+% > "3";;
+% val it : string = "3"
+% \end{lstlisting}
+%
 Each literal represent the number 3, but their types are different, and hence they are quite different values. The types \lstinline!int! for integer numbers, \lstinline!float! for floating point numbers, \lstinline!char! for characters, and \lstinline!string! for strings of characters are the most common types of literals. A table of all predefined types is given in Table~\ref{tab:primitiveTypes}.\jon{We should start by giving examples of int, xint, float, char, string literals without literal types. Then then binding to identifiers incl. the it identdifier.}
 \begin{table}
   \centering
@@ -109,7 +111,7 @@ escapeCodePoint =
   | "\" digit digit digit 
 escapeChar = 
   "\" ("b" | "n" | "r" | "t" | "\" | '"' | "'" | "a" | "f" | "v")
-  escapeCodePoint
+  | escapeCodePoint
 char = "'" codePoint | escapeChar "'"
 \end{lstlisting}
 % 
@@ -165,29 +167,31 @@ The response is shown in double quotation marks, which are not part of the strin
 F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix og suffix as shown in the Table~\ref{tab:literalTypes}.
 \begin{table}
   \centering
-  \begin{tabularx}{\linewidth}{|l|l|l|X|}
+  %\begin{tabularx}{\linewidth}{|>{\hsize=.6\hsize}X|>{\hsize=1.4\hsize}X|>{\hsize=1\hsize}X|}
+  \begin{tabular}{|l|l|l|}
     \hline
-    type & EBNF & Literal examples & Comment \\
+    type & EBNF & Examples \\
     \hline
-    \lstinline!int!, \lstinline!int32! & \lstinline[language=ebnf]!(int | xint) ["l"]!  & \lstinline!3! & \\
-    \lstinline!uint32! & \lstinline[language=ebnf]!(int | xint) ("u" | "ul")! & \lstinline!3u! & \\
-    \lstinline!byte!, \lstinline!uint8! & \lstinline[language=ebnf]!((int | xint) "uy") | (char "B")!  & \lstinline!3uy!  & \\
-    \lstinline!byte[]! & \lstinline[language=ebnf]!["@"] string "B"!  & \lstinline!"abc"B! and \lstinline!"@http:\\\\"B!  & \\
-    \lstinline!sbyte!, \lstinline!int8! & \lstinline[language=ebnf]!(int | xint) "y"! & \lstinline!3y!  & \\
-    \lstinline!int16! & \lstinline[language=ebnf]!(int | xint) "s"!  & \lstinline!3s!  & \\
-    \lstinline!uint16! & \lstinline[language=ebnf]!(int | xint) "us"! & \lstinline!3us!  & \\
-    \lstinline!int64! & \lstinline[language=ebnf]!(int | xint) "L"!  & \lstinline!3L!  & \\
-    \lstinline!uint64! & \lstinline[language=ebnf]!(int | xint) ("UL" | "uL")!  & \lstinline!3UL! and \lstinline!3uL!  & \\
-    \lstinline!bignum! & \lstinline[language=ebnf]!int "I"! & \lstinline!3I!  & \lstinline[language=ebnf]!int ("Q"|"R"|"Z"|"N"|"G")! not yet implemented in Mono.\\
-    \lstinline!nativeint! & \lstinline[language=ebnf]!(int | xint) "n"! & \lstinline!3n!  & \\
-    \lstinline!unativeint! & \lstinline[language=ebnf]!(int | xint) "un"!  & \lstinline!3un!  & \\
-    \lstinline!float!, \lstinline!double! & \lstinline[language=ebnf]!float | (xint "LF")!  & \lstinline!3.0!  & \\
-    \lstinline!single!, \lstinline!float32! & \lstinline[language=ebnf]!(float ("F" | "f")) | (xint "lf") !  & \lstinline!3.0f!  & \\
-    \lstinline!decimal! &\lstinline[language=ebnf]!(float | int) ("M" | "m")! & \lstinline!3.0m! and \lstinline!3m!  & \\
-    \lstinline!string! & \lstinline[language=ebnf]!["@"] string!  & \lstinline!"abc"! and \lstinline!@"http:\\\\"!  & \\
+    \lstinline!int!, \lstinline!int32! & \lstinline[language=ebnf]!(int | xint) ["l"]!  & \lstinline!3! \\
+    \lstinline!uint32! & \lstinline[language=ebnf]!(int | xint) ("u" | "ul")! & \lstinline!3u! \\
+    \lstinline!byte!, \lstinline!uint8! & \lstinline[language=ebnf]!((int | xint) "uy") | (char "B")!  & \lstinline!3uy!  \\
+    \lstinline!byte[]! & \lstinline[language=ebnf]!["@"] string "B"!  & \lstinline!"abc"B! and \lstinline!"@http:\\\\"B!  \\
+    \lstinline!sbyte!, \lstinline!int8! & \lstinline[language=ebnf]!(int | xint) "y"! & \lstinline!3y!  \\
+    \lstinline!int16! & \lstinline[language=ebnf]!(int | xint) "s"!  & \lstinline!3s!  \\
+    \lstinline!uint16! & \lstinline[language=ebnf]!(int | xint) "us"! & \lstinline!3us!  \\
+    \lstinline!int64! & \lstinline[language=ebnf]!(int | xint) "L"!  & \lstinline!3L!  \\
+    \lstinline!uint64! & \lstinline[language=ebnf]!(int | xint) ("UL" | "uL")!  & \lstinline!3UL! and \lstinline!3uL!  \\
+    \lstinline!bignum!$^*$ & \lstinline[language=ebnf]!int "I"! & \lstinline!3I!  \\
+    \lstinline!nativeint! & \lstinline[language=ebnf]!(int | xint) "n"! & \lstinline!3n!  \\
+    \lstinline!unativeint! & \lstinline[language=ebnf]!(int | xint) "un"!  & \lstinline!3un!  \\
+    \lstinline!float!, \lstinline!double! & \lstinline[language=ebnf]!float | (xint "LF")!  & \lstinline!3.0!  \\
+    \lstinline!single!, \lstinline!float32! & \lstinline[language=ebnf]!(float ("F" | "f")) | (xint "lf") !  & \lstinline!3.0f!  \\
+    \lstinline!decimal! &\lstinline[language=ebnf]!(float | int) ("M" | "m")! & \lstinline!3.0m! and \lstinline!3m!  \\
+    \lstinline!string! & \lstinline[language=ebnf]!["@"] string!  & \lstinline!"abc"! and \lstinline!@"http:\\\\"!  \\
     \hline
-  \end{tabularx}
-  \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix.}
+  \end{tabular}
+  % \end{tabularx}
+  \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix. $^*$\lstinline[language=ebnf]!bignum! does not yet have an implementation for \lstinline[language=ebnf]!int ("Q"|"R"|"Z"|"N"|"G")! in Mono.}
   \label{tab:literalTypes}
 \end{table}
 Examples are,

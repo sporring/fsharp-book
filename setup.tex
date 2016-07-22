@@ -53,22 +53,25 @@
 \makeindex
 
 %% lstlisting stuff
-\usepackage{upquote}
+%\usepackage{upquote}
 \usepackage{listings}
-\usepackage{chngcntr}
-\usepackage[framemethod=tikz]{mdframed}
-\surroundwithmdframed[
-  skipabove=10pt,
-  innertopmargin=0pt,
-%  rightmargin=0pt,
-%  innerrightmargin=0pt,
-  skipbelow=0pt,
-  innerbottommargin=0pt
-%  leftmargin=0pt,
-%  innerleftmargin=0pt,
-  ]{lstlisting}
+%\usepackage{chngcntr}
+% \usepackage[framemethod=tikz]{mdframed}
+% \surroundwithmdframed[
+%   skipabove=10pt,
+%   innertopmargin=0pt,
+% %  rightmargin=0pt,
+% %  innerrightmargin=0pt,
+%   skipbelow=0pt,
+%   innerbottommargin=0pt
+% %  leftmargin=0pt,
+% %  innerleftmargin=0pt,
+%   ]{lstlisting}
+% \mdfsetup{% 
+%   backgroundcolor=lightgray!10,
+%   roundcorner=5pt}
 
-\usepackage{color}
+\usepackage{xcolor}
 \definecolor{alternateKeywordsColor}{rgb}{0.13,1,0.13}
 \definecolor{keywordsColor}{rgb}{0.13,0.13,1}
 %\definecolor{commentsColor}{rgb}{0,0.5,0}
@@ -82,9 +85,9 @@
   morekeywords={atomic, break, checked, component, const, constraint, constructor, continue, eager, fixed, fori, functor, include, measure, method, mixin, object, parallel, params, process, protected, pure, recursive, sealed, tailcall, trait, virtual, volatile},
   otherkeywords={ let!, return!, do!, yield!, use!},
   keywordstyle=\color{keywordsColor},
-  sensitive=true,
-  basicstyle=\ttfamily\small,
-  breaklines=true,
+  %sensitive=true,
+  basicstyle=\ttfamily\lst@ifdisplaystyle\small\fi, % make font small for listings but not for lstinline
+  %breaklines=true,
   morecomment=[l][\color{commentsColor}]{///},
   morecomment=[l][\color{commentsColor}]{//},
   morecomment=[s][\color{commentsColor}]{{(*}{*)}},
@@ -92,45 +95,46 @@
   showstringspaces=false,
   literate={`}{\`}1,
   stringstyle=\color{stringsColor},
-  aboveskip=0pt, 
-  belowskip=0pt,
-  resetmargins=true,
-  captionpos=b
+  %aboveskip=0pt, 
+  %belowskip=0pt,
+  %resetmargins=true,
+  captionpos=b,
+  backgroundcolor=\color{black!5!white},
 }
 \lstdefinelanguage{ebnf}{%
   keywords={},
   morekeywords={},
   otherkeywords={},
-  %otherkeywords={=, |, \{, \}, [, ], (, ), ;, (*, *)},
   keywordstyle=\color{keywordsColor},
-  % keywordstyle={[2]\color{alternateKeywordsColor}},
-  sensitive=true,
-  basicstyle=\ttfamily\small, 
-  breaklines=true,
+  % sensitive=true,
+   basicstyle=\ttfamily\lst@ifdisplaystyle\small\fi, 
+  % breaklines=true,
   morecomment=[s][\color{commentsColor}]{{(*}{*)}},
   morestring=[b]",
   morestring=[b]',
+  alsoletter={\\},
   showstringspaces=false,
-  stringstyle=\color{stringsColor},
-  aboveskip=0pt, 
-  belowskip=0pt,
-  resetmargins=true,
-  captionpos=b
+  %stringstyle=\color{stringsColor},
+  %aboveskip=0pt, 
+  %belowskip=0pt,
+  %resetmargins=true,
+  captionpos=b,
+  backgroundcolor=\color{green!10!white},
 }
 \lstdefinelanguage{console}{%
   keywords={},
   morekeywords={},
   otherkeywords={},
-  basicstyle=\ttfamily\small, 
-  breaklines=true,
-  %xleftmargin=\parindent,
+  basicstyle=\ttfamily\lst@ifdisplaystyle\small\fi, 
+  %breaklines=true,
   showstringspaces=false,
-  aboveskip=0pt, 
-  belowskip=0pt,
-  resetmargins=true,
-  captionpos=b
+  % aboveskip=0pt, 
+  % belowskip=0pt,
+  %resetmargins=true,
+  captionpos=b,
+  backgroundcolor=\color{yellow!10!white},
 }
-\lstset{language=fsharp}
+\lstset{language=fsharp, frame=single}
 \usepackage{caption}
 \DeclareCaptionStyle{listing} [justification=raggedright,labelfont=bf]{}
 \captionsetup[lstlisting]{style=listing}
@@ -138,27 +142,31 @@
 \usepackage{verbdef}
 \verbdef{\cmdl}{>}
 
-\mdfsetup{% 
-  backgroundcolor=lightgray!10,
-  roundcorner=5pt}
-
 \newcommand{\src}{src}
 \newcommand{\fs}[2]{
   %\begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
-  \begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
+  %\begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
     \lstinputlisting[language=fsharp]{\src/#1.fsx}
-    \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+    % \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
     %\cmdl\texttt{ fsharpi #1.fsx}
     \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{\src/#1.out}
-  \end{mdframed}
+  %\end{mdframed}
 }
 \newcommand{\fse}[2]{
   % \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
-  \begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
+  %\begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
     \begin{minipage}{1\linewidth}
       \lstinputlisting[language=fsharp,caption={#2},label=#1]{\src/#1.fsx}
     \end{minipage}
-  \end{mdframed}
+  %\end{mdframed}
+}
+\newcommand{\fso}[2]{
+  % \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
+  %\begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
+    \begin{minipage}{1\linewidth}
+      \lstinputlisting[language=fsharp,caption={fsharpi, #2},label=#1]{\src/#1.out}
+    \end{minipage}
+  %\end{mdframed}
 }
 
 % highlighted text snippets

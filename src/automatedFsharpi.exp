@@ -1,0 +1,23 @@
+#!/usr/bin/expect -f
+
+set timeout 20
+set script [lindex $argv 0];
+
+# Get the commands to run, one per line
+set f [open $script]
+set commands [split [read $f] "\n"]
+close $f
+
+spawn fsharpi
+expect "> "
+send ";;\n"
+# Iterate over the commands
+foreach cmd $commands {
+    expect "> "
+    send "$cmd\n"
+}
+
+# Tidy up
+close
+#expect "> "
+#send "#quit;;\n"
