@@ -1,5 +1,6 @@
 FSCRIPT := $(wildcard *.fscript)
-FSX := $(wildcard *.fsx)
+#FSX := $(wildcard *.fsx)
+FSX := $(filter-out filenamedialogue.fsx, $(wildcard *.fsx))
 OSCRIPT := $(patsubst %.fscript,%.out,$(FSCRIPT))
 OSX := $(patsubst %.fsx,%.out,$(FSX))
 

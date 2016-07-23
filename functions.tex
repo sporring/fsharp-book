@@ -34,6 +34,20 @@ Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lst
 \end{figure}
 The binding may be mutable, which will be discussed in Section~\ref{sec:mutableValues}, and the binding may only be for the last expression as indicated by the \idx{\keyword{in}} keyword. The simplest example of an expression is a \idx{literal}, i.e., a constant such as the number 3. 
 
+
+A less common notation is to define bindings for expressions using the \idx{\keyword{in}} keyword, e.g.,
+%
+\fs{numbersIn}{The identifier \lstinline!p! is only bound in the nested scope following the keyword \keyword{in}.}
+%
+Here \lstinline|p| is only bound in the \idx{scope} of the expression following the \keyword{in} keyword, in this the \lstinline|printfn| statement, and \lstinline|p| is unbound in lines that follows.
+\begin{comment}
+  Here the use of indentation to define a sequence of expressions
+  % 
+  \fs{numbersInWIndentation}{The identifier \lstinline!p! is only bound in the nested scope following the keyword \keyword{in}.}
+  % 
+\end{comment}
+
+
 \section{Values (Constant bindings)}
 When specifying the type, the type and the literal form must match, i.e., mixing types and literals gives an error,
 %

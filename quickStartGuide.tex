@@ -31,23 +31,24 @@ For help type #help;;
 \end{comment}
 %
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi}]
-> let a = 357;;         
+\fso{typeInference}{Inferred types are given as part of the response from the interpreter.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi}]
+% > let a = 357;;         
 
-val a : int = 357
+% val a : int = 357
 
-> let b = 864;;
+% > let b = 864;;
 
-val b : int = 864
+% val b : int = 864
 
-> let c = a + b;;
+% > let c = a + b;;
 
-val c : int = 1221
+% val c : int = 1221
 
-> printfn "%A" c;;
-1221
-val it : unit = ()
-\end{lstlisting}
+% > printfn "%A" c;;
+% 1221
+% val it : unit = ()
+% \end{lstlisting}
 %
 %
 \begin{comment}
@@ -55,7 +56,7 @@ val it : unit = ()
 > #quit;;
 \end{comment}
 %
- The an interactive session displays the type using the \idx{\keyword{val}} keyword. Since the value is also responded, then the last \lstinline|printfn| statement is superfluous. However, \advice{it is ill adviced to design programs to be run in an interactive session, since the scripts needs to be manually copied every time it is to be run, and since the starting state may be unclear.}
+ The an interactive session displays the type using the \idx{\keyword{val}} keyword. Since the value is also responded, then the last \lstinline|printfn| statement is superfluous. However, \advice{it is ill advised to design programs to be run in an interactive session, since the scripts needs to be manually copied every time it is to be run, and since the starting state may be unclear.}
 
 Were we to solve a slightly different problem,
 %
@@ -63,58 +64,61 @@ Were we to solve a slightly different problem,
   What is the sum of 357.6 and 863.4?
 \end{problem}
 %
-then we would have to use floating point arithmatic instead of integers, and the program would look like,
+then we would have to use floating point arithmetic instead of integers, and the program would look like,
 %
-\fs{quickStartSumFloat}{Floating point types and arithmatic.}
+\fs{quickStartSumFloat}{Floating point types and arithmetic.}
 %
 On the surface, this could appear as an almost negligible change, but the set of integers and the set of real numbers (floats) require quite different representations, in order to be effective on a computer, and as a consequence, the implementation of their operations such as addition are very different. Thus, although the response is an integer, it has type \lstinline|float|, which is indicated by \lstinline|1221.0| which is not the same as \lstinline|1221|. F\# is very picky about types, and generally does not allow types to be mixed. E.g., in an interactive session,
 %
-\begin{lstlisting}[language=fsharp,caption=fsharpi]
-> let a = 357;;
+\fso{typeInferenceError}{Mixing types is often not allowed.}
+% \begin{lstlisting}[language=fsharp,caption=fsharpi]
+% > let a = 357;;
 
-val a : int = 357
+% val a : int = 357
 
-> let b = 863.4;;
+% > let b = 863.4;;
 
-val b : float = 863.4
+% val b : float = 863.4
 
-> let c = a + b;;
+% > let c = a + b;;
 
-  let c = a + b;;
-  ------------^
+%   let c = a + b;;
+%   ------------^
 
-/Users/sporring/Desktop/fsharpNotes/stdin(3,13): error FS0001: The type 'float' does not match the type 'int'
-\end{lstlisting}
+% /Users/sporring/Desktop/fsharpNotes/stdin(3,13): error FS0001: The type 'float' does not match the type 'int'
+% \end{lstlisting}
 %
 we see that binding a name to a number without a decimal point is inferred to be integer, while when binding to a number with a decimal point, then the type is inferred to be a float, and when trying to add values of integer and floating point, then we get an error.
 
-F\# is a functional first programming language, and one implication is that names are constant and cannot be changed. If attempted, then F\# will return an error as, e.g.,
+F\# is a functional first programming language, and one implication is that names are constant and cannot be changed. If attempted, then F\# will return an error as, e.g., \jon{When command is omitted, then error messages have unwanted blank lines.}
 %
 \fs{quickStartRebindError}{A name cannot be rebound.}
 %
 However, if the same was performed in an interactive session,
 %
-\begin{lstlisting}[language=fsharp,caption=fsharpi]
-> let a = 357;;
+\fso{blocksNNames}{Names may be reused when separated by the token \token{;;}.}
+% \begin{lstlisting}[language=fsharp,caption=fsharpi]
+% > let a = 357;;
 
-val a : int = 357
+% val a : int = 357
 
-> let a = 864;;
+% > let a = 864;;
 
-val a : int = 864
-\end{lstlisting}
+% val a : int = 864
+% \end{lstlisting}
 %
 then apparently rebinding is legal. The difference is that the \idx{\token{;;}} \idx{token} defines a new nested \idx{scope}.\jon{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A token is a letter or a word, which the F\# considers as an atomic unit. A scope is an area in a program, where a binding is valid. Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \token{;;} between the two let statements results in an error, e.g.,
 %
-\begin{lstlisting}[language=fsharp,caption=fsharpi]
-> let a = 357
-- let a = 864;;
+\fso{blocksNNamesError}{Inside a block, names may not be reused.}
+% \begin{lstlisting}[language=fsharp,caption=fsharpi]
+% > let a = 357
+% - let a = 864;;
 
-  let a = 864;;
-  ----^
+%   let a = 864;;
+%   ----^
 
-/Users/sporring/Desktop/fsharpNotes/stdin(2,5): error FS0037: Duplicate definition of value 'a'
-\end{lstlisting}
+% /Users/sporring/Desktop/fsharpNotes/stdin(2,5): error FS0037: Duplicate definition of value 'a'
+% \end{lstlisting}
 %
 Scopes can be visualized as nested squares as shown in Figure~\ref{fig:scope}.
 \begin{figure}
@@ -148,29 +152,33 @@ In F\# \idx[function]{functions} are also values, and defining a function \lstin
 \fs{quickStartSumFct}{A script to add 2 numbers using a user defined function.}
 %
 Entering the function into an interactive session will illustrate the inferred type, the function \lstinline|sum| has: \lstinline{val sum : x:int * y:int -> int}, by which is meant that \lstinline|sum| is a mapping from the set product of integers with integers into integers. Type inference in F\# may cause problems, since the type of a function is inferred in the context, in which it is defined. E.g., in an interactive session, defining the sum in one scope on a single line will default the types to integers, F\#'s favorite type, which will give an error, if it in a nested scope is to be used for floats,
-\begin{lstlisting}[language=fsharp,caption=fsharpi]
-> let sum x y = x + y;;
+%
+\fso{typesNBlockInference}{Types are inferred in blocks, and F\# tends to prefer integers.}
+% \begin{lstlisting}[language=fsharp,caption=fsharpi]
+% > let sum x y = x + y;;
 
-val sum : x:int -> y:int -> int
+% val sum : x:int -> y:int -> int
 
-> let c = sum 357.6 863.4;;
+% > let c = sum 357.6 863.4;;
 
-  let c = sum 357.6 863.4;;
-  ------------^^^^^
+%   let c = sum 357.6 863.4;;
+%   ------------^^^^^
 
-/Users/sporring/Desktop/fsharpNotes/stdin(2,13): error FS0001: This expression was expected to have type
-    int    
-but here has type
-    float    
-\end{lstlisting}
+% /Users/sporring/Desktop/fsharpNotes/stdin(2,13): error FS0001: This expression was expected to have type
+%     int    
+% but here has type
+%     float    
+% \end{lstlisting}
 A remedy is to either define the function in the same scope as its use,
-\begin{lstlisting}[language=fsharp,caption=fsharpi]
-> let sum x y = x + y
-- let c = sum 357.6 863.4;;
+%
+\fso{typesNBlockInference}{Defining a function together with its use, makes F\# infer the appropriate types.}
+% \begin{lstlisting}[language=fsharp,caption=fsharpi]
+% > let sum x y = x + y
+% - let c = sum 357.6 863.4;;
 
-val sum : x:float -> y:float -> float
-val c : float = 1221.0
-\end{lstlisting}
+% val sum : x:float -> y:float -> float
+% val c : float = 1221.0
+% \end{lstlisting}
 
 In this chapter, we have scratched the surface of learning how to program by concentrating on a number of key programming concepts and how they are expressed in the F\# language. In the following chapters, we will expand the description of F\# with features used in all programming approaches.
 

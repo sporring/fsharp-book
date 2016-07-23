@@ -13,6 +13,7 @@ svn propget svn:ignore | tee $TMPFILE
 echo "Now also ignoring:"
 svn status | grep "^\?" | awk "{print \$2}" | tee -a $TMPFILE
 svn propset svn:ignore -F $TMPFILE .
+svn update
 
 rm $TMPFILE
 echo "Commit when ready"
