@@ -1,10 +1,13 @@
 \chapter{Constants, tuples, and types}
 %\chapter{Numbers, Characters, and Strings}
 All programs rely on processing of data, and an essential property of data is its \idx{type}. A \idx{literal} is a fixed value such as "3", and if we type the number \lstinline!3! in an interactive session at the input prompt, then F\# responds as follows,
-\begin{lstlisting}[language=fsharp,caption={fsharpi, typing the number 3.}]
-> 3;;    
-val it : int = 3
-\end{lstlisting}
+%
+\fso{firstType}{Typing the number 3.}
+%
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, typing the number 3.}]
+% > 3;;    
+% val it : int = 3
+% \end{lstlisting}
 What this means is that F\# has inferred the type to be \idx{\lstinline!int!} and bound it to the identifier \idx{\lstinline{it}}. Rumor has it, that the identifier \lstinline|it| is an abbreviation for 'irrelevant'. For more on binding and identifiers see Chapter~\ref{chap:let}. Types matter, since the operations that can be performed on integers are quite different from those that can be performed on, e.g., strings. I.e.,
 %
 \fso{typeMatters}{Many representations of the number 3 but using different types.}
@@ -147,20 +150,22 @@ A string is a sequence of characters enclosed in double quotation marks,\jon{Spe
 \end{lstlisting}
 % 
 Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. Newlines and following whitespaces are taken literally, but may be ignored by a preceding \textbackslash character. Further examples of strings are,
-\begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
-> "abcde";;
-val it : string = "abcde"
-> "abc
-- de";;
-val it : string = "abc
-de"
-> "abc\
--  de";;
-val it : string = "abcde"
-> "abc\nde";;
-val it : string = "abc
-de"
-\end{lstlisting}
+%
+\fso{stringLiterals}{Examples of string literals.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
+% > "abcde";;
+% val it : string = "abcde"
+% > "abc
+% - de";;
+% val it : string = "abc
+% de"
+% > "abc\
+% -  de";;
+% val it : string = "abcde"
+% > "abc\nde";;
+% val it : string = "abc
+% de"
+% \end{lstlisting}
 %
 The response is shown in double quotation marks, which are not part of the string. 
 
@@ -195,83 +200,92 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
   \label{tab:literalTypes}
 \end{table}
 Examples are,
-\begin{lstlisting}[language=fsharp,caption={fsharpi, Named and implied literals.}]
-> 3;;
-val it : int = 3
-> 4u;; 
-val it : uint32 = 4u
-> 5.6;;
-val it : float = 5.6
-> 7.9f;;
-val it : float32 = 7.9000001f
-> 'A';;
-val it : char = 'A'
-> 'B'B;;
-val it : byte = 66uy
-> "ABC";;
-val it : string = "ABC"
-\end{lstlisting}
+\fso{namedLiterals}{Named and implied literals.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, Named and implied literals.}]
+% > 3;;
+% val it : int = 3
+% > 4u;; 
+% val it : uint32 = 4u
+% > 5.6;;
+% val it : float = 5.6
+% > 7.9f;;
+% val it : float32 = 7.9000001f
+% > 'A';;
+% val it : char = 'A'
+% > 'B'B;;
+% val it : byte = 66uy
+% > "ABC";;
+% val it : string = "ABC"
+% \end{lstlisting}
 %
 Strings literals may be \idx{verbatim} by preceding the string with '@', meaning that the escape sequences are not converted to their code point, e.g., 
-\begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
-> @"abc\nde";;
-val it : string = "abc\nde"
-\end{lstlisting}
+%
+\fso{stringVerbatim}{Examples of a string literal.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
+% > @"abc\nde";;
+% val it : string = "abc\nde"
+% \end{lstlisting}
 %
 Verbatim literals containing double quotation marks are escaped with an extra double quotation mark, or the alternative tripple double quotation mark may be used, e.g.,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, example of double quotation marks in verbatim string literals.}]
-> @"This is a verbatim ""quote"".";;
-val it : string = "This is a verbatim "quote"."
-> """This is a verbatim "quote".""";; 
-val it : string = "This is a verbatim "quote"."
-\end{lstlisting}
+\fso{stringQuotationMarks}{Example of double quotation marks in verbatim string literals.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, example of double quotation marks in verbatim string literals.}]
+% > @"This is a verbatim ""quote"".";;
+% val it : string = "This is a verbatim "quote"."
+% > """This is a verbatim "quote".""";; 
+% val it : string = "This is a verbatim "quote"."
+% \end{lstlisting}
 %
 
 Many basic types are compatible and the type of a literal may be changed by \idx{type casting}. E.g.,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, casting an integer to a floating point number.},label=upcasting]
-> float 3;;
-val it : float = 3.0
-\end{lstlisting}
+\fso{upcasting}{Casting an integer to a floating point number.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, casting an integer to a floating point number.},label=upcasting]
+% > float 3;;
+% val it : float = 3.0
+% \end{lstlisting}
 which is a \lstinline!float!, since the integer number \lstinline|3| is casted to float resulting in a similar floating point value, in this case the float point number \lstinline|3.0|. As a technical detail, \lstinline|float| is here a function rather than a type, which takes the argument \lstinline|3| and returns the value \lstinline|3.0|.  For more on functions see Section~\ref{chap:functions}. Boolean values are often treated as the integer values 0 and 1, but no short-hand function names exists for their conversions. Instead use,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, casting booleans.}]
-> System.Convert.ToBoolean 1;;
-val it : bool = true
-> System.Convert.ToBoolean 0;;
-val it : bool = false
-> System.Convert.ToInt32 true;;
-val it : int = 1
-> System.Convert.ToInt32 false;;
-val it : int = 0
-\end{lstlisting}
+\fso{castingBooleans}{Casting booleans.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, casting booleans.}]
+% > System.Convert.ToBoolean 1;;
+% val it : bool = true
+% > System.Convert.ToBoolean 0;;
+% val it : bool = false
+% > System.Convert.ToInt32 true;;
+% val it : int = 1
+% > System.Convert.ToInt32 false;;
+% val it : int = 0
+% \end{lstlisting}
 Here \lstinline|System.Convert.ToBoolean| is the identifier of a function \lstinline|ToBoolean|, which is a \idx{member} of the \idx{class} \lstinline|Convert| that is included in the \idx{namespace} \lstinline|System|. Namespaces, classes, and members are all part of Structured programming to be discussed in Part~\ref{part:structured}.
 
 Type casting is often a destructive operation, e.g., type casting a \lstinline{float} to \lstinline{int} removes the part after the decimal point without rounding,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, Fractional part is removed by downcasting.}]
-> int 357.6;;
-val it : int = 357
-\end{lstlisting}
-%\fs{quickStartDownCast}{Fractional part is removed by downcasting.}
-%
+\fso{downcasting}{Fractional part is removed by downcasting.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, Fractional part is removed by downcasting.}]
+% > int 357.6;;
+% val it : int = 357
+% \end{lstlisting}
+%%\fs{quickStartDownCast}{Fractional part is removed by downcasting.}
+%%
 Here we type casted to a lesser type, in the sense that integers is a subset of floating point numbers, which is called \idx{downcasting}. The opposite is called \idx{upcasting} is often non-destructive, as Listing~\ref{upcasting} showed, where an integer was casted to a float while retaining its value. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$ and $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting as follows,
 %
-\begin{lstlisting}[language=fsharp,label=rounding,caption={fsharpi, Fractional part is removed by downcasting.}]
-> int (357.6 + 0.5);;
-val it : int = 358
-\end{lstlisting}
-%\fs{rounding}{The rounding function may be obtained by downcasting.}
+\fso{rounding}{Fractional part is removed by downcasting.}
+% \begin{lstlisting}[language=fsharp,label=rounding,caption={fsharpi, Fractional part is removed by downcasting.}]
+% > int (357.6 + 0.5);;
+% val it : int = 358
+% \end{lstlisting}
+% %\fs{rounding}{The rounding function may be obtained by downcasting.}
 %
 since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasting removes the fractional part resulting in $y$. And if $y.x\in [y.5, y+1)$, then $y.x+0.5\in [y+1,y+1.5)$, from which downcasting removes the fractional part resulting in $y+1$. Hence, the result is rounding. 
 
 If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, a simple arithmetic expression.}]
-> 3 + 4 * 5;;
-val it : int = 23
-\end{lstlisting}
+\fso{simpleArithmetic}{A simple arithmetic expression.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, a simple arithmetic expression.}]
+% > 3 + 4 * 5;;
+% val it : int = 23
+% \end{lstlisting}
 Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} tokens \token{+} and \token{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:operatorPrecedence}, the precedence is shown by the order they are given in the table.
 \begin{table}
   \centering
@@ -310,23 +324,24 @@ Here, the addition and multiplication functions are shown in \idx{infix notation
 \end{table}
 Associativity implies the order in which calculations are performed for operators of same precedence. For some operators and type combinations association matters little, e.g., multiplication associates to the left and exponentiation associates to the right, e.g., in\jon{Spec-4.0, Table 18.2.1 appears to be missing boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, precedences rules define implicite parantheses.}]
-> let a = 3.0*4.0*5.0
-- let b = (3.0*4.0)*5.0
-- let c = 3.0*(4.0*5.0);;
+\fso{precedence}{Precedences rules define implicite parantheses.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, precedences rules define implicite parantheses.}]
+% > let a = 3.0*4.0*5.0
+% - let b = (3.0*4.0)*5.0
+% - let c = 3.0*(4.0*5.0);;
 
-val a : float = 60.0
-val b : float = 60.0
-val c : float = 60.0
+% val a : float = 60.0
+% val b : float = 60.0
+% val c : float = 60.0
 
-> let d = 4.0 ** 3.0 ** 2.0
-- let e = (4.0 ** 3.0) ** 2.0
-- let f = 4.0 ** (3.0 ** 2.0);;
+% > let d = 4.0 ** 3.0 ** 2.0
+% - let e = (4.0 ** 3.0) ** 2.0
+% - let f = 4.0 ** (3.0 ** 2.0);;
 
-val d : float = 262144.0
-val e : float = 4096.0
-val f : float = 262144.0
-\end{lstlisting}
+% val d : float = 262144.0
+% val e : float = 4096.0
+% val f : float = 262144.0
+% \end{lstlisting}
 the expression for \lstinline|a| is interpreted as \lstinline|b| but gives the same results as \lstinline|c| since association does not matter for multiplication of numbers, but the expression for \lstinline|d| is interpreted as \lstinline|f| which is quite different from \lstinline|e|.
 
 A less common notation is to define bindings for expressions using the \idx{\keyword{in}} keyword, e.g.,
@@ -360,24 +375,25 @@ Boolean arithmetic is the basis of almost all computers and particularly importa
 \end{table}
 That is, the multiplication and addition are good mnemonics for remembering the result of the 'and' and 'or' operators. In F\# the values \lstinline|true| and \lstinline|false| are used, and the operators \lstinline|&&| for 'and', \lstinline+||+ for 'or', and the function \lstinline|not| for 'not', such that the above table is reproduced by,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, boolean operators and truth tables.}]
-> let t = true
-- let f = false
-- printfn "a     b     a*b   a+b   not a"                                       
-- printfn "%A %A %A %A %A" f f (f && f) (f || f) (not f)
-- printfn "%A %A  %A %A  %A" f t (f && t) (f || t) (not f)
-- printfn "%A  %A %A %A  %A" t f (t && f) (t || f) (not t)
-- printfn "%A  %A  %A  %A  %A" t t (t && t) (t || t) (not t);;
-a     b     a*b   a+b   not a
-false false false false true
-false true  false true  true
-true  false false true  false
-true  true  true  true  false
+\fso{truthTable}{Boolean operators and truth tables.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, boolean operators and truth tables.}]
+% > let t = true
+% - let f = false
+% - printfn "a     b     a*b   a+b   not a"                                       
+% - printfn "%A %A %A %A %A" f f (f && f) (f || f) (not f)
+% - printfn "%A %A  %A %A  %A" f t (f && t) (f || t) (not f)
+% - printfn "%A  %A %A %A  %A" t f (t && f) (t || f) (not t)
+% - printfn "%A  %A  %A  %A  %A" t t (t && t) (t || t) (not t);;
+% a     b     a*b   a+b   not a
+% false false false false true
+% false true  false true  true
+% true  false false true  false
+% true  true  true  true  false
 
-val t : bool = true
-val f : bool = false
-val it : unit = ()
-\end{lstlisting}
+% val t : bool = true
+% val f : bool = false
+% val it : unit = ()
+% \end{lstlisting}
 %
 Careful spacing in the format string of the \lstinline|printfn| function was used to align columns. Next section will discuss more elegant formatting options.
 
@@ -638,6 +654,7 @@ by using the syntax,
 \end{lstlisting}
 %
 and then use \lstinline[language=EBNF]|"<" unit-name ">"| as suffix for literals. In Figure~\ref{fig:unitOfMeasureTypes}
+
 E.g., defining unit of measure 'm' and 's', then we can make calculations like,
 %
 \begin{lstlisting}[language=fsharp,caption={fsharpi, floating point and integer numbers may be assigned unit of measures.}]

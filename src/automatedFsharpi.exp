@@ -7,7 +7,7 @@ set script [lindex $argv 0];
 set f [open $script]
 set commands [split [read $f] "\n"]
 close $f
-puts $commands
+#puts $commands
 
 spawn fsharpi
 expect "> "

@@ -1,6 +1,7 @@
 % Character set
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc} % ensure that all the characters in characterSets.tex prints
+\usepackage{upquote} % \textcent
 
 % Page setup
 \usepackage[margin=25mm,outer=35mm,marginparsep=5mm]{geometry}
@@ -53,7 +54,6 @@
 \makeindex
 
 %% lstlisting stuff
-%\usepackage{upquote}
 \usepackage{listings}
 %\usepackage{chngcntr}
 % \usepackage[framemethod=tikz]{mdframed}
@@ -155,17 +155,17 @@
 \newcommand{\fse}[2]{
   % \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
   %\begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
-    \begin{minipage}{1\linewidth}
+%    \begin{minipage}{1\linewidth}
       \lstinputlisting[language=fsharp,caption={#2},label=#1]{\src/#1.fsx}
-    \end{minipage}
+%    \end{minipage}
   %\end{mdframed}
 }
 \newcommand{\fso}[2]{
   % \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
   %\begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
-    \begin{minipage}{1\linewidth}
+%    \begin{minipage}{1\linewidth}
       \lstinputlisting[language=fsharp,caption={fsharpi, #2},label=#1]{\src/#1.out}
-    \end{minipage}
+%    \end{minipage}
   %\end{mdframed}
 }
 

@@ -9,10 +9,11 @@ OSX := $(patsubst %.fsx,%.out,$(FSX))
 %.out: %.fsx
 	./fsx2out $<
 
+all: $(OSX) $(OSCRIPT)
+
 cleanfscript:
-	rm $OSCRIPT
+	rm $(OSCRIPT)
 
 cleanfsx:
-	rm $OSX
+	rm $(OSX)
 
-all: $(OSX) $(OSCRIPT)
