@@ -1,4 +1,4 @@
-\chapter{Constants, tuples, and types}
+\chapter{Using F\# as a calculator}
 %\chapter{Numbers, Characters, and Strings}
 \section{Literals and basic types}
 All programs rely on processing of data, and an essential property of data is its \idx{type}. A \idx{literal} is a fixed value such as "3", and if we type the number \lstinline!3! in an interactive session at the input prompt, then F\# responds as follows,
@@ -9,7 +9,7 @@ All programs rely on processing of data, and an essential property of data is it
 % > 3;;    
 % val it : int = 3
 % \end{lstlisting}
-What this means is that F\# has inferred the type to be \idx{\lstinline!int!} and bound it to the identifier \idx{\lstinline{it}}. Rumor has it, that the identifier \lstinline|it| is an abbreviation for 'irrelevant'. For more on binding and identifiers see Chapter~\ref{chap:let}. Types matter, since the operations that can be performed on integers are quite different from those that can be performed on, e.g., strings. I.e.,
+What this means is that F\# has inferred the type to be \idx{\lstinline{int}} and bound it to the identifier \idx{\lstinline{it}}. Rumor has it, that the identifier \lstinline|it| is an abbreviation for 'irrelevant'. For more on binding and identifiers see Chapter~\ref{chap:let}. Types matter, since the operations that can be performed on integers are quite different from those that can be performed on, e.g., strings. I.e.,
 %
 \fso{typeMatters}{Many representations of the number 3 but using different types.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, many representations of the number 3 but using different types.}]
@@ -23,7 +23,7 @@ What this means is that F\# has inferred the type to be \idx{\lstinline!int!} an
 % val it : string = "3"
 % \end{lstlisting}
 %
-Each literal represent the number 3, but their types are different, and hence they are quite different values. The types \lstinline!int! for integer numbers, \lstinline!float! for floating point numbers, \lstinline!char! for characters, and \lstinline!string! for strings of characters are the most common types of literals. A table of all \idx{basic types} predefined in F\# is given in Table~\ref{tab:primitiveTypes}.
+Each literal represent the number 3, but their types are different, and hence they are quite different values. The types \lstinline!int! for integer numbers, \idx{\lstinline{float}} for floating point numbers, \idx{\lstinline{char}} for characters, and \idx{\lstinline{string}} for strings of characters are the most common types of literals. A table of all \idx{basic types} predefined in F\# is given in Table~\ref{tab:primitiveTypes}.
 \begin{table}
   \centering
   \begin{tabularx}{\textwidth}{|l|l|>{\raggedright\arraybackslash}X|}
@@ -291,7 +291,7 @@ expr =
   | expr operator expr (* infix operation *)
   | operator expr (* prefix operation *)
   | expr expr (* function application *)
-  | expr ".[" slice-ranges "]" (* slice lookup *)
+  | expr ".[" slice-range "]" (* slice lookup *)
   | ...
 \end{lstlisting}
 %
@@ -687,20 +687,22 @@ For binary arithmetic on integers, the following operators are available:
 \lstinline{op1 >>> op2}, which shifts the bit pattern of \lstinline|op1| \lstinline|op2| positions to the right insert 0's to left;
 \lstinline{op1 &&& op2}, Bitwise 'and', returns the result of taking the boolean 'and' operator position-wise;
 \lstinline{op ||| op}, Bitwise 'or', as 'and' but using the boolean 'or' operator; and
-\lstinline{op1 ~~~ op1}, Bitwise xor, which is returns the result of the boolean 'xor' operator defined by;
-  \begin{center}
-    \begin{tabular}{|c|c|c|}
-      \hline
-      a&b& a xor b\\
-      \hline
-      0 & 0 & 0\\
-      0 & 1 & 1\\
-      1 & 0 & 1\\
-      0 & 1 & 0\\
-      \hline
-    \end{tabular}
-  \end{center}
-position-wise. 
+\lstinline{op1 ~~~ op1}, Bitwise xor, which is returns the result of the boolean 'xor' operator defined by the truth table in Table~\ref{tab:xor}.
+\begin{table}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    a&b& a xor b\\
+    \hline
+    0 & 0 & 0\\
+    0 & 1 & 1\\
+    1 & 0 & 1\\
+    0 & 1 & 0\\
+    \hline
+  \end{tabular}
+  \caption{Boolean exclusive or truth table.}
+  \label{tab:xor}
+\end{table}
 % Unfortunately, there are no built-ind functions to output integers on binary form, so to understand the output of the following program,
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
 % > let a = 0b11000011uy  
@@ -716,7 +718,6 @@ position-wise.
 % val e : byte = 60uy
 % \end{lstlisting}
 % we must consider the 8-bit binary form of the unsigned integers: $195 = 11000011_2$, $134 = 10000110_2$, $97 = 01100001_2$, and $60 = 00111100_2$, which agrees with the definitions. 
-\jon{mention somewhere that comparison operators will be treated later.}
 
 \section{Floating point arithmetic}
 The set of reals is infinitely large, and since all computers have limited resources, it is not possible to represent it in their entirety. The various floating point types listed in Table~\ref{tab:primitiveTypes} are finite subset reduced by sampling the space of reals. An in-depth description of floating point implementations can be found in Appendix~\ref{app:numbers}. The type \keyword{float} is the most common type. 
@@ -816,7 +817,7 @@ However, the \lstinline|float| type has limite precision, since there is only a 
 % val d : float = 5.684341886e-14
 % \end{lstlisting}
 %
-That is, addition and subtraction associates to the left, hence the expression is interpreted as \lstinline!(357.8 + 0.1) - 357.9!, and we see that we do not get the expected 0, since only a limited number of floating point values are available, and the numbers \lstinline!357.8 + 0.1!  and \lstinline!357.9! do not result in the same floating point representation. Such errors tend to accumulate and comparing the result of expressions of floating point values should therefore be treated with care. Thus, \advice{equivalence of two floating point expressions should only be considered up to sufficient precision, e.g., comparing \lstinline!357.8 + 0.1! and \lstinline!357.9! up to \lstinline!1e-10! precission should be tested as, \lstinline!abs ((357.8 + 0.1) - 357.9) < 1e-10!.}
+That is, addition and subtraction associates to the left, hence the expression is interpreted as \lstinline!(357.8 + 0.1) - 357.9!, and we see that we do not get the expected 0, since only a limited number of floating point values are available, and the numbers \lstinline!357.8 + 0.1!  and \lstinline!357.9! do not result in the same floating point representation. Such errors tend to accumulate and comparing the result of expressions of floating point values should therefore be treated with care. Thus, \advice{equivalence of two floating point expressions should only be considered up to sufficient precision, e.g., comparing \lstinline!357.8 + 0.1! and \lstinline!357.9! up to \lstinline!1e-10! precision should be tested as, \lstinline!abs ((357.8 + 0.1) - 357.9) < 1e-10!.}
 
 \section{Char and string arithmetic}
 Addition is the only operator defined for characters, nevertheless, character arithmetic is often done by casting to integer. A typical example is conversion of case, e.g., to convert the lowercase character 'z' to uppercase, we use the \idx{ASCIIbetical order} and add the difference between any Basic Latin Block letters in upper- and lowercase as \lstinline{integers} and cast back to \lstinline{char}, e.g.,
@@ -874,149 +875,6 @@ Notice, that the first character has index 0, and to get the last character in a
 Notice, since index counting starts at 0, and the string length is 7, then the index of the last character is 6. An alternative notation for indexing is to use the property \lstinline|Char|, and in the example \lstinline|''abcdefg''.[3]| is the same as \lstinline|a.Char 3|. The is a long list of built-in functions in \lstinline|System.String| for working with strings, some of which will be discussed in Chapter~\ref{sec:system.string}.
  
 The \idx{dot notation} is an example of Structured programming, where technically speaking, the string \lstinline|"abcdefg"| is an immutable \idx{object} of \idx{class} \lstinline|string|, and \lstinline|[]| is an object \idx{method} and \lstinline|Length| is a property. For more on object, classes, and methods see Chapter~\ref{chap:oop}.  
-
-
-\section{Unit of Measure}
-F\# allows for assigning \idx{unit of measure} to the following types,
-\begin{quote}
-  \mbox{\lstinline{sbyte},}
-  \mbox{\lstinline{int},}
-  \mbox{\lstinline{int16},}
-  \mbox{\lstinline{int32},}
-  \mbox{\lstinline{int64},}
-  \mbox{\lstinline{single},}
-  \mbox{\lstinline{float32},}
-  \mbox{\lstinline{float},} and
-  \mbox{\lstinline{decimal}.}
-\end{quote}
-by using the syntax,
-%
-\begin{lstlisting}[language=EBNF]
-"[<Measure>] type" unit-name [ "=" measure ]
-\end{lstlisting}
-%
-and then use \lstinline[language=EBNF]|"<" unit-name ">"| as suffix for literals. In Figure~\ref{fig:unitOfMeasureTypes}
-
-E.g., defining unit of measure 'm' and 's', then we can make calculations like,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point and integer numbers may be assigned unit of measures.}]
-> [<Measure>] type m
-- [<Measure>] type s 
-- let a = 3<m/s^2>
-- let b = a * 10<s>
-- let c = 4 * b;;
-
-[<Measure>]
-type m
-[<Measure>]
-type s
-val a : int<m/s ^ 2> = 3
-val b : int<m/s> = 30
-val c : int<m/s> = 120
-\end{lstlisting}
-However, if we mixup unit of measures under addition, then we get an error,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, unit of measures adds an extra layer of types for syntax checking at compile time.}]
-> [<Measure>] type m 
-- [<Measure>] type s 
-- let a = 1<m>
-- let b = 1<s>
-- let c = a + b;;
-
-  let c = a + b;;
-  ------------^
-
-/Users/sporring/repositories/fsharpNotes/stdin(63,13): error FS0001: The unit of measure 's' does not match the unit of measure 'm'
-\end{lstlisting}
-Unit of measures allow for \token{*}, \token{/}, and \token{^}\jon{Spec-4.0: this notation is inconsistent with \texttt{**} for float exponentiation.} for multiplication, division and exponentiation. Values with units can be casted to \idx{unit-less} values by casting, and back again by multiplication as,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, type casting unit of measures.}]
-> [<Measure>] type m      
-- let a = 2<m>            
-- let b = int a           
-- let c = b * 1<m>;;
-
-[<Measure>]
-type m
-val a : int<m> = 2
-val b : int = 2
-val c : int<m> = 2
-\end{lstlisting}
-Compound symbols can be declared as,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, aggregated unit of measures.}]
-> [<Measure>] type s         
-- [<Measure>] type m
-- [<Measure>] type kg
-- [<Measure>] type N = kg * m / s^2;;
-
-[<Measure>]
-type s
-[<Measure>]
-type m
-[<Measure>]
-type kg
-[<Measure>]
-type N = kg m/s ^ 2
-\end{lstlisting}
-For fans of the metric system there is the International System of Units, and these are built-in in \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols| and give in Table~\ref{tab:siUnits}.
-\begin{table}
-  \centering
-  \begin{tabularx}{0.75\linewidth}{|l|X|}
-    \hline
-    Unit & Description \\
-    \hline
-    \lstinline|A| & Ampere, unit of electric current.\\
-    \lstinline|Bq|&Becquerel, unit of radioactivity.\\
-    \lstinline|C|&Coulomb, unit of electric charge, amount of electricity.\\
-    \lstinline|cd|&Candela, unit of luminous intensity.\\
-    \lstinline|F|&Farad, unit of capacitance.\\
-    \lstinline|Gy|&Gray, unit of an absorbed dose of radiation.\\
-    \lstinline|H|&Henry, unit of inductance.\\
-    \lstinline|Hz|&Hertz, unit of frequency.\\
-    \lstinline|J|&Joule, unit of energy, work, amount of heat.\\
-    \lstinline|K|&Kelvin, unit of thermodynamic (absolute) temperature.\\
-    \lstinline|kat|&Katal, unit of catalytic activity.\\
-    \lstinline|kg|&Kilogram, unit of mass.\\
-    \lstinline|lm|&Lumen, unit of luminous flux.\\
-    \lstinline|lx|&Lux, unit of illuminance.\\
-    \lstinline|m|&Metre, unit of length.\\
-    \lstinline|mol|&Mole, unit of an amount of a substance.\\
-    \lstinline|N|&Newton, unit of force.\\
-    \lstinline|ohm|&Unitnames.o SI unit of electric resistance.\\
-    \lstinline|Pa|&Pascal, unit of pressure, stress.\\
-    \lstinline|s|&Second, unit of time.\\
-    \lstinline|S|&Siemens, unit of electric conductance.\\
-    \lstinline|Sv|&Sievert, unit of dose equivalent.\\
-    \lstinline|T|&Tesla, unit of magnetic flux density.\\
-    \lstinline|V|&Volt, unit of electric potential difference, electromotive force.\\
-    \lstinline|W|&Watt, unit of power, radiant flux.\\
-    \lstinline|Wb|&Weber, unit of magnetic flux.\\
-    \hline
-  \end{tabularx}
-  \caption{International System of Units.}
-  \label{tab:siUnits}
-\end{table}
-Hence, using the predefined unit of seconds, we may write,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, SI unit of measures are built-in.}]
-> let a = 10.0<Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols.s>;;
-
-val a : float<Data.UnitSystems.SI.UnitSymbols.s> = 10.0
-\end{lstlisting}
-To make the use of these predefined symbols easier, we can import them into the present scope by the \idx{\keyword{open}} keyword,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, simpler syntax by importing, but beware of namespace pollution.}]
-> open Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols;;
-> let a = 10.0<s>;;
-
-val a : float<s> = 10.0
-\end{lstlisting}
-The \keyword{open} keyword should be used with care, since now all the bindings in \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols| have been imported into the present scope, and since we most likely do not know, which bindings have been used by the programmers of \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols|, we do not know which identifiers to avoid, when using \keyword{let} statements. We have obtained, what is known as \idx{namespace pollution}. Read more about namespaces in Part~\ref{part:structured}.
-
-Using unit of measures is advisable for calculations involving real-world values, since some semantical errors of arithmetic expressions may be discovered by checking the resulting unit of measure.
-
-\jon{add comparison operators!}
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
