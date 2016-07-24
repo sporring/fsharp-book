@@ -279,16 +279,23 @@ Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an 
 \begin{lstlisting}[language=EBNF]
 bool = "true" | "false"
 const = byte | sbyte | uint8 | int8 | int16 | uint16 | int | int32 | uint32 | int64 | uint64 | bignum | naviteint | unativeint | float | double | single | float32 | decimal | char | string | byte [] | bool | "()"
+slice-range = 
+  expr (* single index *)
+  |  expr ".." (* from index to end *)
+  | ".." expr (* from start to index *)
+  | expr ".." expr (* from one index to another *)
+  | "*" (* from start to end *)
 expr = 
   const (* constant value *)
   | "(" expr ")" (* block expression *)
   | expr operator expr (* infix operation *)
   | operator expr (* prefix operation *)
   | expr expr (* function application *)
+  | expr ".[" slice-ranges "]" (* slice lookup *)
   | ...
 \end{lstlisting}
 %
-Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}. Arithmetic on various types will be discussed in detail in the following sections.
+Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}. Arithmetic on various types will be discussed in detail in the following sections. \jon{minor comment on indexing and slice-ranges.}
 \begin{table}
   \centering
   \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
@@ -822,46 +829,52 @@ Addition is the only operator defined for characters, nevertheless, character ar
 %
 I.e., the code point difference between upper and lower case for any alphabetical character 'a' to 'z' is constant, hence we can change case by adding or subtracting the difference between any corresponding character. Unfortunately, this does not generalize to characters from other languages.
 
-Operations on \lstinline{string} is quite rich. The most simple is concatenation using \token{+} token, e.g.,
+A large collection of operators and functions exist for \lstinline{string}. The most simple is concatenation using, e.g.,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, example of string concatenation.}]
-> let a = "hello"      
-- let b = "world"      
-- let c = a + " " + b;;
-
-val a : string = "hello"
-val b : string = "world"
-val c : string = "hello world"
-\end{lstlisting}
+\fso{stringConcatenation}{Example of string concatenation.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, example of string concatenation.}]
+% > let a = "hello"      
+% - let b = "world"      
+% - let c = a + " " + b;;
+%
+% val a : string = "hello"
+% val b : string = "world"
+% val c : string = "hello world"
+% \end{lstlisting}
 %
 Characters and strings cannot be concatenated, which is why the above example used the string of  a space \lstinline|" "| instead of the space character \lstinline|' '|. The characters of a string may be indexed as,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, example of string indexing.}]
-> let a = "abcdefg"
-- let b = a.[0]
-- let c = a.[3]
-- ;;
+\fso{stringIndexing}{String indexing using square brackets.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, example of string indexing.}]
+% > let a = "abcdefg"
+% - let b = a.[0]
+% - let c = a.[3]
+% - ;;
+%
+% val a : string = "abcdefg"
+% val b : char = 'a'
+% val c : char = 'd'
+% \end{lstlisting}
+%
+Notice, that the first character has index 0, and to get the last character in a string, we use the string's length property as,
+%
+\fso{stringIndexingLength}{String length attribute and string indexing.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, string length attribute and string indexing.}]
+% > let a = "abcdefg"                                                                             
+% - let l = a.Length                                                       
+% - let first = a.[0]
+% - let last = a.[l-1];;
+%
+% val a : string = "abcdefg"
+% val l : int = 7
+% val first : char = 'a'
+% val last : char = 'g'
+% \end{lstlisting}
+%
+Notice, since index counting starts at 0, and the string length is 7, then the index of the last character is 6. An alternative notation for indexing is to use the property \lstinline|Char|, and in the example \lstinline|''abcdefg''.[3]| is the same as \lstinline|a.Char 3|. The is a long list of built-in functions in \lstinline|System.String| for working with strings, some of which will be discussed in Chapter~\ref{sec:system.string}.
+ 
+The \idx{dot notation} is an example of Structured programming, where technically speaking, the string \lstinline|"abcdefg"| is an immutable \idx{object} of \idx{class} \lstinline|string|, and \lstinline|[]| is an object \idx{method} and \lstinline|Length| is a property. For more on object, classes, and methods see Chapter~\ref{chap:oop}.  
 
-val a : string = "abcdefg"
-val b : char = 'a'
-val c : char = 'd'
-\end{lstlisting}
-%
-The \idx{dot notation} is an example of Structured programming, where technically \lstinline|a| is an immutable \idx{object} of \idx{class} \lstinline|string|, and \lstinline|[]| is an object \idx{method}. For more on object, classes, and methods see Chapter~\ref{chap:oop}.  Notice, that the first character has index 0, and to get the last character in a string, we use the string's length property as,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, string length attribute and string indexing.}]
-> let a = "abcdefg"                                                                             
-- let l = a.Length                                                       
-- let first = a.[0]
-- let last = a.[l-1];;
-
-val a : string = "abcdefg"
-val l : int = 7
-val first : char = 'a'
-val last : char = 'g'
-\end{lstlisting}
-%
-Notice, since index counting starts at 0, and the string length is 7, then the index of the last character is 6. An alternative notation for indexing is to use the property \lstinline|Char|, and in the example \lstinline|a.[3]| is the same as \lstinline|a.Char 3|. The is a long list of built-in functions in \lstinline|System.String| for working with strings, some of which will be discussed in Chapter~\ref{sec:system.string}.
 
 \section{Unit of Measure}
 F\# allows for assigning \idx{unit of measure} to the following types,
