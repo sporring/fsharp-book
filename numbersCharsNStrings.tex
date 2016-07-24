@@ -71,41 +71,39 @@ Besides these built-in types, F\# is designed such that it is easy to define new
 Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base} 10 means that for a number consisting of a sequence of digits separated by a \idx{decimal point}, where each \idx{digit} can have values $d \in \{0,1,2,\ldots,9\}$, and the value, which each digit represents is proportional to its position. The part befor the decimal point is called the \idx{whole part} and the part after is called the \idx{fractional part} of the number. The whole part without a decimal point and a fractional part is called an \idx{integer number}. As an example \lstinline!35.7! is a decimal number, whose value is $3\cdot 10^1+5\cdot 10^0+7\cdot 10^{-1}$. In F\# a decimal number is called a \idx{floating point number} and in this text we use \idx{Extended Backus-Naur Form} (\idx{EBNF}) to describe the grammar of F\#, the decimal number just described is given as,
 %
 \begin{lstlisting}[language=EBNF]
-digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-int = digit {digit}
-float = int "." {digit}
+dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+dInt = dDigit {dDigit}
+dFloat = dInt "." {dDigit}
 \end{lstlisting}
 %
-meaning that a digit is either "0'' or "1" or \dots or "9'', an \lstinline!int! is 1 or more digits, and a \lstinline!float! is 1 or more digits, a dot and 0 or more digits. There is no space between the digits and between digits and the dot. So \lstinline!3!, \lstinline!049! are examples of integers, \lstinline!34.89! \lstinline!3.! are examples of floats, while \lstinline!.5! is neither.  Floating point numbers may alternatively be given using exponential notation, such as \lstinline!3.5e-4! and \lstinline!4e2!, which means the number $3.5\cdot 10^{-4} = 0.00035$ and $4\cdot 10^2=400$. To describe this in EBNF we write
+meaning that a \lstinline[language=ebnf]!dDigit! is either "0'' or "1" or \dots or "9'', an \lstinline[language=ebnf]!dInt! is 1 or more \lstinline[language=ebnf]!dDigit!, and a \lstinline[language=ebnf]!dFloat! is 1 or more digits, a dot and 0 or more digits. There is no space between the digits and between digits and the dot. So \lstinline!3!, \lstinline!049! are examples of integers, \lstinline!34.89! \lstinline!3.! are examples of floats, while \lstinline!.5! is neither.  Floating point numbers may alternatively be given using \idx{scientific notation}, such as \lstinline!3.5e-4! and \lstinline!4e2!, which means the number $3.5\cdot 10^{-4} = 0.00035$ and $4\cdot 10^2=400$. To describe this in EBNF we write
 %
 \begin{lstlisting}[language=EBNF]
-digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-int = digit {digit}
-simpleFloat = int "." {digit}
-expFloat = (int | simpleFloat) ("e" | "E" ) ["+" | "-"] int
-float = simpleFloat | expFloat
+sFloat = (dInt | dFloat) ("e" | "E" ) ["+" | "-"] dInt
+float = dFloat | sFloat
 \end{lstlisting}
 %
-Note that the number before the token \token{e} may be an \lstinline[language=ebnf]!int! or a \lstinline[language=ebnf]!simpleFloat!, but the exponent value must be an \lstinline[language=ebnf]!int!.
+Note that the number before the token \token{e} may be an \lstinline[language=ebnf]!dInt! or a \lstinline[language=ebnf]!dFloat!, but the exponent value must be an \lstinline[language=ebnf]!dInt!.
 
 The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^1=5.25$. Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}, where octals uses 8 as basis and can be written in binary using 3 bits, while hexadecimal numbers uses 16 as basis and can be written in binary using 4 bits. Octals and hexadecimals thus conveniently serve as shorthand for the much longer binary representation. F\# has a syntax for writing integers on binary, octal, decimal, and hexadecimal numbers as,
 %
 \begin{lstlisting}[language=EBNF]
 bDigit = "0" | "1"
 oDigit  = bDigit | "2" | "3" | "4" | "5" | "6" | "7"
-digit = oDigit | "8" | "9"
+dDigit = oDigit | "8" | "9"
 xDigit  = 
-  digit 
+  dDigit 
   | "A" | "B" | "C" | "D" | "E" | "F" 
   | "a" | "b" | "c" | "d" | "e" | "f" 
-int = digit {digit}
+dInt = dDigit {dDigit}
 bitInt = "0" ("b" | "B") bDigit {bDigit}
 octInt = "0" ("o" | "O") oDigit {oDigit}
 hexInt = "0" ("x" | "X") xDigit {xDigit}
-xint = bitInt | octInt | hexInt
+xInt = bitInt | octInt | hexInt
+int = dInt | xInt
 \end{lstlisting}
 %
-For example \lstinline!367! is an \lstinline[language=EBNF]!int!, \lstinline!0b101101111!, \lstinline!0o557!, and \lstinline!0x16f! is a binary, octal, and hexadecimal number, they are examples of an \lstinline[language=EBNF]!xint! and representations of the same number 367. In contrast, \lstinline!0b12! and \lstinline!ff! are neither an \lstinline[language=EBNF]!int! nor an \lstinline[language=EBNF]!xint!.
+For example \lstinline!367! is an \lstinline[language=EBNF]!dInt!, \lstinline!0b101101111!, \lstinline!0o557!, and \lstinline!0x16f! is a \lstinline[language=EBNF]!bitInt!, \lstinline[language=EBNF]!octInt!, and \lstinline[language=EBNF]!hexInt!, i.e., a binary, an octal, and a hexadecimal number, they are examples of an \lstinline[language=EBNF]!xInt! and representations of the same number 367. In contrast, \lstinline!0b12! and \lstinline!ff! are neither an \lstinline[language=EBNF]!dInt! nor an \lstinline[language=EBNF]!xInt!.
 
 A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks, see Appendix~\ref{sec:unicode} for a description of code points.\jon{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The EBNF for characters is,
 %
@@ -113,14 +111,14 @@ A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals ar
 escapeCodePoint = 
   "\u" xDigit xDigit xDigit xDigit
   | "\U" xDigit xDigit xDigit xDigit xDigit xDigit xDigit xDigit
-  | "\" digit digit digit 
+  | "\" dDigit dDigit dDigit 
 escapeChar = 
   "\" ("b" | "n" | "r" | "t" | "\" | '"' | "'" | "a" | "f" | "v")
   | escapeCodePoint
 char = "'" codePoint | escapeChar "'"
 \end{lstlisting}
 % 
-where \lstinline[language=EBNF]!codePoint! is a UTF8 encoding of a char. The escape characters \lstinline[language=EBNF]{escapeChar} are special sequences that are intepreted as a single code point shown in Table~\ref{tab:escapeChar}. The trigraph \lstinline|\DDD| uses decimal specification for the first 256 code points, and the hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any code point.
+where \lstinline[language=EBNF]!codePoint! is a UTF8 encoding of a char. The escape characters \lstinline[language=EBNF]{escapeChar} are special sequences that are interpreted as a single code point shown in Table~\ref{tab:escapeChar}. The trigraph \lstinline|\DDD| uses decimal specification for the first 256 code points, and the hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any code point.
 \begin{table}
   \centering
   \begin{tabular}{|c|l|l|}
@@ -147,8 +145,9 @@ Examples of a \lstinline[language=ebnf]!char! are \lstinline{'a'}, \lstinline{'_
 
 A \idx{string} is a sequence of characters enclosed in double quotation marks,\jon{Spec-4.0 p. 28-29: \texttt{simple-string-char} is undefined, \texttt{string-elem} is unused.}
 %
- \begin{lstlisting}[language=EBNF]
-   string-expr = '"' { char | LF | SP }  '"'
+\begin{lstlisting}[language=EBNF]
+stringChar = char - '"'
+simpleString = '"' { stringChar }  '"'
 \end{lstlisting}
 % 
 Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. Newlines and following white spaces are taken literally, but may be ignored by a preceding \textbackslash character. Further examples of strings are,
@@ -179,26 +178,28 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
     \hline
     type & EBNF & Examples \\
     \hline
-    \lstinline!int!, \lstinline!int32! & \lstinline[language=ebnf]!(int | xint) ["l"]!  & \lstinline!3! \\
-    \lstinline!uint32! & \lstinline[language=ebnf]!(int | xint) ("u" | "ul")! & \lstinline!3u! \\
-    \lstinline!byte!, \lstinline!uint8! & \lstinline[language=ebnf]!((int | xint) "uy") | (char "B")!  & \lstinline!3uy!  \\
-    \lstinline!byte[]! & \lstinline[language=ebnf]!["@"] string "B"!  & \lstinline!"abc"B! and \lstinline!"@http:\\\\"B!  \\
-    \lstinline!sbyte!, \lstinline!int8! & \lstinline[language=ebnf]!(int | xint) "y"! & \lstinline!3y!  \\
-    \lstinline!int16! & \lstinline[language=ebnf]!(int | xint) "s"!  & \lstinline!3s!  \\
-    \lstinline!uint16! & \lstinline[language=ebnf]!(int | xint) "us"! & \lstinline!3us!  \\
-    \lstinline!int64! & \lstinline[language=ebnf]!(int | xint) "L"!  & \lstinline!3L!  \\
-    \lstinline!uint64! & \lstinline[language=ebnf]!(int | xint) ("UL" | "uL")!  & \lstinline!3UL! and \lstinline!3uL!  \\
-    \lstinline!bignum!$^*$ & \lstinline[language=ebnf]!int "I"! & \lstinline!3I!  \\
-    \lstinline!nativeint! & \lstinline[language=ebnf]!(int | xint) "n"! & \lstinline!3n!  \\
-    \lstinline!unativeint! & \lstinline[language=ebnf]!(int | xint) "un"!  & \lstinline!3un!  \\
-    \lstinline!float!, \lstinline!double! & \lstinline[language=ebnf]!float | (xint "LF")!  & \lstinline!3.0!  \\
-    \lstinline!single!, \lstinline!float32! & \lstinline[language=ebnf]!(float ("F" | "f")) | (xint "lf") !  & \lstinline!3.0f!  \\
-    \lstinline!decimal! &\lstinline[language=ebnf]!(float | int) ("M" | "m")! & \lstinline!3.0m! and \lstinline!3m!  \\
-    \lstinline!string! & \lstinline[language=ebnf]!["@"] string!  & \lstinline!"abc"! and \lstinline!@"http:\\\\"!  \\
+    \lstinline!int!, \lstinline!int32! & \lstinline[language=ebnf]!(dInt | xInt) ["l"]!  & \lstinline!3! \\
+    \lstinline!uint32! & \lstinline[language=ebnf]!(dInt | xInt) ("u" | "ul")! & \lstinline!3u! \\
+    \lstinline!byte!, \lstinline!uint8! & \lstinline[language=ebnf]!((dInt | xInt) "uy") | (char "B")!  & \lstinline!3uy!  \\
+    \lstinline!byte[]! & \lstinline[language=ebnf]!["@"] string "B"!  & \lstinline!"abc"B! and \lstinline!"@http:\\"B!  \\
+    \lstinline!sbyte!, \lstinline!int8! & \lstinline[language=ebnf]!(dInt | xInt) "y"! & \lstinline!3y!  \\
+    \lstinline!int16! & \lstinline[language=ebnf]!(dInt | xInt) "s"!  & \lstinline!3s!  \\
+    \lstinline!uint16! & \lstinline[language=ebnf]!(dInt | xInt) "us"! & \lstinline!3us!  \\
+    \lstinline!int64! & \lstinline[language=ebnf]!(dInt | xInt) "L"!  & \lstinline!3L!  \\
+    \lstinline!uint64! & \lstinline[language=ebnf]!(dInt | xInt) ("UL" | "uL")!  & \lstinline!3UL! and \lstinline!3uL!  \\
+    \lstinline!bignum!$^*$ & \lstinline[language=ebnf]!dInt "I"! & \lstinline!3I!  \\
+    \lstinline!nativeint! & \lstinline[language=ebnf]!(dInt | xInt) "n"! & \lstinline!3n!  \\
+    \lstinline!unativeint! & \lstinline[language=ebnf]!(dInt | xInt) "un"!  & \lstinline!3un!  \\
+    \lstinline!float!, \lstinline!double! & \lstinline[language=ebnf]!float | (xInt "LF")!  & \lstinline!3.0!  \\
+    \lstinline!single!, \lstinline!float32! & \lstinline[language=ebnf]!(float ("F" | "f")) | (xInt "lf") !  & \lstinline!3.0f!  \\
+    \lstinline!decimal! &\lstinline[language=ebnf]!(float | dInt) ("M" | "m")! & \lstinline!3.0m! and \lstinline!3m!  \\
+    \lstinline!string! & \lstinline[language=EBNF]!simpleString |! & \lstinline!"a \"quote\".\n"!  \\
+         & \lstinline[language=EBNF]!'@"' {(char - ('"' | '\"' )) | '""'} '"' |!&\lstinline!@"a ""quote"".\n"! \\
+         & \lstinline[language=EBNF]!'""' {char} '""' (*no '"""' substring*)! & \lstinline!"""a "quote".\n"""!  \\
     \hline
   \end{tabular}
   % \end{tabularx}
-  \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix. $^*$\lstinline[language=ebnf]!bignum! does not yet have an implementation for \lstinline[language=ebnf]!int ("Q"|"R"|"Z"|"N"|"G")! in Mono.}
+  \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix. \lstinline![]! notation is for lists, see Chapter~\ref{chap:lists}. $^*$\lstinline[language=ebnf]!bignum! does not yet have an implementation for \lstinline[language=ebnf]!dInt ("Q"|"R"|"Z"|"N"|"G")! in Mono.}
   \label{tab:literalTypes}
 \end{table}
 Examples are,
@@ -220,7 +221,7 @@ Examples are,
 % val it : string = "ABC"
 % \end{lstlisting}
 %
-Strings literals may be \idx{verbatim} by preceding the string with '@', meaning that the escape sequences are not converted to their code point, e.g., 
+Strings literals may be \idx{verbatim} by the @-notation or tripple double quotation marks, meaning that the escape sequences are not converted to their code point., e.g., 
 %
 \fso{stringVerbatim}{Examples of a string literal.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
@@ -228,16 +229,7 @@ Strings literals may be \idx{verbatim} by preceding the string with '@', meaning
 % val it : string = "abc\nde"
 % \end{lstlisting}
 %
-Verbatim literals containing double quotation marks are escaped with an extra double quotation mark, or the alternative tripple double quotation mark may be used, e.g.,
-%
-\fso{stringQuotationMarks}{Example of double quotation marks in verbatim string literals.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, example of double quotation marks in verbatim string literals.}]
-% > @"This is a verbatim ""quote"".";;
-% val it : string = "This is a verbatim "quote"."
-% > """This is a verbatim "quote".""";; 
-% val it : string = "This is a verbatim "quote"."
-% \end{lstlisting}
-%
+For strings containing double quotation marks, verbatim literals has 2 possible notations, either use the @-notation and escaping double quotation marks with an extra double quotation mark, or use tripple double quotation marks. \advice{The tripple double quotation marks notation may not contain substrings that are tripple double quotation marks, and thus @-notation is preferred.}
 
 Many basic types are compatible and the type of a literal may be changed by \idx{type casting}. E.g.,
 %
@@ -282,68 +274,174 @@ Here we type casted to a lesser type, in the sense that integers is a subset of 
 since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasting removes the fractional part resulting in $y$. And if $y.x\in [y.5, y+1)$, then $y.x+0.5\in [y+1,y+1.5)$, from which downcasting removes the fractional part resulting in $y+1$. Hence, the result is rounding. 
 
 \section{Operators on basic types}
-Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an \idx{infix operator}, whose grammer is given \idx[recursion]{recursively} as,
+Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an \idx{infix operator}. Expressions is the basic building block of all F\# programs, and its grammar has many possible options. The grammar for expressions are defined recursively, and some of it is given by, \jon{Spec-4.0 Section 4.3: const is missing uint8, int8 nativeint, unativeint.}
 %
 \begin{lstlisting}[language=EBNF]
-expr = expr op expr
+bool = "true" | "false"
+const = byte | sbyte | uint8 | int8 | int16 | uint16 | int | int32 | uint32 | int64 | uint64 | bignum | naviteint | unativeint | float | double | single | float32 | decimal | char | string | byte [] | bool | "()"
+expr = 
+  const (* constant value *)
+  | "(" expr ")" (* block expression *)
+  | expr operator expr (* infix operation *)
+  | operator expr (* prefix operation *)
+  | expr expr (* function application *)
+  | ...
 \end{lstlisting}
 %
-Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary opreator}. F\# supports a range of aritmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators}.
+Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}. Arithmetic on various types will be discussed in detail in the following sections.
 \begin{table}
   \centering
   \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
     \hline
     Operator & \lstinline!op1! & \lstinline!op2! & Expression & Result &Description\\
     \hline
-    \lstinline!op1 + op2!&int & int & \lstinline!5 + 2!&\lstinline!7!&Addition\\
-             &float & float & \lstinline!5.0 + 2.0!&\lstinline!7.0!&Addition\\
-             &char & char & \lstinline!'a' + 'b'!&\lstinline!'\\195'!&Addition of codes\\
-             &string & string & \lstinline!"ab" + "cd"!&\lstinline!"abcd"!&Concatenation\\
+    \lstinline!op1 + op2!&ints & ints & \lstinline!5 + 2!&\lstinline!7!&Addition\\
+             &floats & floats & \lstinline!5.0 + 2.0!&\lstinline!7.0!&\\
+             &chars & chars & \lstinline!'a' + 'b'!&\lstinline!'\\195'!&Addition of codes\\
+             &strings & strings & \lstinline!"ab" + "cd"!&\lstinline!"abcd"!&Concatenation\\
     \hline
-    \lstinline!op1 - op2!&int & int & \lstinline!5 - 2!&\lstinline!3!&Subtraction\\
-             &float & float & \lstinline!5.0 - 2.0!&\lstinline!3.0!&Subtraction\\
+    \lstinline!op1 - op2!&ints & ints & \lstinline!5 - 2!&\lstinline!3!&Subtraction\\
+             &floats & floats & \lstinline!5.0 - 2.0!&\lstinline!3.0!&\\
     \hline
-    \lstinline!op1 * op2!&int & int & \lstinline!5 * 2!&\lstinline!10!&Multiplication\\
-             &float & float & \lstinline!5.0 * 2.0!&\lstinline!10.0!&Multiplication\\
+    \lstinline!op1 * op2!&ints & ints & \lstinline!5 * 2!&\lstinline!10!&Multiplication\\
+             &floats & floats & \lstinline!5.0 * 2.0!&\lstinline!10.0!&\\
     \hline
-    \lstinline!op1 / op2!&int & int & \lstinline!5 / 2!&\lstinline!2!&Integer division\\
-             &float & float & \lstinline!5.0 / 2.0!&\lstinline!2.5!&Division\\
+    \lstinline!op1 / op2!&ints & ints & \lstinline!5 / 2!&\lstinline!2!&Integer division\\
+             &floats & floats & \lstinline!5.0 / 2.0!&\lstinline!2.5!&Division\\
     \hline
-    \lstinline!op1 \% op2!&int & int & \lstinline!5 \% 2!&\lstinline!1!&Remainder\\
-             &float & float & \lstinline!5.0 \% 2.0!&\lstinline!1.0!&Remainder\\
+    \lstinline!op1 \% op2!&ints & ints & \lstinline!5 \% 2!&\lstinline!1!&Remainder\\
+             &floats & floats & \lstinline!5.0 \% 2.0!&\lstinline!1.0!&\\
     \hline
-    \lstinline!op1 ** op2!&float & float & \lstinline!5.0 ** 2.0!&\lstinline!25.0!&Exponentiation\\
+    \lstinline!op1 ** op2!&floats & floats & \lstinline!5.0 ** 2.0!&\lstinline!25.0!&Exponentiation\\
     \hline
     \lstinline!op1 \&\& op2!&bool & bool & \lstinline!true \&\& false!&\lstinline!false!&boolean and\\
     \hline
     \lstinline!op1 || op2!&bool & bool & \lstinline!true || false!&\lstinline!false!&boolean or\\
     \hline
-    \lstinline!op1 \&\&\& op2!&int & int & \lstinline!0b1010 \&\&\& 0b1100!&\lstinline!0b1000!&bitwise bool and\\
+    \lstinline!op1 \&\&\& op2!&ints & ints & \lstinline!0b1010 \&\&\& 0b1100!&\lstinline!0b1000!&bitwise bool and\\
     \hline
-    \lstinline!op1 ||| op2!&int & int & \lstinline!0b1010 ||| 0b1100!&\lstinline!0b1110!&bitwise boolean or\\
+    \lstinline!op1 ||| op2!&ints & ints & \lstinline!0b1010 ||| 0b1100!&\lstinline!0b1110!&bitwise boolean or\\
     \hline
-    \lstinline!op1 \^\^\^ op2!&int & int & \lstinline!0b1010 \^\^\^ 0b1101!&\lstinline!0b0111!&bitwise boolean exclusive or\\
+    \lstinline!op1 \^\^\^ op2!&ints & ints & \lstinline!0b1010 \^\^\^ 0b1101!&\lstinline!0b0111!&bitwise boolean exclusive or\\
     \hline
-     \lstinline!op1 <<< op2!&int & int & \lstinline!0b00001100uy <<< 2!&\lstinline!0b00110000uy!&bitwise shift left\\
+     \lstinline!op1 <<< op2!&ints & ints & \lstinline!0b00001100uy <<< 2!&\lstinline!0b00110000uy!&bitwise shift left\\
      \hline
-     \lstinline!op1 >>> op2!&int & int & \lstinline!0b00001100uy >>> 2!&\lstinline!0b00000011uy!&bitwise and\\
+     \lstinline!op1 >>> op2!&ints & ints & \lstinline!0b00001100uy >>> 2!&\lstinline!0b00000011uy!&bitwise and\\
      \hline
-    \lstinline!+op1!&int&&\lstinline!+3!&\lstinline!3!&identity\\
-             &float&&\lstinline!+3.0!&\lstinline!3.0!&identity\\
+    \lstinline!+op1!&ints&&\lstinline!+3!&\lstinline!3!&identity\\
+             &floats&&\lstinline!+3.0!&\lstinline!3.0!&\\
     \hline
-    \lstinline!-op1!&int&&\lstinline!-3!&\lstinline!-3!&negation\\
-             &float&&\lstinline!-3.0!&\lstinline!-3.0!&negation\\
+    \lstinline!-op1!&ints&&\lstinline!-3!&\lstinline!-3!&negation\\
+             &floats&&\lstinline!-3.0!&\lstinline!-3.0!&\\
     \hline
     \lstinline!not op1!&bool&&\lstinline!not true!&\lstinline!false!&boolean negation\\
     \hline
-    \lstinline!\~\~\~op1!&int&&\lstinline!\~\~\~0b00001100uy!&\lstinline!0b11110011uy!&bitwise boolean negation\\
+    \lstinline!\~\~\~op1!&ints&&\lstinline!\~\~\~0b00001100uy!&\lstinline!0b11110011uy!&bitwise boolean negation\\
     \hline
   \end{tabularx}
-  \caption{Arithmetic operators on basic types. In the table, int and float means all built-in integer and floating point types. Note that for the bitwise operations, digits \lstinline{0} and \lstinline{1} are taken to be \lstinline{true} and \lstinline{false}}
+  \caption{Arithmetic operators on basic types. Ints, floats, chars, and strings means all built-in integer types etc.. Note that for the bitwise operations, digits \lstinline{0} and \lstinline{1} are taken to be \lstinline{true} and \lstinline{false}.}
   \label{tab:preNInfixOperators}
 \end{table}
-
-******
+\begin{table}
+  \centering
+  \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
+    \hline
+    Operator & \lstinline!op1! & \lstinline!op2! & Expression & Result &Description\\
+    \hline
+    \lstinline!op1 < op2!&bool & bool & \lstinline!true < false!&\lstinline!false!&Less than\\
+             &ints & ints & \lstinline!5 < 2!&\lstinline!false!&\\
+             &floats & floats & \lstinline!5.0 < 2.0!&\lstinline!false!&\\
+             &chars & chars & \lstinline!'a' < 'b'!&\lstinline!true!&\\
+             &strings & strings & \lstinline!"ab" < "cd"!&\lstinline!true!&\\
+    \hline
+    \lstinline!op1 > op2!&bool & bool & \lstinline!true > false!&\lstinline!true!&Greater than\\
+             &ints & ints & \lstinline!5 > 2!&\lstinline!true!&\\
+             &floats & floats & \lstinline!5.0 > 2.0!&\lstinline!true!&\\
+             &chars & chars & \lstinline!'a' > 'b'!&\lstinline!false!&\\
+             &strings & strings & \lstinline!"ab" > "cd"!&\lstinline!false!&\\
+    \hline
+    \lstinline!op1 = op2!&bool & bool & \lstinline!true = false!&\lstinline!false!&Equal\\
+             &ints & ints & \lstinline!5 = 2!&\lstinline!false!&\\
+             &floats & floats & \lstinline!5.0 = 2.0!&\lstinline!false!&\\
+             &chars & chars & \lstinline!'a' = 'b'!&\lstinline!false!&\\
+             &strings & strings & \lstinline!"ab" = "cd"!&\lstinline!false!&\\
+    \hline
+    \lstinline!op1 <= op2!&bool & bool & \lstinline!true <= false!&\lstinline!false!&Less than or equal\\
+             &ints & ints & \lstinline!5 <= 2!&\lstinline!false!&\\
+             &floats & floats & \lstinline!5.0 <= 2.0!&\lstinline!false!&\\
+             &chars & chars & \lstinline!'a' <= 'b'!&\lstinline!true!&\\
+             &strings & strings & \lstinline!"ab" <= "cd"!&\lstinline!true!&\\
+    \hline
+    \lstinline!op1 >= op2!&bool & bool & \lstinline!true >= false!&\lstinline!true!&Greater than or equal\\
+             &ints & ints & \lstinline!5 >= 2!&\lstinline!true!&\\
+             &floats & floats & \lstinline!5.0 >= 2.0!&\lstinline!true!&\\
+             &chars & chars & \lstinline!'a' >= 'b'!&\lstinline!false!&\\
+             &strings & strings & \lstinline!"ab" >= "cd"!&\lstinline!false!&\\
+    \hline
+    \lstinline!op1 <> op2!&bool & bool & \lstinline!true <> false!&\lstinline!true!&Not Equal\\
+             &ints & ints & \lstinline!5 <> 2!&\lstinline!true!&\\
+             &floats & floats & \lstinline!5.0 <> 2.0!&\lstinline!true!&\\
+             &chars & chars & \lstinline!'a' <> 'b'!&\lstinline!true!&\\
+             &strings & strings & \lstinline!"ab" <> "cd"!&\lstinline!true!&\\
+    \hline
+  \end{tabularx}
+  \caption{Comparison operators on basic types. Ints, floats, chars, and strings means all built-in integer types etc..}
+  \label{tab:comparisonOperators}
+\end{table}
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|l|l|l|}
+    \hline
+    Type & Function name & Example & Result & Description\\
+    \hline
+    Ints and floats & \lstinline!abs! & \lstinline!abs -3! & \lstinline!3! & Absolute value\\
+    \hline 
+    Floats & \lstinline!acos! & \lstinline!acos 0.8! & \lstinline!0.6435011088! & Inverse cosine\\
+    \hline 
+    Floats & \lstinline!asin! & \lstinline!asin 0.8! & \lstinline!0.927295218! & Inverse sinus\\
+    \hline 
+    Floats & \lstinline!atan! & \lstinline!atan 0.8! & \lstinline!0.6747409422! & Inverse tangent\\
+    \hline 
+    Floats & \lstinline!atan2! & \lstinline!atan2 0.8 2.3! & \lstinline!0.3347368373! & Inverse tangentvariant\\
+    \hline 
+    Floats & \lstinline!ceil! & \lstinline!ceil 0.8! & \lstinline!1.0! & Ceiling\\
+    \hline 
+    Floats & \lstinline!cos! & \lstinline!cos 0.8! & \lstinline!0.6967067093! & Cosine\\
+    \hline 
+    Floats & \lstinline!cosh! & \lstinline!cosh 0.8! & \lstinline!1.337434946! & Hyperbolic cosine\\
+    \hline 
+    Floats & \lstinline!exp! & \lstinline!exp 0.8! & \lstinline!2.225540928! & Natural exponent\\
+    \hline 
+    Floats & \lstinline!floor! & \lstinline!floor 0.8! & \lstinline!0.0! & Floor\\
+    \hline 
+    Floats & \lstinline!log! & \lstinline!log 0.8! & \lstinline!-0.2231435513! & Natural logarithm\\
+    \hline 
+    Floats & \lstinline!log10! & \lstinline!log10 0.8! & \lstinline!-0.09691001301! & Base-10 logarithm\\
+    \hline 
+    \begin{minipage}[t]{0.175\linewidth}Ints, floats,\\chars, and strings\end{minipage} & \lstinline!max! & \lstinline!max 3.0 4.0! & \lstinline!4.0! & Maximum\\
+    \hline 
+    \begin{minipage}[t]{0.175\linewidth}Ints, floats,\\chars, and strings\end{minipage} & \lstinline!min! & \lstinline!min 3.0 4.0! & \lstinline!3.0! & Minimum\\
+    \hline 
+    Ints & \lstinline!pown! & \lstinline!pown 3 2! & \lstinline!9! & Integer exponent\\
+    \hline 
+    Floats & \lstinline!round! & \lstinline!round 0.8! & \lstinline!1.0! & Rounding\\
+    \hline 
+    Ints and floats & \lstinline!sign! & \lstinline!sign -3! & \lstinline!-1! & Sign\\
+    \hline 
+    Floats & \lstinline!sin! & \lstinline!sin 0.8! & \lstinline!0.7173560909! & Sinus\\
+    \hline 
+    Floats & \lstinline!sinh! & \lstinline!sinh 0.8! & \lstinline!0.8881059822! & Hyperbolic sinus\\
+    \hline 
+    Floats & \lstinline!sqrt! & \lstinline!sqrt 0.8! & \lstinline!0.894427191! & Square root\\
+    \hline 
+    Floats & \lstinline!tan! & \lstinline!tan 0.8! & \lstinline!1.029638557! & Tangent\\
+    \hline 
+    Floats & \lstinline!tanh! & \lstinline!tanh 0.8! & \lstinline!0.6640367703! & Hyperbolic tangent\\
+    \hline 
+  \end{tabular}
+  \caption{Predefined functions for arithmetic operations}
+  \label{tab:arithmeticFunctions}
+\end{table}
 
 If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
 %
@@ -408,7 +506,7 @@ Associativity implies the order in which calculations are performed for operator
 % val e : float = 4096.0
 % val f : float = 262144.0
 % \end{lstlisting}
-the expression for \lstinline|a| is interpreted as \lstinline|b| but gives the same results as \lstinline|c| since association does not matter for multiplication of numbers, but the expression for \lstinline|d| is interpreted as \lstinline|f| which is quite different from \lstinline|e|.
+the expression for \lstinline|3.0 * 4.0 * 5.0| associates to the left, and thus is interpreted as \mbox{\lstinline|(3.0 * 4.0) * 5.0|,} but gives the same results as \lstinline|3.0 * (4.0 * 5.0)|, since association does not matter for multiplication of numbers. However, the expression for \lstinline|4.0 ** 3.0 ** 2.0| associates to the right, and thus is interpreted as \lstinline|4.0 ** (3.0 ** 2.0)|, which is quite different from \lstinline|(4.0 ** 3.0) ** 2.0|. \advice{Whenever in doubt of association or any other basic semantic rules, it is a good idea to use parentheses as here. It is also a good idea to test your understanding of the syntax and semantic rules by simplest possible scripts, as shown here as well.}
 
 \section{Booleans}
 Boolean arithmetic is the basis of almost all computers and particularly important for controlling program flow, which will be discussed in Chapter~\ref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Two basic operations on boolean values are '\idx{and}' often also written as multiplication, and '\idx{or}' often written as addition, and '\idx{not}' often written as a bar above the value. All possible combination of input on these values can be written on tabular form, known as a \idx{truth table}, shown in Table~\ref{tab:truthTable}.
@@ -449,34 +547,30 @@ That is, the multiplication and addition are good mnemonics for remembering the 
 % val it : unit = ()
 % \end{lstlisting}
 %
-Careful spacing in the format string of the \lstinline|printfn| function was used to align columns. Next section will discuss more elegant formatting options.
+Spacing produced using the \lstinline|printfn| function is not elegant. In Section~\ref{sec:printf} we will discuss better options for producing more beautiful output. Notice, that the arguments for \lstinline|printfn| was given on the next line. Here it is important to use \idx{indentation} to indicate continuation of the line. See Section~\ref{sec:indentation} for more.
 
 \section{Integers and Reals}
 The set of integers and reals are infinitely large, and since all computers have limited resources, it is not possible to represent these sets in their entirety. The various integer and floating point types listed in Table~\ref{tab:primitiveTypes} are finite subset where the integer types have been reduced by limiting their ranges and the floating point types have been reduced by sampling the space of reals. An in-depth description of integer and floating point implementations can be found in Appendix~\ref{app:numbers}. The \keyword{int} and \keyword{float} are the most common types. 
 
-For integers the following arithmetic operators are defined: 
+Table~\ref{tab:preNInfixOperators} gives examples of how to use the operators for integers and floats, and most work like a standard calculator would.
+
+For integers the following arithmetic operators are defined:
 \begin{description}
-\item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, unary integer negation operator.}]
-> let a = 5       
-- let b = -a;;
-
-val a : int = 5
-val b : int = -5
-\end{lstlisting}
-\item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|:] These are binary operators, where addition, subtraction and multiplication performs the usual operations, 
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer addition, subtraction, and multiplication operators.}]
-> let a = 7 + 3
-- let b = 7 - 3
-- let c = 7 * 3;;
-
-val a : int = 10
-val b : int = 4
-val c : int = 21
-\end{lstlisting}
-\item[\lstinline|op / op|, \lstinline|op \% op|:] These are binary operators, and division performs integer division, where the fractional part is discarded after division, and the \lstinline|\%| is the remainder operator, which calculates the remainder after integer division,
+% \item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
+%   % 
+%   \begin{lstlisting}[language=fsharp,caption={fsharpi, unary integer negation operator.}]
+%     > let a = 5 - let b = -a;;
+    
+%     val a : int = 5 val b : int = -5
+%   \end{lstlisting}
+% \item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|:] These are binary operators, where addition, subtraction and multiplication performs the usual operations,
+%   % 
+%   \begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer addition, subtraction, and multiplication operators.}]
+%     > let a = 7 + 3 - let b = 7 - 3 - let c = 7 * 3;;
+    
+%     val a : int = 10 val b : int = 4 val c : int = 21
+%   \end{lstlisting}
+\item[\texttt{op / op}, \texttt{op \% op}:] These are binary operators, and division performs integer division, where the fractional part is discarded after division, and the \lstinline|\%| is the remainder operator, which calculates the remainder after integer division,
 %
 \begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer division and remainder operators.}]
 > let a = 7 / 3
