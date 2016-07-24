@@ -15,7 +15,7 @@ send ";;\n"
 # Iterate over the commands
 foreach cmd $commands {
     expect "* "
-    send "$cmd\n"
+    send -- "$cmd\n"
     sleep 1
 }
 

@@ -493,15 +493,15 @@ Associativity implies the order in which calculations are performed for operator
 % > let a = 3.0*4.0*5.0
 % - let b = (3.0*4.0)*5.0
 % - let c = 3.0*(4.0*5.0);;
-
+%
 % val a : float = 60.0
 % val b : float = 60.0
 % val c : float = 60.0
-
+%
 % > let d = 4.0 ** 3.0 ** 2.0
 % - let e = (4.0 ** 3.0) ** 2.0
 % - let f = 4.0 ** (3.0 ** 2.0);;
-
+%
 % val d : float = 262144.0
 % val e : float = 4096.0
 % val f : float = 262144.0
@@ -541,7 +541,7 @@ That is, the multiplication and addition are good mnemonics for remembering the 
 % false true  false true  true
 % true  false false true  false
 % true  true  true  true  false
-
+%
 % val t : bool = true
 % val f : bool = false
 % val it : unit = ()
@@ -550,31 +550,36 @@ That is, the multiplication and addition are good mnemonics for remembering the 
 Spacing produced using the \lstinline|printfn| function is not elegant. In Section~\ref{sec:printf} we will discuss better options for producing more beautiful output. Notice, that the arguments for \lstinline|printfn| was given on the next line. Here it is important to use \idx{indentation} to indicate continuation of the line. See Section~\ref{sec:indentation} for more.
 
 \section{Integer arithmetic}
-The set of integers is infinitely large, but since all computers have limited resources, it is not possible to represent these sets in their entirety. The various integer types listed in Table~\ref{tab:primitiveTypes} are finite subset reduced by limiting their ranges. Although \lstinline!bignum! is theoretically unlimited, the biggest number representable is still limited by computer memory. An in-depth description of integer implementation can be found in Appendix~\ref{app:numbers}. The keyword \keyword{int} is the most common type. 
+The set of integers is infinitely large, but since all computers have limited resources, it is not possible to represent it in their entirety. The various integer types listed in Table~\ref{tab:primitiveTypes} are finite subset reduced by limiting their ranges. Although \lstinline!bignum! is theoretically unlimited, the biggest number representable is still limited by computer memory. An in-depth description of integer implementation can be found in Appendix~\ref{app:numbers}. The type \keyword{int} is the most common type. 
 
-Table~\ref{tab:preNInfixOperators}, \ref{tab:comparisonOperators}, and~\ref{tab:arithmeticFunctions} gives examples operators and functions pre-defined for integer types. Notice that fewer functions are available for integers than for floating point numbers. For most addition, subtraction, and multiplication the result straight forward. However, performing arithmetic operations on integers requires extra care, since the result since they may cause \idx{overflow}, \idx{underflow}, e.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the following example,
+Table~\ref{tab:preNInfixOperators}, \ref{tab:comparisonOperators}, and~\ref{tab:arithmeticFunctions} gives examples operators and functions pre-defined for integer types. Notice that fewer functions are available for integers than for floating point numbers. For most addition, subtraction, multiplication, and negation the result straight forward. However, performing arithmetic operations on integers requires extra care, since the result since they may cause \idx{overflow}, \idx{underflow}, e.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the following example,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, adding integers may cause overflow.},label=overflow]
-> let a = 100y 
-- let b = 30y 
-- let c = a+b;;
-
-val a : sbyte = 100y
-val b : sbyte = 30y
-val c : sbyte = -126y
-\end{lstlisting}
+\fso{overflow}{Adding integers may cause overflow.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, adding integers may cause overflow.},label=overflow]
+% > let a = 100y 
+% - let b = 30y 
+% - let c = a+b;;
+%
+% val a : sbyte = 100y
+% val b : sbyte = 30y
+% val c : sbyte = -126y
+% \end{lstlisting}
+%
 Here $100+30=130$, which is larger than the biggest \lstinline|sbyte|, and the result is an overflow. Similarly, we get an underflow, when the arithmetic result falls below the smallest value storable in an \lstinline|sbyte|,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, subtracting integers may cause underflow}]
-> let a = -100y  
-- let b = -30y  
-- let c = a+b;;
-
-val a : sbyte = -100y
-val b : sbyte = -30y
-val c : sbyte = 126y
-\end{lstlisting}
-Integers can also be written in binary, octal, or hexadecimal format using the prefixes \lstinline|0b|, \lstinline|0o|, and \lstinline|0x|, e.g.,
+\fso{underflow}{Subtracting integers may cause underflow.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, subtracting integers may cause underflow}]
+% > let a = -100y  
+% - let b = -30y  
+% - let c = a+b;;
+%
+% val a : sbyte = -100y
+% val b : sbyte = -30y
+% val c : sbyte = 126y
+% \end{lstlisting}
+%
+I.e., we were expecting a negative number, but got a postive number instead.
+%Integers can also be written in binary, octal, or hexadecimal format using the prefixes \lstinline|0b|, \lstinline|0o|, and \lstinline|0x|, e.g.,
 %
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, integer types may be specified as binary, octal, and hexadecimal numbers.}]
 % > let a = 0b1011
@@ -586,16 +591,19 @@ Integers can also be written in binary, octal, or hexadecimal format using the p
 % val c : int = 11
 % \end{lstlisting}
 % For a description of binary representations see Appendix~\ref{sec:binary}. 
+
 The overflow error in Listing~\ref{overflow} can be understood in terms of the binary representation of integers: In binary, $130=10000010_2$, and this binary pattern is interpreted differently as \lstinline{byte} and \lstinline{sbyte},
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
-> let a = 0b10000010uy
-- let b = 0b10000010y;;
-
-val a : byte = 130uy
-val b : sbyte = -126y
-\end{lstlisting}
-That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$ causes the left-most bit to be used, then this is wrongly interpreted as a negative number, when stored in an \lstinline{sbyte}.
+\fso{overflowBits}{The left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
+% > let a = 0b10000010uy
+% - let b = 0b10000010y;;
+%
+% val a : byte = 130uy
+% val b : sbyte = -126y
+% \end{lstlisting}
+%
+That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$ causes the left-most bit to be used, then this is wrongly interpreted as a negative number, when stored in an \lstinline{sbyte}. Similar arguments can be made explaining underflows.
 
 The division and remainder operators \idx{integer division}, which discards the fractional part after division, and the \idx{remainder} operator calculates the remainder after integer division, e.g.,
 %
@@ -628,22 +636,26 @@ And we see that integer division of 7 by 3 followed by multiplication by 3 is le
 Notice that neither overflow nor underflow error gave rise to an error message, which is why such bugs are difficult to find. 
  Dividing any non-zero number with 0 is infinite, which is also outside the domain of any of the integer types, but in this case, F\# casts an \idx{exception},
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, integer division by zero causes an exception run-time error.}]
-> 3/0;; 
-System.DivideByZeroException: Attempted to divide by zero.
-  at <StartupCode$FSI_0007>.$FSI_0007.main@ () <0x6b78180 + 0x0000e> in <filename unknown>:0 
-  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&)
-  at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) <0x1a55ba0 + 0x000a1> in <filename unknown>:0 
-Stopped due to error
-\end{lstlisting}
+\fso{integerDivisionByZeroError}{Integer division by zero causes an exception run-time error.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, integer division by zero causes an exception run-time error.}]
+% > 3/0;; 
+% System.DivideByZeroException: Attempted to divide by zero.
+%   at <StartupCode$FSI_0007>.$FSI_0007.main@ () <0x6b78180 + 0x0000e> in <filename unknown>:0 
+%   at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&)
+%   at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) <0x1a55ba0 + 0x000a1> in <filename unknown>:0 
+% Stopped due to error
+% \end{lstlisting}
+%
 The output looks daunting at first sight, but the first and last line of the error message are the most important parts, which tells us what exception was cast and why the program stopped. The middle are technical details concerning which part of the program caused this, and can be ignored for the time being. Exceptions are a type of \idx{run-time error}, and are treated in Chapter~\ref{chap:exceptions}
 
 Integer exponentiation is not defined as an operator, but this is available the built-in function \lstinline|pown|, e.g.,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, integer exponentiation function, and the irrelevant identifier.}]
-> pown 2 5;;
-val it : int = 32
-\end{lstlisting}
+\fso{integerPown}{Integer exponent function.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, integer exponentiation function, and the irrelevant identifier.}]
+% > pown 2 5;;
+% val it : int = 32
+% \end{lstlisting}
+%
 which is equal to $2^5$.
 
 %For integers the following arithmetic operators are defined:
@@ -700,103 +712,115 @@ position-wise.
 \jon{mention somewhere that comparison operators will be treated later.}
 
 \section{Floating point arithmetic}
-The set of integers and reals are infinitely large, and since all computers have limited resources, it is not possible to represent these sets in their entirety. The various integer and floating point types listed in Table~\ref{tab:primitiveTypes} are finite subset where the integer types have been reduced by limiting their ranges and the floating point types have been reduced by sampling the space of reals. An in-depth description of integer and floating point implementations can be found in Appendix~\ref{app:numbers}. The \keyword{int} and \keyword{float} are the most common types. 
+The set of reals is infinitely large, and since all computers have limited resources, it is not possible to represent it in their entirety. The various floating point types listed in Table~\ref{tab:primitiveTypes} are finite subset reduced by sampling the space of reals. An in-depth description of floating point implementations can be found in Appendix~\ref{app:numbers}. The type \keyword{float} is the most common type. 
 
-For floating point numbers the following arithmetic operators are defined: 
-\begin{description}
-\item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
+
+Table~\ref{tab:preNInfixOperators}, \ref{tab:comparisonOperators}, and~\ref{tab:arithmeticFunctions} gives examples operators and functions pre-defined for floating point types. For most addition, subtraction, multiplication, divisions, and negation the result straight forward. 
+
+The remainder operator for floats calculates the remainder after division and discarding the fractional part,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, unary floating point negation operator.}]
-> let a = 5.0 
-- let b = -a;;
+\fso{floatDivisionRemainder}{Floating point division and remainder operators.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point division and remainder operators.}]
+% > let a = 7.0 / 3.0
+% - let b = 7.0 % 3.0;;
 
-val a : float = 5.0
-val b : float = -5.0
-\end{lstlisting}
-\item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|, \lstinline|op / op|:] These are binary operators, where addition, subtraction, multiplication, and division performs the usual operations, 
+% val a : int = 2.0
+% val b : int = 1.0
+% \end{lstlisting}
+The remainder for floating point numbers can be fractional, but division, discarding fractional part, and remainder is still a lossless representation of the original number as,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point addition, subtraction, multiplication, and division operators.}]
-> let a = 7.0 + 3.0
-- let b = 7.0 - 3.0
-- let c = 7.0 * 3.0
-- let d = 7.0 / 3.0;;
-
-val a : float = 10.0
-val b : float = 4.0
-val c : float = 21.0
-val d : float = 2.333333333
-\end{lstlisting}
-\item[\lstinline|op \% op|:] The binary remainder operator, and division performs integer division, where the fractional part is discarded after division, and the \lstinline|\%| is the remainder operator, which calculates the remainder after integer division,
+\fso{floatDivisionRemainderLossless}{Floating point division, truncation, and remainder is a lossless representation of a number.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, floating point division, truncation, and remainder is a lossless representation of a number.}]
+% > let x = 7.0
+% - let division = x / 3.2
+% - let whole = float (int division)
+% - let remainder = x % 3.2
+% - let y = whole * 3.2 + remainder;;
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point division and remainder operators.}]
-> let a = 7.0 / 3.0
-- let b = 7.0 % 3.0;;
+% val x : float = 7.0
+% val division : float = 2.1875
+% val whole : float = 2.0
+% val remainder : float = 0.6
+% val y : float = 7.0
+% \end{lstlisting}
+%And we see that \lstinline|x| and \lstinline|y| is bound to the same value.  
 
-val a : int = 2.0
-val b : int = 1.0
-\end{lstlisting}
-The remainder for floating point numbers can be fractional, but division, rounding, and remainder is still a lossless representation of the original number as,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point division, truncation, and remainder is a lossless representation of a number.}]
-> let x = 7.0
-- let division = x / 3.2
-- let whole = float (int (division + 0.5))
-- let remainder = x % 3.2
-- let y = whole * 3.2 + remainder;;
 
-val x : float = 7.0
-val division : float = 2.1875
-val whole : float = 2.0
-val remainder : float = 0.6
-val y : float = 7.0
-\end{lstlisting}
-And we see that \lstinline|x| and \lstinline|y| is bound to the same value.  
-\item[\texttt{op ** op}:] In spite of an unusual notation, the binary exponentiation operator performs the usual calculation,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point exponentiation.}]
-> let a = 2.0 ** 5.0;;
 
-val a : float = 32.0
-\end{lstlisting}
-which is equal to $2^5$.
-\end{description}
+% For floating point numbers the following arithmetic operators are defined: 
+% \begin{description}
+% \item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
+% %
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, unary floating point negation operator.}]
+% > let a = 5.0 
+% - let b = -a;;
+
+% val a : float = 5.0
+% val b : float = -5.0
+% \end{lstlisting}
+% \item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|, \lstinline|op / op|:] These are binary operators, where addition, subtraction, multiplication, and division performs the usual operations, 
+% %
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point addition, subtraction, multiplication, and division operators.}]
+% > let a = 7.0 + 3.0
+% - let b = 7.0 - 3.0
+% - let c = 7.0 * 3.0
+% - let d = 7.0 / 3.0;;
+
+% val a : float = 10.0
+% val b : float = 4.0
+% val c : float = 21.0
+% val d : float = 2.333333333
+% \end{lstlisting}
+% \item[\lstinline|op \% op|:] 
+
+% \item[\texttt{op ** op}:] In spite of an unusual notation, the binary exponentiation operator performs the usual calculation,
+% %
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point exponentiation.}]
+% > let a = 2.0 ** 5.0;;
+
+% val a : float = 32.0
+% \end{lstlisting}
+% which is equal to $2^5$.
+% \end{description}
 
 Arithmetic using \lstinline|float| will not cause over- and underflow problems, since the IEEE 754 standard includes the special numbers $\pm\infty$ and NaN. E.g.,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point numbers include infinity and Not-a-Number}]
-> let a = 1.0/0.0  
-- let b = 0.0/0.0;;
-
-val a : float = infinity
-val b : float = nan
-\end{lstlisting}
+\fso{floatDivisionByZero}{Floating point numbers include infinity and Not-a-Number.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, floating point numbers include infinity and Not-a-Number}]
+% > let a = 1.0/0.0  
+% - let b = 0.0/0.0;;
+%
+% val a : float = infinity
+% val b : float = nan
+% \end{lstlisting}
+%
 However, the \lstinline|float| type has limite precision, since there is only a finite number of numbers that can be stored in a float. E.g.,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, floating point arithmetic has finite precision.}]
-> let a = 357.8      
-- let b = a+0.1      
-- let c = b+0.1      
-- let d = c - 358.0;;
-
-val a : float = 357.8
-val b : float = 357.9
-val c : float = 358.0
-val d : float = 5.684341886e-14
-\end{lstlisting}
-Hence, although \lstinline|c| appears to be correctly calculated, by the subtraction we see, that the value bound in \lstinline|c| is not exactly the same as \lstinline|358.0|, and the reason is that the neither \lstinline|357.8| nor \lstinline|0.1| are exactly representable as a \lstinline|float|, which is why the repeated addition accumulates a small representation error.
-
-\section{Chars and Strings}
-***
-
-Character arithmetic is most often done by in integer space. A typical example is conversion of case, e.g., to convert the lowercase character 'z' to uppercase, we use the \idx{ASCIIbetical order} and add the difference between any Basic Latin Block letters in upper- and lowercase as \lstinline{integers} and cast back to \lstinline{char}, e.g.,
+\fso{floatImprecission}{Floating point arithmetic has finite precision.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, floating point arithmetic has finite precision.}]
+% > let a = 357.8      
+% - let b = a+0.1      
+% - let c = b+0.1      
+% - let d = c - 358.0;;
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, converting case by casting and integer arithmetic.}]
-> char (int 'z' - int 'a' + int 'A');; 
-val it : char = 'Z'
-\end{lstlisting}
+% val a : float = 357.8
+% val b : float = 357.9
+% val c : float = 358.0
+% val d : float = 5.684341886e-14
+% \end{lstlisting}
 %
+That is, addition and subtraction associates to the left, hence the expression is interpreted as \lstinline!(357.8 + 0.1) - 357.9!, and we see that we do not get the expected 0, since only a limited number of floating point values are available, and the numbers \lstinline!357.8 + 0.1!  and \lstinline!357.9! do not result in the same floating point representation. Such errors tend to accumulate and comparing the result of expressions of floating point values should therefore be treated with care. Thus, \advice{equivalence of two floating point expressions should only be considered up to sufficient precision, e.g., comparing \lstinline!357.8 + 0.1! and \lstinline!357.9! up to \lstinline!1e-10! precission should be tested as, \lstinline!abs ((357.8 + 0.1) - 357.9) < 1e-10!.}
 
-*****
+\section{Char and string arithmetic}
+Addition is the only operator defined for characters, nevertheless, character arithmetic is often done by casting to integer. A typical example is conversion of case, e.g., to convert the lowercase character 'z' to uppercase, we use the \idx{ASCIIbetical order} and add the difference between any Basic Latin Block letters in upper- and lowercase as \lstinline{integers} and cast back to \lstinline{char}, e.g.,
+%
+\fso{upcaseChar}{Converting case by casting and integer arithmetic.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, converting case by casting and integer arithmetic.}]
+% > char (int 'z' - int 'a' + int 'A');; 
+% val it : char = 'Z'
+% \end{lstlisting}
+%
+I.e., the code point difference between upper and lower case for any alphabetical character 'a' to 'z' is constant, hence we can change case by adding or subtracting the difference between any corresponding character. Unfortunately, this does not generalize to characters from other languages.
 
 Operations on \lstinline{string} is quite rich. The most simple is concatenation using \token{+} token, e.g.,
 %
