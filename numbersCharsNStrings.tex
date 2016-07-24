@@ -508,7 +508,7 @@ Associativity implies the order in which calculations are performed for operator
 % \end{lstlisting}
 the expression for \lstinline|3.0 * 4.0 * 5.0| associates to the left, and thus is interpreted as \mbox{\lstinline|(3.0 * 4.0) * 5.0|,} but gives the same results as \lstinline|3.0 * (4.0 * 5.0)|, since association does not matter for multiplication of numbers. However, the expression for \lstinline|4.0 ** 3.0 ** 2.0| associates to the right, and thus is interpreted as \lstinline|4.0 ** (3.0 ** 2.0)|, which is quite different from \lstinline|(4.0 ** 3.0) ** 2.0|. \advice{Whenever in doubt of association or any other basic semantic rules, it is a good idea to use parentheses as here. It is also a good idea to test your understanding of the syntax and semantic rules by simplest possible scripts, as shown here as well.}
 
-\section{Booleans}
+\section{Boolean arithmetic}
 Boolean arithmetic is the basis of almost all computers and particularly important for controlling program flow, which will be discussed in Chapter~\ref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Two basic operations on boolean values are '\idx{and}' often also written as multiplication, and '\idx{or}' often written as addition, and '\idx{not}' often written as a bar above the value. All possible combination of input on these values can be written on tabular form, known as a \idx{truth table}, shown in Table~\ref{tab:truthTable}.
 \begin{table}
   \centering
@@ -549,67 +549,10 @@ That is, the multiplication and addition are good mnemonics for remembering the 
 %
 Spacing produced using the \lstinline|printfn| function is not elegant. In Section~\ref{sec:printf} we will discuss better options for producing more beautiful output. Notice, that the arguments for \lstinline|printfn| was given on the next line. Here it is important to use \idx{indentation} to indicate continuation of the line. See Section~\ref{sec:indentation} for more.
 
-\section{Integers and Reals}
-The set of integers and reals are infinitely large, and since all computers have limited resources, it is not possible to represent these sets in their entirety. The various integer and floating point types listed in Table~\ref{tab:primitiveTypes} are finite subset where the integer types have been reduced by limiting their ranges and the floating point types have been reduced by sampling the space of reals. An in-depth description of integer and floating point implementations can be found in Appendix~\ref{app:numbers}. The \keyword{int} and \keyword{float} are the most common types. 
+\section{Integer arithmetic}
+The set of integers is infinitely large, but since all computers have limited resources, it is not possible to represent these sets in their entirety. The various integer types listed in Table~\ref{tab:primitiveTypes} are finite subset reduced by limiting their ranges. Although \lstinline!bignum! is theoretically unlimited, the biggest number representable is still limited by computer memory. An in-depth description of integer implementation can be found in Appendix~\ref{app:numbers}. The keyword \keyword{int} is the most common type. 
 
-Table~\ref{tab:preNInfixOperators} gives examples of how to use the operators for integers and floats, and most work like a standard calculator would.
-
-For integers the following arithmetic operators are defined:
-\begin{description}
-% \item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
-%   % 
-%   \begin{lstlisting}[language=fsharp,caption={fsharpi, unary integer negation operator.}]
-%     > let a = 5 - let b = -a;;
-    
-%     val a : int = 5 val b : int = -5
-%   \end{lstlisting}
-% \item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|:] These are binary operators, where addition, subtraction and multiplication performs the usual operations,
-%   % 
-%   \begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer addition, subtraction, and multiplication operators.}]
-%     > let a = 7 + 3 - let b = 7 - 3 - let c = 7 * 3;;
-    
-%     val a : int = 10 val b : int = 4 val c : int = 21
-%   \end{lstlisting}
-\item[\texttt{op / op}, \texttt{op \% op}:] These are binary operators, and division performs integer division, where the fractional part is discarded after division, and the \lstinline|\%| is the remainder operator, which calculates the remainder after integer division,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer division and remainder operators.}]
-> let a = 7 / 3
-- let b = 7 % 3;;
-
-val a : int = 2
-val b : int = 1
-\end{lstlisting}
-Together integer division and remainder is a lossless representation of the original number as,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, binary division and remainder is a lossless representation of an integer.}]
-> let x = 7
-- let whole = x / 3
-- let remainder = x % 3
-- let y = whole * 3 + remainder;;
-
-val x : int = 7
-val whole : int = 2
-val remainder : int = 1
-val y : int = 7
-\end{lstlisting}
-And we see that \lstinline|x| and \lstinline|y| is bound to the same value.
-\end{description}
-Integer exponentiation is not defined as an operator, but this is available the built-in function \lstinline|pown|, e.g.,
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, integer exponentiation function, and the irrelevant identifier.}]
-> pown 2 5;;
-val it : int = 32
-\end{lstlisting}
-which is equal to $2^5$. Note that when no let statement is used in conjunction with an expression then F\# automatically binds the result to the \idx{\lstinline{it}} identifier, i.e., the above is equal to
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, the equivalent to the irrelevant identifier.}]
-  > let it = pown 2 5;;
-
-val it : int = 32
-\end{lstlisting}
-Rumor has it, that the identifier \lstinline|it| is an abbreviation for 'irrelevant'.
-
-Performing arithmetic operations on \keyword{int} types requires extra care, since the result may cause \idx{overflow}, \idx{underflow}, and even exceptions, e.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the following example,
+Table~\ref{tab:preNInfixOperators}, \ref{tab:comparisonOperators}, and~\ref{tab:arithmeticFunctions} gives examples operators and functions pre-defined for integer types. Notice that fewer functions are available for integers than for floating point numbers. For most addition, subtraction, and multiplication the result straight forward. However, performing arithmetic operations on integers requires extra care, since the result since they may cause \idx{overflow}, \idx{underflow}, e.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the following example,
 %
 \begin{lstlisting}[language=fsharp,caption={fsharpi, adding integers may cause overflow.},label=overflow]
 > let a = 100y 
@@ -631,8 +574,59 @@ val a : sbyte = -100y
 val b : sbyte = -30y
 val c : sbyte = 126y
 \end{lstlisting}
+Integers can also be written in binary, octal, or hexadecimal format using the prefixes \lstinline|0b|, \lstinline|0o|, and \lstinline|0x|, e.g.,
+%
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, integer types may be specified as binary, octal, and hexadecimal numbers.}]
+% > let a = 0b1011
+% - let b = 0o13
+% - let c = 0xb;;
+
+% val a : int = 11
+% val b : int = 11
+% val c : int = 11
+% \end{lstlisting}
+% For a description of binary representations see Appendix~\ref{sec:binary}. 
+The overflow error in Listing~\ref{overflow} can be understood in terms of the binary representation of integers: In binary, $130=10000010_2$, and this binary pattern is interpreted differently as \lstinline{byte} and \lstinline{sbyte},
+%
+\begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
+> let a = 0b10000010uy
+- let b = 0b10000010y;;
+
+val a : byte = 130uy
+val b : sbyte = -126y
+\end{lstlisting}
+That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$ causes the left-most bit to be used, then this is wrongly interpreted as a negative number, when stored in an \lstinline{sbyte}.
+
+The division and remainder operators \idx{integer division}, which discards the fractional part after division, and the \idx{remainder} operator calculates the remainder after integer division, e.g.,
+%
+\fso{integerDivisionRemainder}{Integer division and remainder operators.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer division and remainder operators.}]
+% > let a = 7 / 3
+% - let b = 7 % 3;;
+
+% val a : int = 2
+% val b : int = 1
+% \end{lstlisting}
+%
+Together integer division and remainder is a lossless representation of the original number as,
+%
+\fso{integerDivisionRemainderLossless}{Integer division and remainder is a lossless representation of an integer, compare with Listing~\ref{integerDivisionRemainder}.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary division and remainder is a lossless representation of an integer.}]
+% > let x = 7
+% - let whole = x / 3
+% - let remainder = x % 3
+% - let y = whole * 3 + remainder;;
+
+% val x : int = 7
+% val whole : int = 2
+% val remainder : int = 1
+% val y : int = 7
+% \end{lstlisting}
+%
+And we see that integer division of 7 by 3 followed by multiplication by 3 is less that 7, and the difference is \lstinline!7 % 3!.
+
 Notice that neither overflow nor underflow error gave rise to an error message, which is why such bugs are difficult to find. 
- Dividing any non-zero number with 0 is infinite, which is also outside the domain of any of the integer types, but in this case, F\# casts an\idx{exception},
+ Dividing any non-zero number with 0 is infinite, which is also outside the domain of any of the integer types, but in this case, F\# casts an \idx{exception},
 %
 \begin{lstlisting}[language=fsharp,caption={fsharpi, integer division by zero causes an exception run-time error.}]
 > 3/0;; 
@@ -644,35 +638,37 @@ Stopped due to error
 \end{lstlisting}
 The output looks daunting at first sight, but the first and last line of the error message are the most important parts, which tells us what exception was cast and why the program stopped. The middle are technical details concerning which part of the program caused this, and can be ignored for the time being. Exceptions are a type of \idx{run-time error}, and are treated in Chapter~\ref{chap:exceptions}
 
-Integers can also be written in binary, octal, or hexadecimal format using the prefixes \lstinline|0b|, \lstinline|0o|, and \lstinline|0x|, e.g.,
+Integer exponentiation is not defined as an operator, but this is available the built-in function \lstinline|pown|, e.g.,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, integer types may be specified as binary, octal, and hexadecimal numbers.}]
-> let a = 0b1011
-- let b = 0o13
-- let c = 0xb;;
-
-val a : int = 11
-val b : int = 11
-val c : int = 11
+\begin{lstlisting}[language=fsharp,caption={fsharpi, integer exponentiation function, and the irrelevant identifier.}]
+> pown 2 5;;
+val it : int = 32
 \end{lstlisting}
-For a description of binary representations see Appendix~\ref{sec:binary}. The overflow error in Listing~\ref{overflow} can be understood in terms of the binary representation of integers: In binary, $130=10000010_2$, and this binary pattern is interpreted differently as \lstinline{byte} and \lstinline{sbyte},
-%
-\begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
-> let a = 0b10000010uy
-- let b = 0b10000010y;;
+which is equal to $2^5$.
 
-val a : byte = 130uy
-val b : sbyte = -126y
-\end{lstlisting}
-That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$ causes the left-most bit to be used, then this is wrongly interpreted as a negative number, when stored in an \lstinline{sbyte}.
+%For integers the following arithmetic operators are defined:
+%\begin{description}
+% \item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
+%   % 
+%   \begin{lstlisting}[language=fsharp,caption={fsharpi, unary integer negation operator.}]
+%     > let a = 5 - let b = -a;;
+    
+%     val a : int = 5 val b : int = -5
+%   \end{lstlisting}
+% \item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|:] These are binary operators, where addition, subtraction and multiplication performs the usual operations,
+%   % 
+%   \begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer addition, subtraction, and multiplication operators.}]
+%     > let a = 7 + 3 - let b = 7 - 3 - let c = 7 * 3;;
+    
+%     val a : int = 10 val b : int = 4 val c : int = 21
+%   \end{lstlisting}
 
 For binary arithmetic on integers, the following operators are available:
-\begin{description}
-\item[\texttt{op $<<<$ n}:] Bitwise left shift, shifts any integer bit pattern \lstinline|n| positions to the left insert 0's to right.
-\item[\texttt{op $>>>$ n}:] Bitwise left right, shifts any integer bit pattern \lstinline|n| positions to the right insert 0's to left.
-\item[\texttt{op1 \&\&\& op2}:] Bitwise 'and', returns the result of taking the boolean 'and' operator position-wise.
-\item[\texttt{op ||| op}:] Bitwise 'or', as 'and' but using the boolean 'or' operator
-\item[\texttt{op1 $\sim\sim\sim$ op1}:] Bitwise xor, which is returns the result of the boolean 'xor' operator defined by,
+\lstinline{op1 <<< op2}, which shifts the bit pattern of \lstinline|op1| \lstinline|op2| positions to the left insert 0's to right;
+\lstinline{op1 >>> op2}, which shifts the bit pattern of \lstinline|op1| \lstinline|op2| positions to the right insert 0's to left;
+\lstinline{op1 &&& op2}, Bitwise 'and', returns the result of taking the boolean 'and' operator position-wise;
+\lstinline{op ||| op}, Bitwise 'or', as 'and' but using the boolean 'or' operator; and
+\lstinline{op1 ~~~ op1}, Bitwise xor, which is returns the result of the boolean 'xor' operator defined by;
   \begin{center}
     \begin{tabular}{|c|c|c|}
       \hline
@@ -686,22 +682,25 @@ For binary arithmetic on integers, the following operators are available:
     \end{tabular}
   \end{center}
 position-wise. 
-\end{description}
-Unfortunately, there are no built-ind functions outputting integers on binary form, so to understand the output of the following program,
-\begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
-> let a = 0b11000011uy  
-- let b = a <<< 1
-- let c = a >>> 1
-- let d = ~~~a
-- let e = a ^^^0b11111111uy;;
+% Unfortunately, there are no built-ind functions to output integers on binary form, so to understand the output of the following program,
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
+% > let a = 0b11000011uy  
+% - let b = a <<< 1
+% - let c = a >>> 1
+% - let d = ~~~a
+% - let e = a ^^^0b11111111uy;;
+%
+% val a : byte = 195uy
+% val b : byte = 134uy
+% val c : byte = 97uy
+% val d : byte = 60uy
+% val e : byte = 60uy
+% \end{lstlisting}
+% we must consider the 8-bit binary form of the unsigned integers: $195 = 11000011_2$, $134 = 10000110_2$, $97 = 01100001_2$, and $60 = 00111100_2$, which agrees with the definitions. 
+\jon{mention somewhere that comparison operators will be treated later.}
 
-val a : byte = 195uy
-val b : byte = 134uy
-val c : byte = 97uy
-val d : byte = 60uy
-val e : byte = 60uy
-\end{lstlisting}
-we must consider the 8-bit binary form of the unsigned integers: $195 = 11000011_2$, $134 = 10000110_2$, $97 = 01100001_2$, and $60 = 00111100_2$, which agrees with the definitions. \jon{mention somewhere that comparison operators will be treated later.}
+\section{Floating point arithmetic}
+The set of integers and reals are infinitely large, and since all computers have limited resources, it is not possible to represent these sets in their entirety. The various integer and floating point types listed in Table~\ref{tab:primitiveTypes} are finite subset where the integer types have been reduced by limiting their ranges and the floating point types have been reduced by sampling the space of reals. An in-depth description of integer and floating point implementations can be found in Appendix~\ref{app:numbers}. The \keyword{int} and \keyword{float} are the most common types. 
 
 For floating point numbers the following arithmetic operators are defined: 
 \begin{description}
