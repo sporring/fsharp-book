@@ -1,7 +1,7 @@
-FSCRIPT := $(wildcard *.fscript)
+FSCRIPT := $(wildcard *.fsscript)
 #FSX := $(wildcard *.fsx)
 FSX := $(filter-out filenamedialogue.fsx, $(wildcard *.fsx))
-OSCRIPT := $(patsubst %.fscript,%.out,$(FSCRIPT))
+OSCRIPT := $(patsubst %.fsscript,%.out,$(FSCRIPT))
 OSX := $(patsubst %.fsx,%.out,$(FSX))
 
 %.out: %.fsscript

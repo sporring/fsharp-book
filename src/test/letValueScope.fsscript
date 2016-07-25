@@ -1,0 +1,86 @@
+#indent "off"
+
+begin
+printfn "1.";
+let p = 3 in let p = 4 in printfn " %A" p; printfn " %A" p; // p not defined
+end;
+
+begin
+printfn "2.";
+let p = 3 in (let p = 4 in printfn " %A" p); printfn " %A" p;
+end;
+
+begin
+printfn "3.";
+let p = 3 in (let p = 4 in printfn " %A" p; printfn " %A" p);
+end;
+
+begin
+printfn "4.";
+let p = 3 in let p = 4 in (printfn " %A" p; printfn " %A" p);
+end;
+
+begin
+printfn "5.";
+let p = 3 in let p = 4 in printfn " %A" p;
+printfn " %A" p;
+end;
+
+begin
+printfn "6.";
+let p = 3 in
+let p = 4 in printfn " %A" p;
+printfn " %A" p;
+end;
+
+(*begin
+printfn "6a.";
+let p = 3
+let p = 4 in printfn " %A" p;
+printfn " %A" p // p undefined
+end;
+*)
+begin
+printfn "6b.";
+let p = 3 in
+  let p = 4 in printfn " %A" p;
+  printfn " %A" p // p undefined
+end;
+
+begin
+printfn "6c.";
+let p = 3 in
+  let p = 4 in printfn " %A" p;
+printfn " %A" p // p undefined
+end;
+
+begin
+printfn "7.";
+let p = 3 in                
+let p = 4 in               
+printfn " %A" p;
+end;
+//printfn " %A" p // Not OK
+
+(*begin
+printfn "7a.";
+let p = 3
+let p = 4 in
+printfn " %A" p;
+end;
+begin
+printfn "7b.";
+let p = 3 in
+let p = 4
+printfn " %A" p;
+end;
+
+begin
+printfn "7c.";
+let p = 3;
+printfn " %A" p;
+let p = 4;
+printfn " %A" p;
+end;
+*)
+//printfn " %A" p // Not OK

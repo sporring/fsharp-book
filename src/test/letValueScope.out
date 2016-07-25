@@ -1,0 +1,9 @@
+> #indent "off"
+
+  #indent "off"
+  ^^^^^^^^^^^^^
+
+/Users/sporring/repositories/fsharpNotes/src/stdin(2,1): warning FS0062: This construct is for ML compatibility. Consider using a file with extension '.ml' or '.mli' instead. You can disable this warning by using '--mlcompatibility' or '--nowarn:62'.
+- 
+- begin
+- printfn "1.";
