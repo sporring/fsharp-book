@@ -191,9 +191,7 @@ A function may contain a sequence of expressions, but must return a value. E.g.,
 Here we used the lightweight syntax, where the \token{=} identifies the start of a nested scope, and F\# identifies the scope by indentation. The amount of space used for indentation is does not matter, but all lines following the first must use the same. The scope ends before the first line with the previous indentation or none. Notice how the last expression is not bound to an identifier, but is the result of the function, i.e., in contrast to many other languages, F\# does not have an explicit keyword for returning values. Note also that since the function \lstinline!determinant! is defined in the nested scope of \lstinline!solution!, then  \lstinline!determinant! cannot be called outside \lstinline!solution!, since the scope ends before \lstinline!let a = 1.0!.
 
 ******
-\jon{nested scope, must return a value.}
-
-
+\jon{maybe move pattern matching to flow control?}
 
 Functions may be anonymously declared using the \texttt{fun} keyword,
 \fs{functionDeclarationAnonymous}{}
