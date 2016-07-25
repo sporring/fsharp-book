@@ -1,0 +1,45 @@
+\chapter{Namespaces and Modules}
+\label{chap:modules}
+Things to remember: 
+\begin{itemize}
+\item difference between .fs and .fsx Spec-4.0 Chapter 12.1 and 12.3
+\item signature files and their usefulness
+\end{itemize}
+
+
+A script file consists of a sequence of \idx{module elements}
+\begin{lstlisting}[language=ebnf]
+script-file = implementation-file
+
+implementation-file =
+  namespace-decl-groupList
+  | named-module
+  | anonynmous-module
+
+namespace-decl-groupList = namespace-decl-group | namespace-decl-group namespace-decl-groupList
+ 
+named-module = "module" long-ident module-elems
+
+anonymous-module = module-elems
+
+module-elems = module-elem | module-elem module-elems
+
+namespace-decl-group = "namespace" long-ident module-elems | "namespace" global module-elems
+
+module-elem = 
+  module-function-or-value-defn type-defns
+  | exception-defn
+  | module-defn
+  | module-abbrev
+  | import-decl compiler-directive-decl
+\end{lstlisting}
+
+F\# source code units are made up of declarations grouped using namespaces, type definitions, and module definitions. A file may contain multipe namespaces each defining types and modules, these in turn may contain function and value definitions, which in turn contains expressions.\jon{Spec-4.0 Chapter 10.} 
+
+With no leading namespace or module declaration, then F\# will immediately insert a module, where the name of the module is the same as the file name with capitalized first letter.\jon{\url{https://en.wikibooks.org/wiki/F_Sharp_Programming/Modules_and_Namespaces}}
+
+Namespaces is an optional hierarchial catergorization of modules, classes, and other namespaces primarily used to avoid naming conflicts. There is no default namespace, and namespaces may contain type definitions but not function and value definitions. Namespace do not work in script-fragments.\jon{\url{https://fsharpforfunandprofit.com/posts/organizing-functions/}}
+
+%%% Local Variables:
+%%% TeX-master: "fsharpNotes"
+%%% End:

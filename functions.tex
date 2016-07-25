@@ -1,27 +1,21 @@
 \chapter{Identifiers, functions, and variables}
 \label{chap:let}
-An identifier is bound to an expression by the syntax,
 %
-\begin{lstlisting}[language=EBNF]
-"let" [ "mutable" ] ident [":" type] "=" expr ["in" expr]
-\end{lstlisting}
-\begin{comment}
-or alternatively
+In the previous chapter, we saw how to use F\# as a calculator working with literals, operators and built-in functions. To save time and make programs easier to read and debug, it is useful to bind expressions to identifiers either as new constants, functions or operators. For example, to solve for  $x$, when
+\begin{equation}
+  a x^2+bx+c = 0
+\end{equation}
+we use the quadratic formula from elementary algebra,
+\begin{equation}
+  x = \frac{-b\pm\sqrt{b^2-4ac}}{2a},
+\end{equation}
+and write a small program that defines functions calculating relevant values for any set of coefficients,
 %
-\begin{lstlisting}[language=EBNF]
-"let" ["mutable"] ident [":" type] "=" expr ["in" newline indent exp]
-\end{lstlisting}
-\end{comment}
-That is, the \idx{\keyword{let}} keyword indicates that the following is a binding of an identifier with an expression, and that the type may be specified with the \idx{\token{:}} token. An identifier must start with a letter, but can be followed by zero or more of letters, digits, and a range of special characters. For characters in the Basic Latin Block, i.e., the first 128 code points alias ASCII characters, an ident is,
+\fs{identifiersExample}{Finding roots for quadratic equations using function name binding.}
 %
-\begin{lstlisting}[language=EBNF]
-digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-letter = "A" | "B" | ... |  "Z" | "a" | "b" | ... | "z"
-special-char = "_"
-ident = (letter | "_") {letter | digit | special-char}
-\end{lstlisting}
-%
-Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=EBNF]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=EBNF]{special-char = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=EBNF]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=EBNF]{special-char} category. An identifier must not be a keyword or a reserved-keyword, shown in Figure~\ref{fig:keywords} and~\ref{fig:reservedKeywords}.
+Here 3 functions are defined as \lstinline!determinant!, \lstinline!postiveSolution!, and \lstinline!negativeSolution! are defined, and applied to 3 values named \lstinline!a!, \lstinline!b!, and \lstinline!c!, and the results are named \lstinline!d!, \lstinline!xn!, and \lstinline!xp!. These names are examples of identifiers, and with these, we may reuse the quadratic formulas and calculated values later, while avoiding possible typing mistakes and reducing amount of code, which needs to be debugged.
+
+The use of identifiers is central in programming. For F\# not to be confused by built-in functionality, identifiers must follow a specific grammar: An identifier must start with a letter, but can be followed by zero or more of letters, digits, and a range of special characters. An identifier must not be a keyword or a reserved-keyword listed in Figure~\ref{fig:keywords} and~\ref{fig:reservedKeywords}.
 \begin{figure}
   \mbox{\lstinline{abstract},} \mbox{\lstinline{and},} \mbox{\lstinline{as},} \mbox{\lstinline{assert},} \mbox{\lstinline{base},} \mbox{\lstinline{begin},} \mbox{\lstinline{class},} \mbox{\lstinline{default},} \mbox{\lstinline{delegate},} \mbox{\lstinline{do},} \mbox{\lstinline{done},} \mbox{\lstinline{downcast},} \mbox{\lstinline{downto},} \mbox{\lstinline{elif},} \mbox{\lstinline{else},} \mbox{\lstinline{end},} \mbox{\lstinline{exception},} \mbox{\lstinline{extern},} \mbox{\lstinline{false},} \mbox{\lstinline{finally},} \mbox{\lstinline{for},} \mbox{\lstinline{fun},} \mbox{\lstinline{function},} \mbox{\lstinline{global},} \mbox{\lstinline{if},} \mbox{\lstinline{in},} \mbox{\lstinline{inherit},} \mbox{\lstinline{inline},} \mbox{\lstinline{interface},} \mbox{\lstinline{internal},} \mbox{\lstinline{lazy},} \mbox{\lstinline{let},} \mbox{\lstinline{match},} \mbox{\lstinline{member},} \mbox{\lstinline{module},} \mbox{\lstinline{mutable},} \mbox{\lstinline{namespace},} \mbox{\lstinline{new},} \mbox{\lstinline{null},} \mbox{\lstinline{of},} \mbox{\lstinline{open},} \mbox{\lstinline{or},} \mbox{\lstinline{override},} \mbox{\lstinline{private},} \mbox{\lstinline{public},} \mbox{\lstinline{rec},} \mbox{\lstinline{return},} \mbox{\lstinline{sig},} \mbox{\lstinline{static},} \mbox{\lstinline{struct},} \mbox{\lstinline{then},} \mbox{\lstinline{to},} \mbox{\lstinline{true},} \mbox{\lstinline{try},} \mbox{\lstinline{type},} \mbox{\lstinline{upcast},} \mbox{\lstinline{use},} \mbox{\lstinline{val},} \mbox{\lstinline{void},} \mbox{\lstinline{when},} \mbox{\lstinline{while},} \mbox{\lstinline{with},} and \mbox{\lstinline{yield}.}
   \caption{List of keywords in F\#.}
@@ -31,38 +25,203 @@ Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lst
   \mbox{\lstinline{atomic},} \mbox{\lstinline{break},} \mbox{\lstinline{checked},} \mbox{\lstinline{component},} \mbox{\lstinline{const},} \mbox{\lstinline{constraint},} \mbox{\lstinline{constructor},} \mbox{\lstinline{continue},} \mbox{\lstinline{eager},} \mbox{\lstinline{fixed},} \mbox{\lstinline{fori},} \mbox{\lstinline{functor},} \mbox{\lstinline{include},} \mbox{\lstinline{measure},} \mbox{\lstinline{method},} \mbox{\lstinline{mixin},} \mbox{\lstinline{object},} \mbox{\lstinline{parallel},} \mbox{\lstinline{params},} \mbox{\lstinline{process},} \mbox{\lstinline{protected},} \mbox{\lstinline{pure},} \mbox{\lstinline{recursive},} \mbox{\lstinline{sealed},} \mbox{\lstinline{tailcall},} \mbox{\lstinline{trait},} \mbox{\lstinline{virtual},} and \mbox{\lstinline{volatile}.}
   \caption{List of reserved keywords for possible future use in F\#.}
   \label{fig:reservedKeywords}
-\end{figure}
-The binding may be mutable, which will be discussed in Section~\ref{sec:mutableValues}, and the binding may only be for the last expression as indicated by the \idx{\keyword{in}} keyword. The simplest example of an expression is a \idx{literal}, i.e., a constant such as the number 3. 
-
-
-A less common notation is to define bindings for expressions using the \idx{\keyword{in}} keyword, e.g.,
+\end{figure} 
+For characters in the Basic Latin Block, i.e., the first 128 code points alias ASCII characters, an ident is,
 %
-\fs{numbersIn}{The identifier \lstinline!p! is only bound in the nested scope following the keyword \keyword{in}.}
+\begin{lstlisting}[language=EBNF]
+dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+letter = "A" | "B" | ... |  "Z" | "a" | "b" | ... | "z"
+specialChar = "_"
+ident = (letter | "_") {letter | dDigit | specialChar}
+\end{lstlisting}
 %
-Here \lstinline|p| is only bound in the \idx{scope} of the expression following the \keyword{in} keyword, in this the \lstinline|printfn| statement, and \lstinline|p| is unbound in lines that follows.
-\begin{comment}
-  Here the use of indentation to define a sequence of expressions
-  % 
-  \fs{numbersInWIndentation}{The identifier \lstinline!p! is only bound in the nested scope following the keyword \keyword{in}.}
-  % 
-\end{comment}
-
+Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=EBNF]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=EBNF]{specialChar = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=EBNF]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=EBNF]{specialChar} category. 
+Binding expressions to identifiers is done with the keyword \keyword{let}, using the following simplified syntax:
+%
+\begin{lstlisting}[language=EBNF]
+arg = ident | "(" ident ":" type ")"
+argList = arg | arg argList
+identOrOp = ident | ( operatorName )
+expr = ... 
+  | "let " ["mutable "] ident  [":" type] "=" expr " in " expr (* binding a value *)
+  | "let " ident-or-op argList [":" type] "=" expr " in " expr (* binding a function or operator *)
+  | "fun " argList "->" expr (* a function as value *)
+  | "begin " expr " end" (* alternative block expression *)
+  | expr; expr (* sequence of expression *)
+  | ...
+\end{lstlisting}
+%
+% \begin{lstlisting}[language=EBNF,caption=expressionArithmetic]
+% ident-or-op = ident | ( op-name ) | (*)
+% atomic-pat = pat : one of const long-ident list-pat record-pat array-pat (pat) :? atomic-type null _
+% argument-pats: atomic-pat ... atomic-pat
+% access = "public" | "private" | "internal"
+% return-type = ":" type
+% function-defn = ["inline "] [access] ident-or-op [typar-defns] argument-pats [return-type] = expr
+% value-defn = ["mutable"] [access] pat [typar-defns] [return-type] = expr
+% expr = ...
+%   | "let " ["rec "] function-defn " in " expr (* function definition expression *)
+%   | "let " value-defn " in " expr (* value definition expression *)
+%   | "fun " argument-pats "->" expr
+%   | ...
+% \end{lstlisting}
+% %
+which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-value-defns, 1. makes little sense to have values definitions recursive, and 2. possible Mono deviation from specification: let rec function-defn and function-defn requires newline before and.}
 
 \section{Values (Constant bindings)}
-When specifying the type, the type and the literal form must match, i.e., mixing types and literals gives an error,
+Binding identifiers to literals or expressions that are evaluated to be values is called value binding, and examples are \lstinline!let a = 3.0! and \lstinline!let b = cos 0.9!. On EBNF the simplified syntax,
 %
-\begin{lstlisting}[language=fsharp,caption={fsharpi, binding error due to type mismatch.}]
-  > let a : float = 3;;
-
-  let a : float = 3;;
-  ----------------^
-
-/Users/sporring/repositories/fsharpNotes/stdin(50,17): error FS0001: This expression was expected to have type
-    float    
-but here has type
-    int    
+\begin{lstlisting}[language=EBNF]
+"let " ["mutable "] ident  [":" type] "=" expr [" in " | LF] expr
 \end{lstlisting}
-since the left-hand-side is an identifier of type float, while the right-hand-side is a literal of type integer.
+I.e., the \idx{\keyword{let}} keyword dictates that the identifier \lstinline[language=EBNF]!ident! is an alias of the expression \lstinline[language=EBNF]!expr!. The type may be especified with the \idx{\token{:}} token to type \lstinline[language=EBNF]!type!. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
+%
+\fs{letValue}{The identifier \lstinline!p! is used in the expression following the \keyword{in} keyword.}
+%
+In the interactive mode used in the example above, we see that F\# infers the type...
+F\# will ignore most newlines between tokens, i.e., the above is equivalent to writting,
+%
+\fs{letValueLF}{Newlines after \keyword{in} make the program easier to read.}
+%
+F\# also allows for an alternative notation called \idx{lightweight syntax}, where e.g., the \keyword{in} keyword is replaced with a newline, and the expression starts on the next line at the same column as \keyword{let} starts in, i.e., the above is equivalent to
+%
+\fs{letValueLightWeight}{Lightweight syntax does not require the \keyword{in} keyword, but expression must be aligned with the \keyword{let} keyword.}
+%
+The same expression in interactive mode will also respond the infered types, e.g.,
+%
+\fso{letValueLightWeightTypes}{Interactive mode also responds inferred types.}
+%
+By the \keyword{val} keyword in the line \lstinline!val p : float = 2.0! we see that \lstinline!p! is inferred to be of type \lstinline!float! and bound to the value \lstinline!2.0!. The inference is based on the type of the right-hand-side, which is of type \lstinline!float!.  Identifiers may be defined to have a type using the \token{:} token, but the types on the left-hand-side and right-hand-side of the \token{=} token must be identical. I.e., mixing types gives an error,
+%
+\fs{letValueTypeError}{Binding error due to type mismatch.}
+% \begin{lstlisting}[language=fsharp,caption={fsharpi, binding error due to type mismatch.}]
+%   > let a : float = 3;;
+%
+%   let a : float = 3;;
+%   ----------------^
+%
+% /Users/sporring/repositories/fsharpNotes/stdin(50,17): error FS0001: This expression was expected to have type
+%     float    
+% but here has type
+%     int    
+% \end{lstlisting}
+Here, the left-hand-side is defined to be an identifier of type float, while the right-hand-side is a literal of type integer.
+
+An expression can be a sequence of expressions separated by the token \token{;}, e.g.,
+%
+\fs{letValueSequence}{A value binding for a sequence of expressions.}
+%
+The lightweight syntax automatically inserts the \token{;} token at newlines, hence using the lightweight syntax the above is the same as,
+%
+\fs{letValueSequenceLightWeight}{A value binding for a sequence using lightweight syntax.}
+%
+
+A key concept of programming is \idx{scope}. In F\#, the scope of a value binding is lexically meaning that the binding is constant from the \keyword{let} statement defining it, untill it is redefined, e.g.,
+%
+\fs{letValueScopeLower}{Redefining identifiers is allowed in lower scopes.}
+%
+Scopes are given levels, and scopes may be nested, where the nested scope has a level one lower than its parent. F\# distinguishes between the top and lower levels, and at the top level in the lightweight syntax, redefining values is not allowed, e.g.,
+%
+\fs{letValueScopeLowerError}{Redefining identifiers is not allowed in lightweight syntax at top level.}
+%
+But using \keyword{begin} and \keyword{end} keywords, we create a \idx{block} which acts as a \idx{nested scope}, and then redefining is allowed, e.g.,
+%
+\fs{letValueScopeBlockAlternative2}{A block has lower scope level, and rebinding is allowed.}
+%
+It is said that the second binding \idx{overshadows} the first.
+Alternatively we may use parentheses to create a block, e.g.,
+%
+\fs{letValueScopeBlockAlternative3}{A block may be created using parentheses.}
+%
+In both cases we used indentation, which is good practice, but not required here.  Lowering level is a natural part of function definitions to be discussed in Section~\ref{sec:functions} and flow control structures to be discussed in Chapter~\ref{chap:flow}.
+
+Defining blocks is useful for controling the extend of a lexical scope of bindings. For example, adding a second \lstinline!printfn! statement,
+%
+\fs{letValueScopeBlockProblem}{Overshadowing hides the first binding.}
+%
+will print the value 4 last bound to the identifier \lstinline!p!, since token \token{;} associates to the right, i.e., the above is interpreted as \lstinline!let p = 3 in let p = 4 in (printfn "%A" p; printfn "%A" p)!. Instead we may create a block as,\jon{spacing in lstinline mode after double quotation mark is weird.}
+%
+\fs{letValueScopeBlock}{Blocks allow for the return to the previous scope.}
+%
+Here the lexical scope of \lstinline!let p = 4 in ...! is for the nested scope, which ends at \token{)}, returning to the lexical scope of \lstinline!let p = 3 in ...!. Alternatively, the \keyword{begin} and \keyword{end} keywords could equally have been used.
+%\fs{letValueScopeBlockAlternative}{}
+
+\section{Functions and procedures (function bindings)}
+\label{sec:functions}
+A function is a mapping between an input and output domain. F\# is a functional first programming language, and offers a number of alternative methods for specifying parameters, which will be discussed in this section. Binding identifieres to functions follows a syntax similar to value binding,
+%
+\begin{lstlisting}[language=EBNF]
+arg = ident | "(" ident ":" type ")"
+argList = arg | arg argList
+identOrOp = ident | ( operatorName )
+expr = ... 
+  | "let " ident-or-op argList [":" type] "=" expr " in " expr (* binding a function or operator *)
+  | ...
+\end{lstlisting}
+An example in interactive mode is,
+%
+\fso{letFunction}{An example of a binding of an identifier and a function.}
+%
+and we see that the function is interpreted to have the type \lstinline!val sum : x:float -> y:float -> float!. The \token{->} token means a mapping between sets, in this case floats. The function is also a higher order function, to be discussed in detail below, and here it suffices to think of \lstinline!sum! as a function that takes 2 floats as argument and returns a float.
+%, that \token{->} associates to the right, hence \lstinline!x:float -> y:float -> float! is equivalent to \lstinline!x:float -> (y:float -> float)! and thus, \lstinline!sum x! is a function, which gives a function
+
+Not all types need to be declared, just sufficent for F\# to be able to infer the types for the full statement. In the example, one sufficent specification is, and we could just have specified the type of the result,
+%
+\fse{letFunctionAlterantive}{All types need most often not be specified.}
+%
+or even just one of the arguments,
+%
+\fse{letFunctionAlterantive2}{Just one type is often enough for F\# to infer the rest.}
+%
+In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx[operand]{operands} of the same type, then when the type of either the result, any or both operands are declared, then the type of the remaining follows directly.  As for values, lightweight syntax automatically inserts the keyword \keyword{in} and the token \token{;},
+%
+\fs{letFunctionLightWeight}{Lightweight syntax for function definitions.}
+%
+
+Arguments need not always be inferred to types, but may be of generic type. F\# prefers this, when \idx{type safety} is ensured, e.g.,
+%
+\fso{functionDeclarationGeneric}{Typesafety implies that a function will work for any type, and hence it is generic.}
+%
+Here the function \lstinline{second} does not use the first argument, \lstinline{x} which is any type called \lstinline{'a}, and the type of the second element, \lstinline{y}, is also any type an not nessecarily the same as \lstinline!x!, so it is called \lstinline!'b!. Finally the result is the same type as \lstinline!y!, whatever it is. This is an example of a \idx{generic function}.
+
+******
+\jon{nested scope, must return a value.}
+
+
+
+Functions may be anonymously declared using the \texttt{fun} keyword,
+\fs{functionDeclarationAnonymous}{}
+Anonymous functions are often used as arguments to other functions, e.g.,
+\fs{functionDeclarationAnonymousAdvanced}{}
+This is a powerfull concept, but can make programs hard to read, and overly use is not recommended.
+
+Functions may be declared using pattern matching, which is a flexible method for declaring output depending on conditions on the input value. The most common pattern matching method is by use of the \texttt{match with} syntax,
+\fs{functionDeclarationMatchWith}{}
+
+A short-hand only for functions of 1 parameter is the \texttt{function} syntax,
+\fs{functionDeclarationFunction}{}
+Note that the name given in the match, here \texttt{n}, is not used in the first line, and is arbitrary at the line of pattern matchin, and may even be different on each line. For these reasons is this syntax discouraged.
+
+Functions may be declared from other functions
+\fs{functionDeclarationTupleCurrying}{}
+For functions of more than 1 argument, there exists a short notation, which is called \idx{currying} in tribute of Haskell Curry,
+\fs{functionDeclarationCurrying}{}
+Here \texttt{mul 2.0} is a partial specification of the function \texttt{mul x y}, where the first argument is fixed, and hence, \texttt{double} is a function of 1 argument being the second argument of \texttt{mul}. Currying is often used in functional programming, but generally currying should be used carefully, since currying may seriously reduce readability of code.
+
+\section{Procedures}
+A \idx{procedure} is a generalisation of the concept of functions, and in contrast to functions procedures need not return values. An example, we've already seen is the \texttt{printfn}, which is used to print text on the console, but does not return a value. Coincidentally, since the console is a state, printing to it is a side-effect. Above we examined 
+%\begin{fse}
+%   let updateFactor factor = 
+%    factor := 2
+%\end{fse}
+\fse{mutableAssignReturnSideEffectStump}{}
+which also does not have a return value. Procedural thinking is useful for encapsulation, but is prone to side-effects and should be minimized by being replaced by functional thinking.
+
+\section{Printf}
+\label{sec:printf}
+\jon{Maybe explain the printf function, Spec-4.0 Section 6.3.16
+  'printf' Formats, but also max and min comparison functions and math
+  functions Section 18.2.2 and 18.2.4?}
 
 \section{Variables (Mutable bindings)}
 \label{sec:mutableValues}
@@ -100,57 +259,16 @@ A typical variable is a counter of type integer, and a typical use of counters i
 %
 which is an example we will return to many times later in this text.
 
-\jon{Somewhere I should talk about whitespaces and newlines Spec-4.0
-  Chapter 3.1}
 
-\jon{Somewhere I should possibly talk about Lightweight Syntax, Spec-4.0 Chapter 15.1}
-
-\dots
-
-
-\section{Functions and procedures (function bindings)}
-\label{chap:functions}
-Function definition follows the same syntax as literal binding,
-%
-\begin{lstlisting}[language=EBNF]
-"let" ["rec"] ident valIdent {valIdent} [":" type] "=" expr ["in" expr]
-valident = ident | "(" ident ":" type ")"
-\end{lstlisting}
-
-or specify the type of the function at point of definition using the notation,
-\begin{lstlisting}[language=ebnf]
-  "let" name argWType { argWType } [ ":" type ] "=" expr
-  argWType = arg | "(" arg ":" type ")"
-\end{lstlisting}
-where not all types need to be declared, just sufficent for F\# to be able to infer the types for the full statement. In the example, one sufficent specification is,
-\begin{lstlisting}[language=fsharp,caption=fsharpi]
-> let sum (x : float) (y : float) = x + y;;
-
-val sum : x:float -> y:float -> float
-
-> let c = sum 357.6 863.4;;
-
-val c : float = 1221.0
-\end{lstlisting}
-but alternatively we could have specified the type of the result,
-\begin{lstlisting}[language=fsharp]
-  let sum x y : float = x + y
-\end{lstlisting}
-or even just one of the arguments,
-\begin{lstlisting}[language=fsharp]
-  let sum (x : float) y = x + y
-\end{lstlisting}
-In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx[operand]{operands} of the same type, then when the type of either the result, any or both operands are declared, then the type of the remaining follows directly.
-
-
-
-
+*********
 
 A function that elegantly implements the incrementation operation may be constructed as,
 %
 \fs{mutableAssignIncrementEncapsulation}{}
 %
 \jon{Explain why this works!} Here the output of \texttt{incr} is an anonymous function, that takes no argument, increments the variable of \texttt{incr} and returns the new value of the counter. This construction is called \idx{encapsulation}, since the variable \texttt{counter} is hidden by the function \texttt{incr} from the user, i.e., the user need not be concerned with how the increment operator is implemented and the variable name used by \texttt{incr} does not clutter the scope where it is used.
+
+*******
 
 Variables cannot be returned from functions, that is,
 %
@@ -179,53 +297,23 @@ Here there can be no doubt in \texttt{multiplyWithFactor} that the value of '\te
 
 
 
+o
+
+
+
+
+\jon{Somewhere I should talk about whitespaces and newlines Spec-4.0
+  Chapter 3.1}
+
+\jon{Somewhere I should possibly talk about Lightweight Syntax, Spec-4.0 Chapter 15.1}
+
+\dots
 
 
 
 
 
 
-
-
-A function is a mapping between an input and output domain. F\# is a functional first programming language, and offers a number of alternative methods for specifying parameters. A simple example is,
-\fs{functionDeclarationMul}{}
-which declares a function of a tuple and returns their multiplication. The types are inferred from its first use in the second line, i.e., \texttt{mul} is \texttt{val mul : x:int * y:int -> int}.  An argument may be of generic type for input, which need not be inferred without sacrificing type safety, e.g.,
-\fs{functionDeclarationGeneric}{}
-Here the function \texttt{second} does not use the first element in the tuple, \texttt{x}, and the type of the second element, \texttt{y}, can safely be anything.
-
-Functions may be anonymously declared using the \texttt{fun} keyword,
-\fs{functionDeclarationAnonymous}{}
-Anonymous functions are often used as arguments to other functions, e.g.,
-\fs{functionDeclarationAnonymousAdvanced}{}
-This is a powerfull concept, but can make programs hard to read, and overly use is not recommended.
-
-Functions may be declared using pattern matching, which is a flexible method for declaring output depending on conditions on the input value. The most common pattern matching method is by use of the \texttt{match with} syntax,
-\fs{functionDeclarationMatchWith}{}
-
-A short-hand only for functions of 1 parameter is the \texttt{function} syntax,
-\fs{functionDeclarationFunction}{}
-Note that the name given in the match, here \texttt{n}, is not used in the first line, and is arbitrary at the line of pattern matchin, and may even be different on each line. For these reasons is this syntax discouraged.
-
-Functions may be declared from other functions
-\fs{functionDeclarationTupleCurrying}{}
-For functions of more than 1 argument, there exists a short notation, which is called \idx{currying} in tribute of Haskell Curry,
-\fs{functionDeclarationCurrying}{}
-Here \texttt{mul 2.0} is a partial specification of the function \texttt{mul x y}, where the first argument is fixed, and hence, \texttt{double} is a function of 1 argument being the second argument of \texttt{mul}. Currying is often used in functional programming, but generally currying should be used carefully, since currying may seriously reduce readability of code.
-
-\section{Procedures}
-A \idx{procedure} is a generalisation of the concept of functions, and in contrast to functions procedures need not return values. An example, we've already seen is the \texttt{printfn}, which is used to print text on the console, but does not return a value. Coincidentally, since the console is a state, printing to it is a side-effect. Above we examined 
-%\begin{fse}
-%   let updateFactor factor = 
-%    factor := 2
-%\end{fse}
-\fse{mutableAssignReturnSideEffectStump}{}
-which also does not have a return value. Procedural thinking is useful for encapsulation, but is prone to side-effects and should be minimized by being replaced by functional thinking.
-
-\section{Printf}
-\label{sec:printf}
-\jon{Maybe explain the printf function, Spec-4.0 Section 6.3.16
-  'printf' Formats, but also max and min comparison functions and math
-  functions Section 18.2.2 and 18.2.4?}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

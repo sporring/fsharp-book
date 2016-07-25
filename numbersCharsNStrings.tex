@@ -276,7 +276,7 @@ since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasti
 \section{Operators on basic types}
 Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an \idx{infix operator}. Expressions is the basic building block of all F\# programs, and its grammar has many possible options. The grammar for expressions are defined recursively, and some of it is given by, \jon{Spec-4.0 Section 4.3: const is missing uint8, int8 nativeint, unativeint.}
 %
-\begin{lstlisting}[language=EBNF]
+\begin{lstlisting}[language=EBNF,caption=expressionArithmetic]
 bool = "true" | "false"
 const = byte | sbyte | uint8 | int8 | int16 | uint16 | int | int32 | uint32 | int64 | uint64 | bignum | naviteint | unativeint | float | double | single | float32 | decimal | char | string | byte [] | bool | "()"
 slice-range = 
