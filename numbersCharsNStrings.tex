@@ -457,32 +457,26 @@ If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret th
 % > 3 + 4 * 5;;
 % val it : int = 23
 % \end{lstlisting}
-Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} tokens \token{+} and \token{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:operatorPrecedence}, the precedence is shown by the order they are given in the table.
+Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} tokens \token{+} and \token{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.
 \begin{table}
   \centering
-  \begin{tabularx}{\linewidth}{|l|l|X|}
+  \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize\raggedright\arraybackslash}X|>{\hsize=.5\hsize}X|>{\hsize=2\hsize}X|}
     \hline
     Operator & Associativity & Description\\
     \hline
-    \lstinline|+op|, \lstinline|-op|, \lstinline|\~\~\~op| & Left & Unary identity, negation, and bitwise negation operator\\
+    \mbox{\lstinline|+op|,} \mbox{\lstinline|-op|,} \mbox{\lstinline|\~\~\~op|} & Left & Unary identity, negation, and bitwise negation operator\\
     \hline
     \lstinline|f x| & Left & Function application\\
     \hline
     \lstinline|op ** op| & Right & Exponent\\ 
     \hline
-    \lstinline|op * op|, \lstinline|op / op|, \lstinline|op \% op| & Left & Multiplication, division and remainder\\
+    \mbox{\lstinline|op * op|,} \mbox{\lstinline|op / op|,} \mbox{\lstinline|op \% op|} & Left & Multiplication, division and remainder\\
     \hline
-    \lstinline|op + op|, \lstinline|op - op| & Left & Addition and subtraction binary operators\\
+    \mbox{\lstinline|op + op|,} \mbox{\lstinline|op - op|} & Left & Addition and subtraction binary operators\\
     \hline
     \lstinline|op \^\^\^ op| & Right & bitwise exclusive or\\
     \hline
-    \begin{minipage}[t]{0.25\linewidth}
-      \lstinline|op < op|, \lstinline|op <= op|,\\
-      \lstinline|op > op|, \lstinline|op >= op|,\\
-      \lstinline|op = op|, \lstinline|op <> op|,\\
-      \lstinline|op <<< op|, \lstinline|op >>> op|,\\
-      \lstinline|op \&\&\& op|, \lstinline!op ||| op!,\\
-    \end{minipage}
+    \mbox{\lstinline|op < op|,} \mbox{\lstinline|op <= op|,} \mbox{\lstinline|op > op|,} \mbox{\lstinline|op >= op|,} \mbox{\lstinline|op = op|,} \mbox{\lstinline|op <> op|,} \mbox{\lstinline|op <<< op|,} \mbox{\lstinline|op >>> op|,} \mbox{\lstinline|op \&\&\& op|,} \mbox{\lstinline!op ||| op!,}
              & Left & Comparison operators, bitwise shift, and bitwise 'and' and 'or'.\\
     \hline
     \lstinline|\&\&| & Left & Boolean and\\
@@ -490,8 +484,8 @@ Here, the addition and multiplication functions are shown in \idx{infix notation
     \lstinline+||+ & Left & Boolean or\\
     \hline
   \end{tabularx}
-  \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|op * op| has higher precedence than \lstinline|op + op|. Operators in the same row has same precedence. }
-  \label{tab:operatorPrecedence}
+  \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|op * op| has higher precedence than \lstinline|op + op|. Operators in the same row has same precedence. Full table is given in Table~\ref{tab:operatorPrecedence}.}
+  \label{tab:someOperatorPrecedences}
 \end{table}
 Associativity implies the order in which calculations are performed for operators of same precedence. For some operators and type combinations association matters little, e.g., multiplication associates to the left and exponentiation associates to the right, e.g., in\jon{Spec-4.0, Table 18.2.1 appears to be missing boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
 %

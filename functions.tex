@@ -45,7 +45,9 @@ identOrOp = ident | ( operatorName )
 expr = ... 
   | "let " ["mutable "] ident  [":" type] "=" expr " in " expr (* binding a value *)
   | "let " ident-or-op argList [":" type] "=" expr " in " expr (* binding a function or operator *)
+  | "let " rec function-or-value-defns (* recursive definition *)
   | "fun " argList "->" expr (* a function as value *)
+  | expr ":" type (* type annotation *)
   | "begin " expr " end" (* alternative block expression *)
   | expr; expr (* sequence of expression *)
   | ...
@@ -146,7 +148,9 @@ will print the value 4 last bound to the identifier \lstinline!p!, since token \
 Here the lexical scope of \lstinline!let p = 4 in ...! is for the nested scope, which ends at \token{)}, returning to the lexical scope of \lstinline!let p = 3 in ...!. Alternatively, the \keyword{begin} and \keyword{end} keywords could equally have been used.
 %\fs{letValueScopeBlockAlternative}{}
 
-\section{Functions and procedures (function bindings)}
+\jon{Remember to say something about interactive scripts and the \texttt{;;} token and scope}
+
+\section{Functions (function bindings)}
 \label{sec:functions}
 A function is a mapping between an input and output domain. F\# is a functional first programming language, and offers a number of alternative methods for specifying parameters, which will be discussed in this section. Binding identifieres to functions follows a syntax similar to value binding,
 %
@@ -190,36 +194,83 @@ A function may contain a sequence of expressions, but must return a value. E.g.,
 %
 Here we used the lightweight syntax, where the \token{=} identifies the start of a nested scope, and F\# identifies the scope by indentation. The amount of space used for indentation is does not matter, but all lines following the first must use the same. The scope ends before the first line with the previous indentation or none. Notice how the last expression is not bound to an identifier, but is the result of the function, i.e., in contrast to many other languages, F\# does not have an explicit keyword for returning values. Note also that since the function \lstinline!determinant! is defined in the nested scope of \lstinline!solution!, then  \lstinline!determinant! cannot be called outside \lstinline!solution!, since the scope ends before \lstinline!let a = 1.0!.
 
-******
-\jon{maybe move pattern matching to flow control?}
+\idx[lexical scope]{Lexical scope} and function definitions can be a cause of confusion as the following example shows,
+%
+\fs{lexicalScopeNFunction}{Lexical scope means that $f(z) = 3x$ and not $4x$ at the time of calling.}
+%
+Here the value binding for \lstinline!a! is redefined, after it has been used to define a helper function \lstinline!f!. So which value of \lstinline!a! is used when we later apply \lstinline!f! to an argument? To resolve the confusion, remember that value binding is lexically defined, i.e., the binding \lstinline!let f z = a * x! uses the value of \lstinline!a!, it has by the ordering of the lines in the script, not dynamically by when \lstinline!f! was called. Hence, \advice{think of lexical scope as substitution of an identifier with its value or function immediately at the place of definition.} I.e., since \lstinline!a! and \lstinline!3.0! are synonymous in the first lines of the program, then the function \lstinline!f! is really defined as, \lstinline!let f z = 3.0 * x!. \jon{comment on dynamic scope and mutable variables.}
 
-Functions may be anonymously declared using the \texttt{fun} keyword,
-\fs{functionDeclarationAnonymous}{}
-Anonymous functions are often used as arguments to other functions, e.g.,
-\fs{functionDeclarationAnonymousAdvanced}{}
-This is a powerfull concept, but can make programs hard to read, and overly use is not recommended.
-
-Functions may be declared using pattern matching, which is a flexible method for declaring output depending on conditions on the input value. The most common pattern matching method is by use of the \texttt{match with} syntax,
-\fs{functionDeclarationMatchWith}{}
-
-A short-hand only for functions of 1 parameter is the \texttt{function} syntax,
-\fs{functionDeclarationFunction}{}
-Note that the name given in the match, here \texttt{n}, is not used in the first line, and is arbitrary at the line of pattern matchin, and may even be different on each line. For these reasons is this syntax discouraged.
+Functions do not need a name, but may be declared as an \idx{anonymous function} using the \keyword{fun} keyword and the \token{->} token,
+%
+\fs{functionDeclarationAnonymous}{Anonymous functions are functions as values.}
+%
+Here a name is bound to an anonymous function, which returns the first of two arguments. The difference to \lstinline!let first x y = x! is that anonymous functions may be treated as values, meaning that they may be used as arguments to other functions, and new values may be reassigned to their identifiers, when mutable, as will be discussed in Section~\label{sec:mutableValues}. A common use of anonymous functions is as as arguments to other functions, e.g.,
+%
+\fs{functionDeclarationAnonymousAdvanced}{Anonymous functions are often used as arguments for other functions.}
+%
+Note that here \lstinline!apply! is given 3 arguments, the function \lstinline!mul! and 2 integers. It is not given the result of \lstinline!mul 3 6!, since that would not match the definition of \lstinline!apply!. \advice{Anonymous functions and functions as arguments are powerfull concepts, but tend to make programs harder to read, and their use should be limited.}
 
 Functions may be declared from other functions
 \fs{functionDeclarationTupleCurrying}{}
 For functions of more than 1 argument, there exists a short notation, which is called \idx{currying} in tribute of Haskell Curry,
+%
 \fs{functionDeclarationCurrying}{}
-Here \texttt{mul 2.0} is a partial specification of the function \texttt{mul x y}, where the first argument is fixed, and hence, \texttt{double} is a function of 1 argument being the second argument of \texttt{mul}. Currying is often used in functional programming, but generally currying should be used carefully, since currying may seriously reduce readability of code.
+%
+Here \lstinline{mul 2.0} is a partial specification of the function \lstinline{mul x y}, where the first argument is fixed, and hence, \lstinline{double} is a function of 1 argument being the second argument of \lstinline{mul}. Currying is often used in functional programming, but generally \advice{currying should be used carefully, since currying may seriously reduce readability of code.}
 
-\section{Procedures}
-A \idx{procedure} is a generalisation of the concept of functions, and in contrast to functions procedures need not return values. An example, we've already seen is the \texttt{printfn}, which is used to print text on the console, but does not return a value. Coincidentally, since the console is a state, printing to it is a side-effect. Above we examined 
+A \idx{procedure} is a generalisation of the concept of functions, and in contrast to functions procedures need not return values,
+%
+\fs{procedure}{A procedure is a function that has no return value, which in F\# implies\token{()} as return value.}
+In F\# this is automatically given the unit type as return value. Procedural thinking is useful for \idx{encapsulation} of scripts, but is prone to \idx{side-effects} and should be minimized by being replaced by functional thinking. More on side-effects in Section~\ref{sec:mutable}.
+%An example, we've already seen is the \texttt{printfn}, which is used to print text on the console, but does not return a value. Coincidentally, since the console is a state, printing to it is a side-effect. Above we examined 
 %\begin{fse}
 %   let updateFactor factor = 
 %    factor := 2
 %\end{fse}
-\fse{mutableAssignReturnSideEffectStump}{}
+%\fse{mutableAssignReturnSideEffectStump}{}
 which also does not have a return value. Procedural thinking is useful for encapsulation, but is prone to side-effects and should be minimized by being replaced by functional thinking.
+
+\section{User-defined operators}
+\label{sec:functions}
+Operators are functions, e.g., the infix multiplication operator \lstinline!+! is equivalent to the function \lstinline!(+)!, e.g.,
+%
+\fs{addOperatorNFunction}{}
+%
+All operator has this option, and you may redefine them and define your own operators, who has names specified by the following simplified EBNF:
+\begin{lstlisting}[language=EBNF, caption={Grammar for infix and prefix tokens},label=list:infixOrPrefixOperators]
+infixOrPrefixOp := "+" | "-" | "+. " | "-. " | "%" | "&" | "&&"
+tildes = "~" | "~" tildes
+prefixOp = infixOrPrefixOp | tildes | (! {opChar} - "!=")
+dots = "." | "." dots
+infixOp = 
+  {dots} (
+    infixOrPrefixOp  
+    | "-" {opChar} 
+    | "+" {opChar} 
+    | "||" 
+    | "<" {opChar} 
+    | ">" {opChar} 
+    | "="  
+    | " |" {opChar} 
+    | "&" {opChar} 
+    | "^" {opChar} 
+    | "*" {opChar} 
+    | "/" {opChar} 
+    | "%" {opChar} 
+    | "!=" )
+  | ":=" | "::" | "$" | "?"
+\end{lstlisting}
+%opChar = "!" | "%" | "&" | "*" | "+" | "-" | ". " | "/" | "<" | "=" | ">" | "@" | "^" | "|" | "~" 
+%op = opChar {opChar}
+%identOrOp = ident | "(" op ")"
+%$
+The precedence rules and associtivity of user-defined operators follows the rules for which they share prefixes with built-in rules, see Table~\ref{tab:operatorPrecedenceFull}. E.g., \lstinline!.*!, \lstinline!+++!, and \lstinline!<+! are legal operator names for inffix operators, they have precedence as ordered, and their associativity are all left. Using \lstinline!~! as the first character in the definition of an operator makes the operator unary and will not be part of the name. Examples of definitions and use of operators are,
+%
+\fs{operatorDefinitions}{}
+%
+Beware, redefining existing operators lexically redefines all future uses of operator for all types, hence \advice{it is not a good idea to redefine operators, but better to define new.}\jon{It seems there is a bug in mono: \texttt{let (~+) x = x+1 in printfn "\%A" +1;;} prints 1 and not 2.} In Chapter~/ref{chap:oop} we will discuss how to define type specific operators including prefix operators. 
+
+Operators beginning with \lstinline!*! must use a space in its definition, \lstinline!( *! in order for it not to be confused with the beginning of a comment. \lstinline!(*!. \jon{this requires comments to be describe previously!}
 
 \section{Printf}
 \label{sec:printf}
@@ -312,11 +363,6 @@ o
 \jon{Somewhere I should possibly talk about Lightweight Syntax, Spec-4.0 Chapter 15.1}
 
 \dots
-
-
-
-
-
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

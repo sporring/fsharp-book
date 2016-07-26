@@ -1,0 +1,68 @@
+\chapter{Language Details}
+
+\begin{table}
+  \centering
+  \begin{tabularx}{\linewidth}{|>{\hsize=1\hsize\raggedright\arraybackslash}X|>{\hsize=.5\hsize}X|>{\hsize=1.5\hsize}X|}
+    \hline
+    Operator & Associativity & Description\\
+    \hline
+    \lstinline[language=ebnf]|ident "<" types ">"| & Left & High-precedence type application\\
+    \hline
+    \lstinline[language=ebnf]|ident "(" expr ")"| & Left & High-predence application\\
+    \hline
+    \lstinline[language=ebnf]|"."| & Left & \\
+    \hline
+    \lstinline[language=ebnf]|prefixOp| & Left & All prefix operators\\
+    \hline
+    \lstinline[language=ebnf]|"|" rule| & Left & Pattern matching rule\\
+    \hline
+    \mbox{\lstinline[language=ebnf]|ident expr|,} \mbox{\lstinline[language=ebnf]|"lazy'' expr|,} \mbox{\lstinline[language=ebnf]|"assert'' epxr|} & Left & \\
+    \hline
+    \lstinline[language=ebnf]|"**" {opChar}| & Right & Exponent like\\
+    \hline
+    \mbox{\lstinline[language=ebnf]|"*"  {opChar}|,} \mbox{\lstinline[language=ebnf]|"/"  {opChar}|,} \mbox{\lstinline[language=ebnf]|"\%"  {opChar}|} & Left & Infix multiplication like\\
+     \hline
+    \mbox{\lstinline[language=ebnf]|"-"  {opChar}|,} \mbox{\lstinline[language=ebnf]|"+"  {opChar}|} & Left & Infix addition like\\
+     \hline
+     \lstinline[language=ebnf]|":?''| & None & \\
+     \hline
+     \lstinline[language=ebnf]|"::''| & Right & \\
+     \hline
+     \lstinline[language=ebnf]|"^''  {opChar}| & Right & \\
+     \hline
+    \mbox{\lstinline[language=ebnf]|"!="  {opChar}|,} \mbox{\lstinline[language=ebnf]|"<"  {opChar}|,} \mbox{\lstinline[language=ebnf]|">"  {opChar}|,} \mbox{\lstinline[language=ebnf]|"="|,} \mbox{\lstinline[language=ebnf]!"|"  {opChar}!,} \mbox{\lstinline[language=ebnf]|"\&"  {opChar}|,} \mbox{\lstinline[language=ebnf]|"\$"  {opChar}|} & Left & Infix addition like\\
+     \hline
+    \mbox{\lstinline[language=ebnf]|":>"|,} \mbox{\lstinline[language=ebnf]|":?>"|} & Right & \\
+     \hline
+    \mbox{\lstinline[language=ebnf]|"\&"|,} \mbox{\lstinline[language=ebnf]|"\&\&"|} & Left & Boolean and like\\
+     \hline
+    \mbox{\lstinline[language=ebnf]|"or"|,} \mbox{\lstinline[language=ebnf]!"||"!} & Left & Boolean or like\\
+     \hline
+     \lstinline[language=ebnf]|","| & None & \\
+     \hline
+     \lstinline[language=ebnf]|":="| & Right & \\
+     \hline
+     \lstinline[language=ebnf]|"->"| & Right & \\
+     \hline
+    \lstinline[language=ebnf]|"if"| & None & \\
+     \hline
+    \mbox{\lstinline[language=ebnf]|"function"|,} \mbox{\lstinline[language=ebnf]|"fun"|,} \mbox{\lstinline[language=ebnf]|"match"|,} \mbox{\lstinline[language=ebnf]|"try"|}& None & \\
+     \hline
+     \lstinline[language=ebnf]|"let"| & None & \\
+     \hline
+     \lstinline[language=ebnf]|";"| & Right & \\
+     \hline
+     \lstinline[language=ebnf]!"|"! & Left & \\
+     \hline
+     \lstinline[language=ebnf]|"when"| & Right & \\
+     \hline
+     \lstinline[language=ebnf]|"as"| & Right & \\
+     \hline
+  \end{tabularx}
+  \caption{Precedence and associativity of operators. Operators in the same row has same precedence. See Listing~\ref{list:infixOrPrefixOperators} for the definition of \lstinline!prefixOp!}
+  \label{tab:operatorPrecedence}
+\end{table}
+
+%%% Local Variables:
+%%% TeX-master: "fsharpNotes"
+%%% End:

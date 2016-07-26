@@ -1,3 +1,3 @@
-let apply (f, x, y)  = f (x, y)
-let z = apply ((fun (a, b) -> a * b), 3, 6)
-printfn "%d" z
+let apply f x y  = f x y
+let mul = fun a b -> a * b
+printfn "%d" (apply mul 3 6)

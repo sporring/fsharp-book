@@ -1,9 +1,44 @@
 \chapter{Controlling program flow}
 \label{chap:flow}
+\jon{Recursive functions here.}
 
+\begin{lstlisting}[language=EBNF]
+pat = const | ...
+guard = "when" expr
+rule = pat [guard] -> expr
+rules = "|" rule | "|" rule rules (* first "|'' is optional' *)
+expr = ... 
+  | "(" expr ")" (* a parenthesized expression *)
+  | "begin " expr " end" (* alternative block expression *)
+  | expr; expr (* sequence of expression *)
+  | "if " expr " then " expr {" elif " expr " then " expr} " else " expr (*  conditional expression *)
+  | "match " expr " with " rules (* match expression *)
+  | "for " pat " in " expr " do " expr [" done "] (* for expression *)
+  | "for " var "=" expr " to " expr " do " expr [" done "] (* simple for expression *)
+  | "while " expr " do " expr [" done "] (* while expression *)
+  | "function " rules (* matching function expression *)
+  | ...
+\end{lstlisting}
 
-\subsection{Blocks}
-\jon{begin-end}
+Often functions are needed, that performs different calculations based on the input values. E.g., counting items in the english language requires various forms depending on the number, so we would say ``I have 1 apple'' and ``I have 2 apples''. For this we may use the \keyword{match}-\keyword{with} programming construct, and a function that given a number returns a string on propper form could look like,
+%
+\fs{matchWith}{Using the \keyword{match}-\keyword{with} programming construct to vary calculation based on the input value.}
+%
+This is an example of controlling programming flow, which will be discussed in more depth in Chapter~\ref{chap:flow}.
+\begin{lstlisting}[language=ebnf]
+expr = ... | "match " expr " with " rules 
+rule = pat [guard] -> expr
+guard = "when" expr
+pat = const | ...     
+\end{lstlisting}
+
+Functions may be declared using pattern matching, which is a flexible method for declaring output depending on conditions on the input value. The most common pattern matching method is by use of the \texttt{match with} syntax,
+\fs{functionDeclarationMatchWith}{}
+
+A short-hand only for functions of 1 parameter is the \texttt{function} syntax,
+\fs{functionDeclarationFunction}{}
+Note that the name given in the match, here \texttt{n}, is not used in the first line, and is arbitrary at the line of pattern matchin, and may even be different on each line. For these reasons is this syntax discouraged.
+
 \subsection{Conditional expressions}
 \begin{lstlisting}[language=EBNF]
 "if" expr "then" expr 
