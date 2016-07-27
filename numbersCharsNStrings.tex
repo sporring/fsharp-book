@@ -23,7 +23,7 @@ What this means is that F\# has inferred the type to be \idx{\lstinline{int}} an
 % val it : string = "3"
 % \end{lstlisting}
 %
-Each literal represent the number 3, but their types are different, and hence they are quite different values. The types \lstinline!int! for integer numbers, \idx{\lstinline{float}} for floating point numbers, \idx{\lstinline{char}} for characters, and \idx{\lstinline{string}} for strings of characters are the most common types of literals. A table of all \idx{basic types} predefined in F\# is given in Table~\ref{tab:primitiveTypes}.
+Each literal represent the number 3, but their types are different, and hence they are quite different values. The types \lstinline!int! for integer numbers, \idx{\lstinline{float}} for floating point numbers, \idx{\lstinline{char}} for characters, and \idx{\lstinline{string}} for strings of characters are the most common types of literals. A table of all \idx{basic types} predefined in F\# is given in Table~\ref{tab:primitiveTypes}.\idxss{\lstinline{unit}}\idxss{\lstinline{obj}}\idxss{\lstinline{exn}}
 \begin{table}
   \centering
   \begin{tabularx}{\textwidth}{|l|l|>{\raggedright\arraybackslash}X|}
@@ -70,7 +70,7 @@ Besides these built-in types, F\# is designed such that it is easy to define new
 
 Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base} 10 means that for a number consisting of a sequence of digits separated by a \idx{decimal point}, where each \idx{digit} can have values $d \in \{0,1,2,\ldots,9\}$, and the value, which each digit represents is proportional to its position. The part befor the decimal point is called the \idx{whole part} and the part after is called the \idx{fractional part} of the number. The whole part without a decimal point and a fractional part is called an \idx{integer number}. As an example \lstinline!35.7! is a decimal number, whose value is $3\cdot 10^1+5\cdot 10^0+7\cdot 10^{-1}$. In F\# a decimal number is called a \idx{floating point number} and in this text we use \idx{Extended Backus-Naur Form} (\idx{EBNF}) to describe the grammar of F\#, the decimal number just described is given as,
 %
-\begin{lstlisting}[language=EBNF]
+\begin{lstlisting}[language=ebnf]
 dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 dInt = dDigit {dDigit}
 dFloat = dInt "." {dDigit}
@@ -78,7 +78,7 @@ dFloat = dInt "." {dDigit}
 %
 meaning that a \lstinline[language=ebnf]!dDigit! is either "0'' or "1" or \dots or "9'', an \lstinline[language=ebnf]!dInt! is 1 or more \lstinline[language=ebnf]!dDigit!, and a \lstinline[language=ebnf]!dFloat! is 1 or more digits, a dot and 0 or more digits. There is no space between the digits and between digits and the dot. So \lstinline!3!, \lstinline!049! are examples of integers, \lstinline!34.89! \lstinline!3.! are examples of floats, while \lstinline!.5! is neither.  Floating point numbers may alternatively be given using \idx{scientific notation}, such as \lstinline!3.5e-4! and \lstinline!4e2!, which means the number $3.5\cdot 10^{-4} = 0.00035$ and $4\cdot 10^2=400$. To describe this in EBNF we write
 %
-\begin{lstlisting}[language=EBNF]
+\begin{lstlisting}[language=ebnf]
 sFloat = (dInt | dFloat) ("e" | "E" ) ["+" | "-"] dInt
 float = dFloat | sFloat
 \end{lstlisting}
@@ -87,7 +87,7 @@ Note that the number before the token \token{e} may be an \lstinline[language=eb
 
 The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^1=5.25$. Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}, where octals uses 8 as basis and can be written in binary using 3 bits, while hexadecimal numbers uses 16 as basis and can be written in binary using 4 bits. Octals and hexadecimals thus conveniently serve as shorthand for the much longer binary representation. F\# has a syntax for writing integers on binary, octal, decimal, and hexadecimal numbers as,
 %
-\begin{lstlisting}[language=EBNF]
+\begin{lstlisting}[language=ebnf]
 bDigit = "0" | "1"
 oDigit  = bDigit | "2" | "3" | "4" | "5" | "6" | "7"
 dDigit = oDigit | "8" | "9"
@@ -103,11 +103,11 @@ xInt = bitInt | octInt | hexInt
 int = dInt | xInt
 \end{lstlisting}
 %
-For example \lstinline!367! is an \lstinline[language=EBNF]!dInt!, \lstinline!0b101101111!, \lstinline!0o557!, and \lstinline!0x16f! is a \lstinline[language=EBNF]!bitInt!, \lstinline[language=EBNF]!octInt!, and \lstinline[language=EBNF]!hexInt!, i.e., a binary, an octal, and a hexadecimal number, they are examples of an \lstinline[language=EBNF]!xInt! and representations of the same number 367. In contrast, \lstinline!0b12! and \lstinline!ff! are neither an \lstinline[language=EBNF]!dInt! nor an \lstinline[language=EBNF]!xInt!.
+For example \lstinline!367! is an \lstinline[language=ebnf]!dInt!, \lstinline!0b101101111!, \lstinline!0o557!, and \lstinline!0x16f! is a \lstinline[language=ebnf]!bitInt!, \lstinline[language=ebnf]!octInt!, and \lstinline[language=ebnf]!hexInt!, i.e., a binary, an octal, and a hexadecimal number, they are examples of an \lstinline[language=ebnf]!xInt! and representations of the same number 367. In contrast, \lstinline!0b12! and \lstinline!ff! are neither an \lstinline[language=ebnf]!dInt! nor an \lstinline[language=ebnf]!xInt!.
 
 A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks, see Appendix~\ref{sec:unicode} for a description of code points.\jon{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The EBNF for characters is,
 %
-\begin{lstlisting}[language=EBNF]
+\begin{lstlisting}[language=ebnf]
 escapeCodePoint = 
   "\u" xDigit xDigit xDigit xDigit
   | "\U" xDigit xDigit xDigit xDigit xDigit xDigit xDigit xDigit
@@ -118,7 +118,7 @@ escapeChar =
 char = "'" codePoint | escapeChar "'"
 \end{lstlisting}
 % 
-where \lstinline[language=EBNF]!codePoint! is a UTF8 encoding of a char. The escape characters \lstinline[language=EBNF]{escapeChar} are special sequences that are interpreted as a single code point shown in Table~\ref{tab:escapeChar}. The trigraph \lstinline|\DDD| uses decimal specification for the first 256 code points, and the hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any code point.
+where \lstinline[language=ebnf]!codePoint! is a UTF8 encoding of a char. The escape characters \lstinline[language=ebnf]{escapeChar} are special sequences that are interpreted as a single code point shown in Table~\ref{tab:escapeChar}. The trigraph \lstinline|\DDD| uses decimal specification for the first 256 code points, and the hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any code point.
 \begin{table}
   \centering
   \begin{tabular}{|c|l|l|}
@@ -145,7 +145,7 @@ Examples of a \lstinline[language=ebnf]!char! are \lstinline{'a'}, \lstinline{'_
 
 A \idx{string} is a sequence of characters enclosed in double quotation marks,\jon{Spec-4.0 p. 28-29: \texttt{simple-string-char} is undefined, \texttt{string-elem} is unused.}
 %
-\begin{lstlisting}[language=EBNF]
+\begin{lstlisting}[language=ebnf]
 stringChar = char - '"'
 simpleString = '"' { stringChar }  '"'
 \end{lstlisting}
@@ -170,7 +170,7 @@ Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&
 %
 The response is shown in double quotation marks, which are not part of the string. 
 
-F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix og suffix as shown in the Table~\ref{tab:literalTypes}.
+F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix og suffix as shown in the Table~\ref{tab:literalTypes}.\idxss{\lstinline{int32}}\idxss{\lstinline{uint32}}\idxss{\lstinline{byte}}\idxss{\lstinline{uint8}}\idxss{\lstinline{byte[]}}\idxss{\lstinline{sbyte}}\idxss{\lstinline{int8}}\idxss{\lstinline{int16}}\idxss{\lstinline{uint16}}\idxss{\lstinline{int64}}\idxss{\lstinline{uint64}}\idxss{\lstinline{bignum}}\idxss{\lstinline{nativeint}}\idxss{\lstinline{unativeint}}\idxss{\lstinline{double}}\idxss{\lstinline{single}}\idxss{\lstinline{float32}}\idxss{\lstinline{decimal}}
 \begin{table}
   \centering
   %\begin{tabularx}{\linewidth}{|>{\hsize=.6\hsize}X|>{\hsize=1.4\hsize}X|>{\hsize=1\hsize}X|}
@@ -193,13 +193,13 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
     \lstinline!float!, \lstinline!double! & \lstinline[language=ebnf]!float | (xInt "LF")!  & \lstinline!3.0!  \\
     \lstinline!single!, \lstinline!float32! & \lstinline[language=ebnf]!(float ("F" | "f")) | (xInt "lf") !  & \lstinline!3.0f!  \\
     \lstinline!decimal! &\lstinline[language=ebnf]!(float | dInt) ("M" | "m")! & \lstinline!3.0m! and \lstinline!3m!  \\
-    \lstinline!string! & \lstinline[language=EBNF]!simpleString |! & \lstinline!"a \"quote\".\n"!  \\
-         & \lstinline[language=EBNF]!'@"' {(char - ('"' | '\"' )) | '""'} '"' |!&\lstinline!@"a ""quote"".\n"! \\
-         & \lstinline[language=EBNF]!'""' {char} '""' (*no '"""' substring*)! & \lstinline!"""a "quote".\n"""!  \\
+    \lstinline!string! & \lstinline[language=ebnf]!simpleString |! & \lstinline!"a \"quote\".\n"!  \\
+         & \lstinline[language=ebnf]!'@"' {(char - ('"' | '\"' )) | '""'} '"' |!&\lstinline!@"a ""quote"".\n"! \\
+         & \lstinline[language=ebnf]!'""' {char} '""' (*no '"""' substring*)! & \lstinline!"""a "quote".\n"""!  \\
     \hline
   \end{tabular}
   % \end{tabularx}
-  \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix. \lstinline![]! notation is for lists, see Chapter~\ref{chap:lists}. $^*$\lstinline[language=ebnf]!bignum! does not yet have an implementation for \lstinline[language=ebnf]!dInt ("Q"|"R"|"Z"|"N"|"G")! in Mono.}
+  \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix. \lstinline![]! notation is for lists, see Chapter~\ref{chap:lists}. $^*$\lstinline[language=ebnf]!bignum! is not a basic type and does not yet have an implementation for \lstinline[language=ebnf]!dInt ("Q"|"R"|"Z"|"N"|"G")! in Mono.}
   \label{tab:literalTypes}
 \end{table}
 Examples are,
@@ -276,7 +276,7 @@ since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasti
 \section{Operators on basic types}
 Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an \idx{infix operator}. Expressions is the basic building block of all F\# programs, and its grammar has many possible options. The grammar for expressions are defined recursively, and some of it is given by, \jon{Spec-4.0 Section 4.3: const is missing uint8, int8 nativeint, unativeint.}
 %
-\begin{lstlisting}[language=EBNF,caption=expressionArithmetic]
+\begin{lstlisting}[language=ebnf,caption=expressionArithmetic]
 bool = "true" | "false"
 const = byte | sbyte | uint8 | int8 | int16 | uint16 | int | int32 | uint32 | int64 | uint64 | bignum | naviteint | unativeint | float | double | single | float32 | decimal | char | string | byte [] | bool | "()"
 slice-range = 
@@ -295,7 +295,7 @@ expr =
   | ...
 \end{lstlisting}
 %
-Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}. Arithmetic on various types will be discussed in detail in the following sections. \jon{minor comment on indexing and slice-ranges.}
+Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}.\idxss{\lstinline{abs}}\idxss{\lstinline{acos}}\idxss{\lstinline{asin}}\idxss{\lstinline{atan}}\idxss{\lstinline{atan2}}\idxss{\lstinline{ceil}}\idxss{\lstinline{cos}}\idxss{\lstinline{cosh}}\idxss{\lstinline{exp}}\idxss{\lstinline{floor}}\idxss{\lstinline{log}}\idxss{\lstinline{log10}}\idxss{\lstinline{max}}\idxss{\lstinline{min}}\idxss{\lstinline{pown}}\idxss{\lstinline{round}}\idxss{\lstinline{sign}}\idxss{\lstinline{sin}}\idxss{\lstinline{sinh}}\idxss{\lstinline{sqrt}}\idxss{\lstinline{tan}}\idxss{\lstinline{tanh}}
 \begin{table}
   \centering
   \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
@@ -449,6 +449,7 @@ Recursion means that a rule or a function is used by the rule or function itself
   \caption{Predefined functions for arithmetic operations}
   \label{tab:arithmeticFunctions}
 \end{table}
+Arithmetic on various types will be discussed in detail in the following sections. \jon{minor comment on indexing and slice-ranges.}
 
 If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
 %
@@ -457,7 +458,7 @@ If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret th
 % > 3 + 4 * 5;;
 % val it : int = 23
 % \end{lstlisting}
-Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} tokens \token{+} and \token{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.
+Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} tokens \token{+} and \token{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.\idxs{boolean or}\idxs{boolean and}
 \begin{table}
   \centering
   \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize\raggedright\arraybackslash}X|>{\hsize=.5\hsize}X|>{\hsize=2\hsize}X|}
@@ -681,7 +682,7 @@ For binary arithmetic on integers, the following operators are available:
 \lstinline{op1 >>> op2}, which shifts the bit pattern of \lstinline|op1| \lstinline|op2| positions to the right insert 0's to left;
 \lstinline{op1 &&& op2}, Bitwise 'and', returns the result of taking the boolean 'and' operator position-wise;
 \lstinline{op ||| op}, Bitwise 'or', as 'and' but using the boolean 'or' operator; and
-\lstinline{op1 ~~~ op1}, Bitwise xor, which is returns the result of the boolean 'xor' operator defined by the truth table in Table~\ref{tab:xor}.
+\lstinline{op1 ~~~ op1}, Bitwise xor, which is returns the result of the boolean 'xor' operator defined by the truth table in Table~\ref{tab:xor}.\idxs{xor}\idxs{exclusive or}
 \begin{table}
   \centering
   \begin{tabular}{|c|c|c|}
@@ -837,7 +838,7 @@ A large collection of operators and functions exist for \lstinline{string}. The 
 % val c : string = "hello world"
 % \end{lstlisting}
 %
-Characters and strings cannot be concatenated, which is why the above example used the string of  a space \lstinline|" "| instead of the space character \lstinline|' '|. The characters of a string may be indexed as,
+Characters and strings cannot be concatenated, which is why the above example used the string of  a space \lstinline|" "| instead of the space character \lstinline|' '|. The characters of a string may be indexed as using the \idx{\lstinline{.[]}} notation,
 %
 \fso{stringIndexing}{String indexing using square brackets.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, example of string indexing.}]

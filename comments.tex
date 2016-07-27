@@ -1,6 +1,18 @@
 \chapter{Comments}
 \label{chap:comments}
 
+\jon{\url{https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/code-formatting-guidelines-%5Bfsharp%5D}, \url{https://blogs.msdn.microsoft.com/chrsmith/2008/06/25/some-guidelines-for-readable-f-code/}, \url{http://fsharp.org/specs/component-design-guidelines/}, \url{https://github.com/dungpa/fantomas/blob/master/docs/FormattingConventions.md}}
+
+
+\begin{lstlisting}
+/// <summary>Make a new matrix whos result is the matrix product of this with other.</summary>
+/// <param name="other">A matrix, must have same size number of rows as this has columns.</param>
+/// <returns>A new matrix.</returns>
+/// <exception cref="System.ArgumentException">Thrown when the number of columns in this is different that the number of rows in other.</exception>
+member Mul : other:Matrix -> Matrix
+
+\end{lstlisting}
+
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
