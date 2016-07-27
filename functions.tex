@@ -76,12 +76,12 @@ Binding identifiers to literals or expressions that are evaluated to be values i
 \begin{lstlisting}[language=EBNF]
 "let " ["mutable "] ident  [":" type] "=" expr [" in " | LF] expr
 \end{lstlisting}
-I.e., the \idx{\keyword{let}} keyword dictates that the identifier \lstinline[language=EBNF]!ident! is an alias of the expression \lstinline[language=EBNF]!expr!. The type may be especified with the \idx{\token{:}} token to type \lstinline[language=EBNF]!type!. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
+I.e., the \idx{\keyword{let}} keyword dictates that the identifier \lstinline[language=EBNF]!ident! is an alias of the expression \lstinline[language=EBNF]!expr!. The type may be specified with the \idx{\token{:}} token to type \lstinline[language=EBNF]!type!. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
 %
 \fs{letValue}{The identifier \lstinline!p! is used in the expression following the \keyword{in} keyword.}
 %
 In the interactive mode used in the example above, we see that F\# infers the type...
-F\# will ignore most newlines between tokens, i.e., the above is equivalent to writting,
+F\# will ignore most newlines between tokens, i.e., the above is equivalent to writing,
 %
 \fs{letValueLF}{Newlines after \keyword{in} make the program easier to read.}
 %
@@ -89,7 +89,7 @@ F\# also allows for an alternative notation called \idx{lightweight syntax}, whe
 %
 \fs{letValueLightWeight}{Lightweight syntax does not require the \keyword{in} keyword, but expression must be aligned with the \keyword{let} keyword.}
 %
-The same expression in interactive mode will also respond the infered types, e.g.,
+The same expression in interactive mode will also respond the inferred types, e.g.,
 %
 \fso{letValueLightWeightTypes}{Interactive mode also responds inferred types.}
 %
@@ -118,7 +118,7 @@ The lightweight syntax automatically inserts the \token{;} token at newlines, he
 \fs{letValueSequenceLightWeight}{A value binding for a sequence using lightweight syntax.}
 %
 
-A key concept of programming is \idx{scope}. In F\#, the scope of a value binding is lexically meaning that the binding is constant from the \keyword{let} statement defining it, untill it is redefined, e.g.,
+A key concept of programming is \idx{scope}. In F\#, the scope of a value binding is lexically meaning that the binding is constant from the \keyword{let} statement defining it, until it is redefined, e.g.,
 %
 \fs{letValueScopeLower}{Redefining identifiers is allowed in lower scopes.}
 %
@@ -137,7 +137,7 @@ Alternatively we may use parentheses to create a block, e.g.,
 %
 In both cases we used indentation, which is good practice, but not required here.  Lowering level is a natural part of function definitions to be discussed in Section~\ref{sec:functions} and flow control structures to be discussed in Chapter~\ref{chap:flow}.
 
-Defining blocks is useful for controling the extend of a lexical scope of bindings. For example, adding a second \lstinline!printfn! statement,
+Defining blocks is useful for controlling the extend of a lexical scope of bindings. For example, adding a second \lstinline!printfn! statement,
 %
 \fs{letValueScopeBlockProblem}{Overshadowing hides the first binding.}
 %
@@ -152,7 +152,7 @@ Here the lexical scope of \lstinline!let p = 4 in ...! is for the nested scope, 
 
 \section{Functions (function bindings)}
 \label{sec:functions}
-A function is a mapping between an input and output domain. F\# is a functional first programming language, and offers a number of alternative methods for specifying parameters, which will be discussed in this section. Binding identifieres to functions follows a syntax similar to value binding,
+A function is a mapping between an input and output domain. F\# is a functional first programming language, and offers a number of alternative methods for specifying parameters, which will be discussed in this section. Binding identifiers to functions follows a syntax similar to value binding,
 %
 \begin{lstlisting}[language=EBNF]
 arg = ident | "(" ident ":" type ")"
@@ -162,14 +162,15 @@ expr = ...
   | "let " ident-or-op argList [":" type] "=" expr " in " expr (* binding a function or operator *)
   | ...
 \end{lstlisting}
-An example in interactive mode is,
+Functions may also be recursive, which will be discussed in Chapter~\ref{chap:flow}. An example in interactive mode is,
 %
 \fso{letFunction}{An example of a binding of an identifier and a function.}
 %
 and we see that the function is interpreted to have the type \lstinline!val sum : x:float -> y:float -> float!. The \token{->} token means a mapping between sets, in this case floats. The function is also a higher order function, to be discussed in detail below, and here it suffices to think of \lstinline!sum! as a function that takes 2 floats as argument and returns a float.
 %, that \token{->} associates to the right, hence \lstinline!x:float -> y:float -> float! is equivalent to \lstinline!x:float -> (y:float -> float)! and thus, \lstinline!sum x! is a function, which gives a function
 
-Not all types need to be declared, just sufficent for F\# to be able to infer the types for the full statement. In the example, one sufficent specification is, and we could just have specified the type of the result,
+
+Not all types need to be declared, just sufficient for F\# to be able to infer the types for the full statement. In the example, one sufficient specification is, and we could just have specified the type of the result,
 %
 \fse{letFunctionAlterantive}{All types need most often not be specified.}
 %
@@ -186,7 +187,7 @@ Arguments need not always be inferred to types, but may be of generic type, whic
 %
 \fso{functionDeclarationGeneric}{Typesafety implies that a function will work for any type, and hence it is generic.}
 %
-Here the function \lstinline{second} does not use the first argument, \lstinline{x} which is any type called \lstinline{'a}, and the type of the second element, \lstinline{y}, is also any type an not nessecarily the same as \lstinline!x!, so it is called \lstinline!'b!. Finally the result is the same type as \lstinline!y!, whatever it is. This is an example of a \idx{generic function}.
+Here the function \lstinline{second} does not use the first argument, \lstinline{x} which is any type called \lstinline{'a}, and the type of the second element, \lstinline{y}, is also any type an not necessarily the same as \lstinline!x!, so it is called \lstinline!'b!. Finally the result is the same type as \lstinline!y!, whatever it is. This is an example of a \idx{generic function}.
 
 A function may contain a sequence of expressions, but must return a value. E.g., the quadratic formula may written as, 
 %
@@ -230,6 +231,8 @@ In F\# this is automatically given the unit type as return value. Procedural thi
 %\fse{mutableAssignReturnSideEffectStump}{}
 which also does not have a return value. Procedural thinking is useful for encapsulation, but is prone to side-effects and should be minimized by being replaced by functional thinking.
 
+\jon{Remember examples of return of functions, no arguments \texttt{()}, and disregarded arguments \texttt{\_}.}
+
 \section{User-defined operators}
 \label{sec:functions}
 Operators are functions, e.g., the infix multiplication operator \lstinline!+! is equivalent to the function \lstinline!(+)!, e.g.,
@@ -264,16 +267,77 @@ infixOp =
 %op = opChar {opChar}
 %identOrOp = ident | "(" op ")"
 %$
-The precedence rules and associtivity of user-defined operators follows the rules for which they share prefixes with built-in rules, see Table~\ref{tab:operatorPrecedenceFull}. E.g., \lstinline!.*!, \lstinline!+++!, and \lstinline!<+! are legal operator names for inffix operators, they have precedence as ordered, and their associativity are all left. Using \lstinline!~! as the first character in the definition of an operator makes the operator unary and will not be part of the name. Examples of definitions and use of operators are,
+The precedence rules and associativity of user-defined operators follows the rules for which they share prefixes with built-in rules, see Table~\ref{tab:operatorPrecedenceFull}. E.g., \lstinline!.*!, \lstinline!+++!, and \lstinline!<+! are legal operator names for infix operators, they have precedence as ordered, and their associativity are all left. Using \lstinline!~! as the first character in the definition of an operator makes the operator unary and will not be part of the name. Examples of definitions and use of operators are,
 %
 \fs{operatorDefinitions}{}
 %
 Beware, redefining existing operators lexically redefines all future uses of operator for all types, hence \advice{it is not a good idea to redefine operators, but better to define new.}\jon{It seems there is a bug in mono: \texttt{let (~+) x = x+1 in printfn "\%A" +1;;} prints 1 and not 2.} In Chapter~/ref{chap:oop} we will discuss how to define type specific operators including prefix operators. 
 
-Operators beginning with \lstinline!*! must use a space in its definition, \lstinline!( *! in order for it not to be confused with the beginning of a comment. \lstinline!(*!. \jon{this requires comments to be describe previously!}
+Operators beginning with \lstinline!*! must use a space in its definition, \lstinline!( *! in order for it not to be confused with the beginning of a comment \lstinline!(*!. \jon{this requires comments to be describe previously!}
 
 \section{Printf}
 \label{sec:printf}
+A common way to output information to the console is to use one of the family of \lstinline!printf! commands. These functions are special, since they take a variable number of arguments, and the number is decided by the first - the format string,
+\begin{lstlisting}[language=ebnf]
+"printf" formatString {ident}
+\end{lstlisting}
+where a \lstinline[language=ebnf]!formatString! is a string (simple or verbatim) with placeholders,
+\begin{lstlisting}[language=ebnf]
+placeholder = "%%" | ""%" ["0"] ["+"] ["-"] [SP] [dInt] ["." dInt] [placeholderType]
+placeholderType = "b" | "d" | "i" | "u" | "x" | "X" | "o" | "e" | "E" | "f" | "F" | "g" | "G" | "M" | "O" | "A" | "a" | "t"
+\end{lstlisting}
+and where the number of arguments after \lstinline[language=ebnf]!formatString! must match the number of placerholders in \lstinline[language=ebnf]!formatString!. The \lstinline[language=ebnf]!placeholderType! is elaborated in Table~\ref{tab:printfPlaceholder}.
+\begin{table}
+  \centering
+  \begin{tabularx}{\linewidth}{|l|X|}
+    \hline
+    Placeholder& Type\\
+    \hline
+    \lstinline!\%b!&\lstinline!bool!\\
+    \hline
+    \lstinline!\%s!&\lstinline!string!\\
+    \hline
+    \lstinline!\%c!&\lstinline!char!\\
+    \hline
+    \mbox{\lstinline!\%d!,} \mbox{\lstinline!\%i!}&basic integer type\\
+    \hline
+    \lstinline!\%u!&basic unsigned integer type\\
+    \hline
+    \lstinline!\%x!&basic integer type formatted as unsigned hexadecimal with lower case letters\\
+    \hline
+    \lstinline!\%X!&basic integer type formatted as unsigned hexadecimal with upper case letters\\
+    \hline
+    \lstinline!\%o!&basic integer type formatted as unsigned octal integer\\
+    \hline
+    \mbox{\lstinline!\%e!,} \mbox{\lstinline!\%E!,} \mbox{\lstinline!\%f!,} \mbox{\lstinline!\%F!,} \mbox{\lstinline!\%g!,} \mbox{\lstinline!\%G!,} &\lstinline!float! and \lstinline!single!\\
+    \hline
+    \lstinline!\%M!&decimal\\
+    \hline
+    \lstinline!\%O!&object\\
+    \hline
+    \lstinline!\%A!&\\
+    \hline
+    \lstinline!\%a!&\\
+    \hline
+    \lstinline!\%t!&\\
+    \hline
+  \end{tabularx}
+  \caption{Printf placeholder string}
+  \label{tab:printfPlaceholder}
+\end{table}
+The function \lstinline[language=ebnf]!printf! prints \lstinline[language=ebnf]!formatString! to the console, where all \lstinline[language=ebnf]!placeholder! has been replaced by the value of the corresponding argument formatted as specified. E.g.,
+%
+\fs{printfExample}{Examples of printf and some of its formatting options.}
+%
+Not all combinations of flags and identifier types are supported, e.g., strings cannot have number of integers after the decimal specified.
+\jon{Mono seems to have a bug, \texttt{printfn "\%.1g" 3.13;;} and \texttt{printfn "\%.1f" 3.13;;} produces different number of digits.}
+\jon{Spec-4.0 \texttt{\%s} and \texttt{\%b} are missing in Section 3.1.16.}
+The placeholder types \lstinline{"%A"}, \lstinline{"%a"}, and \lstinline{"%t"} are special for F\#, examples of their use are,
+%
+\fs{printfExampleAdvance}{}
+%
+The \lstinline!%A! is special in that all built-in types including tuples, lists, and arrays to be discussed in Chapter~\ref{chap:lists} can be printed using this formatting string, but notice that the formatting performed includes the named literal string. The two formatting strings \lstinline!%t! and \lstinline!%a! are options for user-customizing the formatting, and will not be discussed further.
+
 \jon{Maybe explain the printf function, Spec-4.0 Section 6.3.16
   'printf' Formats, but also max and min comparison functions and math
   functions Section 18.2.2 and 18.2.4?}
@@ -300,13 +364,13 @@ val mutable a : int = 0
 val it : bool = false
 \end{lstlisting}
 %
-then we instead would have obtained the default assignment of the result of the comparision of the content of \lstinline|a| with the integer 3, which is false. However, it's important to note, that when the variable is initially defined, then the '\token|=|' operator must be used, while later reassignments must use the \token|<-|  operator. 
+then we instead would have obtained the default assignment of the result of the comparison of the content of \lstinline|a| with the integer 3, which is false. However, it's important to note, that when the variable is initially defined, then the '\token|=|' operator must be used, while later reassignments must use the \token|<-|  operator. 
 
 Assignment type mismatches will result in an error, 
 %
-\fs{mutableAssignReassingTypeError}{Assignmetn type mismatching causes a compile time error.}
+\fs{mutableAssignReassingTypeError}{Assignment type mismatching causes a compile time error.}
 %
-I.e., once the type of an identifier has been declared or infered, then it cannot be changed.
+I.e., once the type of an identifier has been declared or inferred, then it cannot be changed.
 
 A typical variable is a counter of type integer, and a typical use of counters is to increment them, i.e., erasing a new value to be one more that its previous value. For example,
 %
