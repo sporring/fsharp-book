@@ -18,9 +18,9 @@ expr = ...
 \end{lstlisting}
 
 \section{For and while loops}
-Many programming constructs need to be repeated. The most basic example is counting, e.g., from 1 to 10 with a \idx{\lstinline{for}}-loop,
+Many programming constructs need to be repeated. The most basic example is counting, e.g., from 1 to 10 with a \idx{\keyword{for}}-loop,
 %
-\fso{count}{Counting from 1 to 10 using a \lstinline{for}-loop.}
+\fso{count}{Counting from 1 to 10 using a \keyword{for}-loop.}
 %
 As this interactive script demonstrates, the identifier \lstinline!i! takes all the values between 1 and 10, but in spite of its changing state, it is not mutable. Note also that the return value of the \keyword{for} expression is \token{()} like the \lstinline!printf! functions. The \keyword{for} and \keyword{while} loops follow the syntax,
 \begin{lstlisting}[language=ebnf]
@@ -33,7 +33,7 @@ expr = ...
 \end{lstlisting}
 Using lightweight syntax the script block between the \keyword{do} and \keyword{done} keywords may be replaced by a newline and indentation, e.g.,
 %
-\fs{countLightweight}{Counting from 1 to 10 using a \lstinline{for}-loop.}
+\fs{countLightweight}{Counting from 1 to 10 using a \keyword{for}-loop.}
 %
 A more complicated example is,
 \begin{problem}
@@ -65,11 +65,11 @@ In this example, the variable \lstinline!i! runs through the elements of a list,
 **********
 
 
-A major difference between functional and imperative programming is how loops are expressed. Consider the problem of printing the numbers 1 to 5 on the console with a \texttt{while} loop can be done as follows,
+A major difference between functional and imperative programming is how loops are expressed. Consider the problem of printing the numbers 1 to 5 on the console with a \keyword{while} loop can be done as follows,
 \fs{flowWhile}{}
 where the same result by recursion as
 \fs{flowWhileRecursion}{}
-The counting example is so often used that a special notation is available, the \texttt{for} loop, where the above could be implemented as
+The counting example is so often used that a special notation is available, the \keyword{for} loop, where the above could be implemented as
 \fs{flowFor}{}
 Note that \texttt{i} is a value and not a variable here. For a more complicated example, consider the problem of calculating average grades from a list of courses and grades. Using the above construction, this could be performed as,
 \fs{flowForListsIndex}{}
