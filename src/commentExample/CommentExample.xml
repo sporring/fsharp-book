@@ -82,6 +82,37 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="determinant">
+      <MemberSignature Language="C#" Value="public static double determinant (double a, double b, double c);" />
+      <MemberSignature Language="ILAsm" Value=".method public static float64 determinant(float64 a, float64 b, float64 c) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Microsoft.FSharp.Core.CompilationArgumentCounts(Mono.Cecil.CustomAttributeArgument[])</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="a" Type="System.Double" />
+        <Parameter Name="b" Type="System.Double" />
+        <Parameter Name="c" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <param name="a">To be added.</param>
+        <param name="b">To be added.</param>
+        <param name="c">To be added.</param>
+        <summary>
+ Calculate the determinant of a quadratic equation with parameters a, b, and c
+</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="solution">
       <MemberSignature Language="C#" Value="public static double solution (double a, double b, double c, double sgn);" />
       <MemberSignature Language="ILAsm" Value=".method public static float64 solution(float64 a, float64 b, float64 c, float64 sgn) cil managed" />
@@ -109,8 +140,19 @@
         <param name="c">Constant coefficient.</param>
         <param name="sgn">+1 or -1 indicating which solution is to be calculated.</param>
         <summary>Find x when 0 = ax^2+bx+c.</summary>
-        <returns>x.</returns>
-        <remarks>To be added.</remarks>
+        <returns>The solution to x.</returns>
+        <remarks>Negative determinants are not checked.</remarks>
+        <example>
+   The following code:
+   <code>
+     let a = 1.0
+     let b = 0.0
+     let c = -1.0
+     let xp = (solution a b c +1.0)
+     printfn "0 = %.1fx^2 + %.1fx + %.1f =&gt; x_+ = %.1f" a b c xp
+   </code>
+   results in <c>0 = 1.0x^2 + 0.0x + -1.0 =&gt; x_+ = 0.7</c> printed to the console.
+ </example>
       </Docs>
     </Member>
     <Member MemberName="xp">

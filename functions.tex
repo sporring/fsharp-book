@@ -462,8 +462,53 @@ F\# has the following simplified syntax for in-code documentation,
 \end{lstlisting}
 That is, text framed as a \lstinline[language=ebnf]!blockComment! is still parsed by F\# as keywords and basic types implying that \lstinline!(* a comment (* in a comment *) *)! and \lstinline!(* "*)" *)! are valid comments, while \lstinline!(* " *)! is invalid.\jon{lstlisting colors is bad.}
 
-The F\# compiler has an option for generating \idx{Extensible Markup Language} (\idx{XML}) files from scripts using the Microsoft .Net convention. E.g., 
-\fs{commentExample}{}
+The F\# compiler has an option for generating \idx{Extensible Markup Language} (\idx{XML}) files from scripts using the C\# documentation comments tags\footnote{For specification of C\# documentations comments see ECMA-334 3rd Edition, Annex E, Section 2: \url{http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-334.pdf}}. E.g., 
+\fs{commentExample}{Code with XML comments.}
+XML tags always appears in pairs \lstinline[language=xml]!<tag> ... </tag>!, and the C\# documentation comments accept any tags, but recommends those listed in Table~\ref{tab:xmlTags}.
+\begin{table}
+  \centering
+  \begin{tabularx}{\linewidth}{|l|X|}
+       \hline
+    Tag & Description\\
+    \hline
+    \lstinline[language=xml]!<c>! & Set text in a code-like font\\
+    \hline
+    \lstinline[language=xml]!<code>! &Set one or more lines of source code or program output\\
+    \hline
+    \lstinline[language=xml]!<example>! &Indicate an example\\
+    \hline
+    \lstinline[language=xml]!<exception>! &Identifies the exceptions a method can throw\\
+    \hline
+    \lstinline[language=xml]!<list>! &Create a list or table\\
+    \hline
+    \lstinline[language=xml]!<para>! &Permit structure to be added to text\\
+    \hline
+    \lstinline[language=xml]!<param>! &Describe a parameter for a method or constructor\\
+    \hline
+    \lstinline[language=xml]!<paramref>! &Identify that a word is a parameter name\\
+    \hline
+    \lstinline[language=xml]!<permission>! &Document the security accessibility of a member\\
+    \hline
+    \lstinline[language=xml]!<remarks>! &Describe a type\\
+    \hline
+    \lstinline[language=xml]!<returns>! &Describe the return value of a method\\
+    \hline
+    \lstinline[language=xml]!<see>! &Specify a link\\
+    \hline
+    \lstinline[language=xml]!<seealso>! &Generate a See Also entry\\
+    \hline
+    \lstinline[language=xml]!<summary>! &Describe a member of a type\\
+    \hline
+    \lstinline[language=xml]!<typeparam>! &Describe a type parameter for a generic type or method\\
+    \hline
+    \lstinline[language=xml]!<typeparamref>! &Identify that a word is a type parameter name\\
+    \hline
+    \lstinline[language=xml]!<value>! &Describe a property\\
+    \hline
+  \end{tabularx}
+  \caption{Recommended XML tags for documentation comments, from ECMA-334 3rd Edition, Annex E, Section 2.}
+  \label{tab:xmlTags}
+\end{table}
 Mono's \lstinline[language=console]{fsharpc} command may be used to extract the comments into XML,
 \begin{lstlisting}[language=console]
 $ fsharpc --doc:commentExample.xml commentExample.fsx 
@@ -471,11 +516,15 @@ F# Compiler for F# 4.0 (Open Source Edition)
 Freely distributed under the Apache 2.0 Open Source License
 \end{lstlisting}
 This results in an XML file with the following content,
-\lstinputlisting[language=xml]{\src/commentExample.xml}
+\lstinputlisting[language=xml]{src/commentExample.xml}
+The extracted XML is written in C\# stype by convention, since F\# is part of the Mono and .Net framework that may be used by any of the languages producing Assemblies. E.g., \lstinline!val solution : a:float -> b:float -> c:float -> sgn:float -> float! is in the XML documentation \lstinline[language=xml]!M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double)!. Also, the extracted XML is also geared towards documenting big libraries of codes and thus highlights the structured programming organization. See Part~\ref{part:structured} for more on structured programming. As an example, the prefix \lstinline[language=xml]!M:CommentExample.! means that it is a Method in the namespace CommentExample, which in this case is the name of the file.
+
+An accompanying program in the Mono suite is \lstinline[language=console]!mdoc!.
 \dots
 \begin{lstlisting}[language=console]
 $ mdoc update -o commentExample -i commentExample.xml commentExample.exe 
 New Type: CommentExample
+Member Added: public static double determinant (double a, double b, double c);
 Member Added: public static double solution (double a, double b, double c, double sgn);
 Member Added: public static double a { get; }
 Member Added: public static double b { get; }
@@ -483,7 +532,7 @@ Member Added: public static double c { get; }
 Member Added: public static double xp { get; }
 Namespace Directory Created: 
 New Namespace File: 
-Members Added: 5, Members Deleted: 0
+Members Added: 6, Members Deleted: 0
 $ mdoc export-html -out commentExampleHTML commentExample
 .CommentExample
 \end{lstlisting}
