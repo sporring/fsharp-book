@@ -1,0 +1,19 @@
+<Overview>
+  <Assemblies>
+    <Assembly Name="commentExample" Version="0.0.0.0">
+      <Attributes>
+        <Attribute>
+          <AttributeName>Microsoft.FSharp.Core.FSharpInterfaceDataVersion(2, 0, 0)</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Assembly>
+  </Assemblies>
+  <Remarks>To be added.</Remarks>
+  <Copyright>To be added.</Copyright>
+  <Types>
+    <Namespace Name="">
+      <Type Name="CommentExample" Kind="Class" />
+    </Namespace>
+  </Types>
+  <Title>commentExample</Title>
+</Overview>

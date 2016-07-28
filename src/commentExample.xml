@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>commentExample</name></assembly>
+<members>
+<member name="M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double)">
+ <summary>Find x when 0 = ax^2+bx+c.</summary>
+ <param name="a">Quadratic coefficient.</param>
+ <param name="b">Linear coefficient.</param>
+ <param name="c">Constant coefficient.</param>
+ <param name="sgn">+1 or -1 indicating which solution is to be calculated.</param>
+ <returns>x.</returns>
+</member>
+</members>
+</doc>

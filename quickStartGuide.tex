@@ -11,7 +11,7 @@ we have written the following program in F\#,
 %
 In box the above, we see our program was saved as a script in a file called \texttt{quickStartSum.fsx}, and in the console we executed the program by typing the command \lstinline|fsharpi quickStartSum.fsx|. The result is then printed in the console to be \texttt{1221}.
 
-To solve the program we made program consisting of several lines, where each line was a \idx{statement}. The first statement \lstinline|let a = 357| used the \idx{\keyword{let}} \idx{keyword} to \idx[binding]{bind} the value 357 to the name \lstinline|a|. Likewise, we bound the value 864 to the name \lstinline|b|, but to the name \lstinline|c| we bound the result of evaluating the \idx{expression} \lstinline|a + b|. That is, first the value \lstinline|a + b| was calculated by substituting the names of \lstinline|a| and \lstinline|b| with their values to give the expression, \lstinline|357 + 864|, then this expression was evaluated by adding the values to give, \lstinline|1221|, and this value was finally bound to the name \lstinline|c|. The last line printed the value of \lstinline|c| to the console followed by a LF (line feed, see Appendix~\ref{sec:ascii}) with the \lstinline|printfn| function. Here \lstinline|printfn| is a function of 2 arguments: \lstinline|"%A"| and \lstinline|c|. Notice, that in contrast to many other languages, F\# does not use parentheses to frame the list of arguments, nor does it use commas to separate them. In general, the \lstinline|printfn| function always has 1 or more arguments, and the first is a \idx{format string}. A \idx{string} is a sequence of characters starting and ending with double quotation marks. E.g.,  \lstinline|let s = "this is a string of characters"| binds the string \lstinline|"this is..."| to the name \lstinline|s|. For the \lstinline|printfn| function, the format string may be any string, but if it contains format character sequences, such as \lstinline|%A|, then the values following the format string are substituted. The format string must match the value \idx{type}, that is, here \lstinline|c| is of type integer, whereas the format string \lstinline|%A| matches any type.
+To solve the program we made program consisting of several lines, where each line was a \idx{statement}. The first statement \lstinline|let a = 357| used the \idx{\keyword{let}} \idx{keyword} to \idx[binding]{bind} the value 357 to the name \lstinline|a|. Likewise, we bound the value 864 to the name \lstinline|b|, but to the name \lstinline|c| we bound the result of evaluating the \idx{expression} \lstinline|a + b|. That is, first the value \lstinline|a + b| was calculated by substituting the names of \lstinline|a| and \lstinline|b| with their values to give the expression, \lstinline|357 + 864|, then this expression was evaluated by adding the values to give, \lstinline|1221|, and this value was finally bound to the name \lstinline|c|. The last line printed the value of \lstinline|c| to the console followed by a newline (LF possibly preceded by CR, see Appendix~\ref{sec:ascii}) with the \lstinline|printfn| function. Here \lstinline|printfn| is a function of 2 arguments: \lstinline|"%A"| and \lstinline|c|. Notice, that in contrast to many other languages, F\# does not use parentheses to frame the list of arguments, nor does it use commas to separate them. In general, the \lstinline|printfn| function always has 1 or more arguments, and the first is a \idx{format string}. A \idx{string} is a sequence of characters starting and ending with double quotation marks. E.g., \lstinline|let s = "this is a string of characters"| binds the string \lstinline|"this is..."| to the name \lstinline|s|. For the \lstinline|printfn| function, the format string may be any string, but if it contains format character sequences, such as \lstinline|%A|, then the values following the format string are substituted. The format string must match the value \idx{type}, that is, here \lstinline|c| is of type integer, whereas the format string \lstinline|%A| matches any type.
 
 Types are a central concept in F\#. In the script \ref{quickStartSum} we bound values of types \lstinline|int| and \lstinline|string| to names. The values were not \idx[type declaration]{declared} to have these types, instead the types were \idx[type inference]{inferred} by F\#. Had we typed these statements line by line in an interactive session, then we would have seen the inferred types:
 %
@@ -107,7 +107,7 @@ However, if the same was performed in an interactive session,
 % val a : int = 864
 % \end{lstlisting}
 %
-then apparently rebinding is legal. The difference is that the \idx{\token{;;}} \idx{token} defines a new nested \idx{scope}.\jon{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A token is a letter or a word, which the F\# considers as an atomic unit. A scope is an area in a program, where a binding is valid. Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \token{;;} between the two let statements results in an error, e.g.,
+then apparently rebinding is valid. The difference is that the \idx{\token{;;}} \idx{token} defines a new nested \idx{scope}.\jon{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A token is a letter or a word, which the F\# considers as an atomic unit. A scope is an area in a program, where a binding is valid. Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \token{;;} between the two let statements results in an error, e.g.,
 %
 \fso{blocksNNamesError}{Inside a block, names may not be reused.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
@@ -123,7 +123,7 @@ then apparently rebinding is legal. The difference is that the \idx{\token{;;}} 
 Scopes can be visualized as nested squares as shown in Figure~\ref{fig:scope}.
 \begin{figure}
   \centering
-  \subfigure[Illegal]{
+  \subfigure[Invalid]{
     \fbox{
       \begin{minipage}{0.2\linewidth}
         \lstinline|let a = 357|\\
@@ -131,7 +131,7 @@ Scopes can be visualized as nested squares as shown in Figure~\ref{fig:scope}.
       \end{minipage}
     }
   }
-  \subfigure[Legal]{
+  \subfigure[Valid]{
     \fbox{
       \begin{minipage}{0.2\linewidth}
       \lstinline|let a = 357;;|\\
@@ -143,7 +143,7 @@ Scopes can be visualized as nested squares as shown in Figure~\ref{fig:scope}.
   \end{minipage}
 }
   }
-  \caption{Binding of the the same name in the same scope is illegal in F\# 2, but legal in a different scopes. In (a) the two bindings are in the same scope, which is illegal, while in (b) the bindings are in separate scopes by the extra \token{;;} token, which is legal.}
+  \caption{Binding of the the same name in the same scope is invalid in F\# 2, but valid in a different scopes. In (a) the two bindings are in the same scope, which is invalid, while in (b) the bindings are in separate scopes by the extra \token{;;} token, which is valid.}
   \label{fig:scope}
 \end{figure}
 

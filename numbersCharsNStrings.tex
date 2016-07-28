@@ -126,7 +126,7 @@ where \lstinline[language=ebnf]!codePoint! is a UTF8 encoding of a char. The esc
     Character& Escape sequence & Description\\
     \hline
     BS &\lstinline|\b|& Backspace\\
-    LF &\lstinline|\n|&Newline\\
+    LF &\lstinline|\n|&Line feed\\
     CR &\lstinline|\r|&Carriage return\\
     HT &\lstinline|\t|&Horizontal tabulation\\
     \textbackslash &\lstinline|\\|&Backslash\\
@@ -150,7 +150,12 @@ stringChar = char - '"'
 simpleString = '"' { stringChar }  '"'
 \end{lstlisting}
 % 
-Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. Newlines and following white spaces are taken literally, but may be ignored by a preceding \textbackslash character. Further examples of strings are,
+Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. \idx[newline]{Newlines} and following \idx[whitespace]{whitespaces},
+\begin{lstlisting}[language=ebnf,label=newlineNWhitespace]
+newline = [CR] LF (* carriage return and line feed *)
+whitespace = {SP} (* space *)
+\end{lstlisting}
+are taken literally, but may be ignored by a preceding \textbackslash character. Further examples of strings are,
 %
 \fso{stringLiterals}{Examples of string literals.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
