@@ -90,7 +90,7 @@ On the surface, this could appear as an almost negligible change, but the set of
 %
 we see that binding a name to a number without a decimal point is inferred to be integer, while when binding to a number with a decimal point, then the type is inferred to be a float, and when trying to add values of integer and floating point, then we get an error.
 
-F\# is a functional first programming language, and one implication is that names are constant and cannot be changed. If attempted, then F\# will return an error as, e.g., \jon{When command is omitted, then error messages have unwanted blank lines.}
+F\# is a functional first programming language, and one implication is that names have a \idx{lexical scope}. A scope is an area in a program, where a binding is valid, and lexical scope means that when a binding is used, then its value is substituted at the place of binding regardless of whether its value is rebound later in the text. Further, at the outer most level, rebinding is not allowed. If attempted, then F\# will return an error as, e.g., \jon{When command is omitted, then error messages have unwanted blank lines.}
 %
 \fs{quickStartRebindError}{A name cannot be rebound.}
 %
@@ -107,7 +107,7 @@ However, if the same was performed in an interactive session,
 % val a : int = 864
 % \end{lstlisting}
 %
-then apparently rebinding is valid. The difference is that the \idx{\token{;;}} \idx{token} defines a new nested \idx{scope}.\jon{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A token is a letter or a word, which the F\# considers as an atomic unit. A scope is an area in a program, where a binding is valid. Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \token{;;} between the two let statements results in an error, e.g.,
+then apparently rebinding is valid. The difference is that the \idx{\token{;;}} \idx{token} defines a new nested \idx{scope}.\jon{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A token is a letter or a word, which the F\# considers as an atomic unit. Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \token{;;} between the two let statements results in an error, e.g.,
 %
 \fso{blocksNNamesError}{Inside a block, names may not be reused.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
