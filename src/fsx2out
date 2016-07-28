@@ -2,6 +2,10 @@
 
 #mv filenamedialogue.fsx filenamedialogue.fscript
 i=`echo $1 | sed 's/.fsx//'`
-#     mv $i.out $i.bckp
+if [ -f $i.out ]; then
+    mv $i.out $i.bckp
+fi
 fsharpi $i.fsx > $i.out 2>&1
+cmp --silent $i.out $i.bckp && rm $i.bckp
 #mv filenamedialogue.fscript filenamedialogue.fsx
+exit 0
