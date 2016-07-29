@@ -1,9 +1,8 @@
 let applesIHave n =
-  match n with
-    i when i < 0 -> "I owe " + (string -i) + " apples"
-    | 0 -> "I have no apples"
-    | 1 -> "I have 1 apple"
-    | _ -> "I have " + (string n) + " apples"
+  if n < 0 then "I owe " + (string -n) + " apples"
+  elif n < 1 then "I have no apples"
+  elif n < 2 then "I have 1 apple"
+  else "I have " + (string n) + " apples"
 
 printfn "%A" (applesIHave -3)
 printfn "%A" (applesIHave -1)

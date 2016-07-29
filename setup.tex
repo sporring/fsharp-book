@@ -45,7 +45,7 @@
 
 % List of indices
 \usepackage{makeidx}
-\newcommand{\idxs}[1]{\index{#1}\marginpar{$\cdot$~\parbox[t]{25mm}{\raggedright #1}}}
+\newcommand{\idxs}[1]{\marginpar{$\cdot$~\parbox[t]{25mm}{\raggedright #1}}\index{#1}}
 \newcommand{\idxss}[1]{\index{#1}}
 % Define a new command idx with an optional parameter, which if given is the key to the index
 \makeatletter
@@ -175,8 +175,8 @@
 }
 
 % highlighted text snippets
-\newcommand{\advice}[1]{#1\marginpar{Advice!}}
-\newcommand{\advanced}[1]{#1\marginpar{Advanced material}}
+\newcommand{\advice}[1]{\marginpar{Advice}\emph{#1}}
+\newcommand{\advanced}[1]{\marginpar{Advanced material}\emph{#1}}
 
 % paragraph indentation is stupid
 \setlength\parindent{0pt}

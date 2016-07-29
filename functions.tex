@@ -44,9 +44,11 @@ Binding expressions to identifiers is done with the keyword \keyword{let}, using
 arg = ident | "(" ident ":" type ")"
 argList = arg | arg argList
 identOrOp = ident | ( operatorName )
+valueDefn = ["mutable "] ident  [":" type] "=" expr
+functionDefn = ident-or-op argList [":" type] "=" expr "
 expr = ... 
-  | "let " ["mutable "] ident  [":" type] "=" expr " in " expr (* binding a value *)
-  | "let " ident-or-op argList [":" type] "=" expr " in " expr (* binding a function or operator *)
+  | "let " valueDefn " in " expr  (* binding a value or variable *)
+  | "let " functionDefn " in " expr (* binding a function or operator *)
   | "fun " argList "->" expr (* a function as value *)
   | expr ":" type (* type annotation *)
   | "begin " expr " end" (* alternative block expression *)
@@ -60,22 +62,25 @@ expr = ...
 % argument-pats: atomic-pat ... atomic-pat
 % access = "public" | "private" | "internal"
 % return-type = ":" type
-% function-defn = ["inline "] [access] ident-or-op [typar-defns] argument-pats [return-type] = expr
-% value-defn = ["mutable"] [access] pat [typar-defns] [return-type] = expr
+% functionDefn = ["inline "] [access] ident-or-op [typarDefns] argument-pats [return-type] = expr
+% valueDefn = ["mutable"] [access] pat [typarDefns] [return-type] = expr
 % expr = ...
-%   | "let " ["rec "] function-defn " in " expr (* function definition expression *)
-%   | "let " value-defn " in " expr (* value definition expression *)
+%   | "let " ["rec "] functionDefn " in " expr (* function definition expression *)
+%   | "let " valueDefn " in " expr (* value definition expression *)
 %   | "fun " argument-pats "->" expr
 %   | ...
 % \end{lstlisting}
 % %
-which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-value-defns, 1. makes little sense to have values definitions recursive, and 2. possible Mono deviation from specification: let rec function-defn and function-defn requires newline before and.}
+which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-value-defns, 1. makes little sense to have values definitions recursive, and 2. possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.}
 
 \section{Values}
 Binding identifiers to literals or expressions that are evaluated to be values is called value binding, and examples are \lstinline!let a = 3.0! and \lstinline!let b = cos 0.9!. On EBNF the simplified syntax,
 %
 \begin{lstlisting}[language=ebnf]
-"let " ["mutable "] ident  [":" type] "=" expr [" in " | newline] expr
+valueDefn = ["mutable "] ident  [":" type] "=" expr
+expr = ... 
+  | "let " valueDefn " in " expr  
+  | ...
 \end{lstlisting}
 I.e., the \idx{\keyword{let}} keyword dictates that the identifier \lstinline[language=ebnf]!ident! is an alias of the expression \lstinline[language=ebnf]!expr!. The type may be specified with the \idx{\token{:}} token to type \lstinline[language=ebnf]!type!. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
 %
@@ -159,8 +164,9 @@ A function is a mapping between an input and output domain. A key advantage of u
 arg = ident | "(" ident ":" type ")"
 argList = arg | arg argList
 identOrOp = ident | ( operatorName )
+functionDefn = identOrOp argList [":" type] "=" expr "
 expr = ... 
-  | "let " ident-or-op argList [":" type] "=" expr " in " expr (* binding a function or operator *)
+  | "let " functionDefn " in " expr (* binding a function or operator *) 
   | ...
 \end{lstlisting}
 Functions may also be recursive, which will be discussed in Chapter~\ref{chap:flow}. An example in interactive mode is,
