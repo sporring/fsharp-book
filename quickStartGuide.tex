@@ -153,7 +153,7 @@ In F\# \idx[function]{functions} are also values, and defining a function \lstin
 %
 Entering the function into an interactive session will illustrate the inferred type, the function \lstinline|sum| has: \lstinline{val sum : x:int * y:int -> int}, by which is meant that \lstinline|sum| is a mapping from the set product of integers with integers into integers. Type inference in F\# may cause problems, since the type of a function is inferred in the context, in which it is defined. E.g., in an interactive session, defining the sum in one scope on a single line will default the types to integers, F\#'s favorite type, which will give an error, if it in a nested scope is to be used for floats,
 %
-\fso{typesNBlockInference}{Types are inferred in blocks, and F\# tends to prefer integers.}
+\fso{typesNBlockInferenceError}{Types are inferred in blocks, and F\# tends to prefer integers.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
 % > let sum x y = x + y;;
 

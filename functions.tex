@@ -212,7 +212,7 @@ Functions do not need a name, but may be declared as an \idx{anonymous function}
 %
 \fs{functionDeclarationAnonymous}{Anonymous functions are functions as values.}
 %
-Here a name is bound to an anonymous function, which returns the first of two arguments. The difference to \lstinline!let first x y = x! is that anonymous functions may be treated as values, meaning that they may be used as arguments to other functions, and new values may be reassigned to their identifiers, when mutable, as will be discussed in Section~\label{sec:mutableValues}. A common use of anonymous functions is as as arguments to other functions, e.g.,
+Here a name is bound to an anonymous function, which returns the first of two arguments. The difference to \lstinline!let first x y = x! is that anonymous functions may be treated as values, meaning that they may be used as arguments to other functions, and new values may be reassigned to their identifiers, when mutable, as will be discussed in Section~\ref{sec:mutableValues}. A common use of anonymous functions is as as arguments to other functions, e.g.,
 %
 \fs{functionDeclarationAnonymousAdvanced}{Anonymous functions are often used as arguments for other functions.}
 %
@@ -229,7 +229,7 @@ Here \lstinline{mul 2.0} is a partial specification of the function \lstinline{m
 A \idx{procedure} is a generalisation of the concept of functions, and in contrast to functions procedures need not return values,
 %
 \fs{procedure}{A procedure is a function that has no return value, which in F\# implies\token{()} as return value.}
-In F\# this is automatically given the unit type as return value. Procedural thinking is useful for \idx{encapsulation} of scripts, but is prone to \idx{side-effects} and should be minimized by being replaced by functional thinking. More on side-effects in Section~\ref{sec:mutable}.
+In F\# this is automatically given the unit type as return value. Procedural thinking is useful for \idx{encapsulation} of scripts, but is prone to \idx{side-effects} and should be minimized by being replaced by functional thinking. More on side-effects in Section~\ref{sec:mutableValues}.
 %An example, we've already seen is the \texttt{printfn}, which is used to print text on the console, but does not return a value. Coincidentally, since the console is a state, printing to it is a side-effect. Above we examined 
 %\begin{fse}
 %   let updateFactor factor = 
@@ -241,7 +241,7 @@ which also does not have a return value. Procedural thinking is useful for encap
 \jon{Remember examples of return of functions, no arguments \texttt{()}, and wildcard patterns as arguments \texttt{\_}.}
 
 \section{User-defined operators}
-\label{sec:functions}
+\label{sec:operators}
 Operators are functions, e.g., the infix multiplication operator \lstinline!+! is equivalent to the function \lstinline!(+)!, e.g.,
 %
 \fs{addOperatorNFunction}{}
@@ -274,7 +274,7 @@ infixOp =
 %op = opChar {opChar}
 %identOrOp = ident | "(" op ")"
 %$
-The precedence rules and associativity of user-defined operators follows the rules for which they share prefixes with built-in rules, see Table~\ref{tab:operatorPrecedenceFull}. E.g., \lstinline!.*!, \lstinline!+++!, and \lstinline!<+! are valid operator names for infix operators, they have precedence as ordered, and their associativity are all left. Using \lstinline!~! as the first character in the definition of an operator makes the operator unary and will not be part of the name. Examples of definitions and use of operators are,
+The precedence rules and associativity of user-defined operators follows the rules for which they share prefixes with built-in rules, see Table~\ref{tab:operatorPrecedence}. E.g., \lstinline!.*!, \lstinline!+++!, and \lstinline!<+! are valid operator names for infix operators, they have precedence as ordered, and their associativity are all left. Using \lstinline!~! as the first character in the definition of an operator makes the operator unary and will not be part of the name. Examples of definitions and use of operators are,
 %
 \fs{operatorDefinitions}{}
 %
@@ -439,7 +439,7 @@ There is a workaround for this by using \idx{reference cells} by the build-in fu
 %
 \fs{mutableAssignReturnRefCell}{}
 %
-That is, the \texttt{ref} function creates a reference variable, the '\token{!}' and the '\token{:=}' operators reads and writes its value. Reference cells are in some language called pointers, and their use is strongly discouraged, since they may cause \idx{side-effects}, which is the effect that one function changes the state of another, such as the following example demonstrates,
+That is, the \texttt{ref} function creates a reference variable, the '\token{!}' and the '\token{:=}' operators reads and writes its value. Reference cells are in some language called pointers, and their use is strongly discouraged, since they may cause \idx{side-effects}, which is the effect that one function changes the state of another, such as the following example demonstrates,\jon{Discuss side-effects!}
 %
 \fs{mutableAssignReturnSideEffect}{}
 %

@@ -243,7 +243,7 @@ Many basic types are compatible and the type of a literal may be changed by \idx
 % > float 3;;
 % val it : float = 3.0
 % \end{lstlisting}
-which is a \lstinline!float!, since when \lstinline|float| is given an argument, then it acts as a function rather than a type, and for the integer \lstinline|3| it returns the floating point number \lstinline|3.0|.  For more on functions see Chapter~\ref{chap:functions}. Boolean values are often treated as the integer values 0 and 1, but no short-hand function names exists for their conversions. Instead use,
+which is a \lstinline!float!, since when \lstinline|float| is given an argument, then it acts as a function rather than a type, and for the integer \lstinline|3| it returns the floating point number \lstinline|3.0|.  For more on functions see Chapter~\ref{chap:let}. Boolean values are often treated as the integer values 0 and 1, but no short-hand function names exists for their conversions. Instead use,
 %
 \fso{castingBooleans}{Casting booleans.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, casting booleans.}]
@@ -554,7 +554,7 @@ That is, the multiplication and addition are good mnemonics for remembering the 
 % val it : unit = ()
 % \end{lstlisting}
 %
-Spacing produced using the \lstinline|printfn| function is not elegant. In Section~\ref{sec:printf} we will discuss better options for producing more beautiful output. Notice, that the arguments for \lstinline|printfn| was given on the next line. Here it is important to use \idx{indentation} to indicate continuation of the line. See Section~\ref{sec:indentation} for more.
+Spacing produced using the \lstinline|printfn| function is not elegant. In Section~\ref{sec:printf} we will discuss better options for producing more beautiful output. Notice, that the arguments for \lstinline|printfn| was given on the next line with indentation. Generally, F\# ignores newlines and whitespaces except when using the ligthweight syntax discussed in Chapter~\ref{chap:let}.
 
 \section{Integer arithmetic}
 The set of integers is infinitely large, but since all computers have limited resources, it is not possible to represent it in their entirety. The various integer types listed in Table~\ref{tab:primitiveTypes} are finite subset reduced by limiting their ranges. Although \lstinline!bignum! is theoretically unlimited, the biggest number representable is still limited by computer memory. An in-depth description of integer implementation can be found in Appendix~\ref{app:numbers}. The type \keyword{int} is the most common type. 
