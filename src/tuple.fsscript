@@ -1,0 +1,2 @@
+let tp = (2, true, "hello")
+printfn "%A" tp;;

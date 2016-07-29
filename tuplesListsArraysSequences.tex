@@ -1,6 +1,70 @@
 \chapter{Tuples, Lists, Arrays, and Sequences}
 \label{chap:lists}
-F\# is tuned to work with lists.
+F\# is tuned to work with lists, and there are several built-in lists with various properties making them useful for different tasks. E.g.,
+%
+\fs{tuplesQuadraticEq}{Using tuples to gather values.}
+%
+F\# has 4 built-in list types: tuples, lists, arrays, and sequences following this syntax:
+%
+\begin{lstlisting}[language=ebnf]
+tupleList = expr | expr "," tupleList
+listList = expr | expr ";" listList
+comp-or-range-expr = comp-expr | short-comp-expr | range-expr
+short-comp-expr = "for " pat " in " expr-or-range-expr "->" expr
+range-exp = expr ".." expr [".." expr]
+comp-expr =
+  ("let " | "let! ") pat "=" expr " in " comp-expr
+  | ("do " | "do! ") expr " in " comp-expr
+  | ("use " | "use! ") pat = expr " in " comp-expr
+  | ("yield " | "yield! ") expr
+  | ("return " | "return! ") expr
+  | "if " expr " then " comp-expr [" else " comp-expr]
+  | "match " expr " with " comp-rules
+  | "try " comp-expr " with " comp-rules
+  | "try " comp-expr " finally " expr
+  | "while " expr " do " expr [" done "]
+  | "for " ident "=" expr " to " expr " do " comp-expr [" done "]
+  | "for " pat " in " expr-or-range-expr " do " comp-expr [" done "]
+  | comp-expr ";" comp-expr
+  | expr
+comp-rule = pat pattern-guardopt "->" comp-expr
+comp-rules = comp-rule | comp-rule '|' comp-rules
+expr = ... 
+  | tupleList
+  | "[" listList "]" (* list *)
+  | "[|" listList "|]" (* array *)
+  | expr "{" comp-or-range-expr "}" (* computation expression *)
+  | "[" comp-or-range-expr "]" (* computed list expression *)
+  | "[|" comp-or-range-expr "|]" (* computed array expression *)
+  | ...
+\end{lstlisting}
+%
+Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these datastructures in detail.
+
+\section{Tuples}
+\idx[tuple]{Tuples} are unions of types, 
+%
+\begin{lstlisting}[language=ebnf]
+tupleList = expr | expr "," tupleList
+expr = ... 
+  | tupleList
+  | ...
+\end{lstlisting}
+%
+and the they are identified by the \token{,} token. Most often the tuple is enclosed in parantheses, but that is not required. Consider the tripel, also known as a 3-tuple, \lstinline!(2,true,"hello")! in interactive mode,
+%
+\fso{tuple}{Definition of a tuple.}
+%
+The values \lstinline!2!, \lstinline!true!, and \lstinline!"hello"! are \idx[member]{members}, and the number of elements of a tuple is its \idx{length}. From the response of F\# we see that the tuple is inferred to have the type \lstinline!int * bool * string!, where the \token{*} is cartesian product between the three sets.  Notice, that tuples can be products of any types and have lexical scope like value and function bindings. Notice also, that a tuple may be printed as a single entity by the \lstinline!%A! placeholder. In the example, we bound \lstinline!tp! to the tuple, the opposite is also possible,
+%
+\fso{tupleDeconstruction}{Definition of a tuple.}
+%
+In this a function is defined that takes 1 argument, a 3-tuple, and which is bound to a tuple with 3 named members. Since we used the \lstinline!%A! placeholder in the \lstinline!printfn! function, then the function is generic and can be called with 3-tuples of different types. Note, \advice{don't confuse a function of $n$ arguments with a function of an $n$-tuple.}  The later has only 1 argument, and the difference is the \token{,}'s.
+
+Tuples may be compared, and are equal if their type and value are equal. Pairs, 2-tuples, are so common that two built-in functions have been supplied, \idx{\lstinline{fst}} and \idx{\lstinline{snd}}, to retrieve the first and second element of the tuple. \jon{possibly more on comparison.}
+
+\section{Lists}
+
 
 
 However, an elegant alternative is available as
@@ -10,10 +74,8 @@ This to be preferred, since we completely can ignore list boundary conditions an
 Note how this implementation avoids the use of variables in contrast to the previous examples.
 
 
-\section{Tuples}
-\jon{remember fst and snd Spec-4.0 Section 18.2.7}
 
-\section{Lists}
+
 \section{Arrays}
 \subsection{1 dimensional arrays}
 Roughly speaking, arrays are mutable lists, and may be created and indexed in the same manner, e.g.,

@@ -1,0 +1,6 @@
+let deconstructNPrint tp =
+  let (a, b, c) = tp
+  printfn "tp = (%A, %A, %A)" a b c
+
+deconstructNPrint (2, true, "hello")
+deconstructNPrint (3.14, "Pi", 'p');;
