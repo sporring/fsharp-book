@@ -36,7 +36,7 @@ expr = ...
   | ...
 \end{lstlisting}
 %
-\jon{Spec-4.0: grammar for list and array expressions are subsets of computed list and array expressions.}Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these datastructures in detail.
+\jon{Spec-4.0: grammar for list and array expressions are subsets of computed list and array expressions.}Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these data structures in detail.
 
 \section{Tuples}
 \idx[tuple]{Tuples} are unions of immutable types, 
@@ -48,7 +48,7 @@ expr = ...
   | ...
 \end{lstlisting}
 %
-and the they are identified by the \lexeme{,} lexeme. Most often the tuple is enclosed in parantheses, but that is not required. Consider the tripel, also known as a 3-tuple, \lstinline!(2,true,"hello")! in interactive mode,
+and the they are identified by the \lexeme{,} lexeme. Most often the tuple is enclosed in parentheses, but that is not required. Consider the tripel, also known as a 3-tuple, \lstinline!(2,true,"hello")! in interactive mode,
 %
 \fso{tuple}{Definition of a tuple.}
 %
@@ -103,16 +103,32 @@ expr = ...
 \end{lstlisting}
 Simple examples of a list grammars are, \lstinline[language=ebnf]![expr; expr; ... ; expr]!, \lstinline[language=ebnf]![expr ".." expr]!, \lstinline[language=ebnf]![expr ".." expr ".." expr]!, e.g., an explicit list \lstinline!let lst = [1; 2; 3; 4; 5]!, which may be written shortly as range \lstinline!let lst = [1 .. 5]!, and ranges may include a step size \lstinline!let lst = [1 .. 2 .. 5]!, which is the same as \lstinline!let lst = [1; 3; 5]!. Computational expressions is a small program, whose result is list, for example, \lstinline!let lst = [for i = 1 to 5 do yield i done]!
 
+Lists may be indexed and concatenated much like strings, e.g.,
+%
+\fs{listIndexing}{Examples of list concatenation, indexing.}
+%
+In this example, we used the \lexeme{@} concatenation operator, the \lexeme{.[]} index method, and the \lexeme{Length} property. Notice, as strings, list elements are counted from 0, and thus the last element has \lstinline!lst.Length - 1!. In \lstinline!printList! the \keyword{for}-\keyword{in} is used, which runs loops through each element of the list and assigns it to the identifier \lstinline!elm!. This is in contrast to \lstinline!printListAlt!, which uses uses the \keyword{for}-\keyword{to} keyword and explicitly represents the index \lstinline!i!. Explicit representation of the index makes more complicated programs, and thus increases the chances of programming errors. Hence, \advice{\keyword{for}-\keyword{in} is to be preferred over \keyword{for}-\keyword{to}.}
 
+Lists are well suited for recursive functions and pattern matching with, e.g., \keyword{match}-\keyword{with} as illustrated in the next example:
+%
+\fs{listPatternMatching}{Examples of list concatenation, indexing.}
+%
+The pattern \lstinline!l::rest! is the pattern for the first element followed by a list of the rest of the list. This pattern matches all lists except an empty list, hence \lstinline!rest! may be empty. Thus the wildcard pattern matching anything including the empty list, will be used only when \lstinline!lst! is empty.
 
-However, an elegant alternative is available as
-\fs{flowForLists}{}
-This to be preferred, since we completely can ignore list boundary conditions and hence avoid out of range indexing. For comparison see a recursive implementation of the same,
-\fs{flowForListsRecursive}{}
-Note how this implementation avoids the use of variables in contrast to the previous examples.
+Pattern matching with lists is quite powerful, consider the following problem:
+\begin{problem}
+  Given a list of pairs of course names and course grades, calculate the average grade.
+\end{problem}
+A list of course names and grades is \lstinline![("name1", grade1); ("name2", grade2); ...]!. Let's take a recursive solution. First problem will be to iterate through the list. For this we can use pattern matching similarly to Listing~\ref{listPatternMatching} with \lstinline!(name, grade)::rest!. The second problem will be to calculate the average. The average grade is the sum all grades and divide by the number of grades. Assume that we already have made a function, which calculates the \lstinline!sum! and \lstinline!n!, the sum and number of elements, for \lstinline!rest!, then all we need is to add \lstinline!grade! to the \lstinline!sum! and \lstinline!1! to \lstinline!n!. For an empty list, \lstinline!sum! and \lstinline!n! should be \lstinline!0!. Thus we arrive at the following solution,
+% However, an elegant alternative is available as
+% \fs{flowForLists}{}
+% This to be preferred, since we completely can ignore list boundary conditions and hence avoid out of range indexing. For comparison see a recursive implementation of the same,
+%
+\fs{avgGradesRec}{Calculating a list of average grades using recursion and pattern matching.}
+%
+%Note how this implementation avoids the use of variables in contrast to the previous examples.
 
-
-
+Lists have many built-in functions, which will be discussed in Chapter~\ref{chap:collection} and Part~\ref{part:declarative}.
 
 \section{Arrays}
 \subsection{1 dimensional arrays}
@@ -182,7 +198,7 @@ Higher dimensional arrays can be created as arrays of arrays (of arrays \dots). 
 \fs{arrayJagged}{}
 Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \verb|a.Length|,  \verb|a.[i]| is the i'th array, the length of the i'th array is \verb|a.[i].Length|, and the j'th element of the i'th array is thus \verb|a.[i].[j]|. Often 2 dimensional square arrays are used, which can be implemented as a jagged array as,
 \fs{arrayJaggedSquare}{}
-In fact, square arrays of dimensions 2 to 4 are so common that fsharp has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
+In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
 \fs{array2D}{}
 Notice that the indexing uses a slightly different notation '\verb|[,]|' and the length functions are also slightly different. The statement \verb|A.Length| would return the total number of elements in the array, in this case 12.
 
