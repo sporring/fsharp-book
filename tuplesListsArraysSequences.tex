@@ -8,41 +8,38 @@ F\# has 4 built-in list types: tuples, lists, arrays, and sequences following th
 %
 \begin{lstlisting}[language=ebnf]
 tupleList = expr | expr "," tupleList
-listList = expr | expr ";" listList
 comp-or-range-expr = comp-expr | short-comp-expr | range-expr
-short-comp-expr = "for " pat " in " expr-or-range-expr "->" expr
+short-comp-expr = "for" pat "in" (expr | range-expr) "->" expr
 range-exp = expr ".." expr [".." expr]
 comp-expr =
-  ("let " | "let! ") pat "=" expr " in " comp-expr
-  | ("do " | "do! ") expr " in " comp-expr
-  | ("use " | "use! ") pat = expr " in " comp-expr
-  | ("yield " | "yield! ") expr
-  | ("return " | "return! ") expr
-  | "if " expr " then " comp-expr [" else " comp-expr]
-  | "match " expr " with " comp-rules
-  | "try " comp-expr " with " comp-rules
-  | "try " comp-expr " finally " expr
-  | "while " expr " do " expr [" done "]
-  | "for " ident "=" expr " to " expr " do " comp-expr [" done "]
-  | "for " pat " in " expr-or-range-expr " do " comp-expr [" done "]
+  ("let" | "let!") pat "=" expr "in" comp-expr
+  | ("do" | "do!") expr "in" comp-expr
+  | ("use" | "use!") pat = expr "in" comp-expr
+  | ("yield" | "yield!") expr
+  | ("return" | "return!") expr
+  | "if" expr "then" comp-expr ["else" comp-expr]
+  | "match" expr "with" comp-rules
+  | "try" comp-expr "with" comp-rules
+  | "try" comp-expr "finally" expr
+  | "while" expr "do" expr ["done"]
+  | "for" ident "=" expr "to" expr "do" comp-expr ["done"]
+  | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
   | comp-expr ";" comp-expr
   | expr
 comp-rule = pat pattern-guardopt "->" comp-expr
 comp-rules = comp-rule | comp-rule '|' comp-rules
 expr = ... 
   | tupleList
-  | "[" listList "]" (* list *)
-  | "[|" listList "|]" (* array *)
-  | expr "{" comp-or-range-expr "}" (* computation expression *)
   | "[" comp-or-range-expr "]" (* computed list expression *)
   | "[|" comp-or-range-expr "|]" (* computed array expression *)
+  | expr "{" comp-or-range-expr "}" (* computation expression *)
   | ...
 \end{lstlisting}
 %
-Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these datastructures in detail.
+\jon{Spec-4.0: grammar for list and array expressions are subsets of computed list and array expressions.}Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these datastructures in detail.
 
 \section{Tuples}
-\idx[tuple]{Tuples} are unions of types, 
+\idx[tuple]{Tuples} are unions of immutable types, 
 %
 \begin{lstlisting}[language=ebnf]
 tupleList = expr | expr "," tupleList
@@ -51,19 +48,60 @@ expr = ...
   | ...
 \end{lstlisting}
 %
-and the they are identified by the \token{,} token. Most often the tuple is enclosed in parantheses, but that is not required. Consider the tripel, also known as a 3-tuple, \lstinline!(2,true,"hello")! in interactive mode,
+and the they are identified by the \lexeme{,} lexeme. Most often the tuple is enclosed in parantheses, but that is not required. Consider the tripel, also known as a 3-tuple, \lstinline!(2,true,"hello")! in interactive mode,
 %
 \fso{tuple}{Definition of a tuple.}
 %
-The values \lstinline!2!, \lstinline!true!, and \lstinline!"hello"! are \idx[member]{members}, and the number of elements of a tuple is its \idx{length}. From the response of F\# we see that the tuple is inferred to have the type \lstinline!int * bool * string!, where the \token{*} is cartesian product between the three sets.  Notice, that tuples can be products of any types and have lexical scope like value and function bindings. Notice also, that a tuple may be printed as a single entity by the \lstinline!%A! placeholder. In the example, we bound \lstinline!tp! to the tuple, the opposite is also possible,
+The values \lstinline!2!, \lstinline!true!, and \lstinline!"hello"! are \idx[member]{members}, and the number of elements of a tuple is its \idx{length}. From the response of F\# we see that the tuple is inferred to have the type \lstinline!int * bool * string!, where the \lexeme{*} is cartesian product between the three sets.  Notice, that tuples can be products of any types and have lexical scope like value and function bindings. Notice also, that a tuple may be printed as a single entity by the \lstinline!%A! placeholder. In the example, we bound \lstinline!tp! to the tuple, the opposite is also possible,
 %
 \fso{tupleDeconstruction}{Definition of a tuple.}
 %
-In this a function is defined that takes 1 argument, a 3-tuple, and which is bound to a tuple with 3 named members. Since we used the \lstinline!%A! placeholder in the \lstinline!printfn! function, then the function is generic and can be called with 3-tuples of different types. Note, \advice{don't confuse a function of $n$ arguments with a function of an $n$-tuple.}  The later has only 1 argument, and the difference is the \token{,}'s.
+In this a function is defined that takes 1 argument, a 3-tuple, and which is bound to a tuple with 3 named members. Since we used the \lstinline!%A! placeholder in the \lstinline!printfn! function, then the function is generic and can be called with 3-tuples of different types. Note, \advice{don't confuse a function of $n$ arguments with a function of an $n$-tuple.}  The later has only 1 argument, and the difference is the \lexeme{,}'s. Another example is \lstinline!let solution a b c = ...!, which is the beginning of the function definition in Listing~\ref{tuplesQuadraticEq}. It is a function of 3 arguments, while \lstinline!let solution (a, b, c) = ...! would be a function of 1 argument, which is a 3-tuple. Functions of several arguments makes currying easy, i.e., we could define a new function which fixes the quadratic term to be 0 as \lstinline!let solutionToLinear = solution 0.0!, that is, without needing to specify anything else. With tuples, we would need the slightly more complicated, \lstinline!let solutionToLinear (b, c) = solution (0.0, b, c)!.
 
-Tuples may be compared, and are equal if their type and value are equal. Pairs, 2-tuples, are so common that two built-in functions have been supplied, \idx{\lstinline{fst}} and \idx{\lstinline{snd}}, to retrieve the first and second element of the tuple. \jon{possibly more on comparison.}
+Tuples comparison are defined similarly as strings. Tuples of different lengths are different. For tuples of equal length, then they are compared element by element. E.g., \lstinline!(1,2) = (1,3)! is false, while \lstinline!(1,2) = (1,2)! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered alphabetically like, such that \lstinline!('a', 'b', 'c') < ('a', 'b', 's') && ('a', 'b', 's') <  ('c', 'o', 's')! is true, that is, the \lexeme{<} operator on two tuples is true, if the left operand should come before the right, when sorting alphabetically like. 
+%
+\fs{tupleCompare}{Tuples are compared as strings are compared alphabetically.}
+%
+The algorithm for deciding the boolean value of \lstinline!(a1, a2) < (b1, b2)! is as follows: we start by examining the first elements, and if \lstinline!la1! and \lstinline!b1! are different, then the \lstinline!(a1, a2) < (b1, b2)! is equal to \lstinline!a1 < b1!. If \lstinline!la1! and \lstinline!b1! are equal, then we move onto the next letter and repeat the investigation. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined similarly.
+
+Binding tuples to mutuals does not make the tuple mutable, e.g.,
+%
+\fs{tupleOfMutables}{A mutable change value, but the tuple defined by it does not refer to the new value.}
+%
+However, tuples may be mutual such that new tuple values can be assigned to it, e.g., in the Fibonacci example, we can write a more compact script by using mutable tuples and the \keyword{fst} and \keyword{snd} functions as follows.
+%
+\fs{fibTuple}{Calculating Fibonacci numbers using mutable tuple.}
+%
+In this example, the central computation has been packed into a single line, \lstinline!prev <- (snd prev, (fst prev) + (snd prev))!, where both the calculation of $\text{fib}(n) = \text{fib}(n-2) + \text{fib}(n-1)$ and the rearrangement of memory to hold the new values $\text{fib}(n)$ and $\text{fib}(n-1)$ based on the old values $\text{fib}(n-2) + \text{fib}(n-1)$. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, and in this case, an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
 
 \section{Lists}
+Lists are unions of immutable values of the same type and have a more flexible structure than tuples. Its grammar follows \idx{computational expressions}, which is very rich and shared with arrays and sequences:
+\begin{lstlisting}[language=ebnf]
+comp-or-range-expr = comp-expr | short-comp-expr | range-expr
+short-comp-expr = "for" pat "in" (expr | range-expr) "->" expr
+range-exp = expr ".." expr [".." expr]
+comp-expr =
+  ("let" | "let!") pat "=" expr "in" comp-expr
+  | ("do" | "do!") expr "in" comp-expr
+  | ("use" | "use!") pat = expr "in" comp-expr
+  | ("yield" | "yield!") expr
+  | ("return" | "return!") expr
+  | "if" expr "then" comp-expr ["else" comp-expr]
+  | "match" expr "with" comp-rules
+  | "try" comp-expr "with" comp-rules
+  | "try" comp-expr "finally" expr
+  | "while" expr "do" expr ["done"]
+  | "for" ident "=" expr "to" expr "do" comp-expr ["done"]
+  | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
+  | comp-expr ";" comp-expr
+  | expr
+comp-rule = pat pattern-guardopt "->" comp-expr
+comp-rules = comp-rule | comp-rule '|' comp-rules
+expr = ... 
+  | "[" comp-or-range-expr "]" (* computed list expression *)
+  | ...
+\end{lstlisting}
+Simple examples of a list grammars are, \lstinline[language=ebnf]![expr; expr; ... ; expr]!, \lstinline[language=ebnf]![expr ".." expr]!, \lstinline[language=ebnf]![expr ".." expr ".." expr]!, e.g., an explicit list \lstinline!let lst = [1; 2; 3; 4; 5]!, which may be written shortly as range \lstinline!let lst = [1 .. 5]!, and ranges may include a step size \lstinline!let lst = [1 .. 2 .. 5]!, which is the same as \lstinline!let lst = [1; 3; 5]!. Computational expressions is a small program, whose result is list, for example, \lstinline!let lst = [for i = 1 to 5 do yield i done]!
 
 
 
@@ -170,7 +208,7 @@ There are a bit few built-in procedures for 2 dimensional array types, some of w
   \label{tab:array2dMethods}
 \end{table}
 \section{Sequences}
-
+\label{sec:sequences}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

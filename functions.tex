@@ -15,9 +15,9 @@ and write a small program that defines functions calculating relevant values for
 %
 Here 3 functions are defined as \lstinline!determinant!, \lstinline!postiveSolution!, and \lstinline!negativeSolution! are defined, and applied to 3 values named \lstinline!a!, \lstinline!b!, and \lstinline!c!, and the results are named \lstinline!d!, \lstinline!xn!, and \lstinline!xp!. These names are examples of identifiers, and with these, we may reuse the quadratic formulas and calculated values later, while avoiding possible typing mistakes and reducing amount of code, which needs to be debugged.
 
-Before we begin a deeper discussion note that F\# has adheres to two different syntax, regular and \idx[lightweight syntax]{ligthweight}. In the regular syntax, newlines and whitespaces are generally ignored, while in lightweight syntax, certain keywords and tokens may be replaced by specific use of newlines and whitespaces. Lightweight syntax is the most common, but the syntaxes may be mixed, and we will highlight the options, when relevant.
+Before we begin a deeper discussion note that F\# has adheres to two different syntax, regular and \idx[lightweight syntax]{ligthweight}. In the regular syntax, newlines and whitespaces are generally ignored, while in lightweight syntax, certain keywords and lexemes may be replaced by specific use of newlines and whitespaces. Lightweight syntax is the most common, but the syntaxes may be mixed, and we will highlight the options, when relevant.
 
-The use of identifiers is central in programming. For F\# not to be confused by built-in functionality, identifiers must follow a specific grammar: An identifier must start with a letter, but can be followed by zero or more of letters, digits, and a range of special characters. An identifier must not be a keyword or a reserved-keyword listed in Figure~\ref{fig:keywords} and~\ref{fig:reservedKeywords}.
+The use of identifiers is central in programming. For F\# not to be confused by built-in functionality, identifiers must follow a specific grammar: An identifier must start with a letter, but can be followed by zero or more of letters, digits, and a range of special characters except SP, LF, and CR (space, line feed, and carriage return). An identifier must not be a keyword or a reserved-keyword listed in Figure~\ref{fig:keywords} and~\ref{fig:reservedKeywords}.
 \begin{figure}
   \mbox{\lstinline{abstract},} \mbox{\lstinline{and},} \mbox{\lstinline{as},} \mbox{\lstinline{assert},} \mbox{\lstinline{base},} \mbox{\lstinline{begin},} \mbox{\lstinline{class},} \mbox{\lstinline{default},} \mbox{\lstinline{delegate},} \mbox{\lstinline{do},} \mbox{\lstinline{done},} \mbox{\lstinline{downcast},} \mbox{\lstinline{downto},} \mbox{\lstinline{elif},} \mbox{\lstinline{else},} \mbox{\lstinline{end},} \mbox{\lstinline{exception},} \mbox{\lstinline{extern},} \mbox{\lstinline{false},} \mbox{\lstinline{finally},} \mbox{\lstinline{for},} \mbox{\lstinline{fun},} \mbox{\lstinline{function},} \mbox{\lstinline{global},} \mbox{\lstinline{if},} \mbox{\lstinline{in},} \mbox{\lstinline{inherit},} \mbox{\lstinline{inline},} \mbox{\lstinline{interface},} \mbox{\lstinline{internal},} \mbox{\lstinline{lazy},} \mbox{\lstinline{let},} \mbox{\lstinline{match},} \mbox{\lstinline{member},} \mbox{\lstinline{module},} \mbox{\lstinline{mutable},} \mbox{\lstinline{namespace},} \mbox{\lstinline{new},} \mbox{\lstinline{null},} \mbox{\lstinline{of},} \mbox{\lstinline{open},} \mbox{\lstinline{or},} \mbox{\lstinline{override},} \mbox{\lstinline{private},} \mbox{\lstinline{public},} \mbox{\lstinline{rec},} \mbox{\lstinline{return},} \mbox{\lstinline{sig},} \mbox{\lstinline{static},} \mbox{\lstinline{struct},} \mbox{\lstinline{then},} \mbox{\lstinline{to},} \mbox{\lstinline{true},} \mbox{\lstinline{try},} \mbox{\lstinline{type},} \mbox{\lstinline{upcast},} \mbox{\lstinline{use},} \mbox{\lstinline{val},} \mbox{\lstinline{void},} \mbox{\lstinline{when},} \mbox{\lstinline{while},} \mbox{\lstinline{with},} and \mbox{\lstinline{yield}.}
   \caption{List of keywords in F\#.}
@@ -47,47 +47,31 @@ identOrOp = ident | ( operatorName )
 valueDefn = ["mutable "] ident  [":" type] "=" expr
 functionDefn = ident-or-op argList [":" type] "=" expr "
 expr = ... 
-  | "let " valueDefn " in " expr  (* binding a value or variable *)
-  | "let " functionDefn " in " expr (* binding a function or operator *)
-  | "fun " argList "->" expr (* a function as value *)
+  | "let" valueDefn "in" expr  (* binding a value or variable *)
+  | "let" functionDefn "in" expr (* binding a function or operator *)
+  | "fun" argList "->" expr (* a function as value *)
   | expr ":" type (* type annotation *)
-  | "begin " expr " end" (* alternative block expression *)
+  | "begin" expr "end" (* alternative block expression *)
   | expr; expr (* sequence of expression *)
   | ...
 \end{lstlisting}
-%
-% \begin{lstlisting}[language=ebnf,caption=expressionArithmetic]
-% ident-or-op = ident | ( op-name ) | (*)
-% atomic-pat = pat : one of const long-ident list-pat record-pat array-pat (pat) :? atomic-type null _
-% argument-pats: atomic-pat ... atomic-pat
-% access = "public" | "private" | "internal"
-% return-type = ":" type
-% functionDefn = ["inline "] [access] ident-or-op [typarDefns] argument-pats [return-type] = expr
-% valueDefn = ["mutable"] [access] pat [typarDefns] [return-type] = expr
-% expr = ...
-%   | "let " ["rec "] functionDefn " in " expr (* function definition expression *)
-%   | "let " valueDefn " in " expr (* value definition expression *)
-%   | "fun " argument-pats "->" expr
-%   | ...
-% \end{lstlisting}
-% %
-which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-value-defns, 1. makes little sense to have values definitions recursive, and 2. possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.}
+which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-value-defns, possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.}
 
 \section{Values}
 Binding identifiers to literals or expressions that are evaluated to be values is called value binding, and examples are \lstinline!let a = 3.0! and \lstinline!let b = cos 0.9!. On EBNF the simplified syntax,
 %
 \begin{lstlisting}[language=ebnf]
-valueDefn = ["mutable "] ident  [":" type] "=" expr
+valueDefn = ["mutable"] ident  [":" type] "=" expr
 expr = ... 
-  | "let " valueDefn " in " expr  
+  | "let" valueDefn "in" expr  
   | ...
 \end{lstlisting}
-I.e., the \idx{\keyword{let}} keyword dictates that the identifier \lstinline[language=ebnf]!ident! is an alias of the expression \lstinline[language=ebnf]!expr!. The type may be specified with the \idx{\token{:}} token to type \lstinline[language=ebnf]!type!. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
+I.e., the \idx{\keyword{let}} keyword dictates that the identifier \lstinline[language=ebnf]!ident! is an alias of the expression \lstinline[language=ebnf]!expr!. The type may be specified with the \idx{\lexeme{:}} lexeme to type \lstinline[language=ebnf]!type!. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
 %
 \fs{letValue}{The identifier \lstinline!p! is used in the expression following the \keyword{in} keyword.}
 %
 In the interactive mode used in the example above, we see that F\# infers the type...
-F\# will ignore most newlines between tokens, i.e., the above is equivalent to writing,
+F\# will ignore most newlines between lexemes, i.e., the above is equivalent to writing,
 %
 \fs{letValueLF}{Newlines after \keyword{in} make the program easier to read.}
 %
@@ -99,7 +83,7 @@ The same expression in interactive mode will also respond the inferred types, e.
 %
 \fso{letValueLightWeightTypes}{Interactive mode also responds inferred types.}
 %
-By the \keyword{val} keyword in the line \lstinline!val p : float = 2.0! we see that \lstinline!p! is inferred to be of type \lstinline!float! and bound to the value \lstinline!2.0!. The inference is based on the type of the right-hand-side, which is of type \lstinline!float!.  Identifiers may be defined to have a type using the \token{:} token, but the types on the left-hand-side and right-hand-side of the \token{=} token must be identical. I.e., mixing types gives an error,
+By the \keyword{val} keyword in the line \lstinline!val p : float = 2.0! we see that \lstinline!p! is inferred to be of type \lstinline!float! and bound to the value \lstinline!2.0!. The inference is based on the type of the right-hand-side, which is of type \lstinline!float!.  Identifiers may be defined to have a type using the \lexeme{:} lexeme, but the types on the left-hand-side and right-hand-side of the \lexeme{=} lexeme must be identical. I.e., mixing types gives an error,
 %
 \fs{letValueTypeError}{Binding error due to type mismatch.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, binding error due to type mismatch.}]
@@ -115,11 +99,11 @@ By the \keyword{val} keyword in the line \lstinline!val p : float = 2.0! we see 
 % \end{lstlisting}
 Here, the left-hand-side is defined to be an identifier of type float, while the right-hand-side is a literal of type integer.
 
-An expression can be a sequence of expressions separated by the token \token{;}, e.g.,
+An expression can be a sequence of expressions separated by the lexeme \lexeme{;}, e.g.,
 %
 \fs{letValueSequence}{A value binding for a sequence of expressions.}
 %
-The lightweight syntax automatically inserts the \token{;} token at newlines, hence using the lightweight syntax the above is the same as,
+The lightweight syntax automatically inserts the \lexeme{;} lexeme at newlines, hence using the lightweight syntax the above is the same as,
 %
 \fs{letValueSequenceLightWeight}{A value binding for a sequence using lightweight syntax.}
 %
@@ -147,14 +131,14 @@ Defining blocks is useful for controlling the extend of a lexical scope of bindi
 %
 \fs{letValueScopeBlockProblem}{Overshadowing hides the first binding.}
 %
-will print the value 4 last bound to the identifier \lstinline!p!, since token \token{;} associates to the right, i.e., the above is interpreted as \lstinline!let p = 3 in let p = 4 in (printfn "%A" p; printfn "%A" p)!. Instead we may create a block as,\jon{spacing in lstinline mode after double quotation mark is weird.}
+will print the value 4 last bound to the identifier \lstinline!p!, since lexeme \lexeme{;} associates to the right, i.e., the above is interpreted as \lstinline!let p = 3 in let p = 4 in (printfn "%A" p; printfn "%A" p)!. Instead we may create a block as,\jon{spacing in lstinline mode after double quotation mark is weird.}
 %
 \fs{letValueScopeBlock}{Blocks allow for the return to the previous scope.}
 %
-Here the lexical scope of \lstinline!let p = 4 in ...! is for the nested scope, which ends at \token{)}, returning to the lexical scope of \lstinline!let p = 3 in ...!. Alternatively, the \keyword{begin} and \keyword{end} keywords could equally have been used.
+Here the lexical scope of \lstinline!let p = 4 in ...! is for the nested scope, which ends at \lexeme{)}, returning to the lexical scope of \lstinline!let p = 3 in ...!. Alternatively, the \keyword{begin} and \keyword{end} keywords could equally have been used.
 %\fs{letValueScopeBlockAlternative}{}
 
-\jon{Remember to say something about interactive scripts and the \texttt{;;} token and scope}
+\jon{Remember to say something about interactive scripts and the \texttt{;;} lexeme and scope}
 
 \section{Non-recursive functions}
 \label{sec:functions}
@@ -164,17 +148,17 @@ A function is a mapping between an input and output domain. A key advantage of u
 arg = ident | "(" ident ":" type ")"
 argList = arg | arg argList
 identOrOp = ident | ( operatorName )
-functionDefn = identOrOp argList [":" type] "=" expr "
+functionDefn = identOrOp argList [":" type] "=" expr
 expr = ... 
-  | "let " functionDefn " in " expr (* binding a function or operator *) 
+  | "let" functionDefn "in" expr (* binding a function or operator *) 
   | ...
 \end{lstlisting}
 Functions may also be recursive, which will be discussed in Chapter~\ref{chap:flow}. An example in interactive mode is,
 %
 \fso{letFunction}{An example of a binding of an identifier and a function.}
 %
-and we see that the function is interpreted to have the type \lstinline!val sum : x:float -> y:float -> float!. The \token{->} token means a mapping between sets, in this case floats. The function is also a higher order function, to be discussed in detail below, and here it suffices to think of \lstinline!sum! as a function that takes 2 floats as argument and returns a float.
-%, that \token{->} associates to the right, hence \lstinline!x:float -> y:float -> float! is equivalent to \lstinline!x:float -> (y:float -> float)! and thus, \lstinline!sum x! is a function, which gives a function
+and we see that the function is interpreted to have the type \lstinline!val sum : x:float -> y:float -> float!. The \lexeme{->} lexeme means a mapping between sets, in this case floats. The function is also a higher order function, to be discussed in detail below, and here it suffices to think of \lstinline!sum! as a function that takes 2 floats as argument and returns a float.
+%, that \lexeme{->} associates to the right, hence \lstinline!x:float -> y:float -> float! is equivalent to \lstinline!x:float -> (y:float -> float)! and thus, \lstinline!sum x! is a function, which gives a function
 
 Not all types need to be declared, just sufficient for F\# to be able to infer the types for the full statement. In the example, one sufficient specification is, and we could just have specified the type of the result,
 %
@@ -184,7 +168,7 @@ or even just one of the arguments,
 %
 \fse{letFunctionAlterantive2}{Just one type is often enough for F\# to infer the rest.}
 %
-In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx[operand]{operands} of the same type, then when the type of either the result, any or both operands are declared, then the type of the remaining follows directly.  As for values, lightweight syntax automatically inserts the keyword \keyword{in} and the token \token{;},
+In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx[operand]{operands} of the same type, then when the type of either the result, any or both operands are declared, then the type of the remaining follows directly.  As for values, lightweight syntax automatically inserts the keyword \keyword{in} and the lexeme \lexeme{;},
 %
 \fs{letFunctionLightWeight}{Lightweight syntax for function definitions.}
 %
@@ -199,7 +183,7 @@ A function may contain a sequence of expressions, but must return a value. E.g.,
 %
 \fs{identifiersExampleAdvance}{A function may contain sequences of expressions.}
 %
-Here we used the lightweight syntax, where the \token{=} identifies the start of a nested scope, and F\# identifies the scope by indentation. The amount of space used for indentation is does not matter, but all lines following the first must use the same. The scope ends before the first line with the previous indentation or none. Notice how the last expression is not bound to an identifier, but is the result of the function, i.e., in contrast to many other languages, F\# does not have an explicit keyword for returning values. Note also that since the function \lstinline!determinant! is defined in the nested scope of \lstinline!solution!, then  \lstinline!determinant! cannot be called outside \lstinline!solution!, since the scope ends before \lstinline!let a = 1.0!.
+Here we used the lightweight syntax, where the \lexeme{=} identifies the start of a nested scope, and F\# identifies the scope by indentation. The amount of space used for indentation is does not matter, but all lines following the first must use the same. The scope ends before the first line with the previous indentation or none. Notice how the last expression is not bound to an identifier, but is the result of the function, i.e., in contrast to many other languages, F\# does not have an explicit keyword for returning values. Note also that since the function \lstinline!determinant! is defined in the nested scope of \lstinline!solution!, then  \lstinline!determinant! cannot be called outside \lstinline!solution!, since the scope ends before \lstinline!let a = 1.0!.
 
 \idx[lexical scope]{Lexical scope} and function definitions can be a cause of confusion as the following example shows,\jon{Add a drawing or possibly a spell-out of lexical scope here.}
 %
@@ -207,7 +191,7 @@ Here we used the lightweight syntax, where the \token{=} identifies the start of
 %
 Here the value binding for \lstinline!a! is redefined, after it has been used to define a helper function \lstinline!f!. So which value of \lstinline!a! is used when we later apply \lstinline!f! to an argument? To resolve the confusion, remember that value binding is lexically defined, i.e., the binding \lstinline!let f z = a * x! uses the value of \lstinline!a!, it has by the ordering of the lines in the script, not dynamically by when \lstinline!f! was called. Hence, \advice{think of lexical scope as substitution of an identifier with its value or function immediately at the place of definition.} I.e., since \lstinline!a! and \lstinline!3.0! are synonymous in the first lines of the program, then the function \lstinline!f! is really defined as, \lstinline!let f z = 3.0 * x!. \jon{comment on dynamic scope and mutable variables.}
 
-Functions do not need a name, but may be declared as an \idx{anonymous function} using the \keyword{fun} keyword and the \token{->} token,
+Functions do not need a name, but may be declared as an \idx{anonymous function} using the \keyword{fun} keyword and the \lexeme{->} lexeme,
 %
 \fs{functionDeclarationAnonymous}{Anonymous functions are functions as values.}
 %
@@ -227,7 +211,7 @@ Here \lstinline{mul 2.0} is a partial specification of the function \lstinline{m
 
 A \idx{procedure} is a generalisation of the concept of functions, and in contrast to functions procedures need not return values,
 %
-\fs{procedure}{A procedure is a function that has no return value, which in F\# implies\token{()} as return value.}
+\fs{procedure}{A procedure is a function that has no return value, which in F\# implies\lexeme{()} as return value.}
 In F\# this is automatically given the unit type as return value. Procedural thinking is useful for \idx{encapsulation} of scripts, but is prone to \idx{side-effects} and should be minimized by being replaced by functional thinking. More on side-effects in Section~\ref{sec:mutableValues}.
 %An example, we've already seen is the \texttt{printfn}, which is used to print text on the console, but does not return a value. Coincidentally, since the console is a state, printing to it is a side-effect. Above we examined 
 %\begin{fse}
@@ -246,7 +230,7 @@ Operators are functions, e.g., the infix multiplication operator \lstinline!+! i
 \fs{addOperatorNFunction}{}
 %
 All operator has this option, and you may redefine them and define your own operators, who has names specified by the following simplified EBNF:
-\begin{lstlisting}[language=ebnf, caption={Grammar for infix and prefix tokens},label=list:infixOrPrefixOperators]
+\begin{lstlisting}[language=ebnf, caption={Grammar for infix and prefix lexemes},label=list:infixOrPrefixOperators]
 infixOrPrefixOp := "+" | "-" | "+. " | "-. " | "%" | "&" | "&&"
 tildes = "~" | "~" tildes
 prefixOp = infixOrPrefixOp | tildes | (! {opChar} - "!=")
@@ -379,7 +363,7 @@ The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! an
 
 \section{Variables}
 \label{sec:mutableValues}
-The \keyword{mutable} in \keyword{let} bindings means that the identifier may be rebound to a new value using the \idxs{\token{<-}} token, e.g.,\jon{Discussion on heap and stack should be added here.}
+The \keyword{mutable} in \keyword{let} bindings means that the identifier may be rebound to a new value using the \idxs{\lexeme{<-}} lexeme, e.g.,\jon{Discussion on heap and stack should be added here.}
 %
 \begin{lstlisting}[language=ebnf]
 expr "<-" expr
@@ -389,9 +373,9 @@ expr "<-" expr
 \fs{mutableAssignReassingShort}{A variable is defined and later reassigned a new value.}
 %\fs{mutableAssignReassing}{}
 %
-Here a area in memory was denoted \texttt{x}, initially assigned the integer value 5, hence the type was inferred to be \lstinline|int|.  Later, this value of \texttt{x} was replaced with another integer using the \idx{\token{<-}} token. The \token{<-} token is used to distinguish the assignment from the comparison operator, i.e., if we by mistake had written,
+Here a area in memory was denoted \texttt{x}, initially assigned the integer value 5, hence the type was inferred to be \lstinline|int|.  Later, this value of \texttt{x} was replaced with another integer using the \idx{\lexeme{<-}} lexeme. The \lexeme{<-} lexeme is used to distinguish the assignment from the comparison operator, i.e., if we by mistake had written,
 %
-\fso{mutableEqual}{Common error - mistaking \token{=} and \token{<-} tokens for mutable variables. The former is the test operator, while the latter is the assignment expression.}
+\fso{mutableEqual}{Common error - mistaking \lexeme{=} and \lexeme{<-} lexemes for mutable variables. The former is the test operator, while the latter is the assignment expression.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, example of changing the content of a variable.}]
 % > let mutable a = 0
 % - a = 3;;
@@ -400,7 +384,7 @@ Here a area in memory was denoted \texttt{x}, initially assigned the integer val
 % val it : bool = false
 % \end{lstlisting}
 %
-then we instead would have obtained the default assignment of the result of the comparison of the content of \lstinline|a| with the integer 3, which is false. However, it's important to note, that when the variable is initially defined, then the '\token{=}' operator must be used, while later reassignments must use the \token{<-} expression.
+then we instead would have obtained the default assignment of the result of the comparison of the content of \lstinline|a| with the integer 3, which is false. However, it's important to note, that when the variable is initially defined, then the '\lexeme{=}' operator must be used, while later reassignments must use the \lexeme{<-} expression.
 
 Assignment type mismatches will result in an error, 
 %
@@ -432,11 +416,11 @@ declares a function that has no arguments and returns the value 0, while the sam
 %
 \fs{mutableAssignReturnVariable}{}
 %
-There is a workaround for this by using \idx{reference cells} by the build-in function \texttt{ref} and operators \token{!} and \token{:=},
+There is a workaround for this by using \idx{reference cells} by the build-in function \texttt{ref} and operators \lexeme{!} and \lexeme{:=},
 %
 \fs{mutableAssignReturnRefCell}{}
 %
-That is, the \texttt{ref} function creates a reference variable, the '\token{!}' and the '\token{:=}' operators reads and writes its value. Reference cells are in some language called pointers, and their use is strongly discouraged, since they may cause \idx{side-effects}, which is the effect that one function changes the state of another, such as the following example demonstrates,\jon{Discuss side-effects!}
+That is, the \texttt{ref} function creates a reference variable, the '\lexeme{!}' and the '\lexeme{:=}' operators reads and writes its value. Reference cells are in some language called pointers, and their use is strongly discouraged, since they may cause \idx{side-effects}, which is the effect that one function changes the state of another, such as the following example demonstrates,\jon{Discuss side-effects!}
 %
 \fs{mutableAssignReturnSideEffect}{}
 %

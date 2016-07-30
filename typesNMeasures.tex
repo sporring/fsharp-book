@@ -50,7 +50,7 @@ However, if we mixup unit of measures under addition, then we get an error,
 
 /Users/sporring/repositories/fsharpNotes/stdin(63,13): error FS0001: The unit of measure 's' does not match the unit of measure 'm'
 \end{lstlisting}
-Unit of measures allow for \token{*}, \token{/}, and \token{^}\jon{Spec-4.0: this notation is inconsistent with \texttt{**} for float exponentiation.} for multiplication, division and exponentiation. Values with units can be casted to \idx{unit-less} values by casting, and back again by multiplication as,
+Unit of measures allow for \lexeme{*}, \lexeme{/}, and \lexeme{^}\jon{Spec-4.0: this notation is inconsistent with \texttt{**} for float exponentiation.} for multiplication, division and exponentiation. Values with units can be casted to \idx{unit-less} values by casting, and back again by multiplication as,
 %
 \begin{lstlisting}[language=fsharp,caption={fsharpi, type casting unit of measures.}]
 > [<Measure>] type m      

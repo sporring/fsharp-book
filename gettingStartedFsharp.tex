@@ -32,9 +32,9 @@ The implementation, signature, and script files are all typically compiled to pr
 \section{Executing programs}
 Programs may either be executed by the interpreter or by compiling and executing the compiled code. 
 
-In \texttt{Mono} the interpreter is called \texttt{fsharpi} and can be used in 2 ways: interactively, where a user enters 1 or more script-fragments separated by the "\verb|;;|" token, or to execute a script file treated as a single script-fragment. To illustrate the difference, consider the following program, which declares a value \texttt{a} to be the decimal value 3.0 and finally print it to the console:
+In \texttt{Mono} the interpreter is called \texttt{fsharpi} and can be used in 2 ways: interactively, where a user enters 1 or more script-fragments separated by the "\verb|;;|" lexeme, or to execute a script file treated as a single script-fragment. To illustrate the difference, consider the following program, which declares a value \texttt{a} to be the decimal value 3.0 and finally print it to the console:
 \fse{gettingStartedStump}{}
-An interactive session is obtained by starting the console, typing the \texttt{fsharpi} command, typing the lines of the program, and ending the script-fragment with the "\verb|;;|" token:
+An interactive session is obtained by starting the console, typing the \texttt{fsharpi} command, typing the lines of the program, and ending the script-fragment with the "\verb|;;|" lexeme:
 \begin{lstlisting}[language=console]
 $ fsharpi
 

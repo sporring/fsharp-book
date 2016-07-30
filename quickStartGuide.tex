@@ -96,7 +96,7 @@ F\# is a functional first programming language, and one implication is that name
 %
 However, if the same was performed in an interactive session,
 %
-\fso{blocksNNames}{Names may be reused when separated by the token \token{;;}.}
+\fso{blocksNNames}{Names may be reused when separated by the lexeme \lexeme{;;}.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
 % > let a = 357;;
 
@@ -107,7 +107,7 @@ However, if the same was performed in an interactive session,
 % val a : int = 864
 % \end{lstlisting}
 %
-then apparently rebinding is valid. The difference is that the \idx{\token{;;}} \idx{token} defines a new nested \idx{scope}.\jon{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A token is a letter or a word, which the F\# considers as an atomic unit. Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \token{;;} between the two let statements results in an error, e.g.,
+then apparently rebinding is valid. The difference is that the \idx{\lexeme{;;}} \idx{lexeme} defines a new nested \idx{scope}.\jon{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A lexeme is a letter or a word, which the F\# considers as an atomic unit. Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \lexeme{;;} between the two let statements results in an error, e.g.,
 %
 \fso{blocksNNamesError}{Inside a block, names may not be reused.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
@@ -143,7 +143,7 @@ Scopes can be visualized as nested squares as shown in Figure~\ref{fig:scope}.
   \end{minipage}
 }
   }
-  \caption{Binding of the the same name in the same scope is invalid in F\# 2, but valid in a different scopes. In (a) the two bindings are in the same scope, which is invalid, while in (b) the bindings are in separate scopes by the extra \token{;;} token, which is valid.}
+  \caption{Binding of the the same name in the same scope is invalid in F\# 2, but valid in a different scopes. In (a) the two bindings are in the same scope, which is invalid, while in (b) the bindings are in separate scopes by the extra \lexeme{;;} lexeme, which is valid.}
   \label{fig:scope}
 \end{figure}
 
