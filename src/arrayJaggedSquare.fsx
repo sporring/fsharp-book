@@ -1,14 +1,14 @@
-let pownArray  (a : int array) p =
-  for i = 0 to a.Length - 1 do
-    a.[i] <- pown a.[i] p
-  a
+let pownArray  (arr : int array array) p =
+  for i = 1 to arr.Length - 1 do
+    for j = 1 to arr.[i].Length - 1 do
+      arr.[i].[j] <- pown arr.[i].[j] p
 
-let A = [| for n in 1..3 do yield (pownArray [| 1 .. 4 |] n ) |]
-
-let printArrayOfArrays (a : int array array) =           
-  for i = 0 to a.Length - 1 do
-    for j = 0 to a.[i].Length - 1 do
-      printf "%2d " a.[i].[j]
+let printArrayOfArrays (arr : int array array) =           
+  for row in arr do
+    for elm in row do
+      printf "%3d " elm
     printf "\n"
    
+let A = [|[|1 .. 4|]; [|1 .. 2 .. 7|]; [|1 .. 3 .. 10|]|]
+pownArray A 2
 printArrayOfArrays A

@@ -1,0 +1,2 @@
+let a : int list = List.Empty;;
+let b = List<int>.Empty;;

@@ -75,39 +75,28 @@ However, tuples may be mutual such that new tuple values can be assigned to it, 
 In this example, the central computation has been packed into a single line, \lstinline!prev <- (snd prev, (fst prev) + (snd prev))!, where both the calculation of $\text{fib}(n) = \text{fib}(n-2) + \text{fib}(n-1)$ and the rearrangement of memory to hold the new values $\text{fib}(n)$ and $\text{fib}(n-1)$ based on the old values $\text{fib}(n-2) + \text{fib}(n-1)$. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, and in this case, an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
 
 \section{Lists}
-Lists are unions of immutable values of the same type and have a more flexible structure than tuples. Its grammar follows \idx{computational expressions}, which is very rich and shared with arrays and sequences:
+\idx[list]{Lists} are unions of immutable values of the same type and have a more flexible structure than tuples. Its grammar follows \idx{computational expressions}, which is very rich and shared with arrays and sequences, and we will delay a discussion on most computational expressions to Section~\ref{sec:sequences}, and here just consider a subset of the grammar:
 \begin{lstlisting}[language=ebnf]
-comp-or-range-expr = comp-expr | short-comp-expr | range-expr
-short-comp-expr = "for" pat "in" (expr | range-expr) "->" expr
+comp-or-range-expr = comp-expr | .. | range-expr
 range-exp = expr ".." expr [".." expr]
 comp-expr =
-  ("let" | "let!") pat "=" expr "in" comp-expr
-  | ("do" | "do!") expr "in" comp-expr
-  | ("use" | "use!") pat = expr "in" comp-expr
-  | ("yield" | "yield!") expr
-  | ("return" | "return!") expr
-  | "if" expr "then" comp-expr ["else" comp-expr]
-  | "match" expr "with" comp-rules
-  | "try" comp-expr "with" comp-rules
-  | "try" comp-expr "finally" expr
-  | "while" expr "do" expr ["done"]
-  | "for" ident "=" expr "to" expr "do" comp-expr ["done"]
-  | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
+  ...
   | comp-expr ";" comp-expr
   | expr
-comp-rule = pat pattern-guardopt "->" comp-expr
-comp-rules = comp-rule | comp-rule '|' comp-rules
 expr = ... 
   | "[" comp-or-range-expr "]" (* computed list expression *)
   | ...
 \end{lstlisting}
-Simple examples of a list grammars are, \lstinline[language=ebnf]![expr; expr; ... ; expr]!, \lstinline[language=ebnf]![expr ".." expr]!, \lstinline[language=ebnf]![expr ".." expr ".." expr]!, e.g., an explicit list \lstinline!let lst = [1; 2; 3; 4; 5]!, which may be written shortly as range \lstinline!let lst = [1 .. 5]!, and ranges may include a step size \lstinline!let lst = [1 .. 2 .. 5]!, which is the same as \lstinline!let lst = [1; 3; 5]!. Computational expressions is a small program, whose result is list, for example, \lstinline!let lst = [for i = 1 to 5 do yield i done]!
+Simple examples of a list grammars are, \lstinline[language=ebnf]![expr; expr; ... ; expr]!, \lstinline[language=ebnf]![expr ".." expr]!, \lstinline[language=ebnf]![expr ".." expr ".." expr]!, e.g., an explicit list \lstinline!let lst = [1; 2; 3; 4; 5]!, which may be written shortly as \idx{range expression} as \lstinline!let lst = [1 .. 5]!, and ranges may include a step size \lstinline!let lst = [1 .. 2 .. 5]!, which is the same as \lstinline!let lst = [1; 3; 5]!.
 
 Lists may be indexed and concatenated much like strings, e.g.,
 %
 \fs{listIndexing}{Examples of list concatenation, indexing.}
 %
-In this example, we used the \lexeme{@} concatenation operator, the \lexeme{.[]} index method, and the \lexeme{Length} property. Notice, as strings, list elements are counted from 0, and thus the last element has \lstinline!lst.Length - 1!. In \lstinline!printList! the \keyword{for}-\keyword{in} is used, which runs loops through each element of the list and assigns it to the identifier \lstinline!elm!. This is in contrast to \lstinline!printListAlt!, which uses uses the \keyword{for}-\keyword{to} keyword and explicitly represents the index \lstinline!i!. Explicit representation of the index makes more complicated programs, and thus increases the chances of programming errors. Hence, \advice{\keyword{for}-\keyword{in} is to be preferred over \keyword{for}-\keyword{to}.}
+A list type is identified with the \keyword{list} keyword, as here a list of integers is \lstinline!int list!. Above, we used the \idx{\lexeme{@}} and \idx{\lexeme{::}} concatenation operators, the \idx{\lexeme{.[]}} index method, and the \idx{\lexeme{Length}} property. Notice, as strings, list elements are counted from 0, and thus the last element has \lstinline!lst.Length - 1!. In \lstinline!printList! the \keyword{for}-\keyword{in} is used, which runs loops through each element of the list and assigns it to the identifier \lstinline!elm!. This is in contrast to \lstinline!printListAlt!, which uses uses the \keyword{for}-\keyword{to} keyword and explicitly represents the index \lstinline!i!. Explicit representation of the index makes more complicated programs, and thus increases the chances of programming errors. Hence, \advice{\keyword{for}-\keyword{in} is to be preferred over \keyword{for}-\keyword{to}.} Lists support slicing identically to strings, e.g.,
+%
+\fs{listSlicing}{Examples of list slicing. Compare with Listing~\ref{stringIndexing}.}
+%
 
 Lists are well suited for recursive functions and pattern matching with, e.g., \keyword{match}-\keyword{with} as illustrated in the next example:
 %
@@ -115,7 +104,7 @@ Lists are well suited for recursive functions and pattern matching with, e.g., \
 %
 The pattern \lstinline!l::rest! is the pattern for the first element followed by a list of the rest of the list. This pattern matches all lists except an empty list, hence \lstinline!rest! may be empty. Thus the wildcard pattern matching anything including the empty list, will be used only when \lstinline!lst! is empty.
 
-Pattern matching with lists is quite powerful, consider the following problem:
+\idx[pattern matching]{Pattern matching} with lists is quite powerful, consider the following problem:
 \begin{problem}
   Given a list of pairs of course names and course grades, calculate the average grade.
 \end{problem}
@@ -128,103 +117,116 @@ A list of course names and grades is \lstinline![("name1", grade1); ("name2", gr
 %
 %Note how this implementation avoids the use of variables in contrast to the previous examples.
 
-Lists have many built-in functions, which will be discussed in Chapter~\ref{chap:collection} and Part~\ref{part:declarative}.
+Pattern matching and appending is a useful combination, if we wish to produce new from old lists. E.g., a function returning a list of squared entries of its argument can be programmed as,
+%
+\fs{listSquare}{Using pattern matching and list appending elements to lists.}
+%
+This is a prototypical functional programming style solution, and which uses the \lexeme{::} for 2 different purposes: First the list \lstinline![1 .. 10]! is first matched with \lstinline!1 :: [2 .. 10]!, and then we assume that we have solved the problem for \lstinline!square rest!, such that all we need to do is append \lstinline!1*1! to the beginning output from \lstinline!square rest!. Hence we get, \lstinline!square [1 .. 10]! $\curvearrowright$ \lstinline!1 * 1 :: square [2 .. 10]! $\curvearrowright$ \lstinline!1 * 1 :: (2 * 2 :: square [3 .. 10])! $\curvearrowright$ \dots \lstinline!1 * 1 :: (2 * 2 :: ... 10 * 10 :: [])!, where the stopping criterium is reached, when the \lstinline!elm :: rest! does not match with a, hence it is empty, which does match the wildcard pattern \lexeme{_}. More on functional programming in Section~\ref{chap:functional}
 
-\section{Arrays}
-\subsection{1 dimensional arrays}
-Roughly speaking, arrays are mutable lists, and may be created and indexed in the same manner, e.g.,
-\fs{arrayCreation}{}
-Notice that as for lists, arrays are indexed starting with 0, and that in this particular case it was necessary to specify the type of the argument for \texttt{printArray} as an array of integers with the \texttt{array} keyword. The \texttt{array} keyword is synonymous with '\verb|[]|'. Arrays do not support pattern matching, cannot be resized, but are mutable,
-\fs{arrayReassign}{}
-Notice that in spite the missing \texttt{mutable} keyword, the function \texttt{square} still had the side-effect of squaring alle entries in \texttt{A}. Arrays support \idx{slicing}, that is, indexing an array with a range results in a copy of array with values corresponding to the range, e.g.,
-\fs{arraySlicing}{}
-As illustrated, the missing start or end index implies from the first or to the last element.
-
-There are quite a number of built-in procedures for all arrays some of which we summarize in Table~\ref{tab:arrayMethods}.
+The basic properties and members of lists are summarized in Table~\ref{tab:list}.\idxss{Length}\idxss{List.Empty}\idxss{IsEmpty}\idxss{Item}\idxss{Head}\idxss{Tail}\idxss{Cons}
 \begin{table}
   \centering
-  \begin{tabularx}{\textwidth}{|>{\hsize=.2\hsize}X|>{\hsize=1.8\hsize}X|}
+  \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize}X|>{\hsize=1.5\hsize}X|>{\hsize=1\hsize}X|}
     \hline
-    append &Creates an array that contains the elements of one array followed by the elements of another array.\\
-    average & Returns the average of the elements in an array.\\
-    blit &Reads a range of elements from one array and writes them into another. \\
-    choose &Applies a supplied function to each element of an array. Returns an array that contains the results x for each element for which the function returns Some(x).\\
-    collect &Applies the supplied function to each element of an array, concatenates the results, and returns the combined array.\\
-    concat &Creates an array that contains the elements of each of the supplied sequence of arrays.\\
-    copy &Creates an array that contains the elements of the supplied array.\\
-    create &Creates an array whose elements are all initially the supplied value.\\
-    empty &Returns an empty array of the given type.\\
-    exists &Tests whether any element of an array satisfies the supplied predicate.\\
-    fill &Fills a range of elements of an array with the supplied value.\\
-    filter &Returns a collection that contains only the elements of the supplied array for which the supplied condition returns true.\\
-    find &Returns the first element for which the supplied function returns true. Raises System.Collections.Generic.KeyNotFoundException if no such element exists.\\
-    findIndex &Returns the index of the first element in an array that satisfies the supplied condition. Raises System.Collections.Generic.KeyNotFoundException if none of the elements satisfy the condition.\\
-    fold &Applies a function to each element of an array, threading an accumulator argument through the computation. If the input function is f and the array elements are i0...iN, this function computes f (...(f s i0)...) iN.\\
-    foldBack &Applies a function to each element of an array, threading an accumulator argument through the computation. If the input function is f and the array elements are i0...iN, this function computes f i0 (...(f iN s)).\\
-    forall &Tests whether all elements of an array satisfy the supplied condition.\\
-    isEmpty &Tests whether an array has any elements.\\
-    iter &Applies the supplied function to each element of an array.\\
-    init &\dots\\
-    length &Returns the length of an array. The System.Array.Length property does the same thing.\\
-    map &Creates an array whose elements are the results of applying the supplied function to each of the elements of a supplied array.\\
-    mapi &\\
-    max &Returns the largest of all elements of an array. Operators.max is used to compare the elements.\\
-    min &Returns the smallest of all elements of an array. Operators.min is used to compare the elements.\\
-    ofList &Creates an array from the supplied list.\\
-    ofSeq &Creates an array from the supplied enumerable object.\\
-    partition &Splits an array into two arrays, one containing the elements for which the supplied condition returns true, and the other containing those for which it returns false.\\
-    rev &Reverses the order of the elements in a supplied array. \\
-    sort &Sorts the elements of an array and returns a new array. Operators.compare is used to compare the elements.\\
-    sub &Creates an array that contains the sup<plied subrange, which is specified by starting index and length.\\
-    sum &Returns the sum of the elements in the array.\\
-    toList &Converts the supplied array to a list.\\
-    toSeq &Views the supplied array as a sequence.\\
-    unzip &Splits an array of tuple pairs into a tuple of two arrays.\\
-    zeroCreate &Creates an array whose elements are all initially zero.\\
-    zip &Combines two arrays into an array of tuples that have two elements. The two arrays must have equal lengths; otherwise, System.ArgumentException is raised.\\
+    Function name & Example & Description\\
+    \hline
+    \lstinline!Length! & \fsi{listLength}{1.5} & The number of elements in a list\\
+    \hline
+    \lstinline!List.Empty! & \fsi{listEmpty}{1.5} & An empty list of specified type\\
+    \hline
+    \lstinline!IsEmpty! & \fsi{listIsEmpty}{1.5} & Compare with the empty list\\
+    \hline
+    \lstinline!Item! & \fsi{listItem}{1.5} & Indexing\\
+    \hline
+    \lstinline!Head! & \fsi{listHead}{1.5} & The first element in the list. Exception if empty.\\
+    \hline
+    \lstinline!Tail! & \fsi{listTail}{1.5} & The list except its first element. Exception if empty.\\
+    \hline
+    \lstinline!Cons! & \fsi{listCons}{1.5} & Append an element to the front of the list\\
+    \hline
+    \lstinline!@! & \fsi{listConcatenate}{1.5} & Concatenate two lists\\
     \hline
   \end{tabularx}
-  \caption{Some built-in procedures in the Array module for arrays (from \protect\url{https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/fsharp-core-library-reference})}
-  \label{tab:arrayMethods}
+  \caption{Basic properties and members of lists.}
+  \label{tab:list}
 \end{table}
-Thus, the \texttt{arrayReassign.fsx} program can be written using arrays as,
-\fs{arrayReassignModule}{}
-and the \texttt{flowForListsIndex.fsx} program can be written using arrays as,
-\fs{flowForListsIndexModule}{}
-Both cases avoid the use of variables and side-effects which is a big advantage for code safety.
+In addition, Lists have many other built-in functions, which will be discussed in Chapter~\ref{chap:collection} and Part~\ref{part:declarative}.
+
+It is possible to make multidimensional lists as lists of lists, e.g., 
+%
+\fs{listMultidimensional}{A ragged multidimensional list, built as lists of lists, and its indexing.}
+%
+The example shows a \idx{ragged multidimensional list}, since each row has different number of elements. The indexing of a particular element is not elegant, which is why arrays are often preferred in F\#.
+
+\section{Arrays}
+\label{sec:arrays}
+\subsection{1 dimensional arrays}
+1 dimensional arrays or just arrays for short are mutable lists of the same type and follow a similar syntax as lists. Its grammar follows \idx{computational expressions}, which will be discussed in Section~\ref{sec:sequences}. Here we consider a subset of the grammar:
+%
+\begin{lstlisting}[language=ebnf]
+comp-or-range-expr = comp-expr | ... | range-expr
+comp-expr =
+  | comp-expr ";" comp-expr
+  | expr
+expr = ... 
+  | "[|" comp-or-range-expr "|]" (* computed array expression *)
+  | ...
+\end{lstlisting}
+%
+Thus the creation of arrays is identical to lists, but there is no explicit operator support for appending and concatenation, e.g.,
+%
+\fs{arrayCreation}{Creating arrays with a syntax similarly to lists.}
+%
+The array type is defined using the \keyword{array} keyword or alternatively the \keyword{[]} lexeme. Arrays cannot be resized, but are mutable,
+%
+\fs{arrayReassign}{Arrays are mutable in spite the missing \keyword{mutable} keyword.}
+%
+Notice that in spite the missing \keyword{mutable} keyword, the function \lstinline{square} still had the \idx{side-effect} of squaring alle entries in \lstinline{A}.  Arrays only support direct pattern matching, e.g.,
+%
+\fs{arrayPatternMatching}{Only simple pattern matching is allowed for arrays.}
+%
+The given example is the first example of a 2-dimensional array, which can be implemented as arrays of arrays and here written as \lstinline!string array array!. In Section~\ref{sec:array2d} will 2 and higher dimensional arrays be discussed.  Arrays support \idx{slicing}, that is, indexing an array with a range results in a copy of array with values corresponding to the range, e.g.,
+%
+\fs{arraySlicing}{Examples of array slicing. Compare with Listing~\ref{listSlicing} and Listing~\ref{stringIndexing}.}
+%
+As illustrated, the missing start or end index implies from the first or to the last element.
+
+There are quite a number of built-in procedures for all arrays many which will be discussed in Chapter~\ref{chap:collections}.
 
 \subsection{Multidimensional Arrays}
 Higher dimensional arrays can be created as arrays of arrays (of arrays \dots). These are known as \idx{jagged arrays}, since there is no inherent control of that all sub-arrays are of similar size. E.g., the following is a jagged array of increasing width,
-\fs{arrayJagged}{}
-Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \verb|a.Length|,  \verb|a.[i]| is the i'th array, the length of the i'th array is \verb|a.[i].Length|, and the j'th element of the i'th array is thus \verb|a.[i].[j]|. Often 2 dimensional square arrays are used, which can be implemented as a jagged array as,
-\fs{arrayJaggedSquare}{}
+%
+\fs{arrayJagged}{An array of arrays. When row lengths are of non-equal elements, then it is a Jagged array.}
+%
+Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \lstinline|a.Length|,  \lstinline|a.[i]| is the i'th array, the length of the i'th array is \lstinline|a.[i].Length|, and the j'th element of the i'th array is thus \lstinline|a.[i].[j]|. Often 2 dimensional rectangular arrays are used, which can be implemented as a jagged array as,
+%
+\fs{arrayJaggedSquare}{A rectangular array. Notice, the \keyword{for}-\keyword{in} cannot be used in \lstinline!pownArray!}, e.g., \lstinline!for row in arr do for elm in row do elm <- pown elm p done done} since the iterator value \lstinline!elm! is not mutable even though \lstinline!arr! is an array.
+%
 In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
-\fs{array2D}{}
-Notice that the indexing uses a slightly different notation '\verb|[,]|' and the length functions are also slightly different. The statement \verb|A.Length| would return the total number of elements in the array, in this case 12.
+%
+\fs{array2D}{Creating a 3 by 4 rectangular arrays of intigers.}
+%
+Notice that the indexing uses a slightly different notation '\verb|[,]|' and the length functions are also slightly different. The statement \verb|A.Length| would return the total number of elements in the array, in this case 12. As can be seen, the \lstinline!printf! supports direct printing of the 2 dimensional array. Higher dimensional arrays support slicing, e.g.,
+%
+\fs{array2DSlicing}{Examples of Array2D slicing. Compare with Listing~\ref{array2D}.}
+%
+Note that in almost all cases, slicing produces a sub rectangular 2 dimensional array except for \lstinline{arr.[1,*]}, which is an array, as can be seen by the single \lexeme{[}. In contrast, \lstinline{A.[1..1,*]} is an Array2D. Note also, that \lstinline!printfn! typesets 2 dimensional arrays as \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion with lists of lists.
+\jon{Array2D.ToString produces \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion.}
 
-\jon{note that \texttt{A.[1,*]} is a Array but \texttt{A.[1..1,*]} is an Array2D.}
+Array2D and higher have a number of built-in functions that will be discussed in Chapter~\ref{chap:collections}.
 
-There are a bit few built-in procedures for 2 dimensional array types, some of which are summarized in Table~\ref{tab:array2dMethods}
-\begin{table}
-  \centering
-  \begin{tabularx}{\textwidth}{|>{\hsize=.2\hsize}X|>{\hsize=1.8\hsize}X|}
-    \hline
-    blit &Reads a range of elements from one array and writes them into another. \\
-    copy &Creates an array that contains the elements of the supplied array.\\
-    create &Creates an array whose elements are all initially the supplied value.\\
-    iter &Applies the supplied function to each element of an array.\\
-    length1 &Returns the length of an array in the first dimension.\\
-    length2 &Returns the length of an array in the second dimension.\\
-    map &Creates an array whose elements are the results of applying the supplied function to each of the elements of a supplied array.\\
-    mapi &\\
-    zeroCreate &Creates an array whose elements are all initially zero.\\
-    \hline
-  \end{tabularx}
-  \caption{Some built-in procedures in the Array2D module for arrays (from \protect\url{https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/fsharp-core-library-reference})}
-  \label{tab:array2dMethods}
-\end{table}
 \section{Sequences}
 \label{sec:sequences}
+
+A computational expression is a small program, whose result is list, for example, \lstinline!let lst = [for i = 1 to 5 do yield i done]!
+
+\fs{arrayJaggedCompExpr}{}
+Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \verb|a.Length|,  \verb|a.[i]| is the i'th array, the length of the i'th array is \verb|a.[i].Length|, and the j'th element of the i'th array is thus \verb|a.[i].[j]|. Often 2 dimensional square arrays are used, which can be implemented as a jagged array as,
+\fs{arrayJaggedSquareCompExpr}{}
+In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
+\fs{array2DCompExpr}{}
+Notice that the indexing uses a slightly different notation '\verb|[,]|' and the length functions are also slightly different. The statement \verb|A.Length| would return the total number of elements in the array, in this case 12.
+
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

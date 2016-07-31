@@ -7,7 +7,7 @@
 \usepackage[margin=25mm,outer=35mm,marginparsep=5mm]{geometry}
 
 % Extra math stuff
-\usepackage{amsmath}
+\usepackage{amsmath,amssymb}
 
 % Figures
 \usepackage{graphicx}
@@ -172,6 +172,12 @@
       \lstinputlisting[language=fsharp,caption={fsharpi, #2},label=#1]{\src/#1.out}
 %    \end{minipage}
   %\end{mdframed}
+}
+
+\newcommand{\fsi}[2]{
+  \begin{minipage}[t]{#2\linewidth}
+    \lstinputlisting[aboveskip=0pt, belowskip=0pt]{\src/#1.out}
+  \end{minipage}
 }
 
 % highlighted text snippets

@@ -1,12 +1,16 @@
-let A = [| 1; 2; 3; 4; 5 |]
-let B = [| 1 .. 5 |]
-let C = [| for a in 1 ..5 do yield a |]
-
-let printArray (a : int array) =
-  for i = 0 to a.Length - 1 do
-    printf "%d " a.[i]
+let printArray (arr : int array) =
+  for elm in arr do
+    printf "%d " elm
   printf "\n"
 
-printArray A
-printArray B
-printArray C
+let printArrayAlt (arr : int array) =
+  for i = 0 to arr.Length - 1 do
+    printf "%A " arr.[i]
+  printfn ""
+
+let a = [|1; 2;|]
+let b = [|3; 4; 5|]
+let c = Array.append a b
+printfn "%A, %A, %A" a b c
+printArray c
+printArrayAlt c
