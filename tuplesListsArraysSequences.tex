@@ -150,7 +150,11 @@ The basic properties and members of lists are summarized in Table~\ref{tab:list}
   \caption{Basic properties and members of lists.}
   \label{tab:list}
 \end{table}
-In addition, Lists have many other built-in functions, which will be discussed in Chapter~\ref{chap:collection} and Part~\ref{part:declarative}.
+In addition, lists have many other built-in functions, such as functions for converting lists to arrays and sequences,
+%
+\fs{listConversion}{The \lstinline!List! module contains functions for conversion to arrays and sequences.}
+%
+These and more will be discussed in Chapter~\ref{chap:collection} and Part~\ref{part:declarative}.
 
 It is possible to make multidimensional lists as lists of lists, e.g., 
 %
@@ -191,6 +195,10 @@ The given example is the first example of a 2-dimensional array, which can be im
 %
 As illustrated, the missing start or end index implies from the first or to the last element.
 
+Arrays can be converted to lists and sequences by,
+%
+\fs{arrayConversion}{The \lstinline!Array! module contains functions for conversion to lists and sequences.}
+%
 There are quite a number of built-in procedures for all arrays many which will be discussed in Chapter~\ref{chap:collections}.
 
 \subsection{Multidimensional Arrays}
@@ -217,8 +225,68 @@ Array2D and higher have a number of built-in functions that will be discussed in
 
 \section{Sequences}
 \label{sec:sequences}
+Sequences are lists, where the elements are build as needed. Examples are\jon{Mono does not support specification Spec-4.0 Section 6.3.11, seq {comp-expr}, in the form seq {3} or seq {3; 4}.}
+%
+\fso{seqExample}{Creating sequences by range explicitely stating elements, a range expressions, a computational expression, and an infinite computational expression}
+%
+\begin{lstlisting}[language=ebnf]
+comp-or-range-expr = comp-expr | short-comp-expr | range-expr
+short-comp-expr = "for" pat "in" (expr | range-expr) "->" expr
+range-exp = expr ".." expr [".." expr]
+comp-expr =
+  ("let" | "let!") pat "=" expr "in" comp-expr
+  | ("do" | "do!") expr "in" comp-expr
+  | ("use" | "use!") pat = expr "in" comp-expr
+  | ("yield" | "yield!") expr
+  | ("return" | "return!") expr
+  | "if" expr "then" comp-expr ["else" comp-expr]
+  | "match" expr "with" comp-rules
+  | "try" comp-expr "with" comp-rules
+  | "try" comp-expr "finally" expr
+  | "while" expr "do" expr ["done"]
+  | "for" ident "=" expr "to" expr "do" comp-expr ["done"]
+  | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
+  | comp-expr ";" comp-expr
+  | expr
+comp-rule = pat pattern-guardopt "->" comp-expr
+comp-rules = comp-rule | comp-rule '|' comp-rules
+expr = ... 
+  | expr "{" comp-or-range-expr "}" (* computation expression *)
+  | ...
+\end{lstlisting}
+%
+The syntax for sequences is very rich. It may be a simple range expression, but most often it is a small program, that generates values, which are added to the sequence with the \keyword{yield} keyword, or to append another sequence using the \keyword{yield!} keyword. Most often computational expressions are used to produced members that are not just ranges, but more complicated expressions of ranges, e.g., \lstinline!c! in the example. But the most powerful feature of sequences is its ability to represent infinite sequences, e.g., \lstinline!d! which is an infinite sequence. Calculating the sequence at the point of definition is impossible due to lack of memory, as is accessing all its elements due to lack of time. But infinite sequences are still very useful, e.g., identifier \lstinline!d! illustrates the parametrization of a circle, which is an infinite domain. Fsharp warns against recursive values, as defined in the example, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!.
 
-A computational expression is a small program, whose result is list, for example, \lstinline!let lst = [for i = 1 to 5 do yield i done]!
+Sequences are generalisations of lists and arrays, and often functions taking sequences as argument often take lists and arrays as well. Sequences do not have many built-in operators, but a rich collection of functions in the \lstinline!Collections.Seq!. E.g.,\idxss{Seq.item}\idxss{Seq.take}
+%
+\fso{seqIndexing}{Index a sequence with \lstinline!Seq.item! and \lstinline!Seq.take!}
+%
+which as usual index from 0 and will cast an exception, if indexing is out of range for the sequence. 
+
+That sequences really are programs rather than values can be seen by the following example,
+%
+\fso{seqDelayedEval}{Sequences elements are first evaluated, when needed.}
+%
+In the example, we see that the \lstinline!printfn! function embedded in the definition is first executed, when the 3rd item is requested.
+
+****
+
+  % ("let" | "let!") pat "=" expr "in" comp-expr
+  % | ("do" | "do!") expr "in" comp-expr
+  % | ("use" | "use!") pat = expr "in" comp-expr
+  % | ("yield" | "yield!") expr
+  % | ("return" | "return!") expr
+  % | "if" expr "then" comp-expr ["else" comp-expr]
+  % | "match" expr "with" comp-rules
+  % | "try" comp-expr "with" comp-rules
+  % | "try" comp-expr "finally" expr
+  % | "while" expr "do" expr ["done"]
+  % | "for" ident "=" expr "to" expr "do" comp-expr ["done"]
+  % | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
+
+
+
+
 
 \fs{arrayJaggedCompExpr}{}
 Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \verb|a.Length|,  \verb|a.[i]| is the i'th array, the length of the i'th array is \verb|a.[i].Length|, and the j'th element of the i'th array is thus \verb|a.[i].[j]|. Often 2 dimensional square arrays are used, which can be implemented as a jagged array as,
@@ -226,6 +294,16 @@ Indexing arrays of arrays is done sequentially, in the sense that in the above e
 In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
 \fs{array2DCompExpr}{}
 Notice that the indexing uses a slightly different notation '\verb|[,]|' and the length functions are also slightly different. The statement \verb|A.Length| would return the total number of elements in the array, in this case 12.
+
+********
+
+Sequences are easily converted to and from lists and arrays as,
+%
+\fs{seqConversion}{Conversion between sequences and lists and arrays using the \lstinline!List! module.}
+%
+There are quite a number of built-in functions for sequences many which will be discussed in Chapter~\ref{chap:collections}.
+ 
+
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

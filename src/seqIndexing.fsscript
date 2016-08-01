@@ -1,0 +1,3 @@
+let sq = seq { 1 .. 10 };; (* make a sequence *)
+let itm = Seq.item 0 sq;; (* take firste element *)
+let sbsq = Seq.take 3 sq;; (* make new sequence of first 3 elements *)

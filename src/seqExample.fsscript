@@ -1,0 +1,9 @@
+#nowarn "40"
+let a = { 1 .. 10 };;
+let b = seq { 1 .. 10 };;
+let c = seq {for i = 1 to 10 do yield i*i done};;
+let rec d : seq<float> =
+  seq {
+    for i = 0 to 9 do yield (float i)*3.1415/10.0 done;
+    yield! d
+    };;
