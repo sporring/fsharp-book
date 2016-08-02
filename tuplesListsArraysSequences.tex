@@ -1,22 +1,19 @@
-\chapter{Tuples, Lists, Arrays, and Sequences}
+\chapter{Ordered series of data}
 \label{chap:lists}\jon{possibly add maps and sets as well.}
-F\# is tuned to work with lists, and there are several built-in lists with various properties making them useful for different tasks. E.g.,
+F\# is tuned to work with ordered series, and there are several built-in lists with various properties making them useful for different tasks. E.g.,
 %
 \fs{tuplesQuadraticEq}{Using tuples to gather values.}
 %
-F\# has 4 built-in list types: tuples, lists, arrays, and sequences following this syntax:
+F\# has 4 built-in list types: strings, tuples, lists, arrays, and sequences. Strings were discussed in Chapter~\ref{chap:calculator}, and tuples, lists, arrays, and sequences following this (simplified) syntax:
 %
 \begin{lstlisting}[language=ebnf]
 tupleList = expr | expr "," tupleList
-comp-or-range-expr = comp-expr | short-comp-expr | range-expr
-short-comp-expr = "for" pat "in" (expr | range-expr) "->" expr
+listOrArrayList =  expr | expr ";" listOrArrayList
 range-exp = expr ".." expr [".." expr]
 comp-expr =
-  ("let" | "let!") pat "=" expr "in" comp-expr
-  | ("do" | "do!") expr "in" comp-expr
-  | ("use" | "use!") pat = expr "in" comp-expr
+  "let" pat "=" expr "in" comp-expr
+  | "use" pat = expr "in" comp-expr
   | ("yield" | "yield!") expr
-  | ("return" | "return!") expr
   | "if" expr "then" comp-expr ["else" comp-expr]
   | "match" expr "with" comp-rules
   | "try" comp-expr "with" comp-rules
@@ -25,18 +22,19 @@ comp-expr =
   | "for" ident "=" expr "to" expr "do" comp-expr ["done"]
   | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
   | comp-expr ";" comp-expr
-  | expr
+short-comp-expr = "for" pat "in" (expr | range-expr) "->" expr
+comp-or-range-expr = comp-expr| short-comp-expr | range-expr
 comp-rule = pat pattern-guardopt "->" comp-expr
 comp-rules = comp-rule | comp-rule '|' comp-rules
 expr = ... 
   | tupleList
-  | "[" comp-or-range-expr "]" (* computed list expression *)
-  | "[|" comp-or-range-expr "|]" (* computed array expression *)
-  | expr "{" comp-or-range-expr "}" (* computation expression *)
+  | "[" (listOrArrayList | comp-or-range-expr) "]" (* computation list expression *)
+  | "[|" (listOrArrayList | comp-or-range-expr) "|]" (* computation array expression *)
+  | "seq" "{" comp-or-range-expr "}" (* computation expression *)
   | ...
 \end{lstlisting}
 %
-\jon{Spec-4.0: grammar for list and array expressions are subsets of computed list and array expressions.}Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these data structures in detail.
+\jon{Spec-4.0: grammar for list and array expressions are subsets of computation list and array expressions.}Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these data structures in detail.
 
 \section{Tuples}
 \idx[tuple]{Tuples} are unions of immutable types, 
@@ -75,16 +73,12 @@ However, tuples may be mutual such that new tuple values can be assigned to it, 
 In this example, the central computation has been packed into a single line, \lstinline!prev <- (snd prev, (fst prev) + (snd prev))!, where both the calculation of $\text{fib}(n) = \text{fib}(n-2) + \text{fib}(n-1)$ and the rearrangement of memory to hold the new values $\text{fib}(n)$ and $\text{fib}(n-1)$ based on the old values $\text{fib}(n-2) + \text{fib}(n-1)$. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, and in this case, an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
 
 \section{Lists}
-\idx[list]{Lists} are unions of immutable values of the same type and have a more flexible structure than tuples. Its grammar follows \idx{computational expressions}, which is very rich and shared with arrays and sequences, and we will delay a discussion on most computational expressions to Section~\ref{sec:sequences}, and here just consider a subset of the grammar:
+\idx[list]{Lists} are unions of immutable values of the same type and have a more flexible structure than tuples. Its grammar follows \idx{computation expressions}, which is very rich and shared with arrays and sequences, and we will delay a discussion on most computation expressions to Section~\ref{sec:sequences}, and here just consider a subset of the grammar:
 \begin{lstlisting}[language=ebnf]
-comp-or-range-expr = comp-expr | .. | range-expr
+listOrArrayList =  expr | expr ";" listOrArrayList
 range-exp = expr ".." expr [".." expr]
-comp-expr =
-  ...
-  | comp-expr ";" comp-expr
-  | expr
 expr = ... 
-  | "[" comp-or-range-expr "]" (* computed list expression *)
+  | "[" (listOrArrayList | ... | range-expr) "]" (* computation list expression *)
   | ...
 \end{lstlisting}
 Simple examples of a list grammars are, \lstinline[language=ebnf]![expr; expr; ... ; expr]!, \lstinline[language=ebnf]![expr ".." expr]!, \lstinline[language=ebnf]![expr ".." expr ".." expr]!, e.g., an explicit list \lstinline!let lst = [1; 2; 3; 4; 5]!, which may be written shortly as \idx{range expression} as \lstinline!let lst = [1 .. 5]!, and ranges may include a step size \lstinline!let lst = [1 .. 2 .. 5]!, which is the same as \lstinline!let lst = [1; 3; 5]!.
@@ -147,10 +141,10 @@ The basic properties and members of lists are summarized in Table~\ref{tab:list}
     \lstinline!@! & \fsi{listConcatenate}{1.5} & Concatenate two lists\\
     \hline
   \end{tabularx}
-  \caption{Basic properties and members of lists.}
+  \caption{Basic properties and members of lists. The syntax used in \lstinline{List<int>.Empty} ensures that the empty list is of type \lstinline{int}.}
   \label{tab:list}
 \end{table}
-In addition, lists have many other built-in functions, such as functions for converting lists to arrays and sequences,
+In addition, lists have many other built-in functions, such as functions for converting lists to arrays and sequences,\idxss{List.toList}\idxss{List.toArray}
 %
 \fs{listConversion}{The \lstinline!List! module contains functions for conversion to arrays and sequences.}
 %
@@ -164,16 +158,14 @@ The example shows a \idx{ragged multidimensional list}, since each row has diffe
 
 \section{Arrays}
 \label{sec:arrays}
-\subsection{1 dimensional arrays}
-1 dimensional arrays or just arrays for short are mutable lists of the same type and follow a similar syntax as lists. Its grammar follows \idx{computational expressions}, which will be discussed in Section~\ref{sec:sequences}. Here we consider a subset of the grammar:
+%\subsection{1 dimensional arrays}
+One dimensional arrays or just arrays for short are mutable lists of the same type and follow a similar syntax as lists. Its grammar follows \idx{computation expressions}, which will be discussed in Section~\ref{sec:sequences}. Here we consider a subset of the grammar:
 %
 \begin{lstlisting}[language=ebnf]
-comp-or-range-expr = comp-expr | ... | range-expr
-comp-expr =
-  | comp-expr ";" comp-expr
-  | expr
+listOrArrayList =  expr | expr ";" listOrArrayList
+range-exp = expr ".." expr [".." expr]
 expr = ... 
-  | "[|" comp-or-range-expr "|]" (* computed array expression *)
+  | "[|" (listOrArrayList | ... | range-expr) "|]" (* computation array expression *)
   | ...
 \end{lstlisting}
 %
@@ -189,26 +181,28 @@ Notice that in spite the missing \keyword{mutable} keyword, the function \lstinl
 %
 \fs{arrayPatternMatching}{Only simple pattern matching is allowed for arrays.}
 %
-The given example is the first example of a 2-dimensional array, which can be implemented as arrays of arrays and here written as \lstinline!string array array!. In Section~\ref{sec:array2d} will 2 and higher dimensional arrays be discussed.  Arrays support \idx{slicing}, that is, indexing an array with a range results in a copy of array with values corresponding to the range, e.g.,
+The given example is the first example of a 2-dimensional array, which can be implemented as arrays of arrays and here written as \lstinline!string array array!. Below further discussion of on 2 and higher dimensional arrays be discussed.  Arrays support \idx{slicing}, that is, indexing an array with a range results in a copy of array with values corresponding to the range, e.g.,
 %
 \fs{arraySlicing}{Examples of array slicing. Compare with Listing~\ref{listSlicing} and Listing~\ref{stringIndexing}.}
 %
 As illustrated, the missing start or end index implies from the first or to the last element.
 
-Arrays can be converted to lists and sequences by,
+Arrays can be converted to lists and sequences by,\idxss{Array.toList}\idxss{Array.toArray}
 %
 \fs{arrayConversion}{The \lstinline!Array! module contains functions for conversion to lists and sequences.}
 %
-There are quite a number of built-in procedures for all arrays many which will be discussed in Chapter~\ref{chap:collections}.
+There are quite a number of built-in procedures for all arrays many which will be discussed in Chapter~\ref{chap:collection}.
 
-\subsection{Multidimensional Arrays}
+%\subsection{Multidimensional Arrays}
 Higher dimensional arrays can be created as arrays of arrays (of arrays \dots). These are known as \idx{jagged arrays}, since there is no inherent control of that all sub-arrays are of similar size. E.g., the following is a jagged array of increasing width,
 %
 \fs{arrayJagged}{An array of arrays. When row lengths are of non-equal elements, then it is a Jagged array.}
 %
 Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \lstinline|a.Length|,  \lstinline|a.[i]| is the i'th array, the length of the i'th array is \lstinline|a.[i].Length|, and the j'th element of the i'th array is thus \lstinline|a.[i].[j]|. Often 2 dimensional rectangular arrays are used, which can be implemented as a jagged array as,
 %
-\fs{arrayJaggedSquare}{A rectangular array. Notice, the \keyword{for}-\keyword{in} cannot be used in \lstinline!pownArray!}, e.g., \lstinline!for row in arr do for elm in row do elm <- pown elm p done done} since the iterator value \lstinline!elm! is not mutable even though \lstinline!arr! is an array.
+\fs{arrayJaggedSquare}{A rectangular array.} 
+%
+Notice, the \keyword{for}-\keyword{in} cannot be used in \lstinline!pownArray!, e.g., \lstinline!for row in arr do for elm in row do elm <- pown elm p done done} since the iterator value \lstinline!elm! is not mutable even though \lstinline!arr! is an array.
 %
 In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
 %
@@ -221,24 +215,21 @@ Notice that the indexing uses a slightly different notation '\verb|[,]|' and the
 Note that in almost all cases, slicing produces a sub rectangular 2 dimensional array except for \lstinline{arr.[1,*]}, which is an array, as can be seen by the single \lexeme{[}. In contrast, \lstinline{A.[1..1,*]} is an Array2D. Note also, that \lstinline!printfn! typesets 2 dimensional arrays as \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion with lists of lists.
 \jon{Array2D.ToString produces \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion.}
 
-Array2D and higher have a number of built-in functions that will be discussed in Chapter~\ref{chap:collections}.
+Array2D and higher have a number of built-in functions that will be discussed in Chapter~\ref{chap:collection}.
 
 \section{Sequences}
 \label{sec:sequences}
 Sequences are lists, where the elements are build as needed. Examples are\jon{Mono does not support specification Spec-4.0 Section 6.3.11, seq {comp-expr}, in the form seq {3} or seq {3; 4}.}
 %
-\fso{seqExample}{Creating sequences by range explicitely stating elements, a range expressions, a computational expression, and an infinite computational expression}
+\fso{seqExample}{Creating sequences by range explicitely stating elements, a range expressions, a computation expression, and an infinite computation expression}
 %
+Sequences are built using the following subset of the general syntax,
 \begin{lstlisting}[language=ebnf]
-comp-or-range-expr = comp-expr | short-comp-expr | range-expr
-short-comp-expr = "for" pat "in" (expr | range-expr) "->" expr
 range-exp = expr ".." expr [".." expr]
 comp-expr =
-  ("let" | "let!") pat "=" expr "in" comp-expr
-  | ("do" | "do!") expr "in" comp-expr
-  | ("use" | "use!") pat = expr "in" comp-expr
+  "let" pat "=" expr "in" comp-expr
+  | "use" pat = expr "in" comp-expr
   | ("yield" | "yield!") expr
-  | ("return" | "return!") expr
   | "if" expr "then" comp-expr ["else" comp-expr]
   | "match" expr "with" comp-rules
   | "try" comp-expr "with" comp-rules
@@ -247,17 +238,18 @@ comp-expr =
   | "for" ident "=" expr "to" expr "do" comp-expr ["done"]
   | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
   | comp-expr ";" comp-expr
-  | expr
+short-comp-expr = "for" pat "in" (expr | range-expr) "->" expr
+comp-or-range-expr = comp-expr| short-comp-expr | range-expr
 comp-rule = pat pattern-guardopt "->" comp-expr
 comp-rules = comp-rule | comp-rule '|' comp-rules
 expr = ... 
-  | expr "{" comp-or-range-expr "}" (* computation expression *)
+  | "seq" "{" comp-or-range-expr "}" (* computation expression *)
   | ...
 \end{lstlisting}
 %
-The syntax for sequences is very rich. It may be a simple range expression, but most often it is a small program, that generates values, which are added to the sequence with the \keyword{yield} keyword, or to append another sequence using the \keyword{yield!} keyword. Most often computational expressions are used to produced members that are not just ranges, but more complicated expressions of ranges, e.g., \lstinline!c! in the example. But the most powerful feature of sequences is its ability to represent infinite sequences, e.g., \lstinline!d! which is an infinite sequence. Calculating the sequence at the point of definition is impossible due to lack of memory, as is accessing all its elements due to lack of time. But infinite sequences are still very useful, e.g., identifier \lstinline!d! illustrates the parametrization of a circle, which is an infinite domain. Fsharp warns against recursive values, as defined in the example, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!.
+Sequence may be defined using simple range expressions but most often are defined as a small program, that generates values with the \keyword{yield} keyword or \keyword{yield!} keyword. The \keyword{yield!} is called \idx{yield bang}, and appends a sequence instead of adding a sequence as an element. Thus, \lstinline!seq {3; 5}! is not permitted, but \lstinline!seq {yield 3; yield 5}! and \lstinline|seq {yield! (seq {yield 3; yield 5})}| are, both creating \lstinline!seq<int> = seq [3; 5]!, i.e., a sequence of integers. Most often computation expressions are used to produced members that are not just ranges, but more complicated expressions of ranges, e.g., \lstinline!c! in the example. Sequences may even in principle be infinitely long, e.g., \lstinline!d!. Calculating the complete sequence at the point of definition is impossible due to lack of memory, as is accessing all its elements due to lack of time. But infinite sequences are still very useful, e.g., identifier \lstinline!d! illustrates the parametrization of a circle, which is an infinite domain, and any index will be converted to the equivalent 60'th degree angle in radians. Fsharp warns against recursive values, as defined in the example, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!.
 
-Sequences are generalisations of lists and arrays, and often functions taking sequences as argument often take lists and arrays as well. Sequences do not have many built-in operators, but a rich collection of functions in the \lstinline!Collections.Seq!. E.g.,\idxss{Seq.item}\idxss{Seq.take}
+Sequences are generalisations of lists and arrays, and functions taking sequences as argument may equally take lists and arrays as argument. Sequences do not have many built-in operators, but a rich collection of functions in the \lstinline!Collections.Seq!. E.g.,\idxss{Seq.item}\idxss{Seq.take}
 %
 \fso{seqIndexing}{Index a sequence with \lstinline!Seq.item! and \lstinline!Seq.take!}
 %
@@ -269,13 +261,13 @@ That sequences really are programs rather than values can be seen by the followi
 %
 In the example, we see that the \lstinline!printfn! function embedded in the definition is first executed, when the 3rd item is requested.
 
-****
+\jon{Mono, missing support for Spec-4.0 Chapter 6, \lstinline!do!-\lstinline!in! in sequences. E.g., \lstinline!seq {let _ = printfn "hej" in yield 3}! is ok, but \lstinline!seq {do printfn "hej" in yield 3}! not. One could argue, that computation expression is the framework and that it is the seq implementation, which does not provide full access to the framework. but this is confusing, since seq gets special attention in the specification.}
 
-  % ("let" | "let!") pat "=" expr "in" comp-expr
-  % | ("do" | "do!") expr "in" comp-expr
-  % | ("use" | "use!") pat = expr "in" comp-expr
+The only difference between computation expression's programming constructs and the similar regular expressions constructs is that they must return a value with the \keyword{yield} or \keyword{yield!} keywords.\jon{Mono implements if-elif-else, but this is not in the specification.} The \keyword{try}-keyword constructions will be discussed in Chapter~\ref{chap:exceptions}, and the \keyword{use}-keyword is a variant of \keyword{let} but used in asynchronous computations, which will not be treated here.
+
+  % "let" pat "=" expr "in" comp-expr
+  % | "use" pat = expr "in" comp-expr
   % | ("yield" | "yield!") expr
-  % | ("return" | "return!") expr
   % | "if" expr "then" comp-expr ["else" comp-expr]
   % | "match" expr "with" comp-rules
   % | "try" comp-expr "with" comp-rules
@@ -283,26 +275,50 @@ In the example, we see that the \lstinline!printfn! function embedded in the def
   % | "while" expr "do" expr ["done"]
   % | "for" ident "=" expr "to" expr "do" comp-expr ["done"]
   % | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
+  % | comp-expr ";" comp-expr
 
+Intinfite sequences is a useful concept in many programs and may be generated in a number of ways. E.g., to generate a repeated sequence, we could use recursive value definition, a computation expression, a recursive function, or the \lstinline!Seq! module. Using a recursive value definition,
+%
+\fs{seqInfinteValue2}{Recursive value definitions gives a warning.  Compare with Listing\ref{seqInfinteValue}, \ref{seqInfinteFunction}, and \ref{seqInitInfinite}.}
+%
+Fsharp warns against using recursive values, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!, but \advice{warnings are messages from the designers of F\# that your program is non-optimal, and you should avoid structures that throw warnings instead of relying on \lstinline{\#nowarn} and similar constructions.} Instead we may create an infinite loop using the \keyword{while}-\keyword{do} computation expression, as
+%
+\fs{seqInfinteValue}{Infinite value definition without recursion nor warning.  Compare with Listing~\ref{seqInfinteValue2}, \ref{seqInfinteFunction}, and\ref{seqInitInfinite}.}
+%
+or alternatively define a recursive function,
+%
+\fs{seqInfinteFunction}{Recursive function definitions gives no a warning.  Compare with Listing~\ref{seqInfinteValue2}, \ref{seqInfinteValue}, and \ref{seqInitInfinite}.}
+%
+Infinite expressions have built-in support through the \lstinline!Seq! module using \idxss{Seq.initInfinite},
+%
+\fs{seqInitInfinite}{Using \lstinline{Seq.initInfinte} and a function to generate an infinte sequence. Compare with Listing~\ref{seqInfinteValue2}, \ref{seqInfinteValue}, and \ref{seqInfinteFunction}.}
+%
+which takes a function as argument. Here we have used currying, i.e., \lstinline!get items! is a function that takes on variable and returns a value. The use of the remainder operator makes the example rather contrived, since it might have been simpler to use the \lstinline!get! indexing function directly.
 
-
-
-
-\fs{arrayJaggedCompExpr}{}
-Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \verb|a.Length|,  \verb|a.[i]| is the i'th array, the length of the i'th array is \verb|a.[i].Length|, and the j'th element of the i'th array is thus \verb|a.[i].[j]|. Often 2 dimensional square arrays are used, which can be implemented as a jagged array as,
-\fs{arrayJaggedSquareCompExpr}{}
-In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
-\fs{array2DCompExpr}{}
-Notice that the indexing uses a slightly different notation '\verb|[,]|' and the length functions are also slightly different. The statement \verb|A.Length| would return the total number of elements in the array, in this case 12.
-
-********
-
-Sequences are easily converted to and from lists and arrays as,
+Sequences are easily converted to and from lists and arrays as,\idxss{Seq.toList}\idxss{Seq.toArray}
 %
 \fs{seqConversion}{Conversion between sequences and lists and arrays using the \lstinline!List! module.}
 %
-There are quite a number of built-in functions for sequences many which will be discussed in Chapter~\ref{chap:collections}.
+There are quite a number of built-in functions for sequences many which will be discussed in Chapter~\ref{chap:collection}.
  
+Lists and arrays may be created from sequences through the short-hand notation called \idx[list sequence expression]{list and array sequence expressions}\idxss{array sequence expressions},
+\begin{lstlisting}[language=ebnf]
+expr = ... 
+  | "[" (... | comp-expr | short-comp-expr | ...) "]" (* list sequence expression *)
+  | "[|" (.. | comp-expr | short-comp-expr | ...) "|]" (* array sequence expression *)
+  | ...
+\end{lstlisting}
+which implicitely creates the corresponding expression and return the result as a list or array.
+
+% *****
+
+% \fs{arrayJaggedCompExpr}{}
+% Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \verb|a.Length|,  \verb|a.[i]| is the i'th array, the length of the i'th array is \verb|a.[i].Length|, and the j'th element of the i'th array is thus \verb|a.[i].[j]|. Often 2 dimensional square arrays are used, which can be implemented as a jagged array as,
+% \fs{arrayJaggedSquareCompExpr}{}
+% In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
+% \fs{array2DCompExpr}{}
+% Notice that the indexing uses a slightly different notation '\verb|[,]|' and the length functions are also slightly different. The statement \verb|A.Length| would return the total number of elements in the array, in this case 12.
+
 
 
 %%% Local Variables:

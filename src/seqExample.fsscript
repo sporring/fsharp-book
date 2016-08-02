@@ -2,8 +2,8 @@
 let a = { 1 .. 10 };;
 let b = seq { 1 .. 10 };;
 let c = seq {for i = 1 to 10 do yield i*i done};;
-let rec d : seq<float> =
+let rec d =
   seq {
-    for i = 0 to 9 do yield (float i)*3.1415/10.0 done;
+    for i = 0 to 59 do yield (float i)*2.0*3.1415/60.0 done;
     yield! d
     };;
