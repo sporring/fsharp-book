@@ -147,31 +147,21 @@
 \usepackage{verbdef}
 \verbdef{\cmdl}{>}
 
+
 \newcommand{\src}{src}
 \newcommand{\fs}[2]{
-  %\begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
-  %\begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
-    \lstinputlisting[language=fsharp]{\src/#1.fsx}
-    % \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
-    %\cmdl\texttt{ fsharpi #1.fsx}
-    \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{\src/#1.out}
-  %\end{mdframed}
+  \lstinputlisting[language=fsharp]{\src/#1.fsx}
+  \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{\src/#1.out}
+}
+\newcommand{\fsa}[3]{
+  \lstinputlisting[language=fsharp,#2]{\src/#1.fsx}
+  \lstinputlisting[language=console,caption={#1.fsx - #3},label=#1]{\src/#1.out}
 }
 \newcommand{\fse}[2]{
-  % \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
-  %\begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
-%    \begin{minipage}{1\linewidth}
-      \lstinputlisting[language=fsharp,caption={#2},label=#1]{\src/#1.fsx}
-%    \end{minipage}
-  %\end{mdframed}
+  \lstinputlisting[language=fsharp,caption={#2},label=#1]{\src/#1.fsx}
 }
 \newcommand{\fso}[2]{
-  % \begin{mdframed}[frametitle=#1.fsx,frametitlerulewidth=0.4pt,frametitlerule=true]
-  %\begin{mdframed}[frametitlerulewidth=0.4pt,frametitlerule=true]
-%    \begin{minipage}{1\linewidth}
-      \lstinputlisting[language=fsharp,caption={fsharpi, #2},label=#1]{\src/#1.out}
-%    \end{minipage}
-  %\end{mdframed}
+  \lstinputlisting[language=fsharp,caption={fsharpi, #2},label=#1]{\src/#1.out}
 }
 
 \newcommand{\fsi}[2]{
@@ -193,7 +183,6 @@
 % Notes to self
 \newcommand{\jon}[1]{\footnote{\textbf{#1}}}
 %\renewcommand{\jon}[1]{}
-
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

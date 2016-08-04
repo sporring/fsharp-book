@@ -48,7 +48,7 @@ specialChar = "_"
 ident = (letter | "_") {letter | dDigit | specialChar}
 \end{lstlisting}
 %
-Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=ebnf]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=ebnf]{specialChar = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=ebnf]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=ebnf]{specialChar} category. 
+Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=ebnf]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=ebnf]{specialChar = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=ebnf]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=ebnf]{specialChar} category.
 Binding expressions to identifiers is done with the keyword \keyword{let}, using the following simplified syntax:
 %
 \begin{lstlisting}[language=ebnf]
@@ -66,7 +66,7 @@ expr = ...
   | expr; expr (* sequence of expression *)
   | ...
 \end{lstlisting}
-which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-value-defns, possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.}
+which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-value-defns, possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.} \jon{Spec-4.0 does not seem to mention the special identifier '_', which discards values in 'let' statements.} \jon{Mention special identifier '_', which means ignore.}
 
 \section{Values}
 Binding identifiers to literals or expressions that are evaluated to be values is called value binding, and examples are \lstinline!let a = 3.0! and \lstinline!let b = cos 0.9!. On EBNF the simplified syntax,
