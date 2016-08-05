@@ -1,7 +1,67 @@
 \chapter{Exceptions}
 \label{chap:exceptions}
-\section{Exception Handling}
-Exception handling allows programmers to catch and handle errors whenever an application enters an invalid state.
+Exceptions are runtime errors, which may be handled gracefully by F\#. Exceptions are handled by the \lstinline!try! keyword both in expressions and computation expressions,
+\begin{lstlisting}[language=ebnf]
+expr = ... 
+  | "try" expr "with" rules
+  | "try" expr "finally" expr
+  | ...
+comp-expr = ...
+  | "try" comp-expr "with" comp-rules
+  | "try" comp-expr "finally" expr
+  | ...
+\end{lstlisting}
+As an example is integer division by zero,
+%
+\fs{exceptionDivByZero}{A division by zero is caught and a default value is returned.}
+%
+
+%
+\fso{exceptionDivByZeroOptionType}{Option types can be used, when the value in case of exceptions is unclear.}
+%
+
+
+Exceptions are a basic-type called \lstinline!exn!, and F\# has a number of built-in, see Table~\ref{tab:exceptions}, and the user may construct new exceptions using the syntax,
+%
+\begin{lstlisting}[language=ebnf]
+exception-defn = [attributes] "exception" union-type-case-data [attributes] exception ident "=" long-ident
+\end{lstlisting}
+\begin{table}
+  \centering
+  \begin{tabularx}{\linewidth}{|l|X|}
+    \hline
+    Attribute & Description\\
+    \hline
+    \lstinline!System.ArithmeticException! & Failed arithmetic operation.\\
+   \hline
+    \lstinline!System.ArrayTypeMismatchException! & Failed attempt to store an element in an array failed because of type mismatch.\\
+   \hline
+    \lstinline!System.DivideByZeroException! & Failed due to division by zero.\\
+   \hline
+    \lstinline!System.IndexOutOfRangeException! & Failed to access an element in an array because the index is less than zero or equal or greater than the length of the array.\\
+   \hline
+    \lstinline!System.InvalidCastException! & Failed to explicitely convert a base type or interface to a derived type at run time.\\
+   \hline
+    \lstinline!System.NullReferenceException! & Failed use of a \lstinline!null! reference was used, since it required the referenced object.\\
+   \hline
+    \lstinline!System.OutOfMemoryException! & Failed to use \lstinline!new! to allocate memory.\\ 
+   \hline
+    \lstinline!System.OverflowException! & Failed arithmetic operation in a checked context which caused an overflow.\\
+   \hline
+    \lstinline!System.StackOverflowException ! & Failed use of the internal stack caused by too many pending method calls, e.g., from deep or unbounded recursion.\\
+   \hline
+    \lstinline!System.TypeInitializationException! & Failed initialization of code for a type, which was not caught.\\
+   \hline
+  \end{tabularx}
+  \caption{Built-in exceptions.}
+  \label{tab:exceptions}
+\end{table}
+
+Exceptions are raised with the keywords \keyword{failwith}, \keyword{invalidArg}, \keyword{raise}, and \keyword{reraise}
+
+%
+\fs{exceptionDefinition}{A user-defined exception is raised but not caught by outer construct.}
+%
 
 Remember
 \begin{itemize}
@@ -9,6 +69,8 @@ Remember
 \item Spec-4.0 Section 18.2.8
 \end{itemize}
 \dots 
+
+
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

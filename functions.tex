@@ -66,6 +66,7 @@ expr = ...
   | expr; expr (* sequence of expression *)
   | ...
 \end{lstlisting}
+%
 which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-value-defns, possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.} \jon{Spec-4.0 does not seem to mention the special identifier '\_', which discards values in 'let' statements.} \jon{Mention special identifier '\_', which means ignore.}
 
 \section{Values}
@@ -77,7 +78,7 @@ expr = ...
   | "let" valueDefn "in" expr  
   | ...
 \end{lstlisting}
-I.e., the \idx{\keyword{let}} keyword dictates that the identifier \lstinline[language=ebnf]!ident! is an alias of the expression \lstinline[language=ebnf]!expr!. The type may be specified with the \idx{\lexeme{:}} lexeme to type \lstinline[language=ebnf]!type!. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
+\jon{ident is really pat, see Spec-4.0 Chapter 7. Should we expand on this somewhere? E.g., ident ":" type is a pattern.}I.e., the \idx{\keyword{let}} keyword dictates that the identifier \lstinline[language=ebnf]!ident! is an alias of the expression \lstinline[language=ebnf]!expr!. The type may be specified with the \idx{\lexeme{:}} lexeme to type \lstinline[language=ebnf]!type!. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
 %
 \fs{letValue}{The identifier \lstinline!p! is used in the expression following the \keyword{in} keyword.}
 %

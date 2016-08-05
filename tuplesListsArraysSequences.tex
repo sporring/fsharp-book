@@ -34,7 +34,7 @@ expr = ...
   | ...
 \end{lstlisting}
 %
-\jon{Spec-4.0: grammar for list and array expressions are subsets of computation list and array expressions.}Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these data structures in detail.
+\jon{Spec-4.0: grammar for list and array expressions are subsets of computation list and array expressions.}\jon{pat is not explained, see Spec-4.0 Chapter 7.}Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these data structures in detail.
 
 \section{Tuples}
 \idx[tuple]{Tuples} are unions of immutable types, 
@@ -221,7 +221,7 @@ Array2D and higher have a number of built-in functions that will be discussed in
 \label{sec:sequences}
 Sequences are lists, where the elements are build as needed. Examples are\jon{Mono does not support specification Spec-4.0 Section 6.3.11, seq {comp-expr}, in the form seq {3} or seq {3; 4}.}
 %
-\fso{seqExample}{Creating sequences by range explicitely stating elements, a range expressions, a computation expression, and an infinite computation expression}
+\fso{seqExample}{Creating sequences by range explicitly stating elements, a range expressions, a computation expression, and an infinite computation expression}
 %
 Sequences are built using the following subset of the general syntax,
 \begin{lstlisting}[language=ebnf]
@@ -247,7 +247,7 @@ expr = ...
   | ...
 \end{lstlisting}
 %
-Sequence may be defined using simple range expressions but most often are defined as a small program, that generates values with the \keyword{yield} keyword or \keyword{yield!} keyword. The \keyword{yield!} is called \idx{yield bang}, and appends a sequence instead of adding a sequence as an element. Thus, \lstinline!seq {3; 5}! is not permitted, but \lstinline!seq {yield 3; yield 5}! and \lstinline|seq {yield! (seq {yield 3; yield 5})}| are, both creating \lstinline!seq<int> = seq [3; 5]!, i.e., a sequence of integers. Most often computation expressions are used to produced members that are not just ranges, but more complicated expressions of ranges, e.g., \lstinline!c! in the example. Sequences may even in principle be infinitely long, e.g., \lstinline!d!. Calculating the complete sequence at the point of definition is impossible due to lack of memory, as is accessing all its elements due to lack of time. But infinite sequences are still very useful, e.g., identifier \lstinline!d! illustrates the parametrization of a circle, which is an infinite domain, and any index will be converted to the equivalent 60'th degree angle in radians. Fsharp warns against recursive values, as defined in the example, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!.
+Sequence may be defined using simple range expressions but most often are defined as a small program, that generates values with the \keyword{yield} keyword or \keyword{yield!} keyword. The \keyword{yield!} is called \idx{yield bang}, and appends a sequence instead of adding a sequence as an element. Thus, \lstinline!seq {3; 5}! is not permitted, but \lstinline!seq {yield 3; yield 5}! and \lstinline|seq {yield! (seq {yield 3; yield 5})}| are, both creating \lstinline!seq<int> = seq [3; 5]!, i.e., a sequence of integers. Most often computation expressions are used to produced members that are not just ranges, but more complicated expressions of ranges, e.g., \lstinline!c! in the example. Sequences may even in principle be infinitely long, e.g., \lstinline!d!. Calculating the complete sequence at the point of definition is impossible due to lack of memory, as is accessing all its elements due to lack of time. But infinite sequences are still very useful, e.g., identifier \lstinline!d! illustrates the parametrization of a circle, which is an infinite domain, and any index will be converted to the equivalent 60th degree angle in radians. F\# warns against recursive values, as defined in the example, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!.
 
 Sequences are generalisations of lists and arrays, and functions taking sequences as argument may equally take lists and arrays as argument. Sequences do not have many built-in operators, but a rich collection of functions in the \lstinline!Collections.Seq!. E.g.,\idxss{Seq.item}\idxss{Seq.take}
 %
@@ -277,11 +277,11 @@ The only difference between computation expression's programming constructs and 
   % | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
   % | comp-expr ";" comp-expr
 
-Intinfite sequences is a useful concept in many programs and may be generated in a number of ways. E.g., to generate a repeated sequence, we could use recursive value definition, a computation expression, a recursive function, or the \lstinline!Seq! module. Using a recursive value definition,
+Infinite sequences is a useful concept in many programs and may be generated in a number of ways. E.g., to generate a repeated sequence, we could use recursive value definition, a computation expression, a recursive function, or the \lstinline!Seq! module. Using a recursive value definition,
 %
 \fs{seqInfinteValue2}{Recursive value definitions gives a warning.  Compare with Listing\ref{seqInfinteValue}, \ref{seqInfinteFunction}, and \ref{seqInitInfinite}.}
 %
-Fsharp warns against using recursive values, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!, but \advice{warnings are messages from the designers of F\# that your program is non-optimal, and you should avoid structures that throw warnings instead of relying on \lstinline{\#nowarn} and similar constructions.} Instead we may create an infinite loop using the \keyword{while}-\keyword{do} computation expression, as
+F\# warns against using recursive values, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!, but \advice{warnings are messages from the designers of F\# that your program is non-optimal, and you should avoid structures that throw warnings instead of relying on \lstinline{\#nowarn} and similar constructions.} Instead we may create an infinite loop using the \keyword{while}-\keyword{do} computation expression, as
 %
 \fs{seqInfinteValue}{Infinite value definition without recursion nor warning.  Compare with Listing~\ref{seqInfinteValue2}, \ref{seqInfinteFunction}, and\ref{seqInitInfinite}.}
 %
@@ -308,7 +308,7 @@ expr = ...
   | "[|" (.. | comp-expr | short-comp-expr | ...) "|]" (* array sequence expression *)
   | ...
 \end{lstlisting}
-which implicitely creates the corresponding expression and return the result as a list or array.
+which implicitly creates the corresponding expression and return the result as a list or array.
 
 % *****
 
