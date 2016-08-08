@@ -55,12 +55,18 @@ Binding expressions to identifiers is done with the keyword \keyword{let}, using
 arg = ident | "(" ident ":" type ")"
 argList = arg | arg argList
 identOrOp = ident | ( operatorName )
-valueDefn = ["mutable "] ident  [":" type] "=" expr
+pat = 
+  ident 
+  | "_"
+  | pat ":" type
+  | ...
+argumentPats = pat | pat argumentPats
+valueDefn = ["mutable "] pat "=" expr
 functionDefn = ident-or-op argList [":" type] "=" expr "
 expr = ... 
   | "let" valueDefn "in" expr  (* binding a value or variable *)
   | "let" functionDefn "in" expr (* binding a function or operator *)
-  | "fun" argList "->" expr (* a function as value *)
+  | "fun" argumentPats "->" expr (* a function as value *)
   | expr ":" type (* type annotation *)
   | "begin" expr "end" (* alternative block expression *)
   | expr; expr (* sequence of expression *)
@@ -73,12 +79,17 @@ which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-
 Binding identifiers to literals or expressions that are evaluated to be values is called value binding, and examples are \lstinline!let a = 3.0! and \lstinline!let b = cos 0.9!. On EBNF the simplified syntax,
 %
 \begin{lstlisting}[language=ebnf]
-valueDefn = ["mutable"] ident  [":" type] "=" expr
+pat = 
+  ident 
+  | "_"
+  | pat ":" type
+  | ...
+valueDefn = ["mutable"] pat "=" expr
 expr = ... 
   | "let" valueDefn "in" expr  
   | ...
 \end{lstlisting}
-\jon{ident is really pat, see Spec-4.0 Chapter 7. Should we expand on this somewhere? E.g., ident ":" type is a pattern.}I.e., the \idx{\keyword{let}} keyword dictates that the identifier \lstinline[language=ebnf]!ident! is an alias of the expression \lstinline[language=ebnf]!expr!. The type may be specified with the \idx{\lexeme{:}} lexeme to type \lstinline[language=ebnf]!type!. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
+The \keyword{let} bindings defines relations between patterns \lstinline[language=ebnf]!pat! and expressions \lstinline[language=ebnf]!expr! for many different purposes. Most often the pattern is an identifier\lstinline[language=ebnf]!ident!, which \idx{\keyword{let}} defines to be an alias of the expression \lstinline[language=ebnf]!expr!. The pattern may also be defined to have specific type using the \idx{\lexeme{:}} lexeme and a named \lstinline[language=ebnf]!type!. The \lexeme{\_} pattern is called the \idx{wild card} pattern and, when it is in the value binding, then the expression is evaluated but the result is discarded. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
 %
 \fs{letValue}{The identifier \lstinline!p! is used in the expression following the \keyword{in} keyword.}
 %
@@ -161,8 +172,10 @@ arg = ident | "(" ident ":" type ")"
 argList = arg | arg argList
 identOrOp = ident | ( operatorName )
 functionDefn = identOrOp argList [":" type] "=" expr
+argumentPats = pat | pat argumentPats
 expr = ... 
   | "let" functionDefn "in" expr (* binding a function or operator *) 
+  | "fun" argumentPats "->" expr (* a function as value *)
   | ...
 \end{lstlisting}
 Functions may also be recursive, which will be discussed in Chapter~\ref{chap:flow}. An example in interactive mode is,
@@ -233,8 +246,6 @@ In F\# this is automatically given the unit type as return value. Procedural thi
 %\fse{mutableAssignReturnSideEffectStump}{}
 which also does not have a return value. Procedural thinking is useful for encapsulation, but is prone to side-effects and should be minimized by being replaced by functional thinking.
 
-\jon{Remember examples of return of functions, no arguments \texttt{()}, and wildcard patterns as arguments \texttt{\_}.}
-
 \section{User-defined operators}
 \label{sec:operators}
 Operators are functions, e.g., the infix multiplication operator \lstinline!+! is equivalent to the function \lstinline!(+)!, e.g.,
@@ -247,7 +258,8 @@ infixOrPrefixOp := "+" | "-" | "+. " | "-. " | "%" | "&" | "&&"
 tildes = "~" | "~" tildes
 prefixOp = infixOrPrefixOp | tildes | (! {opChar} - "!=")
 dots = "." | "." dots
-infixOp = 
+opChar = "!" | "%" | "&" | "*" | "+" | "-" | ". " | "/" | "<" | "=" | ">" | "@" | "^" | "|" | "~" 
+ infixOp = 
   {dots} (
     infixOrPrefixOp  
     | "-" {opChar} 
@@ -265,7 +277,6 @@ infixOp =
     | "!=" )
   | ":=" | "::" | "$" | "?"
 \end{lstlisting}
-%opChar = "!" | "%" | "&" | "*" | "+" | "-" | ". " | "/" | "<" | "=" | ">" | "@" | "^" | "|" | "~" 
 %op = opChar {opChar}
 %identOrOp = ident | "(" op ")"
 %$

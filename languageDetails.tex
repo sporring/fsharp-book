@@ -1,5 +1,207 @@
 \chapter{Language Details}
 
+Minimal F\# used in Part~\ref{part:basics}
+\begin{lstlisting}[language=ebnf]
+(*Whitespace*)
+whitespace = ' ' {' '}
+newline = '\n' | '\r' '\n'
+ 
+(*Literal digits*)
+dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+bDigit = "0" | "1"
+oDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7"
+xDigit =  
+  "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+  | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f" 
+
+(*Literal integers*)
+int = dInt | xint
+sbyte = (dInt | xInt) "y"
+byte = (dInt | xInt) "uy"
+int32 = (dInt | xInt) ["l"]
+uint32 = (dInt | xInt) ("u" | "ul")
+ 
+dInt = dDigit {dDigit}
+bitInt = "0" ("b" | "B") bDigit {bDigit}
+octInt = "0" ("o" | "O") oDigit {oDigit}
+hexInt = "0" ("x" | "X") xDigit {xDigit}
+xint = bitInt | octInt | hexInt
+
+(*Literal floats*)
+float = dFloat | sFloat
+dFloat = dInt "." {dDigit}
+sFloat = (dInt | dFloat) ("e" | "E" ) ["+" | "-"] dInt
+ieee64 = float | xInt "LF"
+
+(*Literal chars*)
+char = "'" codePoint | escapeChar "'" (*codePoint is any unicode codepoint*)
+escapeChar = 
+  "\" ("b" | "n" | "r" | "t" | "\" | '"' | "'" | "a" | "f" | "v")
+  | "\u" xDigit xDigit xDigit xDigit
+  | "\U" xDigit xDigit xDigit xDigit xDigit xDigit xDigit xDigit
+  | "\" dDigit dDigit dDigit 
+
+(*Literal strings*)
+string = '"' { stringChar }  '"' 
+stringChar = char - '"'
+verbatimString = '@"' {(char - ('"' | '\"' )) | '""'} '"'
+
+(*Constants*)
+const :=
+  byte
+  | sbyte
+  | int32
+  | uint32 
+  | int
+  | ieee64 
+  | char
+  | string
+  | verbatimString
+  | "false"
+  | "true"
+  | "()"
+
+(*Operators*)
+infixOrPrefixOp := "+" | "-" | "+." | "-." | "%" | "&" | "&&"
+prefixOp = infixOrPrefixOp | "~" {"~"} | "!" {opChar} - "!="
+infixOp = 
+  {"."} (
+    infixOrPrefixOp  
+    | "-" {opChar} 
+    | "+" {opChar} 
+    | "||" 
+    | "<" {opChar} 
+    | ">" {opChar} 
+    | "="  
+    | " |" {opChar} 
+    | "&" {opChar} 
+    | "^" {opChar} 
+    | "*" {opChar} 
+    | "/" {opChar} 
+    | "%" {opChar} 
+    | "!=" )
+  | ":=" | "::" | "$" | "?" (*$*)
+opChar = 
+  "!" | "%" | "&" | "*" | "+" | "-" | ". " | "/" 
+  | "<" | "=" | ">" | "@" | "^" | "|" | "~" 
+
+(*Identifiers*)
+ident = (letter | specialChar) {letter | dDigit | specialChar}
+letter = 
+  "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" 
+  | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "X" | "Y" |  "Z" 
+  | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" 
+  | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "x" | "y" | "z"
+specialChar = "_"
+
+longIdent = ident | ident '.' longIdent (*no space around '.'*)
+longIdentOrOp = [longIdent '.'] identOrOp (*no space around '.'*)
+identOrOp = 
+  ident
+  | "(" infixOp | prefixOp ")" 
+  | "(*)"
+
+(*Keywords*)
+identKeyword =
+  "abstract" | "and" | "as" | "assert" | "base" | "begin" | "class" | "default" 
+  | "delegate" | "do" | "done" | "downcast" | "downto" | "elif" | "else" | "end" 
+  | "exception" | "extern" | "false" | "finally" | "for" | "fun" | "function" 
+  | "global" | "if" | "in" | "inherit" | "inline" | "interface" | "internal" 
+  | "lazy" | "let" | "match" | "member" | "module" | "mutable" 
+  | "namespace" | "new" | "null" | "of" | "open" | "or" | "override" | "private"
+  | "public" | "rec" | "return" | "sig" | "static" | "struct" | "then" | "to"
+  | "true" | "try" | "type" | "upcast" | "use" | "val" | "void" | "when" 
+  | "while" | "with" | "yield"
+
+reservedIdentKeyword = 
+  "atomic" | "break" | "checked" | "component" | "const" | "constraint" 
+  | "constructor" | "continue" | "eager" | "fixed" | "fori" | "functor" 
+  | "include" "measure" | "method" | "mixin" | "object" | "parallel" 
+  | "params" | "process" | "protected" | "pure" | "recursive" | "sealed" 
+  | "tailcall" | "trait" | "virtual" | "volatile"
+
+reservedIdentFormats = ident ( '!' | '#')
+
+(*Symbolic Keywords*)
+symbolicKeyword = 
+  "let!" | "use!" | "do!" | "yield!" | "return!" | "|" | "->" | "<-" | "." | ":" 
+  | "(" | ")" | "[" | "]" | "[<" | ">]" | "[|" | "|]" | "{" | "}" | "'" | "#" 
+  | ":?>" | ":?" | ":>" | ".." | "::" | ":=" | ";;" | ";" | "=" | "_" | "?" 
+  | "??" | "(*)" | "<@" | "@>" | "<@@" | "@@>"
+reservedSymbolicSequence =  "~" | "'"
+
+(*Comments*)
+blockComment = "(*" {codePoint} "*)" (*codePoint is any unicode codepoint*)
+lineComment = "//" {codePoint - newline} newline
+
+(*Expressions*)
+expr = 
+  | const (*a const value*)
+  | "(" expr ")" (*block*)
+  | longidentOrOp (*identifier or operator*)
+  | expr '.' longIdentOrOp (*dot lookup expression, no space around '.'*)
+  | expr expr (*application*)
+  | expr infixOp expr (*infix application*)
+  | prefixOp expr (*prefix application*)
+  | expr ".[" expr "]" (*index lookup, no space before '.'*)
+  | expr ".[" sliceRange "]" (*index lookup, no space before '.'*)
+  | expr "<-" expr (*assingment*)
+  | exprTuple (*tuple*)
+  | "[" (exprSeq | rangeExpr) "]" (*list*)
+  | "[|" (exprSeq | rangeExpr) "|]" (*array*)
+  | expr ":" type (*type annotation*)
+  | expr; expr (*sequence of expressions*)
+  | "let" valueDefn "in" expr (*binding a value or variable*)
+  | "let" ["rec"] functionDefn "in" expr (*binding a function or operator*)
+  | "if" expr "then" expr {"elif" expr "then" expr} ["else" expr] (*conditional*)
+  | "while" expr "do" expr ["done"] (*while*)
+
+exprTuple = expr | expr "," exprTuple
+exprSeq =  expr | expr ";" exprSeq
+rangeExpr = expr ".." expr [".." expr]
+sliceRange = 
+  expr 
+  | expr ".." (*no space between expr and ".."*)
+  | ".." expr (*no space between expr and ".."*)
+  | expr ".." expr (*no space between expr and ".."*)
+  | '*'
+
+(*Types*)
+type =
+  | longIdent (*named such as "int"*)
+  | "(" type ")" (*paranthesized*)
+  | type "->" type (*function*)
+  | typeTuple (*tuple*)
+  | typar (*variable*)
+  | type longIdent (*named such as "int list"*)
+  | type "[" typeArray "]" (*array, no spaces*)
+typeTuple = type | type "*" typeTuple
+typeArray = "," | "," typeArray
+
+(*Patterns*)
+pat = 
+  const (*constant*)
+  | "_" (*wildcard*)
+  | ident (*named*)
+  | pat ":" type (*type constraint*)
+  | "(" pat ")" (*paranthesized*)
+  | patTuple (*tuple*)
+  | patList (*list*)
+  | patArray (*array*)
+
+patTuple = pat | pat "," patTuple
+patList := "[" [patSeq] "]"
+patArray := "[|" [patSeq] "|]"
+patSeq = pat | pat ";" patSeq
+
+(*Value bindings*)
+valueDefn = ["mutable"] pat "=" expr
+
+(*Function bindings*)
+functionDefn = identOrOp argumentPats [":" type] "=" expr
+argumentPats = pat | pat argumentPats
+\end{lstlisting}
+
 \begin{table}
   \centering
   \begin{tabularx}{\linewidth}{|>{\hsize=1\hsize\raggedright\arraybackslash}X|>{\hsize=.5\hsize}X|>{\hsize=1.5\hsize}X|}

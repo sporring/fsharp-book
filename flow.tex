@@ -2,7 +2,7 @@
 \label{chap:flow}
 Non-recursive functions encapsulates code and allows for some control of flow, that is, if there is a piece of code, which we need to to have executed many times, then we can encapsulate it in the body of a function, and then call the function several times. In this chapter, we will look at more general control of flow via loops, conditional execution, and recursion, and therefore we look at further extension of the \lstinline[language=ebnf]!expr! rule,
 \begin{lstlisting}[language=ebnf]
-pat = const | ...
+pat = ... | ident | ...
 guard = "when" expr
 rule = pat [guard] -> expr
 rules = "|" rule | "|" rule rules (* first "|'' is optional' *)
