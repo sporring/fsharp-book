@@ -193,6 +193,7 @@ pat =
   const (*constant*)
   | "_" (*wildcard*)
   | ident (*named*)
+  | pat "::" pat (*construction*)
   | pat ":" type (*type constraint*)
   | "(" pat ")" (*paranthesized*)
   | patTuple (*tuple*)
