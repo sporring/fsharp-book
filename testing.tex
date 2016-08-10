@@ -165,7 +165,265 @@ After the black-box testing has failed to find errors in the program, we have so
   December 19, 1991; ISO/IEC 9126, international standard for the evaluation of software quality, replaced by ISO/IEC 25010:2011. Not publicly available, \footnote{A review of the ISO/IEC 9126 is given in \url{http://www.sqa.net/iso9126.html}. A brief review of ISO/IEC 25010:2011 is given in }
 \end{comment}
 
-\jon{Possibly add examples of debugging.}
+\section{Debugging by tracing}
+Once an error has been found by testing, then the \idx{debugging} phase starts. The cause of a bug can either be that the algorithm chosen is the wrong one for the job, or the implementation of it has an error. In the debugging process, we have to keep an open mind, and not rely on assumptions, since assumptions tend to blind the reader of a text. A frequent source of errors is that the state of a program is different, than expected, e.g., because the calculation performed is different than intended, or that the return of a library function is different than expected. The most important tool for debugging is simplification. This is similar to white-box testing, but where the units tested are very small. E.g., the suspected piece of code could be broken down into smaller functions or code snippets, which is given well-defined input, and, e.g., use \lstinline!printfn! statements to obtain the output of the code snippet. Another related technique is to use \idx{mockup code}, which replaces parts of the code with code, that produces safe and relevant results. If the bug is not obvious then more rigorous techniques must be used such as \idx{tracing}. Some development interfaces has built-in tracing system, e.g., \lstinline[language=console]{fsharpi} will print inferred types and some binding values. However, often a source of a bug is due to a misunderstanding of the flow of data trough a program execution, and we will in the following introduce \idx{hand tracing} a technique to simulate the execution of a program by hand.
+
+Consider the program,
+%
+\lstinputlisting[language=fsharp,label=gcd,numbers=left,caption={The greatest common divisor of 2 integers.},escapechar=|]{\src/gcd.fsx}
+%
+which includes a function for calculating the greatest common divisor of 2 integers, and calls this function with the numbers 10 and 15. Hand tracing this program means that we simulate its execution and as part of that keep track of the bindings, assignments and input and output of the program. To do this, we need to consider code snippet's \idx{environment}. E.g., to hand trace the above program, we start by noting the outer environment, called $E_0$ for short. In line~\ref{gcd:gcd}, then the \lstinline!gcd! identifier is bound to a function, hence we write:
+\begin{align*}
+  E_0:&\\
+  & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)
+\end{align*}
+Function bindings like this one is noted as a closure, which is the triplet $\big(\text{arguments}, \text{expression}, \text{environment}\big)$. The closure is everything needed for the expression to be calculated. Here we wrote $\text{gcd-body}$ to denote everything after the equal sign in the function binding. Next F\# executes line~\ref{gcd:a} and~\ref{gcd:b}, and we update our environment to reflect the bindings as, 
+\begin{align*}
+  E_0:&\\
+  & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)\\
+  & a \rightarrow 10\\
+  & b \rightarrow 15
+\end{align*}
+In line~\ref{gcd:printfn} the function is evaluated. This initiates a new environment $E_1$, and we update our trace as,
+\begin{align*}
+  E_0:&\\
+      & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)\\
+      & a \rightarrow 10\\
+      & b \rightarrow 15\\
+      & \text{line~\ref{gcd:printfn}: gcd a b} \rightarrow \text{?}\\
+  E_1:& \big((a \rightarrow 10, b \rightarrow 15), \text{gcd-body}, \varnothing\big)\\
+\end{align*}
+where the new environment is noted to have gotten its argument names \lstinline!a! and \lstinline!b! bound to the values \lstinline!10! and \lstinline!15! respectively, and where the return of the function to environment $E_0$ is yet unknown, so it is noted as a question mark. In line~\ref{gcd:if} the comparison \lstinline!a < b! is checked, and since we are in environment $E_1$ then this is the same as checking \lstinline!10 < 15!, which is true so the program executes line~\ref{gcd:gcdR1}. Hence, we initiate a new environment $E_2$ and update our trace as,
+\begin{align*}
+  E_0:&\\
+      & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)\\
+      & a \rightarrow 10\\
+      & b \rightarrow 15\\
+      & \text{line~\ref{gcd:printfn}: gcd a b} \rightarrow \text{?}\\
+  E_1:& \big((a \rightarrow 10, b \rightarrow 15), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR1}: gcd b a} \rightarrow \text{?}\\
+  E_2:& \big((a \rightarrow 15, b \rightarrow 10), \text{gcd-body}, \varnothing\big)\\
+\end{align*}
+where in the new environment \lstinline!a! and \lstinline!b! bound to the values \lstinline!15! and \lstinline!10! respectively. In $E_2$, \lstinline!10 < 15! is false, so the program evaluates \lstinline!b > 0!, which is true, hence line~\ref{gcd:gcdR2} is executed. This calls \lstinline!gcd! once again, but with new arguments, and \lstinline{a % b} is parenthesized, then it is evaluated before \lstinline!gcd! is called. Hence, we update our trace as,
+\begin{align*}
+  E_0:&\\
+      & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)\\
+      & a \rightarrow 10\\
+      & b \rightarrow 15\\
+      & \text{line~\ref{gcd:printfn}: gcd a b} \rightarrow \text{?}\\
+  E_1:& \big((a \rightarrow 10, b \rightarrow 15), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR1}: gcd b a} \rightarrow \text{?}\\
+  E_2:& \big((a \rightarrow 15, b \rightarrow 10), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 5\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \text{?}\\
+  E_3:& \big((a \rightarrow 10, b \rightarrow 5), \text{gcd-body}, \varnothing\big)\\
+\end{align*}
+Again we fall through to line~\ref{gcd:gcdR2}, evaluate the remainder operator and initiates a new environment,
+\begin{align*}
+  E_0:&\\
+      & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)\\
+      & a \rightarrow 10\\
+      & b \rightarrow 15\\
+      & \text{line~\ref{gcd:printfn}: gcd a b} \rightarrow \text{?}\\
+  E_1:& \big((a \rightarrow 10, b \rightarrow 15), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR1}: gcd b a} \rightarrow \text{?}\\
+  E_2:& \big((a \rightarrow 15, b \rightarrow 10), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 5\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \text{?}\\
+  E_3:& \big((a \rightarrow 10, b \rightarrow 5), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 0\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \text{?}\\
+  E_4:& \big((a \rightarrow 5, b \rightarrow 0), \text{gcd-body}, \varnothing\big)\\
+\end{align*}
+This time both \lstinline!a < b! and \lstinline!b > 0! are false, so we fall through to line~\ref{gcd:return}, and \lstinline!gcd! from $E_4$ returns its value of \lstinline!a!, which is \lstinline!5!, so we scratch $E_4$ and change the question markin in $E_3$ to \lstinline!5!:
+\begin{align*}
+  E_0:&\\
+      & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)\\
+      & a \rightarrow 10\\
+      & b \rightarrow 15\\
+      & \text{line~\ref{gcd:printfn}: gcd a b} \rightarrow \text{?}\\
+  E_1:& \big((a \rightarrow 10, b \rightarrow 15), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR1}: gcd b a} \rightarrow \text{?}\\
+  E_2:& \big((a \rightarrow 15, b \rightarrow 10), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 5\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \text{?}\\
+  E_3:& \big((a \rightarrow 10, b \rightarrow 5), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 0\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_4}:& \big((a \rightarrow 5, b \rightarrow 0), \text{gcd-body}, \varnothing\big)\\
+\end{align*}
+Now line~\ref{gcd:gcdR2} in $E_3$ is also a return point of \lstinline!gcd!, hence we scratch $E_3$ and change the question mark in $E_2$ to 5,
+\begin{align*}
+  E_0:&\\
+      & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)\\
+      & a \rightarrow 10\\
+      & b \rightarrow 15\\
+      & \text{line~\ref{gcd:printfn}: gcd a b} \rightarrow \text{?}\\
+  E_1:& \big((a \rightarrow 10, b \rightarrow 15), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR1}: gcd b a} \rightarrow \text{?}\\
+  E_2:& \big((a \rightarrow 15, b \rightarrow 10), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 5\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_3}:& \big((a \rightarrow 10, b \rightarrow 5), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 0\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_4}:& \big((a \rightarrow 5, b \rightarrow 0), \text{gcd-body}, \varnothing\big)\\
+\end{align*}
+and likewise for $E_2$ and $E_1$:
+\begin{align*}
+  E_0:&\\
+      & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)\\
+      & a \rightarrow 10\\
+      & b \rightarrow 15\\
+      & \text{line~\ref{gcd:printfn}: gcd a b} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_1}:& \big((a \rightarrow 10, b \rightarrow 15), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR1}: gcd b a} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_2}:& \big((a \rightarrow 15, b \rightarrow 10), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 5\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_3}:& \big((a \rightarrow 10, b \rightarrow 5), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 0\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_4}:& \big((a \rightarrow 5, b \rightarrow 0), \text{gcd-body}, \varnothing\big)\\
+\end{align*}
+Now we are able to continue the program in environment $E_0$ with the \lstinline!printfn! statement, and we write:
+\begin{align*}
+  E_0:&\\
+      & \text{gcd} \rightarrow \big((a, b), \text{gcd-body}, \varnothing\big)\\
+      & a \rightarrow 10\\
+      & b \rightarrow 15\\
+      & \text{line~\ref{gcd:printfn}: gcd a b} \rightarrow \bcancel{\text{?}}\; 5\\
+      & \text{line~\ref{gcd:printfn}: stdout} \rightarrow \text{"gcd 10 15 = 5"}\\
+  \bcancel{E_1}:& \big((a \rightarrow 10, b \rightarrow 15), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR1}: gcd b a} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_2}:& \big((a \rightarrow 15, b \rightarrow 10), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 5\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_3}:& \big((a \rightarrow 10, b \rightarrow 5), \text{gcd-body}, \varnothing\big)\\
+      & \text{line~\ref{gcd:gcdR2}: a \% b} \rightarrow 0\\
+      & \text{line~\ref{gcd:gcdR2}: gcd b (a \% b)} \rightarrow \bcancel{\text{?}}\; 5\\
+  \bcancel{E_4}:& \big((a \rightarrow 5, b \rightarrow 0), \text{gcd-body}, \varnothing\big)\\
+\end{align*}
+which completes the hand tracing of \lstinline[language=console]{gcd.fsx}.
+
+F\# uses lexical scope, which implies that besides function arguments, we also at times need to consider the environment at place of writing. E.g., for the program
+%
+\lstinputlisting[language=fsharp,label=lexicalScopeTracing,numbers=left,caption={Example of lexical scope and closure environment.},escapechar=|]{\src/lexicalScopeTracing.fsx}
+%
+To hand trace this, we start by creating the outer environment, define the closure for \lstinline!testScope!, and reach line~\ref{lexicalScopeTracing:print},
+\begin{align*}
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \text{?}\\
+\end{align*}
+We create new environment for \lstinline!testScope! and note the bindings,
+\begin{align*}
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \text{?}\\
+  E_1: & \big(x\rightarrow 2.0, \text{testScope-body}, \varnothing\big)\\
+      & a \rightarrow 3.0\\
+      & \text{f} \rightarrow \big(z, \text{a * x}, (a \rightarrow 3.0)\big)\\
+      & a \rightarrow 4.0
+\end{align*}
+Since we are working with lexical scope, then \lstinline!a! is noted twice, and its interpretation is by lexical order. Hence, the environment for the closure of \lstinline!f! is everything above in $E_1$, so we add $a \rightarrow 3.0$ and $x \rightarrow 2.0$. In line~\ref{lexicalScopeTracing:return} \lstinline!f! is called, so we create an environment based on its closure,
+\begin{align*}
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \text{?}\\
+  E_1: & \big(x\rightarrow 2.0, \text{testScope-body}, \varnothing\big)\\
+      & a \rightarrow 3.0\\
+      & \text{f} \rightarrow \big(z, \text{a * x}, (a \rightarrow 3.0, x\rightarrow 2.0)\big)\\
+      & a \rightarrow 4.0 \\
+      & \text{line~\ref{lexicalScopeTracing:return}: f x} \rightarrow \text{?}\\
+  E_2: & \big(z \rightarrow 10.0, \text{a * x}, (a \rightarrow 3.0, x\rightarrow 2.0\big)\\
+\end{align*}
+The expression in the environment $E_2$ evaluates to \lstinline!6.0!, and unravelling the scopes we get,
+\begin{align*}
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \bcancel{\text{?}}\; 6.0\\
+      & \text{line~\ref{lexicalScopeTracing:print}: stdout} \rightarrow \text{"6.0"}\\
+  \bcancel{E_1}: & \big(x\rightarrow 2.0, \text{testScope-body}, \varnothing\big)\\
+      & a \rightarrow 3.0\\
+      & \text{f} \rightarrow \big(z, \text{a * x}, (a \rightarrow 3.0, x\rightarrow 2.0)\big)\\
+      & a \rightarrow 4.0 \\
+      & \text{line~\ref{lexicalScopeTracing:return}: f x} \rightarrow \bcancel{\text{?}}\; 6.0\\
+  \bcancel{E_2}: & \big(z \rightarrow 10.0, \text{a * x}, (a \rightarrow 3.0, x\rightarrow 2.0\big)\\
+\end{align*}
+
+For mutable bindings, i.e., variables, the scope is dynamic. For this we need the concept of storage, i.e., for the the program
+%
+\lstinputlisting[language=fsharp,label=dynamicScopeTracing,numbers=left,caption={Example of dynamic scope and closure environment.},escapechar=|]{\src/dynamicScopeTracing.fsx}
+%
+We add a storage area to our hand tracing, e.g.,line~\ref{dynamicScopeTracing:print},
+\begin{align*}
+  \text{Store}: &\\
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \text{?}\\
+\end{align*}
+So when we generate environment $E_1$, the mutable binding is to a storage location,
+\begin{align*}
+  \text{Store}: &\\
+  & \alpha_1 \rightarrow 3.0\\
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \text{?}\\
+  E_1: & \big(x\rightarrow 2.0, \text{testScope-body}, \varnothing\big)\\
+      & a \rightarrow \alpha_1\\
+\end{align*}
+which is assigned the value \lstinline!3.0! at the definition of \lstinline!a!. Now the definition of \lstinline!f! is uses the storage location
+\begin{align*}
+  \text{Store}: &\\
+  & \alpha_1 \rightarrow 3.0\\
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \text{?}\\
+  E_1: & \big(x\rightarrow 2.0, \text{testScope-body}, \varnothing\big)\\
+      & a \rightarrow \alpha_1\\
+      & \text{f} \rightarrow \big(z, \text{a * x}, (a \rightarrow \alpha_1, x\rightarrow 2.0)\big)\\
+\end{align*}
+and in line~\ref{dynamicScopeTracing:a2} it is the value in the storage, which is updated,
+\begin{align*}
+  \text{Store}: &\\
+  & \alpha_1 \rightarrow \bcancel{3.0}\; 4.0\\
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \text{?}\\
+  E_1: & \big(x\rightarrow 2.0, \text{testScope-body}, \varnothing\big)\\
+      & a \rightarrow \alpha_1\\
+      & \text{f} \rightarrow \big(z, \text{a * x}, (a \rightarrow \alpha_1, x\rightarrow 2.0)\big)\\
+\end{align*}
+Hence,
+\begin{align*}
+  \text{Store}: &\\
+  & \alpha_1 \rightarrow \bcancel{3.0}\; 4.0\\
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \text{?}\\
+  E_1: & \big(x\rightarrow 2.0, \text{testScope-body}, \varnothing\big)\\
+      & a \rightarrow \alpha_1\\
+      & \text{f} \rightarrow \big(z, \text{a * x}, (a \rightarrow \alpha_1, x\rightarrow 2.0)\big)\\
+      & \text{line~\ref{lexicalScopeTracing:return}: f x} \rightarrow \text{?}\\
+  E_2: & \big(z \rightarrow 10.0, \text{a * x}, (a \rightarrow \alpha_1, x\rightarrow 2.0\big)\\
+\end{align*}
+and the return value from \lstinline!f! evaluated in environment $E_2$ now reads the value \lstinline!4.0! for \lstinline!a! and returns \lstinline!8.0!. Hence,
+\begin{align*}
+  \text{Store}: &\\
+  & \alpha_1 \rightarrow \bcancel{3.0}\; 4.0\\
+  E_0:&\\
+      &\text{testScope} \rightarrow \big(x, \text{testScope-body}, \varnothing\big)\\
+      & \text{line~\ref{lexicalScopeTracing:print}: testScope 2.0} \rightarrow \bcancel{\text{?}}\; 8.0\\
+      & \text{line~\ref{lexicalScopeTracing:print}: stdout} \rightarrow \text{"8.0"}\\
+  \bcancel{E_1}: & \big(x\rightarrow 2.0, \text{testScope-body}, \varnothing\big)\\
+      & a \rightarrow \alpha_1\\
+      & \text{f} \rightarrow \big(z, \text{a * x}, (a \rightarrow \alpha_1, x\rightarrow 2.0)\big)\\
+      & \text{line~\ref{lexicalScopeTracing:return}: f x} \rightarrow \bcancel{\text{?}}\; 8.0\\
+  \bcancel{E_2}: & \big(z \rightarrow 10.0, \text{a * x}, (a \rightarrow \alpha_1, x\rightarrow 2.0\big)\\
+\end{align*}
+
+As can be seen by the above examples, hand tracing can be used to in detail study the flow of data through a program. It may seem tedious in the beginning, but the care illustrated above is useful at start to ensure rigor in the analysis. Most will find, that once accustomed to the method, the analysis can be performed rigorously but with less paperwork, and in conjunction with strategically placed debugging \lstinline!printfn! statements, it is a very valuable tool for debugging.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
