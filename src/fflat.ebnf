@@ -1,15 +1,15 @@
 (*Special characters*)
-codePoint =;  (*Any unicode codepoint*)
-Lu =; (*Upper case letters*)
-Ll =; (*Lower case letters*)
-Lt =; (*Digraphic letters, with first part uppercase*)
-Lm =; (*Modifier letters*)
-Lo =; (*Gender ordinal indicators*)
-Nl =; (*Letterlike numeric characters*)
-Pc =; (*Low lines*)
-Mn =; (*Nonspacing combining marks*)
-Mc =; (*Spacing combining marks*)
-Cf =; (*Soft Hyphens*)
+codePoint = ?Any unicode codepoint?;
+Lu = ?Upper case letters?;
+Ll = ?Lower case letters?;
+Lt = ?Digraphic letters, with first part uppercase?;
+Lm = ?Modifier letters?;
+Lo = ?Gender ordinal indicators?;
+Nl = ?Letterlike numeric characters?;
+Pc = ?Low lines?;
+Mn = ?Nonspacing combining marks?;
+Mc = ?Spacing combining marks?;
+Cf = ?Soft Hyphens?;
 
 (*Whitespace*)
 whitespace = " " {" "};
