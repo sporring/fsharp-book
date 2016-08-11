@@ -200,7 +200,8 @@ pat =
   | "(" pat ")" (*paranthesized*)
   | patTuple (*tuple*)
   | patList (*list*)
-  | patArray; (*array*)
+  | patArray (*array*)
+  | ":?" type; (*dynamic type test*)
 patTuple = pat | pat "," patTuple;
 patList = "[" [patSeq] "]";
 patArray = "[|" [patSeq] "|]";
