@@ -11,9 +11,7 @@ expr = ...
   | "for" var "=" expr "to" expr "do" expr ["done"] (* simple for expression *)
   | "while" expr "do" expr ["done"] (* while expression *)
   | "if" expr "then" expr {"elif" expr "then" expr} ["else" expr (*  conditional expression *)]
-  | "match" expr "with" rules (* match expression *)
-  | "function" rules (* matching function expression *)
-  | "let" rec functionOrValueDefns (* recursive definition *)
+  | "let" ["rec"] functionDefn "in" expr (*binding a function or operator*)
   | ...
 \end{lstlisting}
 
@@ -122,35 +120,6 @@ To solve this problem, consider odd numbers: They all have the property, that th
 % where the integers 0--2 are converted to characters, and integers outside this domain is converted to the nearest equivalent number. This construction is so common that a short-hand notation exists, and we may equivalently have written,
 % \fs{flowIfThenElseNestedShort}{}
 
-\section{Pattern matching}
-Conditional expressions are so common that a short-hand notation called \idx{pattern matching} is available in F\#. For the 
-Consider the task,
-\begin{problem}
-  Write a function that given $n$ writes the sentence, ``I have n apple(s)'', where the plural 's' is added appropriately.
-\end{problem}
-For this we need to test on $n$'s size, and one option is to use conditional expressions like,
-%
-\fs{matchWith}{Using the \keyword{match}-keyword{with} programming construct to vary calculation based on the input value.}
-%
-Here the \idx{\keyword{match}}-\idx{\keyword{with}} keywords starts a sequence of conditions separated by the \lexeme{|} lexeme, where the default operator is the \lexeme{=} comparison operator, but where others can be used with the \idx{\keyword{when}}. The syntax of \keyword{match} expressions is,
-\begin{lstlisting}[language=ebnf]
-pat = const | "_" | ...
-guard = "when" expr
-rule = pat [guard] -> expr
-rules = "|" rule | "|" rule rules (* first "|'' is optional' *)
-expr = ... 
-  | "match" expr "with" rules (* match expression *)
-  | "function" rules (* matching function expression *)
-  | ...
-\end{lstlisting}
-As for conditional expressions, the rules are treated sequentially from first to last, and the expression following the first rule with a true condition is the the result of the entire expression. The rules are versatile in their possible expression, e.g., the line \lstinline!| 1 -> "I have no apples"! is equivalent to \lstinline!elif n < 1 then "I have no apples"|, and the \lstinline!| \_ -> "I have " + (string n) + " apples"!, matches the \lstinline!else "I have " + (string n) + " apples"!, since the \lexeme{_} lexeme is a wildcard pattern matching anything. Finally, the first rule is a guarded rule indicated by the \keyword{when} keyword, \lstinline!i when i < 0 -> "I owe " + (string -i) + " apples"!. It uses the optional disregard of the \lexeme{|} lexeme and is equivalent to \lstinline!if n < 0 then "I owe " + (string -n) + " apples"!. Guarded rules can be any rules, and here we used the identifier \lstinline!i! meaning \lstinline!let i = n in if i < 0 then ...!, i.e., \lstinline!n! is renamed. One way to think of guarded expressions is that \lstinline!i when i < 0! is a set, and the condition is on \lstinline!n! being part of the set or not. 
-
-Using lightweight syntax, the rules may be put on separate lines but must start in the column, where the \keyword{match} starts or greater.\jon{Spec-4.0 weirdness: Offside rule for match is different for function.} Match with can only take one identifier, but this can be tuples for matching with combinations of identifiers, see Chapter~\ref{chap:lists} for more on tuples. A \keyword{match} expression is general but is most often seen as the initial part of a function definition. This is so common, that F\# has a special syntax integrating function definitions and match with expressions using the \idx{\keyword{function}} keyword,
-%
-\fs{functionKeyword}{Function definition and \keyword{match} expressions are integrated using the \keyword{function} keyword. Compare with Listing~\ref{matchWith}}
-%
-Comparing with Listing~\ref{matchWith} notice that the function definition does not explicitly name an argument but assumes one, following the \keyword{function} follows immediately the rules, and the wildcard pattern \lexeme{_} is replaced with an identifier without any guards, which thus matches everything. Replacing the wildcard pattern with a name has the advantage that this name can be used locally in the expression belonging to this rule, i.e., it acts as a \lstinline!let n = ! on the implicit argument of the function. Implicit arguments makes the code hard to read and, thus \advice{the use of function definitions with the keyword \keyword{function} should be avoided.}\jon{Should we extend this with a more detail description of possiblities from Spec-4.0 Chapter 7?}
-
 \section{Recursive functions}
 Recursion is a central concept in F\#. A \idx{recursive function} is a function, which calls itself. From a compiler point of view, this is challenging, since the function is used before the compiler has completed its analysis. However, this there is a technical solution for, and we will just concern ourselves with the logics of using recursion for programming. An example of a recursive function that counts from 1 to 10 similarly to Listing~\ref{count} is,\jon{A drawing showing the stack for the example would be good.}
 %
@@ -158,11 +127,8 @@ Recursion is a central concept in F\#. A \idx{recursive function} is a function,
 %
 Here the \lstinline!prt! calls itself repeatedly, such that the first call is \lstinline!prt 1 10!, which calls \lstinline!prt 2 10!, and so on until the last call \lstinline!prt 10 10!. Calling \lstinline!prt 11 10! would not result in recursive calls, since when \lstinline!a! is higher than \lstinline!10! then the \idx{stopping criterium} is met and a newline is printed. For values of \lstinline!a! smaller than or equal \lstinline!b! then the recursive branch is executed. Since \lstinline!prt! calls itself as the last all but the stopping condition, then this is a \idx{tail-recursive} function. Most compilers achieve high efficiency in terms of speed and memory, so \advice{prefer tail-recursion whenever possible.}
 \begin{lstlisting}[language=ebnf]
-functionOrValueDefnList = 
-  functionOrValueDefn 
-  | functionOrValueDefn "and" functionOrValueDefnList
 expr = ... 
-  | "let" rec functionOrValueDefnList (* recursive definition *)
+  | "let" ["rec"] functionDefn "in" expr (*binding a function or operator*)
   | ...
 \end{lstlisting}
 Using recursion to calculate the Fibonacci number as Listing~\ref{fibFor}.

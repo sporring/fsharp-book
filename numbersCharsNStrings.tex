@@ -106,7 +106,7 @@ int = dInt | xInt
 %
 For example \lstinline!367! is an \lstinline[language=ebnf]!dInt!, \lstinline!0b101101111!, \lstinline!0o557!, and \lstinline!0x16f! is a \lstinline[language=ebnf]!bitInt!, \lstinline[language=ebnf]!octInt!, and \lstinline[language=ebnf]!hexInt!, i.e., a binary, an octal, and a hexadecimal number, they are examples of an \lstinline[language=ebnf]!xInt! and representations of the same number 367. In contrast, \lstinline!0b12! and \lstinline!ff! are neither an \lstinline[language=ebnf]!dInt! nor an \lstinline[language=ebnf]!xInt!.
 
-A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks, see Appendix~\ref{sec:unicode} for a description of code points.\jon{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The EBNF for characters is,
+A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks, see Appendix~\ref{sec:unicode} for a description of code points.\spec{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The EBNF for characters is,
 %
 \begin{lstlisting}[language=ebnf]
 escapeCodePoint = 
@@ -144,7 +144,7 @@ where \lstinline[language=ebnf]!codePoint! is a UTF8 encoding of a char. The esc
 \end{table}
 Examples of a \lstinline[language=ebnf]!char! are \lstinline{'a'}, \lstinline{'_'}, \lstinline{'\n'}, and \lstinline{'\065'}.
 
-A \idx{string} is a sequence of characters enclosed in double quotation marks,\jon{Spec-4.0 p. 28-29: \texttt{simple-string-char} is undefined, \texttt{string-elem} is unused.}
+A \idx{string} is a sequence of characters enclosed in double quotation marks,\spec{Spec-4.0 p. 28-29: \texttt{simple-string-char} is undefined, \texttt{string-elem} is unused.}
 %
 \begin{lstlisting}[language=ebnf]
 stringChar = char - '"'
@@ -280,7 +280,7 @@ Here we type casted to a lesser type, in the sense that integers is a subset of 
 since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasting removes the fractional part resulting in $y$. And if $y.x\in [y.5, y+1)$, then $y.x+0.5\in [y+1,y+1.5)$, from which downcasting removes the fractional part resulting in $y+1$. Hence, the result is rounding. 
 
 \section{Operators on basic types}
-Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an \idx{infix operator}. Expressions is the basic building block of all F\# programs, and its grammar has many possible options. The grammar for expressions are defined recursively, and some of it is given by, \jon{Spec-4.0 Section 4.3: const is missing uint8, int8 nativeint, unativeint.}
+Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an \idx{infix operator}. Expressions is the basic building block of all F\# programs, and its grammar has many possible options. The grammar for expressions are defined recursively, and some of it is given by, \spec{Spec-4.0 Section 4.3: const is missing uint8, int8 nativeint, unativeint.}
 %
 \begin{lstlisting}[language=ebnf,caption=expressionArithmetic]
 bool = "true" | "false"
@@ -494,7 +494,7 @@ Here, the addition and multiplication functions are shown in \idx{infix notation
   \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|op * op| has higher precedence than \lstinline|op + op|. Operators in the same row has same precedence. Full table is given in Table~\ref{tab:operatorPrecedence}.}
   \label{tab:someOperatorPrecedences}
 \end{table}
-Associativity implies the order in which calculations are performed for operators of same precedence. For some operators and type combinations association matters little, e.g., multiplication associates to the left and exponentiation associates to the right, e.g., in\jon{Spec-4.0, Table 18.2.1 appears to be missing boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
+Associativity implies the order in which calculations are performed for operators of same precedence. For some operators and type combinations association matters little, e.g., multiplication associates to the left and exponentiation associates to the right, e.g., in\spec{Spec-4.0, Table 18.2.1 appears to be missing boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
 %
 \fso{precedence}{Precedences rules define implicite parentheses.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, precedences rules define implicite parentheses.}]

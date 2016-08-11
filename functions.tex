@@ -73,7 +73,7 @@ expr = ...
   | ...
 \end{lstlisting}
 %
-which will be discussed in the following.\jon{Spec-4.0 Section 6.6, function-or-value-defns, possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.} \jon{Spec-4.0 does not seem to mention the special identifier '\_', which discards values in 'let' statements.} \jon{Mention special identifier '\_', which means ignore.}
+which will be discussed in the following.\spec{Spec-4.0 Section 6.6, function-or-value-defns, possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.} \spec{Spec-4.0 does not seem to mention the special identifier '\_', which discards values in 'let' statements.} \jon{Mention special identifier '\_', which means ignore.}
 
 \section{Values}
 Binding identifiers to literals or expressions that are evaluated to be values is called value binding, and examples are \lstinline!let a = 3.0! and \lstinline!let b = cos 0.9!. On EBNF the simplified syntax,
@@ -89,7 +89,7 @@ expr = ...
   | "let" valueDefn "in" expr  
   | ...
 \end{lstlisting}
-The \keyword{let} bindings defines relations between patterns \lstinline[language=ebnf]!pat! and expressions \lstinline[language=ebnf]!expr! for many different purposes. Most often the pattern is an identifier\lstinline[language=ebnf]!ident!, which \idx{\keyword{let}} defines to be an alias of the expression \lstinline[language=ebnf]!expr!. The pattern may also be defined to have specific type using the \idx{\lexeme{:}} lexeme and a named \lstinline[language=ebnf]!type!. The \lexeme{\_} pattern is called the \idx{wild card} pattern and, when it is in the value binding, then the expression is evaluated but the result is discarded. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword.\jon{\url{https://coders-corner.net/2013/11/12/lexical-scope-vs-dynamic-scope/}} For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
+The \keyword{let} bindings defines relations between patterns \lstinline[language=ebnf]!pat! and expressions \lstinline[language=ebnf]!expr! for many different purposes. Most often the pattern is an identifier\lstinline[language=ebnf]!ident!, which \idx{\keyword{let}} defines to be an alias of the expression \lstinline[language=ebnf]!expr!. The pattern may also be defined to have specific type using the \idx{\lexeme{:}} lexeme and a named \lstinline[language=ebnf]!type!. The \lexeme{\_} pattern is called the \idx{wild card} pattern and, when it is in the value binding, then the expression is evaluated but the result is discarded. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword. For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
 %
 \fs{letValue}{The identifier \lstinline!p! is used in the expression following the \keyword{in} keyword.}
 %
@@ -284,7 +284,7 @@ The precedence rules and associativity of user-defined operators follows the rul
 %
 \fs{operatorDefinitions}{}
 %
-Beware, redefining existing operators lexically redefines all future uses of operator for all types, hence \advice{it is not a good idea to redefine operators, but better to define new.}\jon{It seems there is a bug in mono: \texttt{let (~+) x = x+1 in printfn "\%A" +1;;} prints 1 and not 2.} In Chapter~/ref{chap:oop} we will discuss how to define type specific operators including prefix operators. 
+Beware, redefining existing operators lexically redefines all future uses of operator for all types, hence \advice{it is not a good idea to redefine operators, but better to define new.}\spec{It seems there is a bug in mono: \texttt{let (~+) x = x+1 in printfn "\%A" +1;;} prints 1 and not 2.} In Chapter~/ref{chap:oop} we will discuss how to define type specific operators including prefix operators. 
 
 Operators beginning with \lstinline!*! must use a space in its definition, \lstinline!( *! in order for it not to be confused with the beginning of a comment \lstinline!(*!. \jon{this requires comments to be describe previously!}
 
@@ -347,8 +347,8 @@ The function \lstinline[language=ebnf]!printf! prints \lstinline[language=ebnf]!
 \fs{printfExample}{Examples of printf and some of its formatting options.}
 %
 Not all combinations of flags and identifier types are supported, e.g., strings cannot have number of integers after the decimal specified.
-\jon{Mono seems to have a bug, \texttt{printfn "\%.1g" 3.13;;} and \texttt{printfn "\%.1f" 3.13;;} produces different number of digits.}
-\jon{Spec-4.0 \texttt{\%s} and \texttt{\%b} are missing in Section 3.1.16.}
+\spec{Mono seems to have a bug, \texttt{printfn "\%.1g" 3.13;;} and \texttt{printfn "\%.1f" 3.13;;} produces different number of digits.}
+\spec{Spec-4.0 \texttt{\%s} and \texttt{\%b} are missing in Section 3.1.16.}
 The placeholder types \lstinline{"%A"}, \lstinline{"%a"}, and \lstinline{"%t"} are special for F\#, examples of their use are,
 %
 \fs{printfExampleAdvance}{}
@@ -382,7 +382,7 @@ The family of \lstinline!printf! is shown in Table~\ref{tab:printfFamily}.\idxss
   \label{tab:printfFamily}
 \end{table}
 The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, of type \lstinline!System.IO.TextWriter!. Streams will be discussed in further detail in Chapter~\ref{chap:IO}. The function \lstinline!failwithf! is used with exceptions, see Chapter~\ref{chap:exceptions} for more details. The function has a number of possible return value types, and for testing the \idx{\lstinline{ignore}} function ignores it all, e.g., \lstinline!ignore (failwithf "\%d failed apples" 3)!
-\jon{Mono: \texttt{bprintf} and \texttt{kprintf} are undefined.}
+\spec{Mono: \texttt{bprintf} and \texttt{kprintf} are undefined.}
 
 \section{Variables}
 \label{sec:mutableValues}
