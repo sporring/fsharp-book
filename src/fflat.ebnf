@@ -102,9 +102,11 @@ expr =
   | expr ";" expr (*sequence of expressions*)
   | "let" valueDefn "in" expr (*binding a value or variable*)
   | "let" ["rec"] functionDefn "in" expr (*binding a function or operator*)
+  | "fun" argumentPats "->" expr (*anonymous function*)
   | "if" expr "then" expr {"elif" expr "then" expr} ["else" expr] (*conditional*)
   | "while" expr "do" expr ["done"] (*while*)
-  | "try" expr "with" rules (*exception*)
+  | "for" ident "=" expr "to" expr "do" expr ["done"] (* simple for expression *)
+  | "try" expr "with"  ["|"] rules (*exception*)
   | "try" expr "finally" expr; (*exception with cleanup*)
 exprTuple = expr | expr "," exprTuple;
 exprSeq =  expr | expr ";" exprSeq;
@@ -217,6 +219,6 @@ moduleElems = moduleElem | moduleElem moduleElems;
 moduleElem =
   "let" valueDefn "in" expr (*binding a value or variable*)
   | "let" ["rec"] functionDefn "in" expr (*binding a function or operator*)
-  | "exception" ident "=" longIdent (*exception definition*)
+  | "exception" ident of typeTuple (*exception definition*)
   | "open" longIdent (*import declaration*)
   | "#" ident string; (*compiler directive, no space after "#"*)

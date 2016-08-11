@@ -39,38 +39,61 @@ The use of identifiers is central in programming. For F\# not to be confused by 
   \label{fig:reservedSymbolicKeywords}
 \end{figure}
 
-For characters in the Basic Latin Block, i.e., the first 128 code points alias ASCII characters, an ident is,
+An identifier is a name for a constant, an expression, or a type, and it is defined by the following EBNF:
 %
 \begin{lstlisting}[language=ebnf]
-dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-letter = "A" | "B" | ... |  "Z" | "a" | "b" | ... | "z"
-specialChar = "_"
-ident = (letter | "_") {letter | dDigit | specialChar}
+ident = (letter | "_") {letter | dDigit | specialChar};
+longIdent = ident | ident "." longIdent; (*no space around "."*)
+
+longIdentOrOp = [longIdent "."] identOrOp; (*no space around "."*)
+identOrOp = 
+  ident
+  | "(" infixOp | prefixOp ")" 
+  | "(*)";
+
+dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+letter = Lu | Ll | Lt | Lm | Lo | Nl; (*e.g. "A", "B" ... and "a", "b", ...*)
+specialChar = Pc | Mn | Mc | Cf; (*e.g., "_"*)
+
+codePoint = ?Any unicode codepoint?;
+Lu = ?Upper case letters?;
+Ll = ?Lower case letters?;
+Lt = ?Digraphic letters, with first part uppercase?;
+Lm = ?Modifier letters?;
+Lo = ?Gender ordinal indicators?;
+Nl = ?Letterlike numeric characters?;
+Pc = ?Low lines?;
+Mn = ?Nonspacing combining marks?;
+Mc = ?Spacing combining marks?;
+Cf = ?Soft Hyphens?;
 \end{lstlisting}
 %
-Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. The for the full definition, \lstinline[language=ebnf]{letter = Lu | Ll | Lt | Lm | Lo | Nl} and \lstinline[language=ebnf]{specialChar = Pc | Mn | Mc | Cf}, which referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=ebnf]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=ebnf]{specialChar} category.
+Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. Typically, only letters from the english alphabet are used as \lstinline[language=ebnf]!letter!, and only \lstinline[language=ebnf]!_! is used for \lstinline[language=ebnf]!specialChar!, but the full definition referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=ebnf]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=ebnf]{specialChar} category.
+
 Binding expressions to identifiers is done with the keyword \keyword{let}, using the following simplified syntax:
 %
 \begin{lstlisting}[language=ebnf]
-arg = ident | "(" ident ":" type ")"
-argList = arg | arg argList
-identOrOp = ident | ( operatorName )
-pat = 
-  ident 
-  | "_"
-  | pat ":" type
-  | ...
-argumentPats = pat | pat argumentPats
-valueDefn = ["mutable "] pat "=" expr
-functionDefn = ident-or-op argList [":" type] "=" expr "
-expr = ... 
-  | "let" valueDefn "in" expr  (* binding a value or variable *)
-  | "let" functionDefn "in" expr (* binding a function or operator *)
-  | "fun" argumentPats "->" expr (* a function as value *)
-  | expr ":" type (* type annotation *)
-  | "begin" expr "end" (* alternative block expression *)
-  | expr; expr (* sequence of expression *)
-  | ...
+expr = ...
+  | expr ":" type (*type annotation*)
+  | expr ";" expr (*sequence of expressions*)
+  | "let" valueDefn "in" expr (*binding a value or variable*)
+  | "let" ["rec"] functionDefn "in" expr (*binding a function or operator*)
+  | "fun" argumentPats "->" expr (*anonymous function*)
+  | expr "<-" expr (*assingment*)
+ 
+type = ...
+  | longIdent (*named such as "int"*)
+
+valueDefn = ["mutable"] pat "=" expr;
+
+pat = ...
+  | "_" (*wildcard*)
+  | ident (*named*)
+  | pat ":" type (*type constraint*)
+  | "(" pat ")" (*paranthesized*)
+
+functionDefn = identOrOp argumentPats [":" type] "=" expr;
+argumentPats = pat | pat argumentPats;
 \end{lstlisting}
 %
 which will be discussed in the following.\spec{Spec-4.0 Section 6.6, function-or-value-defns, possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.} \spec{Spec-4.0 does not seem to mention the special identifier '\_', which discards values in 'let' statements.} \jon{Mention special identifier '\_', which means ignore.}
@@ -79,15 +102,8 @@ which will be discussed in the following.\spec{Spec-4.0 Section 6.6, function-or
 Binding identifiers to literals or expressions that are evaluated to be values is called value binding, and examples are \lstinline!let a = 3.0! and \lstinline!let b = cos 0.9!. On EBNF the simplified syntax,
 %
 \begin{lstlisting}[language=ebnf]
-pat = 
-  ident 
-  | "_"
-  | pat ":" type
-  | ...
-valueDefn = ["mutable"] pat "=" expr
-expr = ... 
-  | "let" valueDefn "in" expr  
-  | ...
+expr = ...
+  | "let" valueDefn "in" expr (*binding a value or variable*)
 \end{lstlisting}
 The \keyword{let} bindings defines relations between patterns \lstinline[language=ebnf]!pat! and expressions \lstinline[language=ebnf]!expr! for many different purposes. Most often the pattern is an identifier\lstinline[language=ebnf]!ident!, which \idx{\keyword{let}} defines to be an alias of the expression \lstinline[language=ebnf]!expr!. The pattern may also be defined to have specific type using the \idx{\lexeme{:}} lexeme and a named \lstinline[language=ebnf]!type!. The \lexeme{\_} pattern is called the \idx{wild card} pattern and, when it is in the value binding, then the expression is evaluated but the result is discarded. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword. For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
 %
@@ -168,15 +184,8 @@ Here the lexical scope of \lstinline!let p = 4 in ...! is for the nested scope, 
 A function is a mapping between an input and output domain. A key advantage of using functions, when programming, is that they \idx{encapsulate code} into smaller units, that are easier to debug and may be reused. F\# is a functional first programming language, and offers a number of alternative methods for specifying parameters, which will be discussed in this section. Binding identifiers to functions follows a syntax similar to value binding,
 %
 \begin{lstlisting}[language=ebnf]
-arg = ident | "(" ident ":" type ")"
-argList = arg | arg argList
-identOrOp = ident | ( operatorName )
-functionDefn = identOrOp argList [":" type] "=" expr
-argumentPats = pat | pat argumentPats
-expr = ... 
-  | "let" functionDefn "in" expr (* binding a function or operator *) 
-  | "fun" argumentPats "->" expr (* a function as value *)
-  | ...
+expr = ...
+  | "let" functionDefn "in" expr (*binding a function or operator*)
 \end{lstlisting}
 Functions may also be recursive, which will be discussed in Chapter~\ref{chap:flow}. An example in interactive mode is,
 %
@@ -254,13 +263,10 @@ Operators are functions, e.g., the infix multiplication operator \lstinline!+! i
 %
 All operator has this option, and you may redefine them and define your own operators, who has names specified by the following simplified EBNF:
 \begin{lstlisting}[language=ebnf, caption={Grammar for infix and prefix lexemes},label=list:infixOrPrefixOperators]
-infixOrPrefixOp := "+" | "-" | "+. " | "-. " | "%" | "&" | "&&"
-tildes = "~" | "~" tildes
-prefixOp = infixOrPrefixOp | tildes | (! {opChar} - "!=")
-dots = "." | "." dots
-opChar = "!" | "%" | "&" | "*" | "+" | "-" | ". " | "/" | "<" | "=" | ">" | "@" | "^" | "|" | "~" 
- infixOp = 
-  {dots} (
+infixOrPrefixOp = "+" | "-" | "+." | "-." | "%" | "&" | "&&";
+prefixOp = infixOrPrefixOp | "~" {"~"} | "!" {opChar} - "!=";
+infixOp = 
+  {"."} (
     infixOrPrefixOp  
     | "-" {opChar} 
     | "+" {opChar} 
@@ -275,7 +281,10 @@ opChar = "!" | "%" | "&" | "*" | "+" | "-" | ". " | "/" | "<" | "=" | ">" | "@" 
     | "/" {opChar} 
     | "%" {opChar} 
     | "!=" )
-  | ":=" | "::" | "$" | "?"
+  | ":=" | "::" | "$" | "?";
+opChar = 
+  "!" | "%" | "&" | "*" | "+" | "-" | ". " | "/" 
+  | "<" | "=" | ">" | "@" | "^" | "|" | "~";
 \end{lstlisting}
 %op = opChar {opChar}
 %identOrOp = ident | "(" op ")"
@@ -389,7 +398,8 @@ The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! an
 The \keyword{mutable} in \keyword{let} bindings means that the identifier may be rebound to a new value using the \idxs{\lexeme{<-}} lexeme, e.g.,\jon{Discussion on heap and stack should be added here.}
 %
 \begin{lstlisting}[language=ebnf]
-expr "<-" expr
+expr = ...
+  | expr "<-" expr (*assingment*)
 \end{lstlisting}
 \idx{Mutable data} is synonymous with the term \idx{variable}. A variable is an area in the computers working memory associated with an identifier and a type, and this area may be read from and written to during program execution. For example,
 %

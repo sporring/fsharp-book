@@ -2,33 +2,23 @@
 \label{chap:flow}
 Non-recursive functions encapsulates code and allows for some control of flow, that is, if there is a piece of code, which we need to to have executed many times, then we can encapsulate it in the body of a function, and then call the function several times. In this chapter, we will look at more general control of flow via loops, conditional execution, and recursion, and therefore we look at further extension of the \lstinline[language=ebnf]!expr! rule,
 \begin{lstlisting}[language=ebnf]
-pat = ... | ident | ...
-guard = "when" expr
-rule = pat [guard] -> expr
-rules = "|" rule | "|" rule rules (* first "|'' is optional' *)
 expr = ... 
-  | "for" pat "in" expr "do" expr ["done"] (* for expression *)
-  | "for" var "=" expr "to" expr "do" expr ["done"] (* simple for expression *)
-  | "while" expr "do" expr ["done"] (* while expression *)
-  | "if" expr "then" expr {"elif" expr "then" expr} ["else" expr (*  conditional expression *)]
+  | "if" expr "then" expr {"elif" expr "then" expr} ["else" expr] (*conditional*)
+  | "while" expr "do" expr ["done"] (*while*)
+  | "for" ident "=" expr "to" expr "do" expr ["done"] (* simple for expression *)
   | "let" ["rec"] functionDefn "in" expr (*binding a function or operator*)
-  | ...
 \end{lstlisting}
 
 \section{For and while loops}
-\jon{I'm seriously considering to drop for-loops, match-, and function expressions! We don't need them to teach programming at this point.}
 Many programming constructs need to be repeated. The most basic example is counting, e.g., from 1 to 10 with a \idx{\keyword{for}}-loop,\jon{Is it clear enough that the body of the loop is repeated?}
 %
 \fso{count}{Counting from 1 to 10 using a \keyword{for}-loop.}
 %
 As this interactive script demonstrates, the identifier \lstinline!i! takes all the values between 1 and 10, but in spite of its changing state, it is not mutable. Note also that the return value of the \keyword{for} expression is \lexeme{()} like the \lstinline!printf! functions. The \keyword{for} and \keyword{while} loops follow the syntax,
 \begin{lstlisting}[language=ebnf]
-pat = const | ...
 expr = ... 
-  | "for" pat "in" expr "do" expr ["done"] (* for expression *)
-  | "for" var "=" expr "to" expr "do" expr ["done"] (* simple for expression *)
-  | "while" expr "do" expr ["done"] (* while expression *)
- | ...
+  | "while" expr "do" expr ["done"] (*while*)
+  | "for" ident "=" expr "to" expr "do" expr ["done"] (* simple for expression *)
 \end{lstlisting}
 Using lightweight syntax the script block between the \idx{\keyword{do}} and \idx{\keyword{done}} keywords may be replaced by a newline and indentation, e.g.,
 %
@@ -89,8 +79,7 @@ For this we need to test on $n$'s size, and one option is to use conditional exp
 The grammar for conditional expressions is,
 \begin{lstlisting}[language=ebnf]
 expr = ... 
-  | "if" expr "then" expr {"elif " expr "then" expr} ["else" expr] (*  conditional expression *)
-  | ...
+  | "if" expr "then" expr {"elif" expr "then" expr} ["else" expr] (*conditional*)
 \end{lstlisting}
 where the \lstinline[language=ebnf]!expr! following \idx{\keyword{if}} and \idx{\keyword{elif}} are \idx{conditions}, i.e., expressions that evaluate to a boolean value. The \lstinline[language=ebnf]!expr! following \idx{\keyword{then}} and \idx{\keyword{else}} are called \idx{branches}, and all branches must have same type. The result of the conditional expression is the first branch, for which its condition was true. The lightweight syntax allows for the visually more simple expression of scope by use of indentation
 %
@@ -128,8 +117,7 @@ Recursion is a central concept in F\#. A \idx{recursive function} is a function,
 Here the \lstinline!prt! calls itself repeatedly, such that the first call is \lstinline!prt 1 10!, which calls \lstinline!prt 2 10!, and so on until the last call \lstinline!prt 10 10!. Calling \lstinline!prt 11 10! would not result in recursive calls, since when \lstinline!a! is higher than \lstinline!10! then the \idx{stopping criterium} is met and a newline is printed. For values of \lstinline!a! smaller than or equal \lstinline!b! then the recursive branch is executed. Since \lstinline!prt! calls itself as the last all but the stopping condition, then this is a \idx{tail-recursive} function. Most compilers achieve high efficiency in terms of speed and memory, so \advice{prefer tail-recursion whenever possible.}
 \begin{lstlisting}[language=ebnf]
 expr = ... 
-  | "let" ["rec"] functionDefn "in" expr (*binding a function or operator*)
-  | ...
+  | "let" "rec" functionDefn "in" expr (*binding a function or operator*)
 \end{lstlisting}
 Using recursion to calculate the Fibonacci number as Listing~\ref{fibFor}.
 %

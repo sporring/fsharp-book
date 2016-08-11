@@ -1,31 +1,21 @@
 \chapter{Exceptions}
 \label{chap:exceptions}
-Exceptions are runtime errors, which may be handled gracefully by F\#. Exceptions are handled by the \lstinline!try! keyword both in expressions and computation expressions,
-\begin{lstlisting}[language=ebnf]
-expr = ... 
-  | "try" expr "with" rules
-  | "try" expr "finally" expr
-  | ...
-comp-expr = ...
-  | "try" comp-expr "with" comp-rules
-  | "try" comp-expr "finally" expr
-  | ...
-\end{lstlisting}
-As an example is integer division by zero,
+Exceptions are runtime errors, which may be handled gracefully by F\#. Exceptions are handled by the \keyword!try! keyword both in expressions. E.g., Integer division by zero raises and exception, but it may be handled in a script as follows,
 %
 \fs{exceptionDivByZero}{A division by zero is caught and a default value is returned.}
 %
-
-%
-\fso{exceptionDivByZeroOptionType}{Option types can be used, when the value in case of exceptions is unclear.}
-%
-
-
-Exceptions are a basic-type called \lstinline!exn!, and F\# has a number of built-in, see Table~\ref{tab:exceptions}, and the user may construct new exceptions using the syntax,
+The \keyword{try} expressions have the following syntax,
 %
 \begin{lstlisting}[language=ebnf]
-exception-defn = [attributes] "exception" union-type-case-data [attributes] exception ident "=" long-ident
+expr = ... 
+  | "try" expr "with" ["|"] rules (*exception*)
+  | "try" expr "finally" expr; (*exception with cleanup*)
+
+rules = rule | rule "|" rules;
+rule = pat ["when" expr] "->" expr;
 \end{lstlisting}
+%
+Exceptions are a basic-type called \lstinline!exn!, and F\# has a number of built-in, see Table~\ref{tab:exceptions}.
 \begin{table}
   \centering
   \begin{tabularx}{\linewidth}{|l|X|}
@@ -40,7 +30,7 @@ exception-defn = [attributes] "exception" union-type-case-data [attributes] exce
    \hline
     \lstinline!System.IndexOutOfRangeException! & Failed to access an element in an array because the index is less than zero or equal or greater than the length of the array.\\
    \hline
-    \lstinline!System.InvalidCastException! & Failed to explicitely convert a base type or interface to a derived type at run time.\\
+    \lstinline!System.InvalidCastException! & Failed to explicitly convert a base type or interface to a derived type at run time.\\
    \hline
     \lstinline!System.NullReferenceException! & Failed use of a \lstinline!null! reference was used, since it required the referenced object.\\
    \hline
@@ -56,19 +46,76 @@ exception-defn = [attributes] "exception" union-type-case-data [attributes] exce
   \caption{Built-in exceptions.}
   \label{tab:exceptions}
 \end{table}
-
-Exceptions are raised with the keywords \keyword{failwith}, \keyword{invalidArg}, \keyword{raise}, and \keyword{reraise}
-
+The programs may define new exceptions using the syntax,
+%
+\begin{lstlisting}[language=ebnf]
+"exception" ident of typeTuple (*exception definition*)
+typeTuple = type | type "*" typeTuple;
+\end{lstlisting}
+and any exceptions may be \idx[raise an exception]{raised} using the functions \keyword{failwith}, \keyword{invalidArg}, \keyword{raise}, and \keyword{reraise}. An example of raising an exception with the \lstinline!raise! function is,
 %
 \fs{exceptionDefinition}{A user-defined exception is raised but not caught by outer construct.}
 %
+Here an exception called \lstinline!DontLikeFive! is defined, and it is raised in the function \lstinline!picky!. When run, F\# stops at run-time after the program has raised the exception with a long description of the reason including the name of the exception. Exceptions include messages, and the message for \lstinline!DontLikeFive! is of type \lstinline!string!. This message is passed to the \keyword{try} expression and may be processed as e.g., 
+%
+\fs{exceptionDefinitionNCatch}{Catching a user-defined exception.}
+%
+Note that the type of \lstinline!picky! is \lstinline!a:int -> int! because its argument is compared with an integer in the conditional statement. This contradicts the typical requirements for \keyword{if} statements, where every branch has to return the same type. However, any code that explicitly raises exceptions are ignored, and the type is inferred by the remaining branches.
 
-Remember
+The \lstinline!failwith : string -> exn! function takes a string and raises the built-in \lstinline!System.Exception! exception, 
+%
+\fs{exceptionFailwith}{An exception raised by \lstinline{failwith}.}
+%
+To catch the \lstinline!failwith! exception, there are two choices, either use the \lstinline!:?! or the \lstinline!Failure! pattern. the \lstinline!:?! pattern matches types, and we can match with the type of \lstinline!System.Exception! as,
+%
+\fs{exceptionSystemException}{Catching a \lstinline{failwith} exception using type matching pattern.}
+%
+However, this gives annoying warnings, since F\# internally is built such that all exception matches the type of \lstinline!System.Exception!. Instead it is better to either match anything,
+%
+\fs{exceptionMatchWildcard}{Catching a \lstinline{failwith} exception using the wildcard pattern.}
+%
+or use the built in \lstinline!Failure! pattern,
+%
+\fs{exceptionFailure}{Catching a \lstinline{failwith} exception using the \lstinline{Failure} pattern.}
+%
+Notice how only the \lstinline!Failure! pattern allows for the parsing of the message given to \lstinline!failwith! as argument.
+
+The \lstinline!invalidArg! takes 2 strings and raises the built-in \lstinline!ArgumentException!
+%
+\fs{exceptionInvalidArg}{An exception raised by \lstinline{invalidArg}.}
+%
+This would be caught by type matching as,
+%
+\fs{exceptionInvalidArgNCatch}{Catching the exception raised by \lstinline{invalidArg}.}
+%
+
+The \keyword{try} construction is typically used to gracefully handle exceptions, but there are times, where you may want to pass on the bucket, so to speak, and reraise the exception. This can be done with the \keyword{reraise}.
+%
+\fs{exceptionReraise}{Reraising an exception.}
+%
+The \lstinline!reraise! function is only allowed to be the final call in the expression of a \keyword!with! rule.
+
+At exceptions, it is not always obvious what should be returned. E.g., in the Listing~\ref{exceptionDivByZero}, the exception is handled gracefully, but the return value is somewhat arbitrarily chosen to be the largest possible integer, which is still far from infinity, which is the correct result. Instead we could use the \idx{\keyword{option}} type. The \keyword{option} type is a wrapper, that can be put around any type, and which extends the type with the special value \lstinline!None!. All other values are preceded by the \lstinline!Some! identifier. E.g., to rewrite Listing~\ref{exceptionDivByZero} to correctly represent the non-computable value, we could write
+%
+\fso{exceptionDivByZeroOptionType}{Option types can be used, when the value in case of exceptions is unclear.}
+%
+The value of an option type can be extracted by and tested for by its member function, \lstinline!IsNone!, \lstinline!IsSome!, and \lstinline!Value!, e.g.,
+%
+\fso{option}{Simple operations on option types.}
+%
+
+In the \keyword{try}-\keyword{finally}, the \keyword{finally} expression is always executed, e.g.,
+%
+\fso{exceptionFinally}{The \keyword{finally} expression in \keyword{try}-\keyword{finally} will always be executed.}
+%
+This is useful for cleaning up, e.g., closing files etc.\ which we will discuss in Chapter~\ref{chap:IO}. The only way to combine \keyword{try}-\keyword{finally} with \keyword{try}-\keyword{with} is to nest the expression inside each other.
+
+\begin{comment}
 \begin{itemize}
 \item exn type Spec-4.0 Chapter 18.1
 \item Spec-4.0 Section 18.2.8
 \end{itemize}
-\dots 
+\end{comment}
 
 
 

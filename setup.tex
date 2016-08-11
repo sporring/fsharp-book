@@ -162,12 +162,20 @@
 \newcommand{\fso}[2]{
   \lstinputlisting[language=fsharp,caption={fsharpi, #2},label=#1]{\src/#1.out}
 }
-
 \newcommand{\fsi}[2]{
   \begin{minipage}[t]{#2\linewidth}
     \lstinputlisting[aboveskip=0pt, belowskip=0pt]{\src/#1.out}
   \end{minipage}
 }
+
+% Get counters from references for firstnumber references in lstinputlisting
+\usepackage{refcount}
+\newcounter{lstFrom}
+\newcounter{lstTo}
+% Example: 
+% \setcounterref{lstFrom}{dynamicScopeTracing:a1}
+% \setcounterref{lstTo}{dynamicScopeTracing:a2}
+% \lstinputlisting[firstline=\thelstFrom,lastline=\thelstTo,escapechar=|]{\src/dynamicScopeTracing.fsx}
 
 % highlighted text snippets
 \newcommand{\advice}[1]{\marginpar{Advice}\emph{#1}}

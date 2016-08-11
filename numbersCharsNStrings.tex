@@ -36,23 +36,23 @@ Each literal represent the number 3, but their types are different, and hence th
     Integer & \textbf{int} & Integer values from -2,147,483,648 to 2,147,483,647 \\
              & byte &Integer values from 0 to 255\\
              & sbyte &Integer values from -128 to 127\\
-             & int8 &Synonymous with byte\\
-             & uint8 &Synonymous with sbyte\\
-             & int16 &Integer values from -32768 to 32767\\
-             & uint16 &Integer values from 0 to 65535\\
+             %& int8 &Synonymous with byte\\
+            % & uint8 &Synonymous with sbyte\\
+            % & int16 &Integer values from -32768 to 32767\\
+            % & uint16 &Integer values from 0 to 65535\\
              & int32 &Synonymous with int\\
              & uint32 & Integer values from 0 to 4,294,967,295\\
-             & int64 &Integer values from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807\\
-             & uint64 &Integer values from 0 to 18,446,744,073,709,551,615\\
+             %& int64 &Integer values from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807\\
+            % & uint64 &Integer values from 0 to 18,446,744,073,709,551,615\\
              %& bignum &Integer not limited to 64 bits\\
-             & nativeint &A native pointer as a signed integer\\
-             & unativeint &A native pointer as an unsigned integer\\
+             %& nativeint &A native pointer as a signed integer\\
+            % & unativeint &A native pointer as an unsigned integer\\
     \hline
     Real &\textbf{float} & 64-bit IEEE 754 floating point value from $-\infty$ to $\infty$\\
              & double & Synonymous with float\\
-             & single &A 32-bit floating point type\\
-             & float32 &Synonymous with single\\
-             & decimal &A floating point data type that has at least 28 significant digits\\
+             %& single &A 32-bit floating point type\\
+            % & float32 &Synonymous with single\\
+            % & decimal &A floating point data type that has at least 28 significant digits\\
     \hline
     Character &\textbf{char} &Unicode character\\
              &\textbf{string} & Unicode sequence of characters\\
@@ -64,7 +64,7 @@ Each literal represent the number 3, but their types are different, and hence th
     Exception &\textbf{exn} & An exception\\
     \hline
   \end{tabularx}
-  \caption{List of basic types. The most commonly used types are highlighted in bold. For at description of integer see Appendix~\ref{sec:binary}, for floating point numbers see Appendix~\ref{sec:floatingPoint}, for ASCII and Unicode characters see Appendix~\ref{sec:characterSets}, for objects see Chapter~\ref{chap:oop}, and for exceptions see Chapter~\ref{chap:exceptions}.}
+  \caption{List of some of the basic types. The most commonly used types are highlighted in bold. For at description of integer see Appendix~\ref{sec:binary}, for floating point numbers see Appendix~\ref{sec:floatingPoint}, for ASCII and Unicode characters see Appendix~\ref{sec:characterSets}, for objects see Chapter~\ref{chap:oop}, and for exceptions see Chapter~\ref{chap:exceptions}.}
   \label{tab:primitiveTypes}
 \end{table}
 Besides these built-in types, F\# is designed such that it is easy to define new types. 
@@ -72,16 +72,16 @@ Besides these built-in types, F\# is designed such that it is easy to define new
 Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base} 10 means that for a number consisting of a sequence of digits separated by a \idx{decimal point}, where each \idx{digit} can have values $d \in \{0,1,2,\ldots,9\}$, and the value, which each digit represents is proportional to its position. The part befor the decimal point is called the \idx{whole part} and the part after is called the \idx{fractional part} of the number. The whole part without a decimal point and a fractional part is called an \idx{integer number}. As an example \lstinline!35.7! is a decimal number, whose value is $3\cdot 10^1+5\cdot 10^0+7\cdot 10^{-1}$. In F\# a decimal number is called a \idx{floating point number} and in this text we use \idx{Extended Backus-Naur Form} (\idx{EBNF}) to describe the grammar of F\#, the decimal number just described is given as,
 %
 \begin{lstlisting}[language=ebnf]
-dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-dInt = dDigit {dDigit}
-dFloat = dInt "." {dDigit}
+dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+dInt = dDigit {dDigit};
+dFloat = dInt "." {dDigit};
 \end{lstlisting}
 %
 meaning that a \lstinline[language=ebnf]!dDigit! is either "0'' or "1" or \dots or "9'', an \lstinline[language=ebnf]!dInt! is 1 or more \lstinline[language=ebnf]!dDigit!, and a \lstinline[language=ebnf]!dFloat! is 1 or more digits, a dot and 0 or more digits. There is no space between the digits and between digits and the dot. So \lstinline!3!, \lstinline!049! are examples of integers, \lstinline!34.89! \lstinline!3.! are examples of floats, while \lstinline!.5! is neither.  Floating point numbers may alternatively be given using \idx{scientific notation}, such as \lstinline!3.5e-4! and \lstinline!4e2!, which means the number $3.5\cdot 10^{-4} = 0.00035$ and $4\cdot 10^2=400$. To describe this in EBNF we write
 %
 \begin{lstlisting}[language=ebnf]
-sFloat = (dInt | dFloat) ("e" | "E" ) ["+" | "-"] dInt
-float = dFloat | sFloat
+sFloat = (dInt | dFloat) ("e" | "E" ) ["+" | "-"] dInt;
+float = dFloat | sFloat;
 \end{lstlisting}
 %
 Note that the number before the lexeme \lexeme{e} may be an \lstinline[language=ebnf]!dInt! or a \lstinline[language=ebnf]!dFloat!, but the exponent value must be an \lstinline[language=ebnf]!dInt!.
@@ -89,19 +89,17 @@ Note that the number before the lexeme \lexeme{e} may be an \lstinline[language=
 The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^1=5.25$. Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}, where octals uses 8 as basis and can be written in binary using 3 bits, while hexadecimal numbers uses 16 as basis and can be written in binary using 4 bits. Octals and hexadecimals thus conveniently serve as shorthand for the much longer binary representation. F\# has a syntax for writing integers on binary, octal, decimal, and hexadecimal numbers as,
 %
 \begin{lstlisting}[language=ebnf]
-bDigit = "0" | "1"
-oDigit  = bDigit | "2" | "3" | "4" | "5" | "6" | "7"
-dDigit = oDigit | "8" | "9"
-xDigit  = 
-  dDigit 
-  | "A" | "B" | "C" | "D" | "E" | "F" 
-  | "a" | "b" | "c" | "d" | "e" | "f" 
-dInt = dDigit {dDigit}
-bitInt = "0" ("b" | "B") bDigit {bDigit}
-octInt = "0" ("o" | "O") oDigit {oDigit}
-hexInt = "0" ("x" | "X") xDigit {xDigit}
-xInt = bitInt | octInt | hexInt
-int = dInt | xInt
+bDigit = "0" | "1";
+oDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7";
+xDigit =  
+  "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+  | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f";
+dInt = dDigit {dDigit};
+bitInt = "0" ("b" | "B") bDigit {bDigit};
+octInt = "0" ("o" | "O") oDigit {oDigit};
+hexInt = "0" ("x" | "X") xDigit {xDigit};
+xInt = bitInt | octInt | hexInt;
+int = dInt | xInt;
 \end{lstlisting}
 %
 For example \lstinline!367! is an \lstinline[language=ebnf]!dInt!, \lstinline!0b101101111!, \lstinline!0o557!, and \lstinline!0x16f! is a \lstinline[language=ebnf]!bitInt!, \lstinline[language=ebnf]!octInt!, and \lstinline[language=ebnf]!hexInt!, i.e., a binary, an octal, and a hexadecimal number, they are examples of an \lstinline[language=ebnf]!xInt! and representations of the same number 367. In contrast, \lstinline!0b12! and \lstinline!ff! are neither an \lstinline[language=ebnf]!dInt! nor an \lstinline[language=ebnf]!xInt!.
@@ -109,14 +107,13 @@ For example \lstinline!367! is an \lstinline[language=ebnf]!dInt!, \lstinline!0b
 A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks, see Appendix~\ref{sec:unicode} for a description of code points.\spec{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The EBNF for characters is,
 %
 \begin{lstlisting}[language=ebnf]
-escapeCodePoint = 
-  "\u" xDigit xDigit xDigit xDigit
-  | "\U" xDigit xDigit xDigit xDigit xDigit xDigit xDigit xDigit
-  | "\" dDigit dDigit dDigit 
+codePoint = ?Any unicode codepoint?;
 escapeChar = 
   "\" ("b" | "n" | "r" | "t" | "\" | '"' | "'" | "a" | "f" | "v")
-  | escapeCodePoint
-char = "'" codePoint | escapeChar "'"
+  | "\u" xDigit xDigit xDigit xDigit
+  | "\U" xDigit xDigit xDigit xDigit xDigit xDigit xDigit xDigit
+  | "\" dDigit dDigit dDigit;
+char = "'" codePoint | escapeChar "'";
 \end{lstlisting}
 % 
 where \lstinline[language=ebnf]!codePoint! is a UTF8 encoding of a char. The escape characters \lstinline[language=ebnf]{escapeChar} are special sequences that are interpreted as a single code point shown in Table~\ref{tab:escapeChar}. The trigraph \lstinline|\DDD| uses decimal specification for the first 256 code points, and the hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any code point.
@@ -147,14 +144,15 @@ Examples of a \lstinline[language=ebnf]!char! are \lstinline{'a'}, \lstinline{'_
 A \idx{string} is a sequence of characters enclosed in double quotation marks,\spec{Spec-4.0 p. 28-29: \texttt{simple-string-char} is undefined, \texttt{string-elem} is unused.}
 %
 \begin{lstlisting}[language=ebnf]
-stringChar = char - '"'
-simpleString = '"' { stringChar }  '"'
+stringChar = char - '"';
+string = '"' { stringChar }  '"';
+verbatimString = '@"' {char - ('"' | '\"' )| '""'} '"';
 \end{lstlisting}
 % 
 Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. \idx[newline]{Newlines} and following \idx[whitespace]{whitespaces},
 \begin{lstlisting}[language=ebnf,label=newlineNWhitespace]
-newline = [CR] LF (* carriage return and line feed *)
-whitespace = {SP} (* space *)
+whitespace = " " {" "};
+newline = "\n" | "\r" "\n";
 \end{lstlisting}
 are taken literally, but may be ignored by a preceding \textbackslash character. Further examples of strings are,
 %
@@ -189,23 +187,25 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
     \lstinline!byte!, \lstinline!uint8! & \lstinline[language=ebnf]!((dInt | xInt) "uy") | (char "B")!  & \lstinline!3uy!  \\
     \lstinline!byte[]! & \lstinline[language=ebnf]!["@"] string "B"!  & \lstinline!"abc"B! and \lstinline!"@http:\\"B!  \\
     \lstinline!sbyte!, \lstinline!int8! & \lstinline[language=ebnf]!(dInt | xInt) "y"! & \lstinline!3y!  \\
-    \lstinline!int16! & \lstinline[language=ebnf]!(dInt | xInt) "s"!  & \lstinline!3s!  \\
-    \lstinline!uint16! & \lstinline[language=ebnf]!(dInt | xInt) "us"! & \lstinline!3us!  \\
-    \lstinline!int64! & \lstinline[language=ebnf]!(dInt | xInt) "L"!  & \lstinline!3L!  \\
-    \lstinline!uint64! & \lstinline[language=ebnf]!(dInt | xInt) ("UL" | "uL")!  & \lstinline!3UL! and \lstinline!3uL!  \\
-    \lstinline!bignum!$^*$ & \lstinline[language=ebnf]!dInt "I"! & \lstinline!3I!  \\
-    \lstinline!nativeint! & \lstinline[language=ebnf]!(dInt | xInt) "n"! & \lstinline!3n!  \\
-    \lstinline!unativeint! & \lstinline[language=ebnf]!(dInt | xInt) "un"!  & \lstinline!3un!  \\
+    %\lstinline!int16! & \lstinline[language=ebnf]!(dInt | xInt) "s"!  & \lstinline!3s!  \\
+    %\lstinline!uint16! & \lstinline[language=ebnf]!(dInt | xInt) "us"! & \lstinline!3us!  \\
+    %\lstinline!int64! & \lstinline[language=ebnf]!(dInt | xInt) "L"!  & \lstinline!3L!  \\
+    %\lstinline!uint64! & \lstinline[language=ebnf]!(dInt | xInt) ("UL" | "uL")!  & \lstinline!3UL! and \lstinline!3uL!  \\
+    %\lstinline!bignum!$^*$ & \lstinline[language=ebnf]!dInt "I"! & \lstinline!3I!  \\
+    %\lstinline!nativeint! & \lstinline[language=ebnf]!(dInt | xInt) "n"! & \lstinline!3n!  \\
+    %\lstinline!unativeint! & \lstinline[language=ebnf]!(dInt | xInt) "un"!  & \lstinline!3un!  \\
     \lstinline!float!, \lstinline!double! & \lstinline[language=ebnf]!float | (xInt "LF")!  & \lstinline!3.0!  \\
-    \lstinline!single!, \lstinline!float32! & \lstinline[language=ebnf]!(float ("F" | "f")) | (xInt "lf") !  & \lstinline!3.0f!  \\
-    \lstinline!decimal! &\lstinline[language=ebnf]!(float | dInt) ("M" | "m")! & \lstinline!3.0m! and \lstinline!3m!  \\
+    %\lstinline!single!, \lstinline!float32! & \lstinline[language=ebnf]!(float ("F" | "f")) | (xInt "lf") !  & \lstinline!3.0f!  \\
+    %\lstinline!decimal! &\lstinline[language=ebnf]!(float | dInt) ("M" | "m")! & \lstinline!3.0m! and \lstinline!3m!  \\
     \lstinline!string! & \lstinline[language=ebnf]!simpleString |! & \lstinline!"a \"quote\".\n"!  \\
          & \lstinline[language=ebnf]!'@"' {(char - ('"' | '\"' )) | '""'} '"' |!&\lstinline!@"a ""quote"".\n"! \\
-         & \lstinline[language=ebnf]!'""' {char} '""' (*no '"""' substring*)! & \lstinline!"""a "quote".\n"""!  \\
+        % & \lstinline[language=ebnf]!'""' {char} '""' (*no '"""' substring*)! & \lstinline!"""a "quote".\n"""!  \\
     \hline
   \end{tabular}
   % \end{tabularx}
-  \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix. There must not be a space between the number and the literal name. The \lstinline![]! notation is for lists, see Chapter~\ref{chap:lists}. $^*$\lstinline[language=ebnf]!bignum! is not a basic type and does not yet have an implementation for \lstinline[language=ebnf]!dInt ("Q"|"R"|"Z"|"N"|"G")! in Mono.}
+  \caption{List of literal type. No spacing is allowed between the literal and the prefix or suffix. 
+    % The \lstinline![]! notation is for lists, see Chapter~\ref{chap:lists}. $^*$\lstinline[language=ebnf]!bignum! is not a basic type and does not yet have an implementation for \lstinline[language=ebnf]!dInt ("Q"|"R"|"Z"|"N"|"G")! in Mono.
+  }
   \label{tab:literalTypes}
 \end{table}
 Examples are,
@@ -227,7 +227,8 @@ Examples are,
 % val it : string = "ABC"
 % \end{lstlisting}
 %
-Strings literals may be \idx{verbatim} by the @-notation or triple double quotation marks, meaning that the escape sequences are not converted to their code point., e.g., 
+Strings literals may be \idx{verbatim} by the @-notation% or triple double quotation marks,
+meaning that the escape sequences are not converted to their code point., e.g.,
 %
 \fso{stringVerbatim}{Examples of a string literal.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
@@ -235,7 +236,7 @@ Strings literals may be \idx{verbatim} by the @-notation or triple double quotat
 % val it : string = "abc\nde"
 % \end{lstlisting}
 %
-For strings containing double quotation marks, verbatim literals has 2 possible notations, either use the @-notation and escaping double quotation marks with an extra double quotation mark, or use triple double quotation marks. \advice{The triple double quotation marks notation may not contain substrings that are triple double quotation marks, and thus @-notation is preferred.}
+%For strings containing double quotation marks, verbatim literals has 2 possible notations, either use the @-notation and escaping double quotation marks with an extra double quotation mark, or use triple double quotation marks. \advice{The triple double quotation marks notation may not contain substrings that are triple double quotation marks, and thus @-notation is preferred.}
 
 Many basic types are compatible and the type of a literal may be changed by \idx{type casting}. E.g.,
 %
@@ -283,22 +284,33 @@ since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasti
 Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an \idx{infix operator}. Expressions is the basic building block of all F\# programs, and its grammar has many possible options. The grammar for expressions are defined recursively, and some of it is given by, \spec{Spec-4.0 Section 4.3: const is missing uint8, int8 nativeint, unativeint.}
 %
 \begin{lstlisting}[language=ebnf,caption=expressionArithmetic]
-bool = "true" | "false"
-const = byte | sbyte | uint8 | int8 | int16 | uint16 | int | int32 | uint32 | int64 | uint64 | bignum | naviteint | unativeint | float | double | single | float32 | decimal | char | string | byte [] | bool | "()"
-slice-range = 
-  expr (* single index *)
-  |  expr ".." (* from index to end *)
-  | ".." expr (* from start to index *)
-  | expr ".." expr (* from one index to another *)
-  | "*" (* from start to end *)
-expr = 
-  const (* constant value *)
-  | "(" expr ")" (* block expression *)
-  | expr operator expr (* infix operation *)
-  | operator expr (* prefix operation *)
-  | expr expr (* function application *)
-  | expr ".[" slice-range "]" (* slice lookup *)
-  | ...
+const =
+  byte
+  | sbyte
+  | int32
+  | uint32 
+  | int
+  | ieee64 
+  | char
+  | string
+  | verbatimString
+  | "false"
+  | "true"
+  | "()";
+sliceRange = 
+  expr 
+  | expr ".." (*no space between expr and ".."*)
+  | ".." expr (*no space between expr and ".."*)
+  | expr ".." expr (*no space between expr and ".."*)
+  | "*";
+expr = ...
+  | const (*a const value*)
+  | "(" expr ")" (*block*)
+  | expr expr (*application*)
+  | expr infixOp expr (*infix application*)
+  | prefixOp expr (*prefix application*)
+  | expr ".[" expr "]" (*index lookup, no space before "."*)
+  | expr ".[" sliceRange "]" (*index lookup, no space before "."*)
 \end{lstlisting}
 %
 Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}.\idxss{\lstinline{abs}}\idxss{\lstinline{acos}}\idxss{\lstinline{asin}}\idxss{\lstinline{atan}}\idxss{\lstinline{atan2}}\idxss{\lstinline{ceil}}\idxss{\lstinline{cos}}\idxss{\lstinline{cosh}}\idxss{\lstinline{exp}}\idxss{\lstinline{floor}}\idxss{\lstinline{log}}\idxss{\lstinline{log10}}\idxss{\lstinline{max}}\idxss{\lstinline{min}}\idxss{\lstinline{pown}}\idxss{\lstinline{round}}\idxss{\lstinline{sign}}\idxss{\lstinline{sin}}\idxss{\lstinline{sinh}}\idxss{\lstinline{sqrt}}\idxss{\lstinline{tan}}\idxss{\lstinline{tanh}}

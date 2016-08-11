@@ -7,14 +7,14 @@ F\# is tuned to work with ordered series, and there are several built-in lists w
 F\# has 4 built-in list types: strings, tuples, lists, arrays, and sequences. Strings were discussed in Chapter~\ref{chap:calculator}, sequences will be discussed in Chapter~\ref{chap:sequences}. Here we will concentrate on tuples, lists,  and arrays, and following this (simplified) syntax:
 %
 \begin{lstlisting}[language=ebnf]
-tupleList = expr | expr "," tupleList
-listOrArrayList =  expr | expr ";" listOrArrayList
-range-exp = expr ".." expr [".." expr]
 expr = ... 
-  | tupleList
-  | "[" (listOrArrayList | range-exp "]" (* computation list expression *)
-  | "[|" (listOrArrayList | range-exp  "|]" (* computation array expression *)
-  | ...
+  | exprTuple (*tuple*)
+  | "[" (exprSeq | rangeExpr) "]" (*list*)
+  | "[|" (exprSeq | rangeExpr) "|]" (*array*)
+
+exprTuple = expr | expr "," exprTuple;
+exprSeq =  expr | expr ";" exprSeq;
+rangeExpr = expr ".." expr [".." expr];
 \end{lstlisting}
 %
 \spec{Spec-4.0: grammar for list and array expressions are subsets of computation list and array expressions.} Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these data structures in detail.
@@ -23,10 +23,10 @@ expr = ...
 \idx[tuple]{Tuples} are unions of immutable types, 
 %
 \begin{lstlisting}[language=ebnf]
-tupleList = expr | expr "," tupleList
 expr = ... 
-  | tupleList
-  | ...
+  | exprTuple (*tuple*)
+
+exprTuple = expr | expr "," exprTuple;
 \end{lstlisting}
 %
 and the they are identified by the \lexeme{,} lexeme. Most often the tuple is enclosed in parentheses, but that is not required. Consider the tripel, also known as a 3-tuple, \lstinline!(2,true,"hello")! in interactive mode,
@@ -58,11 +58,11 @@ In this example, the central computation has been packed into a single line, \ls
 \section{Lists}
 \idx[list]{Lists} are unions of immutable values of the same type and have a more flexible structure than tuples. Its grammar follows \idx{computation expressions}, which is very rich and shared with arrays and sequences, and we will delay a discussion on most computation expressions to Section~\ref{sec:sequences}, and here just consider a subset of the grammar:
 \begin{lstlisting}[language=ebnf]
-listOrArrayList =  expr | expr ";" listOrArrayList
-range-exp = expr ".." expr [".." expr]
 expr = ... 
-  | "[" (listOrArrayList | ... | range-expr) "]" (* computation list expression *)
-  | ...
+  | "[" (exprSeq | rangeExpr) "]" (*list*)
+
+exprSeq =  expr | expr ";" exprSeq;
+rangeExpr = expr ".." expr [".." expr];
 \end{lstlisting}
 Simple examples of a list grammars are, \lstinline[language=ebnf]![expr; expr; ... ; expr]!, \lstinline[language=ebnf]![expr ".." expr]!, \lstinline[language=ebnf]![expr ".." expr ".." expr]!, e.g., an explicit list \lstinline!let lst = [1; 2; 3; 4; 5]!, which may be written shortly as \idx{range expression} as \lstinline!let lst = [1 .. 5]!, and ranges may include a step size \lstinline!let lst = [1 .. 2 .. 5]!, which is the same as \lstinline!let lst = [1; 3; 5]!.
 
@@ -74,31 +74,6 @@ A list type is identified with the \keyword{list} keyword, as here a list of int
 %
 \fs{listSlicing}{Examples of list slicing. Compare with Listing~\ref{stringIndexing}.}
 %
-
-Lists are well suited for recursive functions and pattern matching with, e.g., \keyword{match}-\keyword{with} as illustrated in the next example:
-%
-\fs{listPatternMatching}{Examples of list concatenation, indexing.}
-%
-The pattern \lstinline!l::rest! is the pattern for the first element followed by a list of the rest of the list. This pattern matches all lists except an empty list, hence \lstinline!rest! may be empty. Thus the wildcard pattern matching anything including the empty list, will be used only when \lstinline!lst! is empty.
-
-\idx[pattern matching]{Pattern matching} with lists is quite powerful, consider the following problem:
-\begin{problem}
-  Given a list of pairs of course names and course grades, calculate the average grade.
-\end{problem}
-A list of course names and grades is \lstinline![("name1", grade1); ("name2", grade2); ...]!. Let's take a recursive solution. First problem will be to iterate through the list. For this we can use pattern matching similarly to Listing~\ref{listPatternMatching} with \lstinline!(name, grade)::rest!. The second problem will be to calculate the average. The average grade is the sum all grades and divide by the number of grades. Assume that we already have made a function, which calculates the \lstinline!sum! and \lstinline!n!, the sum and number of elements, for \lstinline!rest!, then all we need is to add \lstinline!grade! to the \lstinline!sum! and \lstinline!1! to \lstinline!n!. For an empty list, \lstinline!sum! and \lstinline!n! should be \lstinline!0!. Thus we arrive at the following solution,
-% However, an elegant alternative is available as
-% \fs{flowForLists}{}
-% This to be preferred, since we completely can ignore list boundary conditions and hence avoid out of range indexing. For comparison see a recursive implementation of the same,
-%
-\fs{avgGradesRec}{Calculating a list of average grades using recursion and pattern matching.}
-%
-%Note how this implementation avoids the use of variables in contrast to the previous examples.
-
-Pattern matching and appending is a useful combination, if we wish to produce new from old lists. E.g., a function returning a list of squared entries of its argument can be programmed as,
-%
-\fs{listSquare}{Using pattern matching and list appending elements to lists.}
-%
-This is a prototypical functional programming style solution, and which uses the \lexeme{::} for 2 different purposes: First the list \lstinline![1 .. 10]! is first matched with \lstinline!1 :: [2 .. 10]!, and then we assume that we have solved the problem for \lstinline!square rest!, such that all we need to do is append \lstinline!1*1! to the beginning output from \lstinline!square rest!. Hence we get, \lstinline!square [1 .. 10]! $\curvearrowright$ \lstinline!1 * 1 :: square [2 .. 10]! $\curvearrowright$ \lstinline!1 * 1 :: (2 * 2 :: square [3 .. 10])! $\curvearrowright$ \dots \lstinline!1 * 1 :: (2 * 2 :: ... 10 * 10 :: [])!, where the stopping criterium is reached, when the \lstinline!elm :: rest! does not match with a, hence it is empty, which does match the wildcard pattern \lexeme{_}. More on functional programming in Section~\ref{chap:functional}
 
 The basic properties and members of lists are summarized in Table~\ref{tab:list}.\idxss{Length}\idxss{List.Empty}\idxss{IsEmpty}\idxss{Item}\idxss{Head}\idxss{Tail}\idxss{Cons}
 \begin{table}
@@ -131,7 +106,7 @@ In addition, lists have many other built-in functions, such as functions for con
 %
 \fs{listConversion}{The \lstinline!List! module contains functions for conversion to arrays and sequences.}
 %
-These and more will be discussed in Chapter~\ref{chap:collection} and Part~\ref{part:declarative}.
+These and more will be discussed in Chapter~\ref{chap:collection} and Part~\ref{part:declarative}.\jon{Add description of prepend and concatenation operator for lists.}
 
 It is possible to make multidimensional lists as lists of lists, e.g., 
 %
@@ -145,11 +120,11 @@ The example shows a \idx{ragged multidimensional list}, since each row has diffe
 One dimensional arrays or just arrays for short are mutable lists of the same type and follow a similar syntax as lists. Its grammar follows \idx{computation expressions}, which will be discussed in Section~\ref{sec:sequences}. Here we consider a subset of the grammar:
 %
 \begin{lstlisting}[language=ebnf]
-listOrArrayList =  expr | expr ";" listOrArrayList
-range-exp = expr ".." expr [".." expr]
 expr = ... 
-  | "[|" (listOrArrayList | ... | range-expr) "|]" (* computation array expression *)
-  | ...
+  | "[|" (exprSeq | rangeExpr) "|]" (*array*)
+
+exprSeq =  expr | expr ";" exprSeq;
+rangeExpr = expr ".." expr [".." expr];
 \end{lstlisting}
 %
 Thus the creation of arrays is identical to lists, but there is no explicit operator support for appending and concatenation, e.g.,
@@ -160,11 +135,9 @@ The array type is defined using the \keyword{array} keyword or alternatively the
 %
 \fs{arrayReassign}{Arrays are mutable in spite the missing \keyword{mutable} keyword.}
 %
-Notice that in spite the missing \keyword{mutable} keyword, the function \lstinline{square} still had the \idx{side-effect} of squaring alle entries in \lstinline{A}.  Arrays only support direct pattern matching, e.g.,
-%
-\fs{arrayPatternMatching}{Only simple pattern matching is allowed for arrays.}
-%
-The given example is the first example of a 2-dimensional array, which can be implemented as arrays of arrays and here written as \lstinline!string array array!. Below further discussion of on 2 and higher dimensional arrays be discussed.  Arrays support \idx{slicing}, that is, indexing an array with a range results in a copy of array with values corresponding to the range, e.g.,
+Notice that in spite the missing \keyword{mutable} keyword, the function \lstinline{square} still had the \idx{side-effect} of squaring alle entries in \lstinline{A}.  
+
+Arrays support \idx{slicing}, that is, indexing an array with a range results in a copy of array with values corresponding to the range, e.g.,
 %
 \fs{arraySlicing}{Examples of array slicing. Compare with Listing~\ref{listSlicing} and Listing~\ref{stringIndexing}.}
 %
