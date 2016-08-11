@@ -1,5 +1,5 @@
-\chapter{Ordered series of data}
-\label{chap:lists}\jon{possibly add maps and sets as well.}
+\chapter{Sequences and computation expressions}
+\label{chap:sequences}\jon{possibly add maps and sets as well.}
 F\# is tuned to work with ordered series, and there are several built-in lists with various properties making them useful for different tasks. E.g.,
 %
 \fs{tuplesQuadraticEq}{Using tuples to gather values.}
@@ -10,14 +10,31 @@ F\# has 4 built-in list types: strings, tuples, lists, arrays, and sequences. St
 tupleList = expr | expr "," tupleList
 listOrArrayList =  expr | expr ";" listOrArrayList
 range-exp = expr ".." expr [".." expr]
+comp-expr =
+  "let" pat "=" expr "in" comp-expr
+  | "use" pat = expr "in" comp-expr
+  | ("yield" | "yield!") expr
+  | "if" expr "then" comp-expr ["else" comp-expr]
+  | "match" expr "with" comp-rules
+  | "try" comp-expr "with" comp-rules
+  | "try" comp-expr "finally" expr
+  | "while" expr "do" expr ["done"]
+  | "for" ident "=" expr "to" expr "do" comp-expr ["done"]
+  | "for" pat "in" expr-or-range-expr "do" comp-expr ["done"]
+  | comp-expr ";" comp-expr
+short-comp-expr = "for" pat "in" (expr | range-expr) "->" expr
+comp-or-range-expr = comp-expr| short-comp-expr | range-expr
+comp-rule = pat pattern-guardopt "->" comp-expr
+comp-rules = comp-rule | comp-rule '|' comp-rules
 expr = ... 
   | tupleList
-  | "[" (listOrArrayList | range-exp "]" (* computation list expression *)
-  | "[|" (listOrArrayList | range-exp  "|]" (* computation array expression *)
+  | "[" (listOrArrayList | comp-or-range-expr) "]" (* computation list expression *)
+  | "[|" (listOrArrayList | comp-or-range-expr) "|]" (* computation array expression *)
+  | "seq" "{" comp-or-range-expr "}" (* computation expression *)
   | ...
 \end{lstlisting}
 %
-\spec{Spec-4.0: grammar for list and array expressions are subsets of computation list and array expressions.}\jon{pat is not explained, see Spec-4.0 Chapter 7.}Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these data structures in detail.
+\jon{Spec-4.0: grammar for list and array expressions are subsets of computation list and array expressions.}\jon{pat is not explained, see Spec-4.0 Chapter 7.}Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these data structures in detail.
 
 \section{Tuples}
 \idx[tuple]{Tuples} are unions of immutable types, 
@@ -202,7 +219,7 @@ Array2D and higher have a number of built-in functions that will be discussed in
 
 \section{Sequences}
 \label{sec:sequences}
-Sequences are lists, where the elements are build as needed. Examples are\spec{Mono does not support specification Spec-4.0 Section 6.3.11, seq {comp-expr}, in the form seq {3} or seq {3; 4}.}
+Sequences are lists, where the elements are build as needed. Examples are\jon{Mono does not support specification Spec-4.0 Section 6.3.11, seq {comp-expr}, in the form seq {3} or seq {3; 4}.}
 %
 \fso{seqExample}{Creating sequences by range explicitly stating elements, a range expressions, a computation expression, and an infinite computation expression}
 %
@@ -244,9 +261,9 @@ That sequences really are programs rather than values can be seen by the followi
 %
 In the example, we see that the \lstinline!printfn! function embedded in the definition is first executed, when the 3rd item is requested.
 
-\spec{Mono, missing support for Spec-4.0 Chapter 6, \lstinline!do!-\lstinline!in! in sequences. E.g., \lstinline!seq {let _ = printfn "hej" in yield 3}! is ok, but \lstinline!seq {do printfn "hej" in yield 3}! not. One could argue, that computation expression is the framework and that it is the seq implementation, which does not provide full access to the framework. but this is confusing, since seq gets special attention in the specification.}
+\jon{Mono, missing support for Spec-4.0 Chapter 6, \lstinline!do!-\lstinline!in! in sequences. E.g., \lstinline!seq {let _ = printfn "hej" in yield 3}! is ok, but \lstinline!seq {do printfn "hej" in yield 3}! not. One could argue, that computation expression is the framework and that it is the seq implementation, which does not provide full access to the framework. but this is confusing, since seq gets special attention in the specification.}
 
-The only difference between computation expression's programming constructs and the similar regular expressions constructs is that they must return a value with the \keyword{yield} or \keyword{yield!} keywords.\spec{Mono implements if-elif-else, but this is not in the specification.} The \keyword{try}-keyword constructions will be discussed in Chapter~\ref{chap:exceptions}, and the \keyword{use}-keyword is a variant of \keyword{let} but used in asynchronous computations, which will not be treated here.
+The only difference between computation expression's programming constructs and the similar regular expressions constructs is that they must return a value with the \keyword{yield} or \keyword{yield!} keywords.\jon{Mono implements if-elif-else, but this is not in the specification.} The \keyword{try}-keyword constructions will be discussed in Chapter~\ref{chap:exceptions}, and the \keyword{use}-keyword is a variant of \keyword{let} but used in asynchronous computations, which will not be treated here.
 
   % "let" pat "=" expr "in" comp-expr
   % | "use" pat = expr "in" comp-expr

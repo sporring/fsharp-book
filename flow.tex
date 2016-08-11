@@ -18,6 +18,7 @@ expr = ...
 \end{lstlisting}
 
 \section{For and while loops}
+\jon{I'm seriously considering to drop for-loops, match-, and function expressions! We don't need them to teach programming at this point.}
 Many programming constructs need to be repeated. The most basic example is counting, e.g., from 1 to 10 with a \idx{\keyword{for}}-loop,\jon{Is it clear enough that the body of the loop is repeated?}
 %
 \fso{count}{Counting from 1 to 10 using a \keyword{for}-loop.}
@@ -39,7 +40,7 @@ A more complicated example is,
 \begin{problem}
   Write a program that prints the $n$'th Fibonacci number.
 \end{problem}
-The Fibonacci numbers is the series of numbers $1,1,2,3,5,8,13\dots$, where the $\text{fib}(n) = \text{fib}(n-1)+\text{fib}(n-2)$, and they are related to Golden spirals shown in Figure~\ref{fig:goldenSpiral}.
+The Fibonacci numbers is the series of numbers $1,1,2,3,5,8,13\dots$, where the $\text{fib}(n) = \text{fib}(n-1)+\text{fib}(n-2)$, and they are related to Golden spirals shown in Figure~\ref{fig:goldenSpiral}.\jon{Should add to the figure, quadratic paper squares and area annotations to strenghten the relation to Fibonacci series.}
 \begin{figure}
   \centering
   \includegraphics[width=0.45\linewidth]{Fibonacci_spiral_34}
@@ -99,7 +100,7 @@ where the \lstinline[language=ebnf]!expr! following \idx{\keyword{if}} and \idx{
 %
 Note that both \keyword{elif} and \keyword{else} branches are optional, which may cause problems, e.g., both \lstinline!let a = if true then 3! and \lstinline!let a = if true then 3 elif false then 4!  will be invalid, since F\# is not smart enough to realize that the type of the expression is uniquely determined. Instead F\# looks for the \keyword{else} to ensure all cases have been covered, and that \lstinline!a! always will be given a unique value of the same type regardless of the branches taken in the conditional statement, hence, \lstinline!let a = if true then 3 else 4!  is the only valid expression of the 3. However, the omitted branches are assumed to return \lexeme{()}, and thus it is fine to say \lstinline!let a = if true then ()! and \lstinline!if true then printfn "hej"!
 
-\subsection{Programming intermezzo}
+\section{Programming intermezzo}
 Using loops and conditional expressions we are now able to solve the following problem
 \begin{problem}
   Given an integer on decimal form, write its equivalent value on binary form
