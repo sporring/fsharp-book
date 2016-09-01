@@ -3,6 +3,12 @@
 \usepackage[T1]{fontenc} % ensure that all the characters in characterSets.tex prints
 \usepackage{upquote} % \textcent
 
+% A background text to prevent wide distribution
+\usepackage{draftwatermark}
+\SetWatermarkText{DRAFT}
+\SetWatermarkScale{6}
+\SetWatermarkLightness{.95}
+
 % Page setup
 \usepackage[margin=25mm,outer=35mm,marginparsep=5mm]{geometry}
 
@@ -124,7 +130,7 @@
   %belowskip=0pt,
   %resetmargins=true,
   captionpos=b,
-  backgroundcolor=\color{green!10!white},
+  backgroundcolor=\color{blue!10!white},
 }
 \lstdefinelanguage{console}{%
   keywords={},
@@ -137,7 +143,7 @@
   % belowskip=0pt,
   %resetmargins=true,
   captionpos=b,
-  backgroundcolor=\color{yellow!10!white},
+  backgroundcolor=\color{green!10!white},
 }
 \lstset{language=fsharp, frame=single}
 \usepackage{caption}
@@ -189,6 +195,37 @@
 
 % Scratch out math
 \usepackage{cancel}
+
+% Draw arrows between elements
+\usepackage{tikz}
+%\usepackage{sphack} % make overlays invisible where stated in text
+\usetikzlibrary{arrows,shapes,calc,decorations.pathreplacing}
+\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
+\newcommand*{\DrawArrow}[3][]{%
+  % #1 = draw options
+  % #2 = left point
+  % #3 = right point
+  \begin{tikzpicture}[overlay,remember picture]
+    \draw [-latex, #1,ultra thick,red] ($(#2)+(0.1em,0.5ex)$) to ($(#3)+(0,0.5ex)$);
+  \end{tikzpicture}%
+}%
+\newcommand*{\AddNote}[4]{%
+  \begin{tikzpicture}[overlay, remember picture]
+    \draw [decoration={brace,amplitude=0.5em},decorate,ultra thick,red]
+    ($(#3)!([yshift=1.5ex]#1)!($(#3)-(0,1)$)$) -- ($(#3)!(#2)!($(#3)-(0,1)$)$)
+    node [align=left, text width=0cm, pos=0.5, anchor=west, xshift=.2cm] {#4};
+  \end{tikzpicture}
+}%
+\newcommand{\FrameArea}[2]{%
+  % #1 = top left point
+  % #2 = bottom right point
+  % The overlay is drawn in the margin in order not to screw with
+  % horizontal spacing.
+  \marginpar{\begin{tikzpicture}[overlay,remember picture]
+      \draw[red,rounded corners] ([shift={(-2pt,1.9ex)}] #1)  rectangle  ([shift={(2pt,-.9ex)}] #2);
+    \end{tikzpicture}}
+}%
+
 
 % Notes to self
 \newcommand{\jon}[1]{\footnote{Todo: \textbf{#1}}}
