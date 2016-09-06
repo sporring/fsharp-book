@@ -67,17 +67,18 @@
 %% lstlisting stuff
 \usepackage{listings}
 %\usepackage{chngcntr}
-% \usepackage[framemethod=tikz]{mdframed}
+%\usepackage[framemethod=tikz]{mdframed}
+%\surroundwithmdframed[linecolor=red,linewidth=1.5pt,roundcorner=10pt]{listings}
 % \surroundwithmdframed[
-%   skipabove=10pt,
-%   innertopmargin=0pt,
-% %  rightmargin=0pt,
-% %  innerrightmargin=0pt,
-%   skipbelow=0pt,
-%   innerbottommargin=0pt
-% %  leftmargin=0pt,
-% %  innerleftmargin=0pt,
-%   ]{lstlisting}
+% skipabove=10pt,
+% innertopmargin=0pt,
+% % rightmargin=0pt,
+% % innerrightmargin=0pt,
+% skipbelow=0pt,
+% innerbottommargin=0pt
+% % leftmargin=0pt,
+% % innerleftmargin=0pt,
+% ]{lstlisting}
 % \mdfsetup{% 
 %   backgroundcolor=lightgray!10,
 %   roundcorner=5pt}
@@ -191,7 +192,23 @@
 \setlength\parindent{0pt}
 
 % We want to emphasize problem formulation
-\newenvironment{problem}{\begin{quote}}{\end{quote}}
+\usepackage{tcolorbox}
+%\tcbuselibrary{listings}
+%\newenvironment{problem}{\begin{quote}}{\end{quote}}
+%\newmdenv[linecolor=black,linewidth=1.5pt,roundcorner=10pt,frametitle={Problem:}]{problem}
+% \newtcblisting{problem}{%
+%   colback=red!15,
+%   colframe=red!75!black,
+%   arc=5pt,
+%   listing only,
+%   title={Problem:}
+% }
+\newtcolorbox{problem}[1][]{%
+  title={Problem:},
+  colback=blue!5!white,
+  colframe=white!75!black,
+  fonttitle=\bfseries, 
+  #1}
 
 % Scratch out math
 \usepackage{cancel}
