@@ -64,8 +64,38 @@
 \newcommand{\lexeme}[1]{\lstinline[language=fsharp]|#1|}
 \makeindex
 
+% We want to emphasize problem formulation
+\usepackage{tcolorbox}
+\tcbset{%
+  colframe=white!75!black,
+  fonttitle=\bfseries, 
+  leftrule=3mm,
+  sharp corners=downhill,
+  colback=green!10!white,
+  left=0mm,
+  top=0mm,
+  right=0mm,
+  bottom=0mm,
+  middle=0mm,
+}
+%\tcbuselibrary{listings}
+%\newenvironment{problem}{\begin{quote}}{\end{quote}}
+%\newmdenv[linecolor=black,linewidth=1.5pt,roundcorner=10pt,frametitle={Problem:}]{problem}
+% \newtcblisting{problem}{%
+%   colback=red!15,
+%   colframe=red!75!black,
+%   arc=5pt,
+%   listing only,
+%   title={Problem:}
+% }
+\newtcolorbox[auto counter, number within=chapter]{problem}[1][]{%
+  title=Problem~\thetcbcounter:,
+  colback=blue!5!white,
+  #1}
+
 %% lstlisting stuff
 \usepackage{listings}
+\usepackage{moreverb} % To use verbatimwrite to write listing to file.
 %\usepackage{chngcntr}
 %\usepackage[framemethod=tikz]{mdframed}
 %\surroundwithmdframed[linecolor=red,linewidth=1.5pt,roundcorner=10pt]{listings}
@@ -110,8 +140,8 @@
   %aboveskip=0pt, 
   %belowskip=0pt,
   %resetmargins=true,
-  captionpos=b,
-  backgroundcolor=\color{black!5!white},
+  % captionpos=b,
+  % backgroundcolor=\color{black!5!white},
 }
 \lstdefinelanguage{ebnf}{%
   keywords={},
@@ -119,19 +149,19 @@
   otherkeywords={},
   keywordstyle=\color{keywordsColor},
   % sensitive=true,
-   basicstyle=\fontfamily{pcr}\selectfont\lst@ifdisplaystyle\small\fi, 
-   breaklines=true,
+  basicstyle=\fontfamily{pcr}\selectfont\lst@ifdisplaystyle\small\fi, 
+  breaklines=true,
   morecomment=[s][\color{commentsColor}]{{(*}{*)}},
   morestring=[b]",
   morestring=[b]',
   alsoletter={\\},
   showstringspaces=false,
-  %stringstyle=\color{stringsColor},
-  %aboveskip=0pt, 
-  %belowskip=0pt,
-  %resetmargins=true,
-  captionpos=b,
-  backgroundcolor=\color{blue!10!white},
+  % stringstyle=\color{stringsColor},
+  % aboveskip=0pt, 
+  % belowskip=0pt,
+  % resetmargins=true,
+  % captionpos=b,
+  % backgroundcolor=\color{blue!10!white},
 }
 \lstdefinelanguage{console}{%
   keywords={},
@@ -142,37 +172,66 @@
   showstringspaces=false,
   % aboveskip=0pt, 
   % belowskip=0pt,
-  %resetmargins=true,
-  captionpos=b,
-  backgroundcolor=\color{green!10!white},
+  % resetmargins=true,
+  % captionpos=b,
+  % backgroundcolor=\color{green!10!white},
 }
-\lstset{language=fsharp, frame=single}
+% \lstset{language=fsharp, frame=single}
+\lstset{language=fsharp,aboveskip=0pt,belowskip=0pt}
 \usepackage{caption}
-\DeclareCaptionStyle{listing} [justification=raggedright,labelfont=bf]{}
-\captionsetup[lstlisting]{style=listing}
+%\DeclareCaptionStyle{listing} [justification=raggedright,labelfont=bf]{}
+%\captionsetup[lstlisting]{style=listing}
 
 \usepackage{verbdef}
 \verbdef{\cmdl}{>}
 
 \newcommand{\src}{src}
+\newcounter{programCounter}
+\newtcolorbox[auto counter, number within=chapter]{codeNOutput}[2][]{%
+  title={Program~\thetcbcounter#2},
+  % colback=blue!5!white,
+  #1}
 \newcommand{\fs}[2]{
-  \lstinputlisting[language=fsharp]{\src/#1.fsx}
-  \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{\src/#1.out}
+  \begin{codeNOutput}{, #1.fsx:\\#2}
+    \lstinputlisting[language=fsharp]{\src/#1.fsx}
+    \tcblower %\tcbsubtitle[before skip=\baselineskip]{Output:}
+    % \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{\src/#1.out}
+    \lstinputlisting[language=console]{\src/#1.out}
+    \label{#1}
+  \end{codeNOutput}
 }
 \newcommand{\fsa}[3]{
-  \lstinputlisting[language=fsharp,#2]{\src/#1.fsx}
-  \lstinputlisting[language=console,caption={#1.fsx - #3},label=#1]{\src/#1.out}
+  \begin{codeNOutput}{, #1.fsx:\\#3}
+    \lstinputlisting[language=fsharp,#2]{\src/#1.fsx}
+    \tcblower %\tcbsubtitle[before skip=\baselineskip]{Output:}
+    \lstinputlisting[language=console]{\src/#1.out}
+    \label{#1}
+  \end{codeNOutput}
 }
 \newcommand{\fse}[2]{
-  \lstinputlisting[language=fsharp,caption={#2},label=#1]{\src/#1.fsx}
+  \begin{codeNOutput}{: #2}
+    \lstinputlisting[language=fsharp]{\src/#1.fsx}
+    \label{#1}
+  \end{codeNOutput}
+}
+\newcommand{\fsebnf}[2]{
+  \begin{codeNOutput}[colback=black!10!white]{: #2}
+    \lstinputlisting[language=ebnf]{#1}
+    \label{#1}
+  \end{codeNOutput}
 }
 \newcommand{\fso}[2]{
-  \lstinputlisting[language=fsharp,caption={fsharpi, #2},label=#1]{\src/#1.out}
+  \begin{codeNOutput}[colback=yellow!5!white]{, #1.fsx:\\#2}
+    \lstinputlisting[language=console]{\src/#1.out}
+    \label{#1}
+  \end{codeNOutput}
 }
 \newcommand{\fsi}[2]{
-  \begin{minipage}[t]{#2\linewidth}
+  \begin{codeNOutput}{:}
+    %\begin{minipage}[t]{#2\linewidth}
     \lstinputlisting[aboveskip=0pt, belowskip=0pt]{\src/#1.out}
-  \end{minipage}
+    % \end{minipage}
+  \end{codeNOutput}
 }
 
 % Get counters from references for firstnumber references in lstinputlisting
@@ -185,30 +244,11 @@
 % \lstinputlisting[firstline=\thelstFrom,lastline=\thelstTo,escapechar=|]{\src/dynamicScopeTracing.fsx}
 
 % highlighted text snippets
-\newcommand{\advice}[1]{\marginpar{Advice}\emph{#1}}
-\newcommand{\advanced}[1]{\marginpar{Advanced material}\emph{#1}}
+\newcommand{\advice}[1]{\marginpar{Advice}\textbf{#1}}
+\newcommand{\advanced}[1]{\marginpar{Advanced material}\textbf{#1}}
 
 % paragraph indentation is stupid
 \setlength\parindent{0pt}
-
-% We want to emphasize problem formulation
-\usepackage{tcolorbox}
-%\tcbuselibrary{listings}
-%\newenvironment{problem}{\begin{quote}}{\end{quote}}
-%\newmdenv[linecolor=black,linewidth=1.5pt,roundcorner=10pt,frametitle={Problem:}]{problem}
-% \newtcblisting{problem}{%
-%   colback=red!15,
-%   colframe=red!75!black,
-%   arc=5pt,
-%   listing only,
-%   title={Problem:}
-% }
-\newtcolorbox{problem}[1][]{%
-  title={Problem:},
-  colback=blue!5!white,
-  colframe=white!75!black,
-  fonttitle=\bfseries, 
-  #1}
 
 % Scratch out math
 \usepackage{cancel}

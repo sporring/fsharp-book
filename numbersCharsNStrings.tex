@@ -71,24 +71,26 @@ Besides these built-in types, F\# is designed such that it is easy to define new
 
 Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base} 10 means that for a number consisting of a sequence of digits separated by a \idx{decimal point}, where each \idx{digit} can have values $d \in \{0,1,2,\ldots,9\}$, and the value, which each digit represents is proportional to its position. The part befor the decimal point is called the \idx{whole part} and the part after is called the \idx{fractional part} of the number. The whole part without a decimal point and a fractional part is called an \idx{integer number}. As an example \lstinline!35.7! is a decimal number, whose value is $3\cdot 10^1+5\cdot 10^0+7\cdot 10^{-1}$. In F\# a decimal number is called a \idx{floating point number} and in this text we use \idx{Extended Backus-Naur Form} (\idx{EBNF}) to describe the grammar of F\#, the decimal number just described is given as,
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 dInt = dDigit {dDigit};
 dFloat = dInt "." {dDigit};
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{Decimal numbers.}
 %
 meaning that a \lstinline[language=ebnf]!dDigit! is either "0'' or "1" or \dots or "9'', an \lstinline[language=ebnf]!dInt! is 1 or more \lstinline[language=ebnf]!dDigit!, and a \lstinline[language=ebnf]!dFloat! is 1 or more digits, a dot and 0 or more digits. There is no space between the digits and between digits and the dot. So \lstinline!3!, \lstinline!049! are examples of integers, \lstinline!34.89! \lstinline!3.! are examples of floats, while \lstinline!.5! is neither.  Floating point numbers may alternatively be given using \idx{scientific notation}, such as \lstinline!3.5e-4! and \lstinline!4e2!, which means the number $3.5\cdot 10^{-4} = 0.00035$ and $4\cdot 10^2=400$. To describe this in EBNF we write
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 sFloat = (dInt | dFloat) ("e" | "E" ) ["+" | "-"] dInt;
 float = dFloat | sFloat;
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{Scientific notation.}
 %
 Note that the number before the lexeme \lexeme{e} may be an \lstinline[language=ebnf]!dInt! or a \lstinline[language=ebnf]!dFloat!, but the exponent value must be an \lstinline[language=ebnf]!dInt!.
 
 The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^1=5.25$. Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}, where octals uses 8 as basis and can be written in binary using 3 bits, while hexadecimal numbers uses 16 as basis and can be written in binary using 4 bits. Octals and hexadecimals thus conveniently serve as shorthand for the much longer binary representation. F\# has a syntax for writing integers on binary, octal, decimal, and hexadecimal numbers as,
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 bDigit = "0" | "1";
 oDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7";
 xDigit =  
@@ -100,13 +102,14 @@ octInt = "0" ("o" | "O") oDigit {oDigit};
 hexInt = "0" ("x" | "X") xDigit {xDigit};
 xInt = bitInt | octInt | hexInt;
 int = dInt | xInt;
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{Binary, heximal, and octal numbers.}
 %
 For example \lstinline!367! is an \lstinline[language=ebnf]!dInt!, \lstinline!0b101101111!, \lstinline!0o557!, and \lstinline!0x16f! is a \lstinline[language=ebnf]!bitInt!, \lstinline[language=ebnf]!octInt!, and \lstinline[language=ebnf]!hexInt!, i.e., a binary, an octal, and a hexadecimal number, they are examples of an \lstinline[language=ebnf]!xInt! and representations of the same number 367. In contrast, \lstinline!0b12! and \lstinline!ff! are neither an \lstinline[language=ebnf]!dInt! nor an \lstinline[language=ebnf]!xInt!.
 
 A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks, see Appendix~\ref{sec:unicode} for a description of code points.\spec{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The EBNF for characters is,
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 codePoint = ?Any unicode codepoint?;
 escapeChar = 
   "\" ("b" | "n" | "r" | "t" | "\" | '"' | "'" | "a" | "f" | "v")
@@ -114,7 +117,8 @@ escapeChar =
   | "\U" xDigit xDigit xDigit xDigit xDigit xDigit xDigit xDigit
   | "\" dDigit dDigit dDigit;
 char = "'" codePoint | escapeChar "'";
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{Character escape sequences.}
 % 
 where \lstinline[language=ebnf]!codePoint! is a UTF8 encoding of a char. The escape characters \lstinline[language=ebnf]{escapeChar} are special sequences that are interpreted as a single code point shown in Table~\ref{tab:escapeChar}. The trigraph \lstinline|\DDD| uses decimal specification for the first 256 code points, and the hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any code point.
 \begin{table}
@@ -143,21 +147,23 @@ Examples of a \lstinline[language=ebnf]!char! are \lstinline{'a'}, \lstinline{'_
 
 A \idx{string} is a sequence of characters enclosed in double quotation marks,\spec{Spec-4.0 p. 28-29: \texttt{simple-string-char} is undefined, \texttt{string-elem} is unused.}
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 stringChar = char - '"';
 string = '"' { stringChar }  '"';
 verbatimString = '@"' {char - ('"' | '\"' )| '""'} '"';
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{Strings.}
 % 
 Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. \idx[newline]{Newlines} and following \idx[whitespace]{whitespaces},
-\begin{lstlisting}[language=ebnf,label=newlineNWhitespace]
+\begin{verbatimwrite}{tmp.ebnf}
 whitespace = " " {" "};
 newline = "\n" | "\r" "\n";
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{Whitespace and newline.}
 are taken literally, but may be ignored by a preceding \textbackslash character. Further examples of strings are,
 %
 \fso{stringLiterals}{Examples of string literals.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > "abcde";;
 % val it : string = "abcde"
 % > "abc
@@ -170,7 +176,8 @@ are taken literally, but may be ignored by a preceding \textbackslash character.
 % > "abc\nde";;
 % val it : string = "abc
 % de"
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 The response is shown in double quotation marks, which are not part of the string. 
 
@@ -210,7 +217,7 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
 \end{table}
 Examples are,
 \fso{namedLiterals}{Named and implied literals.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, Named and implied literals.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > 3;;
 % val it : int = 3
 % > 4u;; 
@@ -225,30 +232,33 @@ Examples are,
 % val it : byte = 66uy
 % > "ABC";;
 % val it : string = "ABC"
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 Strings literals may be \idx{verbatim} by the @-notation% or triple double quotation marks,
 meaning that the escape sequences are not converted to their code point., e.g.,
 %
 \fso{stringVerbatim}{Examples of a string literal.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, examples of string literals.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > @"abc\nde";;
 % val it : string = "abc\nde"
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 %For strings containing double quotation marks, verbatim literals has 2 possible notations, either use the @-notation and escaping double quotation marks with an extra double quotation mark, or use triple double quotation marks. \advice{The triple double quotation marks notation may not contain substrings that are triple double quotation marks, and thus @-notation is preferred.}
 
 Many basic types are compatible and the type of a literal may be changed by \idx{type casting}. E.g.,
 %
 \fso{upcasting}{Casting an integer to a floating point number.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, casting an integer to a floating point number.},label=upcasting]
+% \begiverbatimwrite}{tmp.ebnf}
 % > float 3;;
 % val it : float = 3.0
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 which is a \lstinline!float!, since when \lstinline|float| is given an argument, then it acts as a function rather than a type, and for the integer \lstinline|3| it returns the floating point number \lstinline|3.0|.  For more on functions see Chapter~\ref{chap:let}. Boolean values are often treated as the integer values 0 and 1, but no short-hand function names exists for their conversions. Instead use,
 %
 \fso{castingBooleans}{Casting booleans.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, casting booleans.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > System.Convert.ToBoolean 1;;
 % val it : bool = true
 % > System.Convert.ToBoolean 0;;
@@ -257,25 +267,28 @@ which is a \lstinline!float!, since when \lstinline|float| is given an argument,
 % val it : int = 1
 % > System.Convert.ToInt32 false;;
 % val it : int = 0
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 Here \lstinline|System.Convert.ToBoolean| is the identifier of a function \lstinline|ToBoolean|, which is a \idx{member} of the \idx{class} \lstinline|Convert| that is included in the \idx{namespace} \lstinline|System|. Namespaces, classes, and members are all part of Structured programming to be discussed in Part~\ref{part:structured}.
 
 Type casting is often a destructive operation, e.g., type casting a \lstinline{float} to \lstinline{int} removes the fractional part without rounding,
 %
 \fso{downcasting}{Fractional part is removed by downcasting.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, Fractional part is removed by downcasting.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > int 357.6;;
 % val it : int = 357
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %%\fs{quickStartDownCast}{Fractional part is removed by downcasting.}
 %%
 Here we type casted to a lesser type, in the sense that integers is a subset of floating point numbers, and this is called \idx{downcasting}. The opposite is called \idx{upcasting} and is often non-destructive, as Listing~\ref{upcasting} showed, where an integer was casted to a float while retaining its value. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$ and $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting as follows,
 %
 \fso{rounding}{Fractional part is removed by downcasting.}
-% \begin{lstlisting}[language=fsharp,label=rounding,caption={fsharpi, Fractional part is removed by downcasting.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > int (357.6 + 0.5);;
 % val it : int = 358
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 % %\fs{rounding}{The rounding function may be obtained by downcasting.}
 %
 since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasting removes the fractional part resulting in $y$. And if $y.x\in [y.5, y+1)$, then $y.x+0.5\in [y+1,y+1.5)$, from which downcasting removes the fractional part resulting in $y+1$. Hence, the result is rounding. 
@@ -283,7 +296,7 @@ since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasti
 \section{Operators on basic types}
 Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an \idx{infix operator}. Expressions is the basic building block of all F\# programs, and its grammar has many possible options. The grammar for expressions are defined recursively, and some of it is given by, \spec{Spec-4.0 Section 4.3: const is missing uint8, int8 nativeint, unativeint.}
 %
-\begin{lstlisting}[language=ebnf,caption=expressionArithmetic]
+\begin{verbatimwrite}{tmp.ebnf}
 const =
   byte
   | sbyte
@@ -311,7 +324,8 @@ expr = ...
   | prefixOp expr (*prefix application*)
   | expr ".[" expr "]" (*index lookup, no space before "."*)
   | expr ".[" sliceRange "]" (*index lookup, no space before "."*)
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{Expressions.}
 %
 Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}.\idxss{\lstinline{abs}}\idxss{\lstinline{acos}}\idxss{\lstinline{asin}}\idxss{\lstinline{atan}}\idxss{\lstinline{atan2}}\idxss{\lstinline{ceil}}\idxss{\lstinline{cos}}\idxss{\lstinline{cosh}}\idxss{\lstinline{exp}}\idxss{\lstinline{floor}}\idxss{\lstinline{log}}\idxss{\lstinline{log10}}\idxss{\lstinline{max}}\idxss{\lstinline{min}}\idxss{\lstinline{pown}}\idxss{\lstinline{round}}\idxss{\lstinline{sign}}\idxss{\lstinline{sin}}\idxss{\lstinline{sinh}}\idxss{\lstinline{sqrt}}\idxss{\lstinline{tan}}\idxss{\lstinline{tanh}}
 \begin{table}
@@ -472,10 +486,11 @@ Arithmetic on various types will be discussed in detail in the following section
 If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
 %
 \fso{simpleArithmetic}{A simple arithmetic expression.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, a simple arithmetic expression.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > 3 + 4 * 5;;
 % val it : int = 23
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} lexemes \lexeme{+} and \lexeme{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.\idxs{boolean or}\idxs{boolean and}
 \begin{table}
   \centering
@@ -509,7 +524,7 @@ Here, the addition and multiplication functions are shown in \idx{infix notation
 Associativity implies the order in which calculations are performed for operators of same precedence. For some operators and type combinations association matters little, e.g., multiplication associates to the left and exponentiation associates to the right, e.g., in\spec{Spec-4.0, Table 18.2.1 appears to be missing boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
 %
 \fso{precedence}{Precedences rules define implicite parentheses.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, precedences rules define implicite parentheses.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 3.0*4.0*5.0
 % - let b = (3.0*4.0)*5.0
 % - let c = 3.0*(4.0*5.0);;
@@ -525,7 +540,8 @@ Associativity implies the order in which calculations are performed for operator
 % val d : float = 262144.0
 % val e : float = 4096.0
 % val f : float = 262144.0
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 the expression for \lstinline|3.0 * 4.0 * 5.0| associates to the left, and thus is interpreted as \mbox{\lstinline|(3.0 * 4.0) * 5.0|,} but gives the same results as \lstinline|3.0 * (4.0 * 5.0)|, since association does not matter for multiplication of numbers. However, the expression for \lstinline|4.0 ** 3.0 ** 2.0| associates to the right, and thus is interpreted as \lstinline|4.0 ** (3.0 ** 2.0)|, which is quite different from \lstinline|(4.0 ** 3.0) ** 2.0|. \advice{Whenever in doubt of association or any other basic semantic rules, it is a good idea to use parentheses as here. It is also a good idea to test your understanding of the syntax and semantic rules by simplest possible scripts, as shown here as well.}
 
 \section{Boolean arithmetic}
@@ -548,7 +564,7 @@ Boolean arithmetic is the basis of almost all computers and particularly importa
 That is, the multiplication and addition are good mnemonics for remembering the result of the 'and' and 'or' operators. In F\# the values \lstinline|true| and \lstinline|false| are used, and the operators \lstinline|&&| for 'and', \lstinline+||+ for 'or', and the function \lstinline|not| for 'not', such that the above table is reproduced by,
 %
 \fso{truthTable}{Boolean operators and truth tables.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, boolean operators and truth tables.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let t = true
 % - let f = false
 % - printfn "a     b     a*b   a+b   not a"                                       
@@ -565,7 +581,8 @@ That is, the multiplication and addition are good mnemonics for remembering the 
 % val t : bool = true
 % val f : bool = false
 % val it : unit = ()
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 Spacing produced using the \lstinline|printfn| function is not elegant. In Section~\ref{sec:printf} we will discuss better options for producing more beautiful output. Notice, that the arguments for \lstinline|printfn| was given on the next line with indentation. Generally, F\# ignores newlines and whitespaces except when using the ligthweight syntax discussed in Chapter~\ref{chap:let}.
 
@@ -575,7 +592,7 @@ The set of integers is infinitely large, but since all computers have limited re
 Table~\ref{tab:preNInfixOperators}, \ref{tab:comparisonOperators}, and~\ref{tab:arithmeticFunctions} gives examples operators and functions pre-defined for integer types. Notice that fewer functions are available for integers than for floating point numbers. For most addition, subtraction, multiplication, and negation the result straight forward. However, performing arithmetic operations on integers requires extra care, since the result since they may cause \idx{overflow}, \idx{underflow}, e.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the following example,
 %
 \fso{overflow}{Adding integers may cause overflow.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, adding integers may cause overflow.},label=overflow]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 100y 
 % - let b = 30y 
 % - let c = a+b;;
@@ -583,12 +600,13 @@ Table~\ref{tab:preNInfixOperators}, \ref{tab:comparisonOperators}, and~\ref{tab:
 % val a : sbyte = 100y
 % val b : sbyte = 30y
 % val c : sbyte = -126y
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 Here $100+30=130$, which is larger than the biggest \lstinline|sbyte|, and the result is an overflow. Similarly, we get an underflow, when the arithmetic result falls below the smallest value storable in an \lstinline|sbyte|,
 %
 \fso{underflow}{Subtracting integers may cause underflow.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, subtracting integers may cause underflow}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = -100y  
 % - let b = -30y  
 % - let c = a+b;;
@@ -596,12 +614,13 @@ Here $100+30=130$, which is larger than the biggest \lstinline|sbyte|, and the r
 % val a : sbyte = -100y
 % val b : sbyte = -30y
 % val c : sbyte = 126y
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 I.e., we were expecting a negative number, but got a postive number instead.
 %Integers can also be written in binary, octal, or hexadecimal format using the prefixes \lstinline|0b|, \lstinline|0o|, and \lstinline|0x|, e.g.,
 %
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, integer types may be specified as binary, octal, and hexadecimal numbers.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 0b1011
 % - let b = 0o13
 % - let c = 0xb;;
@@ -609,37 +628,40 @@ I.e., we were expecting a negative number, but got a postive number instead.
 % val a : int = 11
 % val b : int = 11
 % val c : int = 11
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 % For a description of binary representations see Appendix~\ref{sec:binary}. 
 
 The overflow error in Listing~\ref{overflow} can be understood in terms of the binary representation of integers: In binary, $130=10000010_2$, and this binary pattern is interpreted differently as \lstinline{byte} and \lstinline{sbyte},
 %
 \fso{overflowBits}{The left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 0b10000010uy
 % - let b = 0b10000010y;;
 %
 % val a : byte = 130uy
 % val b : sbyte = -126y
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$ causes the left-most bit to be used, then this is wrongly interpreted as a negative number, when stored in an \lstinline{sbyte}. Similar arguments can be made explaining underflows.
 
 The division and remainder operators \idx{integer division}, which discards the fractional part after division, and the \idx{remainder} operator calculates the remainder after integer division, e.g.,
 %
 \fso{integerDivisionRemainder}{Integer division and remainder operators.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer division and remainder operators.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 7 / 3
 % - let b = 7 % 3;;
 
 % val a : int = 2
 % val b : int = 1
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 Together integer division and remainder is a lossless representation of the original number as,
 %
 \fso{integerDivisionRemainderLossless}{Integer division and remainder is a lossless representation of an integer, compare with Listing~\ref{integerDivisionRemainder}.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary division and remainder is a lossless representation of an integer.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let x = 7
 % - let whole = x / 3
 % - let remainder = x % 3
@@ -649,7 +671,8 @@ Together integer division and remainder is a lossless representation of the orig
 % val whole : int = 2
 % val remainder : int = 1
 % val y : int = 7
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 And we see that integer division of 7 by 3 followed by multiplication by 3 is less that 7, and the difference is \lstinline!7 % 3!.
 
@@ -657,24 +680,26 @@ Notice that neither overflow nor underflow error gave rise to an error message, 
  Dividing any non-zero number with 0 is infinite, which is also outside the domain of any of the integer types, but in this case, F\# casts an \idx{exception},
 %
 \fso{integerDivisionByZeroError}{Integer division by zero causes an exception run-time error.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, integer division by zero causes an exception run-time error.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > 3/0;; 
 % System.DivideByZeroException: Attempted to divide by zero.
 %   at <StartupCode$FSI_0007>.$FSI_0007.main@ () <0x6b78180 + 0x0000e> in <filename unknown>:0 
 %   at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&)
 %   at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) <0x1a55ba0 + 0x000a1> in <filename unknown>:0 
 % Stopped due to error
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 The output looks daunting at first sight, but the first and last line of the error message are the most important parts, which tells us what exception was cast and why the program stopped. The middle are technical details concerning which part of the program caused this, and can be ignored for the time being. Exceptions are a type of \idx{run-time error}, and are treated in Chapter~\ref{chap:exceptions}
 
 Integer exponentiation is not defined as an operator, but this is available the built-in function \lstinline|pown|, e.g.,
 %
 \fso{integerPown}{Integer exponent function.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, integer exponentiation function, and the irrelevant identifier.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > pown 2 5;;
 % val it : int = 32
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 which is equal to $2^5$.
 
@@ -682,18 +707,20 @@ which is equal to $2^5$.
 %\begin{description}
 % \item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
 %   % 
-%   \begin{lstlisting}[language=fsharp,caption={fsharpi, unary integer negation operator.}]
+%   \beverbatimwrite}{tmp.ebnf}
 %     > let a = 5 - let b = -a;;
     
 %     val a : int = 5 val b : int = -5
-%   \end{lstlisting}
+%   \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 % \item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|:] These are binary operators, where addition, subtraction and multiplication performs the usual operations,
 %   % 
-%   \begin{lstlisting}[language=fsharp,caption={fsharpi, binary integer addition, subtraction, and multiplication operators.}]
+%   \beverbatimwrite}{tmp.ebnf}
 %     > let a = 7 + 3 - let b = 7 - 3 - let c = 7 * 3;;
     
 %     val a : int = 10 val b : int = 4 val c : int = 21
-%   \end{lstlisting}
+%   \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 
 For binary arithmetic on integers, the following operators are available:
 \lstinline{op1 <<< op2}, which shifts the bit pattern of \lstinline|op1| \lstinline|op2| positions to the left insert 0's to right;
@@ -717,7 +744,7 @@ For binary arithmetic on integers, the following operators are available:
   \label{tab:xor}
 \end{table}
 % Unfortunately, there are no built-ind functions to output integers on binary form, so to understand the output of the following program,
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, the left most bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 0b11000011uy  
 % - let b = a <<< 1
 % - let c = a >>> 1
@@ -729,7 +756,8 @@ For binary arithmetic on integers, the following operators are available:
 % val c : byte = 97uy
 % val d : byte = 60uy
 % val e : byte = 60uy
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 % we must consider the 8-bit binary form of the unsigned integers: $195 = 11000011_2$, $134 = 10000110_2$, $97 = 01100001_2$, and $60 = 00111100_2$, which agrees with the definitions. 
 
 \section{Floating point arithmetic}
@@ -741,17 +769,18 @@ Table~\ref{tab:preNInfixOperators}, \ref{tab:comparisonOperators}, and~\ref{tab:
 The remainder operator for floats calculates the remainder after division and discarding the fractional part,
 %
 \fso{floatDivisionRemainder}{Floating point division and remainder operators.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point division and remainder operators.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 7.0 / 3.0
 % - let b = 7.0 % 3.0;;
 
 % val a : int = 2.0
 % val b : int = 1.0
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 The remainder for floating point numbers can be fractional, but division, discarding fractional part, and remainder is still a lossless representation of the original number as,
 %
 \fso{floatDivisionRemainderLossless}{Floating point division, truncation, and remainder is a lossless representation of a number.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, floating point division, truncation, and remainder is a lossless representation of a number.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let x = 7.0
 % - let division = x / 3.2
 % - let whole = float (int division)
@@ -763,7 +792,8 @@ The remainder for floating point numbers can be fractional, but division, discar
 % val whole : float = 2.0
 % val remainder : float = 0.6
 % val y : float = 7.0
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %And we see that \lstinline|x| and \lstinline|y| is bound to the same value.  
 
 
@@ -772,16 +802,17 @@ The remainder for floating point numbers can be fractional, but division, discar
 % \begin{description}
 % \item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
 % %
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, unary floating point negation operator.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 5.0 
 % - let b = -a;;
 
 % val a : float = 5.0
 % val b : float = -5.0
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 % \item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|, \lstinline|op / op|:] These are binary operators, where addition, subtraction, multiplication, and division performs the usual operations, 
 % %
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point addition, subtraction, multiplication, and division operators.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 7.0 + 3.0
 % - let b = 7.0 - 3.0
 % - let c = 7.0 * 3.0
@@ -791,29 +822,32 @@ The remainder for floating point numbers can be fractional, but division, discar
 % val b : float = 4.0
 % val c : float = 21.0
 % val d : float = 2.333333333
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 % \item[\lstinline|op \% op|:] 
 
 % \item[\texttt{op ** op}:] In spite of an unusual notation, the binary exponentiation operator performs the usual calculation,
 % %
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, binary floating point exponentiation.}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 2.0 ** 5.0;;
 
 % val a : float = 32.0
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 % which is equal to $2^5$.
 % \end{description}
 
 Arithmetic using \lstinline|float| will not cause over- and underflow problems, since the IEEE 754 standard includes the special numbers $\pm\infty$ and NaN. E.g.,
 %
 \fso{floatDivisionByZero}{Floating point numbers include infinity and Not-a-Number.}
-% \begin{lstlisting}[language=fsharp,caption={fsharpi, floating point numbers include infinity and Not-a-Number}]
+% \begiverbatimwrite}{tmp.ebnf}
 % > let a = 1.0/0.0  
 % - let b = 0.0/0.0;;
 %
 % val a : float = infinity
 % val b : float = nan
-% \end{lstlisting}
+% \end{verbatimwrite}
+%\fsebnf{tmp.ebnf}{to do.}
 %
 However, the \lstinline|float| type has limite precision, since there is only a finite number of numbers that can be stored in a float. E.g.,
 %
