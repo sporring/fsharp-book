@@ -79,9 +79,10 @@ consonant = letter - vowel;
 
 Rules for rewriting EBNF are:
 \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
-    Rule & Description\\
+    \rowcolor{headerRowColor} Rule & Description\\
     \hline
     \lstinline[language=ebnf]{s | t} $\leftrightarrow$ \lstinline[language=ebnf]{t | s} & \lstinline[language=ebnf]{|} is commutative \\
     \hline
@@ -102,9 +103,10 @@ Rules for rewriting EBNF are:
 \end{center}
 where \lstinline[language=ebnf]{r}, \lstinline[language=ebnf]{s}, and \lstinline[language=ebnf]{t} are production rules or terminals. Precedence for the EBNF symbols are,
 \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|}
     \hline
-    Symbol & Description\\
+    \rowcolor{headerRowColor} Symbol & Description\\
     \hline
     \lstinline[language=ebnf]!*! & repetition\\
     \hline

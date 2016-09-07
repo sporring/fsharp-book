@@ -64,19 +64,33 @@
 \newcommand{\lexeme}[1]{\lstinline[language=fsharp]|#1|}
 \makeindex
 
+\usepackage[table]{xcolor}
+\definecolor{alternateKeywordsColor}{rgb}{0.13,1,0.13}
+\definecolor{keywordsColor}{rgb}{0.13,0.13,1}
+%\definecolor{commentsColor}{rgb}{0,0.5,0}
+\definecolor{commentsColor}{rgb}{0,0.5,0}
+%\definecolor{stringsColor}{rgb}{0.9,0,0}
+\definecolor{stringsColor}{rgb}{0,0,0.5}
+\definecolor{light-gray}{gray}{0.95}
+
+\definecolor{headerRowColor}{rgb}{0.85,0.85,0.85}
+\definecolor{oddRowColor}{rgb}{0.95,0.95,0.95}
+\definecolor{evenRowColor}{rgb}{1,1,1}
+
 % We want to emphasize problem formulation
 \usepackage{tcolorbox}
 \tcbset{%
-  colframe=white!75!black,
+  colframe=green!45!black,
   fonttitle=\bfseries, 
   leftrule=3mm,
   sharp corners=downhill,
-  colback=green!10!white,
-  left=0mm,
-  top=0mm,
-  right=0mm,
-  bottom=0mm,
-  middle=0mm,
+  colback=black!5!white,
+  left=1mm,
+  top=1mm,
+  right=1mm,
+  bottom=1mm,
+  middle=1mm,
+  arc=2mm,
 }
 %\tcbuselibrary{listings}
 %\newenvironment{problem}{\begin{quote}}{\end{quote}}
@@ -90,7 +104,7 @@
 % }
 \newtcolorbox[auto counter, number within=chapter]{problem}[1][]{%
   title=Problem~\thetcbcounter:,
-  colback=blue!5!white,
+  colframe=green!30!blue,
   #1}
 
 %% lstlisting stuff
@@ -112,15 +126,6 @@
 % \mdfsetup{% 
 %   backgroundcolor=lightgray!10,
 %   roundcorner=5pt}
-
-\usepackage{xcolor}
-\definecolor{alternateKeywordsColor}{rgb}{0.13,1,0.13}
-\definecolor{keywordsColor}{rgb}{0.13,0.13,1}
-%\definecolor{commentsColor}{rgb}{0,0.5,0}
-\definecolor{commentsColor}{rgb}{0,0.5,0}
-%\definecolor{stringsColor}{rgb}{0.9,0,0}
-\definecolor{stringsColor}{rgb}{0,0,0.5}
-\definecolor{light-gray}{gray}{0.95}
 
 \lstdefinelanguage{fsharp}{%
   keywords={abstract, and, as, assert, base, begin, class, default, delegate, do, done, downcast, downto, elif, else, end, exception, extern, false, finally, for, fun, function, global, if, in, inherit, inline, interface, internal, lazy, let, match, member, module, mutable, namespace, new, null, of, open, or, override, private, public, rec, return, sig, static, struct, then, to, true, try, type, upcast, use, val, void, when, while, with, yield},
@@ -215,13 +220,13 @@
   \end{codeNOutput}
 }
 \newcommand{\fsebnf}[2]{
-  \begin{codeNOutput}[colback=black!10!white]{: #2}
+  \begin{codeNOutput}[colframe=black!60!white]{: #2}
     \lstinputlisting[language=ebnf]{#1}
     \label{#1}
   \end{codeNOutput}
 }
 \newcommand{\fso}[2]{
-  \begin{codeNOutput}[colback=yellow!5!white]{, #1.fsx:\\#2}
+  \begin{codeNOutput}{, #1.fsx:\\#2}
     \lstinputlisting[language=console]{\src/#1.out}
     \label{#1}
   \end{codeNOutput}

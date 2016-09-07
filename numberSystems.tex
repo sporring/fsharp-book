@@ -15,9 +15,10 @@ and examples are $1011.1_2 = 1\cdot 2^3+0\cdot 2^2+1\cdot 2^1+1\cdot 2^0+1\cdot 
 Other number systems are often used, e.g., \idx{octal} numbers, which are base 8 numbers, where each digit is $o\in\{0,1,\ldots,7\}$. Octals are useful short-hand for binary, since 3 binary digits maps to the set of octal digits. Likewise, \idx{hexadecimal} numbers are base 16 with digits $h\in\{0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f\}$, such that $a_{16}=10$, $b_{16}=11$ and so on. Hexadecimals are convenient since 4 binary digits map directly to the set of octal digits. Thus $367 = 101101111_2 = 557_8 = 16f_{16}$. A list of the intergers 0--63 is various bases is given in Table~\ref{tab:binaryTable}.
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|r|r|r|r|}
     \hline
-    Dec & Bin & Oct & Hex\\
+    \rowcolor{headerRowColor} Dec & Bin & Oct & Hex\\
     \hline
     0 & 0 & 0 & 0\\
     1 & 1 & 1 & 1\\
@@ -53,9 +54,10 @@ Other number systems are often used, e.g., \idx{octal} numbers, which are base 8
     31 & 11111 & 37 & 1f\\
     \hline
   \end{tabular}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|r|r|r|r|}
     \hline
-    Dec & Bin & Oct & Hex\\
+    \rowcolor{headerRowColor} Dec & Bin & Oct & Hex\\
     \hline
     32 & 100000 & 40 & 20\\
     33 & 100001 & 41 & 21\\
@@ -111,9 +113,10 @@ I.e., the exponent is an integer, where $0 \leq e < 2^{11}$, and the mantissa is
 \end{equation}
  with the exception that
 \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|l|}
     \hline
-                         & $m=0$                                   & $m\neq 0$\\
+    \rowcolor{headerRowColor}& $m=0$                                   & $m\neq 0$\\
     \hline
     $e=0$           & $v = \left(-1\right)^{s} 0$ (signed zero) & $v = \left(-1\right)^{s} m 2^{1-1023}$ (subnormals)\\
     \hline 

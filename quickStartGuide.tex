@@ -76,51 +76,47 @@ However, if the same was performed in an interactive session,
 % val a : int = 864
 % \end{lstlisting}
 %
-then apparently rebinding is valid. The difference is that the \idx{\lexeme{;;}} \idx{lexeme} defines a new nested \idx{scope}.\spec{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A lexeme is a letter or a word, which the F\# considers as an atomic unit. Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \lexeme{;;} between the two let statements results in an error, e.g.,
+then rebinding did not cause an error. The difference is that the \idx{\lexeme{;;}} \idx{lexeme}, which specifies the end of a \idx{script-fragment}.\spec{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A lexeme is a letter or a word, which the F\# considers as an atomic unit. Script-fragments may be defined both in scripts and in interactive mode, and rebinding is not allowed at the outermost level in script-fragments.
+
+\begin{comment}
+Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \lexeme{;;} between the two let statements results in an error, e.g.,
 %
 \fso{blocksNNamesError}{Inside a block, names may not be reused.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
-% > let a = 357
-% - let a = 864;;
+%   > let a = 357 - let a = 864;;
 
-%   let a = 864;;
-%   ----^
+%   let a = 864;; ----^
 
-% /Users/sporring/Desktop/fsharpNotes/stdin(2,5): error FS0037: Duplicate definition of value 'a'
+%   /Users/sporring/Desktop/fsharpNotes/stdin(2,5): error FS0037: Duplicate definition of value 'a'
 % \end{lstlisting}
 %
 Scopes can be visualized as nested squares as shown in Figure~\ref{fig:scope}.
 \begin{figure}
-  \centering
-  \subfigure[Invalid]{
-    \fbox{
+  \centering \subfigure[Invalid]{ \fbox{
       \begin{minipage}{0.2\linewidth}
         \lstinline|let a = 357|\\
         \lstinline|let a = 864;;|
       \end{minipage}
-    }
-  }
-  \subfigure[Valid]{
-    \fbox{
+    } } \subfigure[Valid]{ \fbox{
       \begin{minipage}{0.2\linewidth}
-      \lstinline|let a = 357;;|\\
-      \fbox{
-      \begin{minipage}{0.85\linewidth}
-        \lstinline|let a = 864;;|
+        \lstinline|let a = 357;;|\\
+        \fbox{
+          \begin{minipage}{0.85\linewidth}
+            \lstinline|let a = 864;;|
+          \end{minipage}
+        }
       \end{minipage}
-    }
-  \end{minipage}
-}
-  }
+    } }
   \caption{Binding of the same name in the same scope is invalid in F\# 2, but valid in a different scopes. In (a) the two bindings are in the same scope, which is invalid, while in (b) the bindings are in separate scopes by the extra \lexeme{;;} lexeme, which is valid.}
   \label{fig:scope}
 \end{figure}
+\end{comment}
 
 In F\# \idx[function]{functions} are also values, and defining a function \lstinline|sum| as part of the solution to the above program gives,
 %
 \fs{quickStartSumFct}{A script to add 2 numbers using a user defined function.}
 %
-Entering the function into an interactive session will illustrate the inferred type, the function \lstinline|sum| has: \lstinline{val sum : x:int * y:int -> int}, by which is meant that \lstinline|sum| is a mapping from the set product of integers with integers into integers. Type inference in F\# may cause problems, since the type of a function is inferred in the context, in which it is defined. E.g., in an interactive session, defining the sum in one scope on a single line will default the types to integers, F\#'s favorite type, which will give an error, if it in a nested scope is to be used for floats,
+Entering the function into an interactive session will illustrate the inferred type, the function \lstinline|sum| has: \lstinline{val sum : x:int -> y:int -> int}. The \lexeme{->} is the mapping operator in the sense that functions are mappings between sets. The type of the function \lstinline{sum}, should be read as \lstinline{val sum : x:int -> (y:int -> int)}, that is, \lstinline|sum| takes an integer and returns a function, which takes an integer and returns an integer. Type inference in F\# may cause problems, since the type of a function is inferred in the context, in which it is defined. E.g., in an interactive session, defining the sum in one scope on a single line will default the types to integers, F\#'s favorite type, which will give an error, if it in a nested scope is to be used for floats,
 %
 \fso{typesNBlockInferenceError}{Types are inferred in blocks, and F\# tends to prefer integers.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
@@ -138,7 +134,7 @@ Entering the function into an interactive session will illustrate the inferred t
 % but here has type
 %     float    
 % \end{lstlisting}
-A remedy is to either define the function in the same scope as its use,
+A remedy is to define the function in the same script-fragment as it is used, i.e,
 %
 \fso{typesNBlockInference}{Defining a function together with its use, makes F\# infer the appropriate types.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]

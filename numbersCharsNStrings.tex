@@ -27,9 +27,10 @@ What this means is that F\# has inferred the type to be \idx{\lstinline{int}} an
 Each literal represent the number 3, but their types are different, and hence they are quite different values. The types \lstinline!int! for integer numbers, \idx{\lstinline{float}} for floating point numbers, \idx{\lstinline{char}} for characters, and \idx{\lstinline{string}} for strings of characters are the most common types of literals. A table of all \idx{basic types} predefined in F\# is given in Table~\ref{tab:primitiveTypes}.\idxss{\lstinline{unit}}\idxss{\lstinline{obj}}\idxss{\lstinline{exn}}
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\textwidth}{|l|l|>{\raggedright\arraybackslash}X|}
     \hline
-    Metatype & Type name & Description\\
+    \rowcolor{headerRowColor} Metatype & Type name & Description\\
     \hline
     Boolean & bool & Boolean values true or false \\
     \hline
@@ -123,9 +124,10 @@ char = "'" codePoint | escapeChar "'";
 where \lstinline[language=ebnf]!codePoint! is a UTF8 encoding of a char. The escape characters \lstinline[language=ebnf]{escapeChar} are special sequences that are interpreted as a single code point shown in Table~\ref{tab:escapeChar}. The trigraph \lstinline|\DDD| uses decimal specification for the first 256 code points, and the hexadecimal escape codes \lstinline|\uXXXX|, \lstinline|\UXXXXXXXX| allow for the full specification of any code point.
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|c|l|l|}
     \hline
-    Character& Escape sequence & Description\\
+    \rowcolor{headerRowColor} Character& Escape sequence & Description\\
     \hline
     BS &\lstinline|\b|& Backspace\\
     LF &\lstinline|\n|&Line feed\\
@@ -185,9 +187,10 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
 \begin{table}
   \centering
   %\begin{tabularx}{\linewidth}{|>{\hsize=.6\hsize}X|>{\hsize=1.4\hsize}X|>{\hsize=1\hsize}X|}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|l|}
     \hline
-    type & EBNF & Examples \\
+    \rowcolor{headerRowColor} type & EBNF & Examples \\
     \hline
     \lstinline!int!, \lstinline!int32! & \lstinline[language=ebnf]!(dInt | xInt) ["l"]!  & \lstinline!3! \\
     \lstinline!uint32! & \lstinline[language=ebnf]!(dInt | xInt) ("u" | "ul")! & \lstinline!3u! \\
@@ -330,9 +333,10 @@ expr = ...
 Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}.\idxss{\lstinline{abs}}\idxss{\lstinline{acos}}\idxss{\lstinline{asin}}\idxss{\lstinline{atan}}\idxss{\lstinline{atan2}}\idxss{\lstinline{ceil}}\idxss{\lstinline{cos}}\idxss{\lstinline{cosh}}\idxss{\lstinline{exp}}\idxss{\lstinline{floor}}\idxss{\lstinline{log}}\idxss{\lstinline{log10}}\idxss{\lstinline{max}}\idxss{\lstinline{min}}\idxss{\lstinline{pown}}\idxss{\lstinline{round}}\idxss{\lstinline{sign}}\idxss{\lstinline{sin}}\idxss{\lstinline{sinh}}\idxss{\lstinline{sqrt}}\idxss{\lstinline{tan}}\idxss{\lstinline{tanh}}
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
     \hline
-    Operator & \lstinline!op1! & \lstinline!op2! & Expression & Result &Description\\
+    \rowcolor{headerRowColor} Operator & \lstinline!op1! & \lstinline!op2! & Expression & Result &Description\\
     \hline
     \lstinline!op1 + op2!&ints & ints & \lstinline!5 + 2!&\lstinline!7!&Addition\\
              &floats & floats & \lstinline!5.0 + 2.0!&\lstinline!7.0!&\\
@@ -383,9 +387,10 @@ Recursion means that a rule or a function is used by the rule or function itself
 \end{table}
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
     \hline
-    Operator & \lstinline!op1! & \lstinline!op2! & Expression & Result &Description\\
+    \rowcolor{headerRowColor} Operator & \lstinline!op1! & \lstinline!op2! & Expression & Result &Description\\
     \hline
     \lstinline!op1 < op2!&bool & bool & \lstinline!true < false!&\lstinline!false!&Less than\\
              &ints & ints & \lstinline!5 < 2!&\lstinline!false!&\\
@@ -429,9 +434,10 @@ Recursion means that a rule or a function is used by the rule or function itself
 \end{table}
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|l|l|l|}
     \hline
-    Type & Function name & Example & Result & Description\\
+    \rowcolor{headerRowColor} Type & Function name & Example & Result & Description\\
     \hline
     Ints and floats & \lstinline!abs! & \lstinline!abs -3! & \lstinline!3! & Absolute value\\
     \hline 
@@ -494,9 +500,10 @@ If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret th
 Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} lexemes \lexeme{+} and \lexeme{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.\idxs{boolean or}\idxs{boolean and}
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize\raggedright\arraybackslash}X|>{\hsize=.5\hsize}X|>{\hsize=2\hsize}X|}
     \hline
-    Operator & Associativity & Description\\
+    \rowcolor{headerRowColor}     Operator & Associativity & Description\\
     \hline
     \mbox{\lstinline|+op|,} \mbox{\lstinline|-op|,} \mbox{\lstinline|\~\~\~op|} & Left & Unary identity, negation, and bitwise negation operator\\
     \hline
@@ -548,9 +555,10 @@ the expression for \lstinline|3.0 * 4.0 * 5.0| associates to the left, and thus 
 Boolean arithmetic is the basis of almost all computers and particularly important for controlling program flow, which will be discussed in Chapter~\ref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Two basic operations on boolean values are '\idx{and}' often also written as multiplication, and '\idx{or}' often written as addition, and '\idx{not}' often written as a bar above the value. All possible combination of input on these values can be written on tabular form, known as a \idx{truth table}, shown in Table~\ref{tab:truthTable}.
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|c|c|c|c|c|}
     \hline
-    $a$ & $b$ & $a\cdot b$& $a + b$&$\bar{a}$\\
+\rowcolor{headerRowColor}     $a$ & $b$ & $a\cdot b$& $a + b$&$\bar{a}$\\
     \hline
     0&0&0&0&1\\
     0&1&0&1&1\\
@@ -730,9 +738,10 @@ For binary arithmetic on integers, the following operators are available:
 \lstinline{op1 ~~~ op1}, Bitwise xor, which is returns the result of the boolean 'xor' operator defined by the truth table in Table~\ref{tab:xor}.\idxs{xor}\idxs{exclusive or}
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|c|c|c|}
     \hline
-    a&b& a xor b\\
+    \rowcolor{headerRowColor} a&b& a xor b\\
     \hline
     0 & 0 & 0\\
     0 & 1 & 1\\

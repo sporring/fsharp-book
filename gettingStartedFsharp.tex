@@ -35,7 +35,8 @@ Programs may either be executed by the interpreter or by compiling and executing
 In \texttt{Mono} the interpreter is called \texttt{fsharpi} and can be used in 2 ways: interactively, where a user enters 1 or more script-fragments separated by the "\lexeme{;;}" lexeme, or to execute a script file treated as a single script-fragment. To illustrate the difference, consider the following program, which declares a value \texttt{a} to be the decimal value 3.0 and finally print it to the console:
 \fse{gettingStartedStump}{}
 An interactive session is obtained by starting the console, typing the \texttt{fsharpi} command, typing the lines of the program, and ending the script-fragment with the "\lexeme{;;}" lexeme. The following dialogue demonstrates the workflow, where what the user types has been highlighted by a \tikzmark{tl}box\tikzmark{br}\FrameArea{tl}{br}:
-\begin{lstlisting}[language=console,escapechar=§]
+\begin{codeNOutput}{: An interactive session.}
+  \begin{lstlisting}[language=console,escapechar=§]
 $ §\tikzmark{lst1_5-tl}§fsharpi§\tikzmark{lst1_5-br}§
 
 F# Interactive for F# 4.0 (Open Source Edition)
@@ -52,6 +53,7 @@ val it : unit = ()
 §\tikzmark{lst1_2-end}§
 > §\tikzmark{lst1_6-tl}§#quit;;§\tikzmark{end_3}§§\tikzmark{lst1_6-br}§
 \end{lstlisting}%$
+\end{codeNOutput}
 \FrameArea{lst1_4-tl}{lst1_4-br}
 \FrameArea{lst1_5-tl}{lst1_5-br}
 \FrameArea{lst1_6-tl}{lst1_6-br}%
@@ -71,12 +73,15 @@ val it : unit = ()
 % \tikzmark{start}\AddNote{lst1_2-start}{lst1_2-end}{lst1_2-align}{Fsharp responds}%
 % \tikzmark{start}\AddNote{lst1_3-start}{lst1_3-end}{lst1_3-end}{You write}%
 The interpreter is stopped by pressing \texttt{ctrl-d} or typing "\lstinline[language=console]{#quit;;}". Conversely, executing the file with the interpreter as follows,
+\begin{codeNOutput}{: Using the interpreter to execute a script.}
 \begin{lstlisting}[language=console,escapechar=§]
 $ §\tikzmark{lst2_1-tl}§fsharpi gettingStartedStump.fsx§\tikzmark{lst2_1-br}§
 3
 \end{lstlisting}%$
+\end{codeNOutput}
 \FrameArea{lst2_1-tl}{lst2_1-br}%
  Finally, compiling and executing the code is performed as,
+\begin{codeNOutput}{: Compiling and executing a script.}
 \begin{lstlisting}[language=console,escapechar=§]
 $ §\tikzmark{lst3_1-tl}§fsharpc gettingStartedStump.fsx §\tikzmark{lst3_1-br}§
 F# Compiler for F# 4.0 (Open Source Edition)
@@ -84,15 +89,17 @@ Freely distributed under the Apache 2.0 Open Source License
 $ §\tikzmark{lst3_2-tl}§mono gettingStartedStump.exe§\tikzmark{lst3_2-br}§
 3
 \end{lstlisting}
+\end{codeNOutput}
 \FrameArea{lst3_1-tl}{lst3_1-br}%
 \FrameArea{lst3_2-tl}{lst3_2-br}%
-Both the interpreter and the compiler translates the source code into a format, which can be executed by the computer. While the compiler performs this translation once and stores the result in the executable file, the interpreter translates the code every time the code is executed. Thus, to run the program again with the interpreter, then it must be retranslated as "\lstinline[language=console]{$fsharpi gettingStartedStump.fsx}''. %$
+ Both the interpreter and the compiler translates the source code into a format, which can be executed by the computer. While the compiler performs this translation once and stores the result in the executable file, the interpreter translates the code every time the code is executed. Thus, to run the program again with the interpreter, then it must be retranslated as "\lstinline[language=console]{$fsharpi gettingStartedStump.fsx}''. %$
 In contrast, compiled code does not need to be recompiled to be run again, only re-executed using "\lstinline[language=console]{$ mono gettingStartedStump.exe}".%$
 On a Macbook Pro, with a 2.9 Ghz Intel Core i5, the time the various stages takes for this script are:
 \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|}
     \hline
-    Command & Time\\
+    \rowcolor{headerRowColor} Command & Time\\
     \hline
     \verb|fsharpi gettingStartedStump.fsx| & 1.88s\\
     \verb|fsharpc gettingStartedStump.fsx| & 1.90s\\
