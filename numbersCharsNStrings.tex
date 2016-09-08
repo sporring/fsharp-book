@@ -32,7 +32,7 @@ Each literal represent the number 3, but their types are different, and hence th
     \hline
     \rowcolor{headerRowColor} Metatype & Type name & Description\\
     \hline
-    Boolean & bool & Boolean values true or false \\
+    Boolean & \textbf{bool} & Boolean values true or false \\
     \hline
     Integer & \textbf{int} & Integer values from -2,147,483,648 to 2,147,483,647 \\
              & byte &Integer values from 0 to 255\\
@@ -74,22 +74,24 @@ Humans like to use the \idx{decimal number} system for representing numbers. Dec
 %
 \begin{verbatimwrite}{tmp.ebnf}
 dDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
-dInt = dDigit {dDigit};
-dFloat = dInt "." {dDigit};
+dInt = dDigit {dDigit}; (*no spaces*)
+dFloat = dInt "." {dDigit}; (*no spaces*)
 \end{verbatimwrite}
 \fsebnf{tmp.ebnf}{Decimal numbers.}
 %
-meaning that a \lstinline[language=ebnf]!dDigit! is either "0'' or "1" or \dots or "9'', an \lstinline[language=ebnf]!dInt! is 1 or more \lstinline[language=ebnf]!dDigit!, and a \lstinline[language=ebnf]!dFloat! is 1 or more digits, a dot and 0 or more digits. There is no space between the digits and between digits and the dot. So \lstinline!3!, \lstinline!049! are examples of integers, \lstinline!34.89! \lstinline!3.! are examples of floats, while \lstinline!.5! is neither.  Floating point numbers may alternatively be given using \idx{scientific notation}, such as \lstinline!3.5e-4! and \lstinline!4e2!, which means the number $3.5\cdot 10^{-4} = 0.00035$ and $4\cdot 10^2=400$. To describe this in EBNF we write
+meaning that a \lstinline[language=ebnf]!dDigit! is either \lstinline!0! or \lstinline!1!  or \dots or \lstinline!9!, an \lstinline[language=ebnf]!dInt! is one or more \lstinline[language=ebnf]!dDigit! such as \lstinline!3!, \lstinline!45!, and \lstinline!0124972930485738!.  A \lstinline[language=ebnf]!dFloat! is one or more digits, a dot and zero or more digits, such as \lstinline!0.4235!, \lstinline!3.!, but not \lstinline!.5! nor \lstinline!.!. There is no space between the digits and between digits and the dot.
+
+Floating point numbers may alternatively be given using \idx{scientific notation}, such as \lstinline!3.5e-4! and \lstinline!4e2!, which means the number $3.5\cdot 10^{-4} = 0.00035$ and $4\cdot 10^2=400$. To describe this in EBNF we write
 %
 \begin{verbatimwrite}{tmp.ebnf}
-sFloat = (dInt | dFloat) ("e" | "E" ) ["+" | "-"] dInt;
+sFloat = (dInt | dFloat) ("e" | "E" ) ["+" | "-"] dInt; (*no spaces*)
 float = dFloat | sFloat;
 \end{verbatimwrite}
 \fsebnf{tmp.ebnf}{Scientific notation.}
 %
 Note that the number before the lexeme \lexeme{e} may be an \lstinline[language=ebnf]!dInt! or a \lstinline[language=ebnf]!dFloat!, but the exponent value must be an \lstinline[language=ebnf]!dInt!.
 
-The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^1=5.25$. Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}, where octals uses 8 as basis and can be written in binary using 3 bits, while hexadecimal numbers uses 16 as basis and can be written in binary using 4 bits. Octals and hexadecimals thus conveniently serve as shorthand for the much longer binary representation. F\# has a syntax for writing integers on binary, octal, decimal, and hexadecimal numbers as,
+The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^{-2}=5.25$. Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}, where octals uses 8 as basis and can be written in binary using 3 bits, while hexadecimal numbers uses 16 as basis and can be written in binary using 4 bits. Octals and hexadecimals thus conveniently serve as shorthand for the much longer binary representation. F\# has a syntax for writing integers on binary, octal, decimal, and hexadecimal numbers as,
 %
 \begin{verbatimwrite}{tmp.ebnf}
 bDigit = "0" | "1";
@@ -97,10 +99,9 @@ oDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7";
 xDigit =  
   "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
   | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f";
-dInt = dDigit {dDigit};
-bitInt = "0" ("b" | "B") bDigit {bDigit};
-octInt = "0" ("o" | "O") oDigit {oDigit};
-hexInt = "0" ("x" | "X") xDigit {xDigit};
+bitInt = "0" ("b" | "B") bDigit {bDigit}; (*no spaces*)
+octInt = "0" ("o" | "O") oDigit {oDigit}; (*no spaces*)
+hexInt = "0" ("x" | "X") xDigit {xDigit}; (*no spaces*)
 xInt = bitInt | octInt | hexInt;
 int = dInt | xInt;
 \end{verbatimwrite}
@@ -116,8 +117,8 @@ escapeChar =
   "\" ("b" | "n" | "r" | "t" | "\" | '"' | "'" | "a" | "f" | "v")
   | "\u" xDigit xDigit xDigit xDigit
   | "\U" xDigit xDigit xDigit xDigit xDigit xDigit xDigit xDigit
-  | "\" dDigit dDigit dDigit;
-char = "'" codePoint | escapeChar "'";
+  | "\" dDigit dDigit dDigit;  (*no spaces*)
+char = "'" codePoint | escapeChar "'"; (*no spaces*)
 \end{verbatimwrite}
 \fsebnf{tmp.ebnf}{Character escape sequences.}
 % 
@@ -250,7 +251,7 @@ meaning that the escape sequences are not converted to their code point., e.g.,
 %
 %For strings containing double quotation marks, verbatim literals has 2 possible notations, either use the @-notation and escaping double quotation marks with an extra double quotation mark, or use triple double quotation marks. \advice{The triple double quotation marks notation may not contain substrings that are triple double quotation marks, and thus @-notation is preferred.}
 
-Many basic types are compatible and the type of a literal may be changed by \idx{type casting}. E.g.,
+Many basic types are compatible and the type of a literal may be changed by \idx{typecasting}. E.g.,
 %
 \fso{upcasting}{Casting an integer to a floating point number.}
 % \begiverbatimwrite}{tmp.ebnf}
@@ -274,7 +275,7 @@ which is a \lstinline!float!, since when \lstinline|float| is given an argument,
 %\fsebnf{tmp.ebnf}{to do.}
 Here \lstinline|System.Convert.ToBoolean| is the identifier of a function \lstinline|ToBoolean|, which is a \idx{member} of the \idx{class} \lstinline|Convert| that is included in the \idx{namespace} \lstinline|System|. Namespaces, classes, and members are all part of Structured programming to be discussed in Part~\ref{part:structured}.
 
-Type casting is often a destructive operation, e.g., type casting a \lstinline{float} to \lstinline{int} removes the fractional part without rounding,
+Typecasting is often a destructive operation, e.g., typecasting a \lstinline{float} to \lstinline{int} removes the fractional part without rounding,
 %
 \fso{downcasting}{Fractional part is removed by downcasting.}
 % \begiverbatimwrite}{tmp.ebnf}
@@ -284,7 +285,7 @@ Type casting is often a destructive operation, e.g., type casting a \lstinline{f
 %\fsebnf{tmp.ebnf}{to do.}
 %%\fs{quickStartDownCast}{Fractional part is removed by downcasting.}
 %%
-Here we type casted to a lesser type, in the sense that integers is a subset of floating point numbers, and this is called \idx{downcasting}. The opposite is called \idx{upcasting} and is often non-destructive, as Listing~\ref{upcasting} showed, where an integer was casted to a float while retaining its value. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$ and $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting as follows,
+Here we typecasted to a lesser type, in the sense that integers is a subset of floating point numbers, and this is called \idx{downcasting}. The opposite is called \idx{upcasting} and is often non-destructive, as Listing~\ref{upcasting} showed, where an integer was casted to a float while retaining its value. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$ and $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting as follows,
 %
 \fso{rounding}{Fractional part is removed by downcasting.}
 % \begiverbatimwrite}{tmp.ebnf}
@@ -300,19 +301,8 @@ since if $y.x\in [y.0, y.5)$, then $y.x+0.5\in [y.5, y+1)$, from which downcasti
 Listing~\ref{rounding} is an example of an arithmetic \idx{expression} using an \idx{infix operator}. Expressions is the basic building block of all F\# programs, and its grammar has many possible options. The grammar for expressions are defined recursively, and some of it is given by, \spec{Spec-4.0 Section 4.3: const is missing uint8, int8 nativeint, unativeint.}
 %
 \begin{verbatimwrite}{tmp.ebnf}
-const =
-  byte
-  | sbyte
-  | int32
-  | uint32 
-  | int
-  | ieee64 
-  | char
-  | string
-  | verbatimString
-  | "false"
-  | "true"
-  | "()";
+const = byte | sbyte | int32 | uint32 | int | ieee64 | char | string 
+  | verbatimString | "false" | "true" | "()";
 sliceRange = 
   expr 
   | expr ".." (*no space between expr and ".."*)
@@ -330,166 +320,9 @@ expr = ...
 \end{verbatimwrite}
 \fsebnf{tmp.ebnf}{Expressions.}
 %
-Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}.\idxss{\lstinline{abs}}\idxss{\lstinline{acos}}\idxss{\lstinline{asin}}\idxss{\lstinline{atan}}\idxss{\lstinline{atan2}}\idxss{\lstinline{ceil}}\idxss{\lstinline{cos}}\idxss{\lstinline{cosh}}\idxss{\lstinline{exp}}\idxss{\lstinline{floor}}\idxss{\lstinline{log}}\idxss{\lstinline{log10}}\idxss{\lstinline{max}}\idxss{\lstinline{min}}\idxss{\lstinline{pown}}\idxss{\lstinline{round}}\idxss{\lstinline{sign}}\idxss{\lstinline{sin}}\idxss{\lstinline{sinh}}\idxss{\lstinline{sqrt}}\idxss{\lstinline{tan}}\idxss{\lstinline{tanh}}
-\begin{table}
-  \centering
-  \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
-    \hline
-    \rowcolor{headerRowColor} Operator & \lstinline!op1! & \lstinline!op2! & Expression & Result &Description\\
-    \hline
-    \lstinline!op1 + op2!&ints & ints & \lstinline!5 + 2!&\lstinline!7!&Addition\\
-             &floats & floats & \lstinline!5.0 + 2.0!&\lstinline!7.0!&\\
-             &chars & chars & \lstinline!'a' + 'b'!&\lstinline!'\\195'!&Addition of codes\\
-             &strings & strings & \lstinline!"ab" + "cd"!&\lstinline!"abcd"!&Concatenation\\
-    \hline
-    \lstinline!op1 - op2!&ints & ints & \lstinline!5 - 2!&\lstinline!3!&Subtraction\\
-             &floats & floats & \lstinline!5.0 - 2.0!&\lstinline!3.0!&\\
-    \hline
-    \lstinline!op1 * op2!&ints & ints & \lstinline!5 * 2!&\lstinline!10!&Multiplication\\
-             &floats & floats & \lstinline!5.0 * 2.0!&\lstinline!10.0!&\\
-    \hline
-    \lstinline!op1 / op2!&ints & ints & \lstinline!5 / 2!&\lstinline!2!&Integer division\\
-             &floats & floats & \lstinline!5.0 / 2.0!&\lstinline!2.5!&Division\\
-    \hline
-    \lstinline!op1 \% op2!&ints & ints & \lstinline!5 \% 2!&\lstinline!1!&Remainder\\
-             &floats & floats & \lstinline!5.0 \% 2.0!&\lstinline!1.0!&\\
-    \hline
-    \lstinline!op1 ** op2!&floats & floats & \lstinline!5.0 ** 2.0!&\lstinline!25.0!&Exponentiation\\
-    \hline
-    \lstinline!op1 \&\& op2!&bool & bool & \lstinline!true \&\& false!&\lstinline!false!&boolean and\\
-    \hline
-    \lstinline!op1 || op2!&bool & bool & \lstinline!true || false!&\lstinline!false!&boolean or\\
-    \hline
-    \lstinline!op1 \&\&\& op2!&ints & ints & \lstinline!0b1010 \&\&\& 0b1100!&\lstinline!0b1000!&bitwise bool and\\
-    \hline
-    \lstinline!op1 ||| op2!&ints & ints & \lstinline!0b1010 ||| 0b1100!&\lstinline!0b1110!&bitwise boolean or\\
-    \hline
-    \lstinline!op1 \^\^\^ op2!&ints & ints & \lstinline!0b1010 \^\^\^ 0b1101!&\lstinline!0b0111!&bitwise boolean exclusive or\\
-    \hline
-     \lstinline!op1 <<< op2!&ints & ints & \lstinline!0b00001100uy <<< 2!&\lstinline!0b00110000uy!&bitwise shift left\\
-     \hline
-     \lstinline!op1 >>> op2!&ints & ints & \lstinline!0b00001100uy >>> 2!&\lstinline!0b00000011uy!&bitwise and\\
-     \hline
-    \lstinline!+op1!&ints&&\lstinline!+3!&\lstinline!3!&identity\\
-             &floats&&\lstinline!+3.0!&\lstinline!3.0!&\\
-    \hline
-    \lstinline!-op1!&ints&&\lstinline!-3!&\lstinline!-3!&negation\\
-             &floats&&\lstinline!-3.0!&\lstinline!-3.0!&\\
-    \hline
-    \lstinline!not op1!&bool&&\lstinline!not true!&\lstinline!false!&boolean negation\\
-    \hline
-    \lstinline!\~\~\~op1!&ints&&\lstinline!\~\~\~0b00001100uy!&\lstinline!0b11110011uy!&bitwise boolean negation\\
-    \hline
-  \end{tabularx}
-  \caption{Arithmetic operators on basic types. Ints, floats, chars, and strings means all built-in integer types etc.. Note that for the bitwise operations, digits \lstinline{0} and \lstinline{1} are taken to be \lstinline{true} and \lstinline{false}.}
-  \label{tab:preNInfixOperators}
-\end{table}
-\begin{table}
-  \centering
-  \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
-    \hline
-    \rowcolor{headerRowColor} Operator & \lstinline!op1! & \lstinline!op2! & Expression & Result &Description\\
-    \hline
-    \lstinline!op1 < op2!&bool & bool & \lstinline!true < false!&\lstinline!false!&Less than\\
-             &ints & ints & \lstinline!5 < 2!&\lstinline!false!&\\
-             &floats & floats & \lstinline!5.0 < 2.0!&\lstinline!false!&\\
-             &chars & chars & \lstinline!'a' < 'b'!&\lstinline!true!&\\
-             &strings & strings & \lstinline!"ab" < "cd"!&\lstinline!true!&\\
-    \hline
-    \lstinline!op1 > op2!&bool & bool & \lstinline!true > false!&\lstinline!true!&Greater than\\
-             &ints & ints & \lstinline!5 > 2!&\lstinline!true!&\\
-             &floats & floats & \lstinline!5.0 > 2.0!&\lstinline!true!&\\
-             &chars & chars & \lstinline!'a' > 'b'!&\lstinline!false!&\\
-             &strings & strings & \lstinline!"ab" > "cd"!&\lstinline!false!&\\
-    \hline
-    \lstinline!op1 = op2!&bool & bool & \lstinline!true = false!&\lstinline!false!&Equal\\
-             &ints & ints & \lstinline!5 = 2!&\lstinline!false!&\\
-             &floats & floats & \lstinline!5.0 = 2.0!&\lstinline!false!&\\
-             &chars & chars & \lstinline!'a' = 'b'!&\lstinline!false!&\\
-             &strings & strings & \lstinline!"ab" = "cd"!&\lstinline!false!&\\
-    \hline
-    \lstinline!op1 <= op2!&bool & bool & \lstinline!true <= false!&\lstinline!false!&Less than or equal\\
-             &ints & ints & \lstinline!5 <= 2!&\lstinline!false!&\\
-             &floats & floats & \lstinline!5.0 <= 2.0!&\lstinline!false!&\\
-             &chars & chars & \lstinline!'a' <= 'b'!&\lstinline!true!&\\
-             &strings & strings & \lstinline!"ab" <= "cd"!&\lstinline!true!&\\
-    \hline
-    \lstinline!op1 >= op2!&bool & bool & \lstinline!true >= false!&\lstinline!true!&Greater than or equal\\
-             &ints & ints & \lstinline!5 >= 2!&\lstinline!true!&\\
-             &floats & floats & \lstinline!5.0 >= 2.0!&\lstinline!true!&\\
-             &chars & chars & \lstinline!'a' >= 'b'!&\lstinline!false!&\\
-             &strings & strings & \lstinline!"ab" >= "cd"!&\lstinline!false!&\\
-    \hline
-    \lstinline!op1 <> op2!&bool & bool & \lstinline!true <> false!&\lstinline!true!&Not Equal\\
-             &ints & ints & \lstinline!5 <> 2!&\lstinline!true!&\\
-             &floats & floats & \lstinline!5.0 <> 2.0!&\lstinline!true!&\\
-             &chars & chars & \lstinline!'a' <> 'b'!&\lstinline!true!&\\
-             &strings & strings & \lstinline!"ab" <> "cd"!&\lstinline!true!&\\
-    \hline
-  \end{tabularx}
-  \caption{Comparison operators on basic types. Ints, floats, chars, and strings means all built-in integer types etc..}
-  \label{tab:comparisonOperators}
-\end{table}
-\begin{table}
-  \centering
-  \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabular}{|l|l|l|l|l|}
-    \hline
-    \rowcolor{headerRowColor} Type & Function name & Example & Result & Description\\
-    \hline
-    Ints and floats & \lstinline!abs! & \lstinline!abs -3! & \lstinline!3! & Absolute value\\
-    \hline 
-    Floats & \lstinline!acos! & \lstinline!acos 0.8! & \lstinline!0.6435011088! & Inverse cosine\\
-    \hline 
-    Floats & \lstinline!asin! & \lstinline!asin 0.8! & \lstinline!0.927295218! & Inverse sinus\\
-    \hline 
-    Floats & \lstinline!atan! & \lstinline!atan 0.8! & \lstinline!0.6747409422! & Inverse tangent\\
-    \hline 
-    Floats & \lstinline!atan2! & \lstinline!atan2 0.8 2.3! & \lstinline!0.3347368373! & Inverse tangentvariant\\
-    \hline 
-    Floats & \lstinline!ceil! & \lstinline!ceil 0.8! & \lstinline!1.0! & Ceiling\\
-    \hline 
-    Floats & \lstinline!cos! & \lstinline!cos 0.8! & \lstinline!0.6967067093! & Cosine\\
-    \hline 
-    Floats & \lstinline!cosh! & \lstinline!cosh 0.8! & \lstinline!1.337434946! & Hyperbolic cosine\\
-    \hline 
-    Floats & \lstinline!exp! & \lstinline!exp 0.8! & \lstinline!2.225540928! & Natural exponent\\
-    \hline 
-    Floats & \lstinline!floor! & \lstinline!floor 0.8! & \lstinline!0.0! & Floor\\
-    \hline 
-    Floats & \lstinline!log! & \lstinline!log 0.8! & \lstinline!-0.2231435513! & Natural logarithm\\
-    \hline 
-    Floats & \lstinline!log10! & \lstinline!log10 0.8! & \lstinline!-0.09691001301! & Base-10 logarithm\\
-    \hline 
-    \begin{minipage}[t]{0.175\linewidth}Ints, floats,\\chars, and strings\end{minipage} & \lstinline!max! & \lstinline!max 3.0 4.0! & \lstinline!4.0! & Maximum\\
-    \hline 
-    \begin{minipage}[t]{0.175\linewidth}Ints, floats,\\chars, and strings\end{minipage} & \lstinline!min! & \lstinline!min 3.0 4.0! & \lstinline!3.0! & Minimum\\
-    \hline 
-    Ints & \lstinline!pown! & \lstinline!pown 3 2! & \lstinline!9! & Integer exponent\\
-    \hline 
-    Floats & \lstinline!round! & \lstinline!round 0.8! & \lstinline!1.0! & Rounding\\
-    \hline 
-    Ints and floats & \lstinline!sign! & \lstinline!sign -3! & \lstinline!-1! & Sign\\
-    \hline 
-    Floats & \lstinline!sin! & \lstinline!sin 0.8! & \lstinline!0.7173560909! & Sinus\\
-    \hline 
-    Floats & \lstinline!sinh! & \lstinline!sinh 0.8! & \lstinline!0.8881059822! & Hyperbolic sinus\\
-    \hline 
-    Floats & \lstinline!sqrt! & \lstinline!sqrt 0.8! & \lstinline!0.894427191! & Square root\\
-    \hline 
-    Floats & \lstinline!tan! & \lstinline!tan 0.8! & \lstinline!1.029638557! & Tangent\\
-    \hline 
-    Floats & \lstinline!tanh! & \lstinline!tanh 0.8! & \lstinline!0.6640367703! & Hyperbolic tangent\\
-    \hline 
-  \end{tabular}
-  \caption{Predefined functions for arithmetic operations}
-  \label{tab:arithmeticFunctions}
-\end{table}
-Arithmetic on various types will be discussed in detail in the following sections. \jon{minor comment on indexing and slice-ranges.}
+Recursion means that a rule or a function is used by the rule or function itself in its definition. See Part~\ref{part:declarative} for more on recursion. Infix notation means that the \idx{operator} \lstinline[language=ebnf]!op! appears between the two \idx{operands}, and since there are 2 operands, it is a \idx{binary operator}. As the grammar shows, the operands themselves can be expressions. Examples are \lstinline!3+4! and \lstinline!4+5+6!. Some operators only takes one operand, e.g., \lstinline!-3!, where \lstinline!-! here is used to negate a postive integer. Since the operator appears before the operand it is a \idx{prefix operator}, and since it only takes one argument it is also a \idx{unary operator}. Finally, some expressions are function names, which can be applied to expressions. F\# supports a range of arithmetic infix and prefix operators on its built-in types such as addition, subtraction, multiplication, division, and exponentiation using the \lexeme{+}, \lexeme{-}, \lexeme{*}, \lexeme{/}, \lexeme{**} binary operators respectively. Not all operators are defined for all types, e.g., addition is defined for integer and float types as well as for characters and strings, but multiplication is only defined for integer and floating point types. A complete list of built-in operators on basic types is shown in Table~\ref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in Table~\ref{tab:arithmeticFunctions}.
 
-If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
+The concept of \idx{precedence} is an important concept in arithmetic expressions. \jon{minor comment on indexing and slice-ranges.} If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6) + 0.5|, which is erroneous, since addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression, whose result is bound to \lstinline|a| by
 %
 \fso{simpleArithmetic}{A simple arithmetic expression.}
 % \begiverbatimwrite}{tmp.ebnf}
@@ -497,37 +330,8 @@ If parentheses are omitted in Listing~\ref{rounding}, then F\# will interpret th
 % val it : int = 23
 % \end{verbatimwrite}
 %\fsebnf{tmp.ebnf}{to do.}
-Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} lexemes \lexeme{+} and \lexeme{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.\idxs{boolean or}\idxs{boolean and}
-\begin{table}
-  \centering
-  \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize\raggedright\arraybackslash}X|>{\hsize=.5\hsize}X|>{\hsize=2\hsize}X|}
-    \hline
-    \rowcolor{headerRowColor}     Operator & Associativity & Description\\
-    \hline
-    \mbox{\lstinline|+op|,} \mbox{\lstinline|-op|,} \mbox{\lstinline|\~\~\~op|} & Left & Unary identity, negation, and bitwise negation operator\\
-    \hline
-    \lstinline|f x| & Left & Function application\\
-    \hline
-    \lstinline|op ** op| & Right & Exponent\\ 
-    \hline
-    \mbox{\lstinline|op * op|,} \mbox{\lstinline|op / op|,} \mbox{\lstinline|op \% op|} & Left & Multiplication, division and remainder\\
-    \hline
-    \mbox{\lstinline|op + op|,} \mbox{\lstinline|op - op|} & Left & Addition and subtraction binary operators\\
-    \hline
-    \lstinline|op \^\^\^ op| & Right & bitwise exclusive or\\
-    \hline
-    \mbox{\lstinline|op < op|,} \mbox{\lstinline|op <= op|,} \mbox{\lstinline|op > op|,} \mbox{\lstinline|op >= op|,} \mbox{\lstinline|op = op|,} \mbox{\lstinline|op <> op|,} \mbox{\lstinline|op <<< op|,} \mbox{\lstinline|op >>> op|,} \mbox{\lstinline|op \&\&\& op|,} \mbox{\lstinline!op ||| op!,}
-             & Left & Comparison operators, bitwise shift, and bitwise 'and' and 'or'.\\
-    \hline
-    \lstinline|\&\&| & Left & Boolean and\\
-    \hline
-    \lstinline+||+ & Left & Boolean or\\
-    \hline
-  \end{tabularx}
-  \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|op * op| has higher precedence than \lstinline|op + op|. Operators in the same row has same precedence. Full table is given in Table~\ref{tab:operatorPrecedence}.}
-  \label{tab:someOperatorPrecedences}
-\end{table}
+Here, the addition and multiplication functions are shown in \idx{infix notation} with the \idx{operator} lexemes \lexeme{+} and \lexeme{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is of course to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedences, and for some common built-in operators shown in Table~\ref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.
+
 Associativity implies the order in which calculations are performed for operators of same precedence. For some operators and type combinations association matters little, e.g., multiplication associates to the left and exponentiation associates to the right, e.g., in\spec{Spec-4.0, Table 18.2.1 appears to be missing boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
 %
 \fso{precedence}{Precedences rules define implicite parentheses.}
@@ -558,12 +362,12 @@ Boolean arithmetic is the basis of almost all computers and particularly importa
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|c|c|c|c|c|}
     \hline
-\rowcolor{headerRowColor}     $a$ & $b$ & $a\cdot b$& $a + b$&$\bar{a}$\\
+\rowcolor{headerRowColor}     \lstinline!a! & \lstinline!b! & \lstinline!a && b!& \lstinline!a || b! & \lstinline!not a!\\
     \hline
-    0&0&0&0&1\\
-    0&1&0&1&1\\
-    1&0&0&1&0\\
-    1&1&1&1&0\\
+    \lstinline!false!&\lstinline!false!&\lstinline!false!&\lstinline!false!&\lstinline!true!\\
+    \lstinline!false!&\lstinline!true!&\lstinline!false!&\lstinline!true!&\lstinline!true!\\
+    \lstinline!true!&\lstinline!false!&\lstinline!false!&\lstinline!true!&\lstinline!false!\\
+    \lstinline!true!&\lstinline!true!&\lstinline!true!&\lstinline!true!&\lstinline!false!\\
     \hline
   \end{tabular}
   \caption{Truth table for boolean 'and', 'or', and 'not' operators. Value 0 is false and 1 is true.}
@@ -721,7 +525,7 @@ which is equal to $2^5$.
 %     val a : int = 5 val b : int = -5
 %   \end{verbatimwrite}
 %\fsebnf{tmp.ebnf}{to do.}
-% \item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|:] These are binary operators, where addition, subtraction and multiplication performs the usual operations,
+% \item[\lstinline|leftOp + rightOp|, \lstinline|leftOp - rightOp|, \lstinline|leftOp * rightOp|:] These are binary operators, where addition, subtraction and multiplication performs the usual operations,
 %   % 
 %   \beverbatimwrite}{tmp.ebnf}
 %     > let a = 7 + 3 - let b = 7 - 3 - let c = 7 * 3;;
@@ -731,22 +535,22 @@ which is equal to $2^5$.
 %\fsebnf{tmp.ebnf}{to do.}
 
 For binary arithmetic on integers, the following operators are available:
-\lstinline{op1 <<< op2}, which shifts the bit pattern of \lstinline|op1| \lstinline|op2| positions to the left insert 0's to right;
-\lstinline{op1 >>> op2}, which shifts the bit pattern of \lstinline|op1| \lstinline|op2| positions to the right insert 0's to left;
-\lstinline{op1 &&& op2}, Bitwise 'and', returns the result of taking the boolean 'and' operator position-wise;
-\lstinline{op ||| op}, Bitwise 'or', as 'and' but using the boolean 'or' operator; and
-\lstinline{op1 ~~~ op1}, Bitwise xor, which is returns the result of the boolean 'xor' operator defined by the truth table in Table~\ref{tab:xor}.\idxs{xor}\idxs{exclusive or}
+\lstinline{leftOp <<< rightOp}, which shifts the bit pattern of \lstinline|leftOp| \lstinline|rightOp| positions to the left insert 0's to right;
+\lstinline{leftOp >>> rightOp}, which shifts the bit pattern of \lstinline|leftOp| \lstinline|rightOp| positions to the right insert 0's to left;
+\lstinline{leftOp &&& rightOp}, Bitwise 'and', returns the result of taking the boolean 'and' operator position-wise;
+\lstinline{leftOp ||| rightOp}, Bitwise 'or', as 'and' but using the boolean 'or' operator; and
+\lstinline{leftOp ~~~ leftOp}, Bitwise xor, which is returns the result of the boolean 'xor' operator defined by the truth table in Table~\ref{tab:xor}.\idxs{xor}\idxs{exclusive or}
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|c|c|c|}
     \hline
-    \rowcolor{headerRowColor} a&b& a xor b\\
+    \rowcolor{headerRowColor} \lstinline!a! & \lstinline!b! & \lstinline!a ~~~ b!\\
     \hline
-    0 & 0 & 0\\
-    0 & 1 & 1\\
-    1 & 0 & 1\\
-    0 & 1 & 0\\
+    \lstinline!false! & \lstinline!false! & \lstinline!false!\\
+    \lstinline!false! & \lstinline!true! & \lstinline!true!\\
+    \lstinline!true! & \lstinline!false! & \lstinline!true!\\
+    \lstinline!false! & \lstinline!true! & \lstinline!false!\\
     \hline
   \end{tabular}
   \caption{Boolean exclusive or truth table.}
@@ -809,7 +613,7 @@ The remainder for floating point numbers can be fractional, but division, discar
 
 % For floating point numbers the following arithmetic operators are defined: 
 % \begin{description}
-% \item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
+<% \item[\texttt{+op}, \texttt{-op}:] These are unary plus and minus operators, and plus has no effect, but minus changes the sign, e.g.,
 % %
 % \begiverbatimwrite}{tmp.ebnf}
 % > let a = 5.0 
@@ -819,7 +623,7 @@ The remainder for floating point numbers can be fractional, but division, discar
 % val b : float = -5.0
 % \end{verbatimwrite}
 %\fsebnf{tmp.ebnf}{to do.}
-% \item[\lstinline|op + op|, \lstinline|op - op|, \lstinline|op * op|, \lstinline|op / op|:] These are binary operators, where addition, subtraction, multiplication, and division performs the usual operations, 
+% \item[\lstinline|leftOp + rightOp|, \lstinline|leftOp - rightOp|, \lstinline|leftOp * rightOp|, \lstinline|leftOp / rightOp|:] These are binary operators, where addition, subtraction, multiplication, and division performs the usual operations, 
 % %
 % \begiverbatimwrite}{tmp.ebnf}
 % > let a = 7.0 + 3.0
@@ -833,9 +637,9 @@ The remainder for floating point numbers can be fractional, but division, discar
 % val d : float = 2.333333333
 % \end{verbatimwrite}
 %\fsebnf{tmp.ebnf}{to do.}
-% \item[\lstinline|op \% op|:] 
+% \item[\lstinline|leftOp \% rightOp|:] 
 
-% \item[\texttt{op ** op}:] In spite of an unusual notation, the binary exponentiation operator performs the usual calculation,
+% \item[\texttt{leftOp ** rightOp}:] In spite of an unusual notation, the binary exponentiation operator performs the usual calculation,
 % %
 % \begiverbatimwrite}{tmp.ebnf}
 % > let a = 2.0 ** 5.0;;
@@ -858,7 +662,7 @@ Arithmetic using \lstinline|float| will not cause over- and underflow problems, 
 % \end{verbatimwrite}
 %\fsebnf{tmp.ebnf}{to do.}
 %
-However, the \lstinline|float| type has limite precision, since there is only a finite number of numbers that can be stored in a float. E.g.,
+However, the \lstinline|float| type has limited precision, since there is only a finite number of numbers that can be stored in a float. E.g.,
 %
 \fso{floatImprecission}{Floating point arithmetic has finite precision.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, floating point arithmetic has finite precision.}]
@@ -932,7 +736,7 @@ Notice, since index counting starts at 0, and the string length is 7, then the i
  
 The \idx{dot notation} is an example of Structured programming, where technically speaking, the string \lstinline|"abcdefg"| is an immutable \idx{object} of \idx{class} \lstinline|string|, and \lstinline|[]| is an object \idx{method} and \lstinline|Length| is a property. For more on object, classes, and methods see Chapter~\ref{chap:oop}.  
 
-Strings are compared letter by letter. For two strings to be equal, they must have the same length and all the letters must be identical. E.g., \lstinline!"abs" = "absalon"! is false, while \lstinline!"abs" = "abs"! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator, e.g., \lstinline!"abs" <> "absalon"! is true, while \lstinline!"abs" <> "abs"! is false. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered alphabetically, such that \lstinline!"abs" < "absalon" && "absalon" < "milk"! is true, that is, the \lexeme{<} operator on two strings is true, if the left operand should come before the right, when sorting alphabetically. The algorithm for deciding the boolean value of \lstinline!lOp < rOp! is as follows: we start by examining the first character, and if \lstinline!lOp.[0]! and \lstinline!rOp.[0]! are different, then the \lstinline!lOp < rOp! is equal to \lstinline!lOp.[0] < rOp.[0]!. E.g., \lstinline!"milk" < "abs"! is the same as \lstinline!'m' < 'a'! is false, since the letter 'm' does not come before the letter 'a' in the alphabet, or more precisely, the codepoint of 'm' is not less than the codepoint of 'a'. If \lstinline!lOp.[0]! and \lstinline!rOp.[0]! are equal, then we move onto the next letter and repeat the investigation, e.g., \lstinline!"abe" < "abs"! is true, since \lstinline!"ab" = "ab"! is true and \lstinline!'e' < 's'! is true. If we reach the end of either of the two strings, then the short is smaller than the larger, e.g., \lstinline!"abs" < "absalon"! is true, while lstinline!"abs" < "abs"! is false. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined similarly.
+Strings are compared letter by letter. For two strings to be equal, they must have the same length and all the letters must be identical. E.g., \lstinline!"abs" = "absalon"! is false, while \lstinline!"abs" = "abs"! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator, e.g., \lstinline!"abs" <> "absalon"! is true, while \lstinline!"abs" <> "abs"! is false. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered alphabetically, such that \lstinline!"abs" < "absalon" && "absalon" < "milk"! is true, that is, the \lexeme{<} operator on two strings is true, if the left operand should come before the right, when sorting alphabetically. The algorithm for deciding the boolean value of \lstinline!leftOp < rightOp! is as follows: we start by examining the first character, and if \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are different, then the \lstinline!leftOp < rightOp! is equal to \lstinline!leftOp.[0] < rightOp.[0]!. E.g., \lstinline!"milk" < "abs"! is the same as \lstinline!'m' < 'a'! is false, since the letter 'm' does not come before the letter 'a' in the alphabet, or more precisely, the codepoint of 'm' is not less than the codepoint of 'a'. If \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are equal, then we move onto the next letter and repeat the investigation, e.g., \lstinline!"abe" < "abs"! is true, since \lstinline!"ab" = "ab"! is true and \lstinline!'e' < 's'! is true. If we reach the end of either of the two strings, then the short is smaller than the larger, e.g., \lstinline!"abs" < "absalon"! is true, while \lstinline!"abs" < "abs"! is false. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined similarly.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

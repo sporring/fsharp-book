@@ -193,42 +193,37 @@
 \newcommand{\src}{src}
 \newcounter{programCounter}
 \newtcolorbox[auto counter, number within=chapter]{codeNOutput}[2][]{%
-  title={Program~\thetcbcounter#2},
+  title={Listing~\thetcbcounter#2},
   % colback=blue!5!white,
   #1}
 \newcommand{\fs}[2]{
-  \begin{codeNOutput}{, #1.fsx:\\#2}
+  \begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
     \lstinputlisting[language=fsharp]{\src/#1.fsx}
     \tcblower %\tcbsubtitle[before skip=\baselineskip]{Output:}
     % \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{\src/#1.out}
     \lstinputlisting[language=console]{\src/#1.out}
-    \label{#1}
   \end{codeNOutput}
 }
 \newcommand{\fsa}[3]{
-  \begin{codeNOutput}{, #1.fsx:\\#3}
+  \begin{codeNOutput}[label=#1]{, #1.fsx:\\#3}
     \lstinputlisting[language=fsharp,#2]{\src/#1.fsx}
     \tcblower %\tcbsubtitle[before skip=\baselineskip]{Output:}
     \lstinputlisting[language=console]{\src/#1.out}
-    \label{#1}
   \end{codeNOutput}
 }
 \newcommand{\fse}[2]{
-  \begin{codeNOutput}{: #2}
+  \begin{codeNOutput}[label=#1]{: #2}
     \lstinputlisting[language=fsharp]{\src/#1.fsx}
-    \label{#1}
   \end{codeNOutput}
 }
 \newcommand{\fsebnf}[2]{
-  \begin{codeNOutput}[colframe=black!60!white]{: #2}
+  \begin{codeNOutput}[label=#1,colframe=black!60!white]{: #2}
     \lstinputlisting[language=ebnf]{#1}
-    \label{#1}
   \end{codeNOutput}
 }
 \newcommand{\fso}[2]{
-  \begin{codeNOutput}{, #1.fsx:\\#2}
+  \begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
     \lstinputlisting[language=console]{\src/#1.out}
-    \label{#1}
   \end{codeNOutput}
 }
 \newcommand{\fsi}[2]{
@@ -254,6 +249,7 @@
 
 % paragraph indentation is stupid
 \setlength\parindent{0pt}
+\setlength{\parskip}{1em}
 
 % Scratch out math
 \usepackage{cancel}
