@@ -1,8 +1,9 @@
 \chapter{Language Details}
 \label{chap:details}
-\jon{Work in progress!}
-\section{Precedence and associativity}
-\begin{table}
+This appendix lists various language details.
+
+\section{Arithmetic operators on basic types}
+\begin{table}[ht]
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
@@ -56,7 +57,8 @@
   \caption{Arithmetic operators on basic types. Ints, floats, chars, and strings means all built-in integer types etc.. Note that for the bitwise operations, digits \lstinline{0} and \lstinline{1} are taken to be \lstinline{true} and \lstinline{false}.}
   \label{tab:preNInfixOperators}
 \end{table}
-\begin{table}
+
+\begin{table}[ht]
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|l|l|l|X|}
@@ -103,8 +105,11 @@
   \caption{Comparison operators on basic types. Ints, floats, chars, and strings means all built-in integer types etc..}
   \label{tab:comparisonOperators}
 \end{table}
+\clearpage
+
+\section{Basic arithmetic functions}
 \idxss{\lstinline{abs}}\idxss{\lstinline{acos}}\idxss{\lstinline{asin}}\idxss{\lstinline{atan}}\idxss{\lstinline{atan2}}\idxss{\lstinline{ceil}}\idxss{\lstinline{cos}}\idxss{\lstinline{cosh}}\idxss{\lstinline{exp}}\idxss{\lstinline{floor}}\idxss{\lstinline{log}}\idxss{\lstinline{log10}}\idxss{\lstinline{max}}\idxss{\lstinline{min}}\idxss{\lstinline{pown}}\idxss{\lstinline{round}}\idxss{\lstinline{sign}}\idxss{\lstinline{sin}}\idxss{\lstinline{sinh}}\idxss{\lstinline{sqrt}}\idxss{\lstinline{tan}}\idxss{\lstinline{tanh}}
-\begin{table}
+\begin{table}[ht]
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|l|l|l|}
@@ -159,7 +164,39 @@
   \caption{Predefined functions for arithmetic operations}
   \label{tab:arithmeticFunctions}
 \end{table}
-\begin{table}
+
+\begin{table}[ht]
+  \centering
+  \begin{tabularx}{\linewidth}{|l|l|X|}
+    \hline
+    Name& Example & Description\\
+    \hline
+    \lstinline{fst} & \lstinline{fst (1, 2)} &\\
+    \hline
+    \lstinline{snd} & \lstinline{snd (1, 2)} &\\
+    \hline
+    \lstinline{failwith} & \lstinline{failwith} &\\
+    \hline
+    \lstinline{invalidArg} & \lstinline{invalidArg} &\\
+    \hline
+    \lstinline{raise} & \lstinline{raise} &\\
+    \hline
+    \lstinline{reraise} & \lstinline{reraise} &\\
+    \hline
+    \lstinline{ref} & \lstinline{ref} &\\
+    \hline
+%    \lstinline|(!)| & \lstinline|!| &\\
+    \hline
+    \lstinline{ceil} & \lstinline{ceil} &\\
+    \hline
+  \end{tabularx}
+  \caption{Built-in functions.}
+  \label{tab:simpleBuiltInFct}
+\end{table}
+\clearpage
+
+\section{Precedence and associativity}
+\begin{table}[ht]
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|>{\hsize=.8\hsize\raggedright\arraybackslash}X|>{\hsize=.4\hsize}X|>{\hsize=1.8\hsize}X|}
@@ -189,8 +226,9 @@
   \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|leftOp * rightOp| has higher precedence than \lstinline|leftOp + rightOp|. Operators in the same row has same precedence. Full table is given in Table~\ref{tab:operatorPrecedence}.}
   \label{tab:someOperatorPrecedences}
 \end{table}
+
 \idxs{boolean or}\idxs{boolean and}
-\begin{table}
+\begin{table}[ht]
   \centering
   \begin{tabularx}{\linewidth}{|>{\hsize=1\hsize\raggedright\arraybackslash}X|>{\hsize=.5\hsize}X|>{\hsize=1.5\hsize}X|}
     \hline
@@ -252,53 +290,26 @@
   \caption{Precedence and associativity of operators. Operators in the same row has same precedence. See Listing~\ref{list:infixOrPrefixOperators} for the definition of \lstinline!prefixOp!}
   \label{tab:operatorPrecedence}
 \end{table}
+\clearpage
 
-\begin{table}
-  \centering
-  \begin{tabularx}{\linewidth}{|l|l|X|}
-    \hline
-    Name& Example & Description\\
-    \hline
-    \lstinline{fst} & \lstinline{fst (1, 2)} &\\
-    \hline
-    \lstinline{snd} & \lstinline{snd (1, 2)} &\\
-    \hline
-    \lstinline{failwith} & \lstinline{failwith} &\\
-    \hline
-    \lstinline{invalidArg} & \lstinline{invalidArg} &\\
-    \hline
-    \lstinline{raise} & \lstinline{raise} &\\
-    \hline
-    \lstinline{reraise} & \lstinline{reraise} &\\
-    \hline
-    \lstinline{ref} & \lstinline{ref} &\\
-    \hline
-%    \lstinline|(!)| & \lstinline|!| &\\
-    \hline
-    \lstinline{ceil} & \lstinline{ceil} &\\
-    \hline
-  \end{tabularx}
-  \caption{Built-in functions.}
-  \label{tab:simpleBuiltInFct}
-\end{table}
-
+\begin{comment}
 \section{Behind the scene}
 \jon{I'm not sure, whether it will be a good idea to describe this. Could be used as the umbrella for the specifikation of the program.} When a program is compiled or interpreted the following steps are performed by the system
-\begin{enumerate}
-\item Decoding
-\item Tokenization
-\item Lexical Filtering
-\item Parsing
-\item Importing
-\item Checking
-\item Elaboration
-\item Execution
-\end{enumerate}
-\dots
+  \begin{enumerate}
+  \item Decoding
+  \item Tokenization
+  \item Lexical Filtering
+  \item Parsing
+  \item Importing
+  \item Checking
+  \item Elaboration
+  \item Execution
+  \end{enumerate}
+  \dots
+\end{comment}
 
 \section{Lightweight Syntax}
-\dots
-\jon{See Lightweight Syntax, Spec-4.0 Chapter 15.1}
+To appear later.\jon{See Lightweight Syntax, Spec-4.0 Chapter 15.1}
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
