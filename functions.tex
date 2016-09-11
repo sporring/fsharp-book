@@ -41,7 +41,7 @@ The use of identifiers is central in programming. For F\# not to be confused by 
 
 An identifier is a name for a constant, an expression, or a type, and it is defined by the following EBNF:
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 ident = (letter | "_") {letter | dDigit | specialChar};
 longIdent = ident | ident "." longIdent; (*no space around "."*)
 
@@ -66,13 +66,14 @@ Pc = ?Low lines?;
 Mn = ?Nonspacing combining marks?;
 Mc = ?Spacing combining marks?;
 Cf = ?Soft Hyphens?;
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{to do}
 %
 Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. Typically, only letters from the english alphabet are used as \lstinline[language=ebnf]!letter!, and only \lstinline[language=ebnf]!_! is used for \lstinline[language=ebnf]!specialChar!, but the full definition referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=ebnf]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=ebnf]{specialChar} category.
 
 Binding expressions to identifiers is done with the keyword \keyword{let}, using the following simplified syntax:
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 expr = ...
   | expr ":" type (*type annotation*)
   | expr ";" expr (*sequence of expressions*)
@@ -94,17 +95,20 @@ pat = ...
 
 functionDefn = identOrOp argumentPats [":" type] "=" expr;
 argumentPats = pat | pat argumentPats;
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{to do}
 %
 which will be discussed in the following.\spec{Spec-4.0 Section 6.6, function-or-value-defns, possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.} \spec{Spec-4.0 does not seem to mention the special identifier '\_', which discards values in 'let' statements.} \jon{Mention special identifier '\_', which means ignore.}
 
 \section{Values}
 Binding identifiers to literals or expressions that are evaluated to be values is called value binding, and examples are \lstinline!let a = 3.0! and \lstinline!let b = cos 0.9!. On EBNF the simplified syntax,
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 expr = ...
   | "let" valueDefn "in" expr (*binding a value or variable*)
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{to do}
+%
 The \keyword{let} bindings defines relations between patterns \lstinline[language=ebnf]!pat! and expressions \lstinline[language=ebnf]!expr! for many different purposes. Most often the pattern is an identifier\lstinline[language=ebnf]!ident!, which \idx{\keyword{let}} defines to be an alias of the expression \lstinline[language=ebnf]!expr!. The pattern may also be defined to have specific type using the \idx{\lexeme{:}} lexeme and a named \lstinline[language=ebnf]!type!. The \lexeme{\_} pattern is called the \idx{wild card} pattern and, when it is in the value binding, then the expression is evaluated but the result is discarded. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword. For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
 %
 \fs{letValue}{The identifier \lstinline!p! is used in the expression following the \keyword{in} keyword.}
@@ -183,10 +187,12 @@ Here the lexical scope of \lstinline!let p = 4 in ...! is for the nested scope, 
 \label{sec:functions}
 A function is a mapping between an input and output domain. A key advantage of using functions, when programming, is that they \idx{encapsulate code} into smaller units, that are easier to debug and may be reused. F\# is a functional first programming language, and offers a number of alternative methods for specifying parameters, which will be discussed in this section. Binding identifiers to functions follows a syntax similar to value binding,
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 expr = ...
   | "let" functionDefn "in" expr (*binding a function or operator*)
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{to do}
+%
 Functions may also be recursive, which will be discussed in Chapter~\ref{chap:flow}. An example in interactive mode is,
 %
 \fso{letFunction}{An example of a binding of an identifier and a function.}
@@ -262,7 +268,7 @@ Operators are functions, e.g., the infix multiplication operator \lstinline!+! i
 \fs{addOperatorNFunction}{}
 %
 All operator has this option, and you may redefine them and define your own operators, who has names specified by the following simplified EBNF:
-\begin{lstlisting}[language=ebnf, caption={Grammar for infix and prefix lexemes},label=list:infixOrPrefixOperators]
+\begin{verbatimwrite}{tmp.ebnf}
 infixOrPrefixOp = "+" | "-" | "+." | "-." | "%" | "&" | "&&";
 prefixOp = infixOrPrefixOp | "~" {"~"} | "!" {opChar} - "!=";
 infixOp = 
@@ -285,7 +291,8 @@ infixOp =
 opChar = 
   "!" | "%" | "&" | "*" | "+" | "-" | ". " | "/" 
   | "<" | "=" | ">" | "@" | "^" | "|" | "~";
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{Grammar for infix and prefix lexemes\label{list:infixOrPrefixOperators}}
 %op = opChar {opChar}
 %identOrOp = ident | "(" op ")"
 %$
@@ -300,20 +307,27 @@ Operators beginning with \lstinline!*! must use a space in its definition, \lsti
 \section{The Printf function}
 \label{sec:printf}
 A common way to output information to the console is to use one of the family of \idx{\lstinline{printf}} commands. These functions are special, since they take a variable number of arguments, and the number is decided by the first - the format string,
-\begin{lstlisting}[language=ebnf]
+%
+\begin{verbatimwrite}{tmp.ebnf}
 "printf" formatString {ident}
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{to do}
+%
 where a \lstinline[language=ebnf]!formatString! is a string (simple or verbatim) with placeholders,
-\begin{lstlisting}[language=ebnf]
+%
+\begin{verbatimwrite}{tmp.ebnf}
 placeholder = "%%" | ""%" ["0"] ["+"] ["-"] [SP] [dInt] ["." dInt] [placeholderType]
 placeholderType = "b" | "d" | "i" | "u" | "x" | "X" | "o" | "e" | "E" | "f" | "F" | "g" | "G" | "M" | "O" | "A" | "a" | "t"
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{to do}
+%
 and where the number of arguments after \lstinline[language=ebnf]!formatString! must match the number of placerholders in \lstinline[language=ebnf]!formatString!. The \lstinline[language=ebnf]!placeholderType! is elaborated in Table~\ref{tab:printfPlaceholder}.
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|X|}
     \hline
-    Placeholder& Type&Description\\
+    \rowcolor{headerRowColor} Placeholder& Type&Description\\
     \hline
     \lstinline!\%b!&\lstinline!bool!&Replaces with boolean value\\
     \hline
@@ -369,9 +383,10 @@ Beware, \lstinline[language=ebnf]!formatString! is not a \lstinline!string! but 
 The family of \lstinline!printf! is shown in Table~\ref{tab:printfFamily}.\idxss{\lstinline{stdout}}\idxss{\lstinline{stderr}}\idxss{\lstinline{printf}}\idxss{\lstinline{printfn}}\idxss{\lstinline{fprintf}}\idxss{\lstinline{fprintfn}}\idxss{\lstinline{eprintf}}\idxss{\lstinline{eprintfn}}\idxss{\lstinline{sprintf}}\idxss{\lstinline{failwithf}}
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|X|}
     \hline
-    Function & Example & Description\\
+    \rowcolor{headerRowColor} Function & Example & Description\\
     \hline
     \lstinline!printf! & \lstinline!printf "\%d apples" 3! & Prints to the console, i.e., \lstinline!stdout!\\
     \lstinline!printfn! &  & as \lstinline!printf! and adds a newline.\\
@@ -397,10 +412,12 @@ The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! an
 \label{sec:mutableValues}
 The \keyword{mutable} in \keyword{let} bindings means that the identifier may be rebound to a new value using the \idxs{\lexeme{<-}} lexeme, e.g.,\jon{Discussion on heap and stack should be added here.}
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 expr = ...
   | expr "<-" expr (*assingment*)
-\end{lstlisting}
+\end{verbatimwrite}
+\fsebnf{tmp.ebnf}{to do}
+%
 \idx{Mutable data} is synonymous with the term \idx{variable}. A variable is an area in the computers working memory associated with an identifier and a type, and this area may be read from and written to during program execution. For example,
 %
 \fs{mutableAssignReassingShort}{A variable is defined and later reassigned a new value.}
