@@ -414,7 +414,29 @@ The \idx{dot notation} is an example of Structured programming, where technicall
 
 Strings are compared letter by letter. For two strings to be equal, they must have the same length and all the letters must be identical. E.g., \lstinline!"abs" = "absalon"! is false, while \lstinline!"abs" = "abs"! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator, e.g., \lstinline!"abs" <> "absalon"! is true, while \lstinline!"abs" <> "abs"! is false. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered alphabetically, such that \lstinline!"abs"  < "absalon"  && "absalon"  < "milk"! is true, that is, the \lexeme{<} operator on two strings is true, if the left operand should come before the right, when sorting alphabetically. The algorithm for deciding the boolean value of \lstinline!leftOp < rightOp! is as follows: we start by examining the first character, and if \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are different, then the \lstinline!leftOp < rightOp! is equal to \lstinline!leftOp.[0] < rightOp.[0]!. E.g., \lstinline!"milk"  < "abs"! is the same as \lstinline!'m' < 'a'!, which is false, since the letter 'm' does not come before the letter 'a' in the alphabet, or more precisely, the codepoint of 'm' is not less than the codepoint of 'a'. If \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are equal, then we move onto the next letter and repeat the investigation, e.g., \lstinline!"abe" < "abs"! is true, since \lstinline!"ab" = "ab"! is true and \lstinline!'e' < 's'! is true. If we reach the end of either of the two strings, then the short is smaller than the larger, e.g., \lstinline!"abs" < "absalon"! is true, while \lstinline!"abs" < "abs"! is false. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined similarly.
 
-\section{Programmingintermezzo}
+\section{Programming intermezzo}
+Conversion of integers between decimal and binary form is a key concept in order to understand some of the basic properties of calculations on the computer. From binary to decimal is straight forward using the power-of-two algorithm, i.e., given a sequence of $n+1$ bits that represent an intager $b_n b_{n-1}\dots b_0$, where $b_n$ and $b_0$ are the most and least significant bits, then the decimal value is calculated as,
+\begin{align}
+  v = \sum_{i=0}^nb_i2^i
+\end{align}
+For example $10011_2 = 1+2+16 = 19$. From decimal to binary is a little more complex, but a simple divide-by-two algorithm exists. The key to understanding the divide-by-two algorithm is to realize that when you divide a number by two, then that is equivalent to shifting its binary representation 1 to the right. E.g., $10 = 1010_2$ and $10/2 = 5 = 110_2$. Odd numbers have $b_0=1$, e.g., $11_{10} = 1011_2$ and $11_{10}/2 = 5.5 = 101.1_2$. Hence, if we divide any number by two and get a non-integer number, then its least significant bit was $1$. Another way to express this is that the least significant bit is the remainder after integer division by two. Sequential application of this idea leads directly to the divide-by-two algorithm. E.g., if we were to convert the number $11_{10}$ on decimal form to binary form we would perform the following steps:
+\begin{align*}
+  11\tikzmark{a1} \text{ div } 2 = \tikzmark{a2}5\tikzmark{a3},\;   \tikzmark{a4}11  \text{ rem }  2 & =\tikzmark{a5}1\tikzmark{a6}\\
+  \nonumber \\
+  5\tikzmark{b1} \text{ div }  2 = \tikzmark{b2}2\tikzmark{b3},\;  \tikzmark{b4}5  \text{ rem } 2 & =\tikzmark{b5}1\tikzmark{b6}\\
+  \\\nonumber
+  2\tikzmark{c1}  \text{ div }  2 = \tikzmark{c2}1\tikzmark{c3},\;   \tikzmark{c4}2 \text{ rem }  2 & =\tikzmark{c5}0\tikzmark{c6} \\
+  \\\nonumber
+  1\tikzmark{d1}  \text{ div }  2 = \tikzmark{d2}0\tikzmark{d3},\;   \tikzmark{d4}1  \text{ rem }  2 & =\tikzmark{d5}1\tikzmark{d6}\\
+\end{align*}
+\DrawArrow[]{a2}{b1}
+\DrawArrow[]{a3}{b4}
+\DrawArrow[]{b2}{c1}
+\DrawArrow[]{b3}{c4}
+\DrawArrow[]{c2}{d1}
+\DrawArrow[]{c3}{d4}
+\FrameArea{a5}{d6}
+Here we used div and rem to signify the integer division and remainder operators. The algorithms stops, when the result of integer divsion is zero. Reading off the remainder from below and up we find the sequence $1011_2$, which is the binary form of the decimal number $11_{10}$. For integers with a fractional part, the divide-by-two may be used on the whole part, while multiply may be used in a similar manner on the fractional part.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

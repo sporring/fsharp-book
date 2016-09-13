@@ -1,4 +1,5 @@
 % Character set
+\usepackage{cmap}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc} % ensure that all the characters in characterSets.tex prints
 \usepackage{upquote} % \textcent
@@ -263,9 +264,10 @@
   % #1 = draw options
   % #2 = left point
   % #3 = right point
-  \begin{tikzpicture}[overlay,remember picture]
-    \draw [-latex, #1,ultra thick,red] ($(#2)+(0.1em,0.5ex)$) to ($(#3)+(0,0.5ex)$);
-  \end{tikzpicture}%
+  \marginpar{\begin{tikzpicture}[overlay,remember picture]
+    %\draw [-latex, #1,ultra thick,red] ($(#2)+(0.1em,0.5ex)$) to ($(#3)+(0,0.5ex)$);
+    \draw [-latex, #1,ultra thick,red] ($(#2) -(0,0.5ex)$) to ($(#3)+(0,2ex)$);
+  \end{tikzpicture}}%
 }%
 \newcommand*{\AddNote}[4]{%
   \begin{tikzpicture}[overlay, remember picture]
