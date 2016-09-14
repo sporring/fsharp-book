@@ -317,21 +317,25 @@ A common way to output information to the console is to use one of the family of
 \end{verbatimwrite}
 \fsebnf{tmp.ebnf}{to do}
 %
-where a \lstinline[language=ebnf]!formatString! is a string (simple or verbatim) with placeholders,
+where a \lstinline[language=ebnf]!formatString! is a string (simple or verbatim) with placeholders. The function \lstinline[language=ebnf]!printf! prints \lstinline[language=ebnf]!formatString! to the console, where all \lstinline[language=ebnf]!placeholder! has been replaced by the value of the corresponding argument formatted as specified, e.g., in \mbox{\lstinline!printfn "1 2 \%d" 3!} the \lstinline[language=ebnf]!formatString! is \mbox{\lstinline!"1 2 \%d"!}, and the placeholder is \lstinline{%d}, %
+and the \lstinline{printf} replaced the placeholder with the value of the corresponding argument, and the result is printed to the console, in this case \mbox{\lstinline!1 2 3!}. Possible formats for the placeholder are,
 %
+%["0"] ["+"] ["-"] [SP] ("*" | [dInt] ["." dInt]) [placeholderType]
 \begin{verbatimwrite}{tmp.ebnf}
-placeholder = "%%" | ""%" ["0"] ["+"] ["-"] [SP] [dInt] ["." dInt] [placeholderType]
-placeholderType = "b" | "d" | "i" | "u" | "x" | "X" | "o" | "e" | "E" | "f" | "F" | "g" | "G" | "M" | "O" | "A" | "a" | "t"
+placeholder = "%%" | ("%" [flags] [width] ["." precision] specifier) (* No spaces between rules *)
+flags = ["0"] ["+"] [SP] (* No spaces between rules *)
+width = ["-"] ("*" | [dInt]) (* No spaces between rules *)
+specifier = "b" | "d" | "i" | "u" | "x" | "X" | "o" | "e" | "E" | "f" | "F" | "g" | "G" | "M" | "O" | "A" | "a" | "t"
 \end{verbatimwrite}
 \fsebnf{tmp.ebnf}{to do}
 %
-and where the number of arguments after \lstinline[language=ebnf]!formatString! must match the number of placerholders in \lstinline[language=ebnf]!formatString!. The \lstinline[language=ebnf]!placeholderType! is elaborated in Table~\ref{tab:printfPlaceholder}.
+There are specifiers for all the basic types and more as elaborated in Table~\ref{tab:printfPlaceholder}.
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|X|}
     \hline
-    \rowcolor{headerRowColor} Placeholder& Type&Description\\
+    \rowcolor{headerRowColor} Specifier& Type&Description\\
     \hline
     \lstinline!\%b!&\lstinline!bool!&Replaces with boolean value\\
     \hline
@@ -346,7 +350,7 @@ and where the number of arguments after \lstinline[language=ebnf]!formatString! 
     \lstinline!\%x!&basic integer&formatted as unsigned hexadecimal with lower case letters\\
     \hline
     \lstinline!\%X!&basic integer&formatted as unsigned hexadecimal with upper case letters\\
-    \hline floating point type
+    \hline
     \lstinline!\%o!&basic integer&formatted as unsigned octal integer\\
     \hline
     \mbox{\lstinline!\%f!,} \mbox{\lstinline!\%F!,} &basic floats&formatted on decimal form\\
@@ -369,12 +373,12 @@ and where the number of arguments after \lstinline[language=ebnf]!formatString! 
   \caption{Printf placeholder string}
   \label{tab:printfPlaceholder}
 \end{table}
-The function \lstinline[language=ebnf]!printf! prints \lstinline[language=ebnf]!formatString! to the console, where all \lstinline[language=ebnf]!placeholder! has been replaced by the value of the corresponding argument formatted as specified. E.g.,
+The placeholder can be given a specified with, either by setting a specific integer, or using the \lstinline!*! character, indicating that the with is given as an argument prior to the replacement value. Default is for the value to be right justified in the field, but left justification can be specified by the \lstinline!-! character. For number types, you can specify their format by: \lstinline!"0"! for padding the number with zeros to the left, when righ justifying the number; \lstinline!"+"! to explicitely show a plus sign for positive numbers; \lstinline!SP! to enforce a space, where there otherwise would be a plus sign for positive numbers. For floating point numbers, the precision integer specifies the number of digits displayed of the fractional part. Examples of some of these combinations are,
 %
 \fs{printfExample}{Examples of printf and some of its formatting options.}
 %
 Not all combinations of flags and identifier types are supported, e.g., strings cannot have number of integers after the decimal specified.
-\spec{Mono seems to have a bug, \texttt{printfn "\%.1g" 3.13;;} and \texttt{printfn "\%.1f" 3.13;;} produces different number of digits.}
+\spec{Mono seems to have a bug, \texttt{printfn "\%.1g"   3.13;;} and \texttt{printfn "\%.1f"   3.13;;} produces different number of digits.}
 \spec{Spec-4.0 \texttt{\%s} and \texttt{\%b} are missing in Section 3.1.16.}
 The placeholder types \lstinline{"%A"}, \lstinline{"%a"}, and \lstinline{"%t"} are special for F\#, examples of their use are,
 %
@@ -409,12 +413,12 @@ The family of \lstinline!printf! is shown in Table~\ref{tab:printfFamily}.\idxss
   \caption{The family of printf functions.}
   \label{tab:printfFamily}
 \end{table}
-The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, of type \lstinline!System.IO.TextWriter!. Streams will be discussed in further detail in Chapter~\ref{chap:IO}. The function \lstinline!failwithf! is used with exceptions, see Chapter~\ref{chap:exceptions} for more details. The function has a number of possible return value types, and for testing the \idx{\lstinline{ignore}} function ignores it all, e.g., \lstinline!ignore (failwithf "\%d failed apples" 3)!
+The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, of type \lstinline!System.IO.TextWriter!. Streams will be discussed in further detail in Chapter~\ref{chap:IO}. The function \lstinline!failwithf! is used with exceptions, see Chapter~\ref{chap:exceptions} for more details. The function has a number of possible return value types, and for testing the \idx{\lstinline{ignore}} function ignores it all, e.g., \mbox{\lstinline!ignore (failwithf "\%d failed apples"   3)!}
 \spec{Mono: \texttt{bprintf} and \texttt{kprintf} are undefined.}
 
 \section{Variables}
 \label{sec:mutableValues}
-The \keyword{mutable} in \keyword{let} bindings means that the identifier may be rebound to a new value using the \idxs{\lexeme{<-}} lexeme, e.g.,\jon{Discussion on heap and stack should be added here.}
+The \keyword{mutable} in \keyword{let} bindings means that the identifier may be rebound to a new value using the \idx{\lexeme{<-}} lexeme, e.g.,\jon{Discussion on heap and stack should be added here.}
 %
 \begin{verbatimwrite}{tmp.ebnf}
 expr = ...
