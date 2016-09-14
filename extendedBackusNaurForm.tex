@@ -45,10 +45,9 @@ number = digit, { digit };
 \item '\lstinline[language=ebnf]|( ... )|' grouping, e.g.,
   \begin{lstlisting}[language=ebnf]
 digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
-number = digit, { digit };
-expression = number, { "+" | "-", number };
+signedNumber = ( "+" | "-" ) digit, { digit };
   \end{lstlisting}
-  here \lstinline[language=ebnf]|expression| is a number or a sum of numbers such as \lstinline[language=ebnf]|3 + 5|.
+  here \lstinline[language=ebnf]|signedNumber| is a number with a mandatory sign, such as \lstinline[language=ebnf]|+5| and \lstinline[language=ebnf]|-3|.
 \item '\lstinline[language=ebnf]|" ... "|' a terminal string, e.g.,
   \begin{lstlisting}[language=ebnf]
 string = "abc"';
@@ -88,10 +87,10 @@ Rules for rewriting EBNF are:
     \hline
     \lstinline[language=ebnf]{r | (s | t)} $\leftrightarrow$ \lstinline[language=ebnf]{(r | s) | t} $\leftrightarrow$ \lstinline[language=ebnf]{r | s | t} & \lstinline[language=ebnf]{|} is associative \\
     \hline
-    \lstinline[language=ebnf]{(r s) t} $\leftrightarrow$ \lstinline[language=ebnf]{r (s t)} $\leftrightarrow$ \lstinline[language=ebnf]{r s t} & concatenation is associative \\
+    \lstinline[language=ebnf]{(r, s) t} $\leftrightarrow$ \lstinline[language=ebnf]{r (s, t)} $\leftrightarrow$ \lstinline[language=ebnf]{r, s, t} & concatenation is associative \\
     \hline
-    \lstinline[language=ebnf]{r (s | t)} $\leftrightarrow$ \lstinline[language=ebnf]{r t| r s} & concatenation is distributive over \lstinline[language=ebnf]{|}\\
-    \lstinline[language=ebnf]{(r | s) t} $\leftrightarrow$ \lstinline[language=ebnf]{r t| r t} &\\
+    \lstinline[language=ebnf]{r, (s | t)} $\leftrightarrow$ \lstinline[language=ebnf]{r, t | r, s} & concatenation is distributive over \lstinline[language=ebnf]{|}\\
+    \lstinline[language=ebnf]{(r | s), t} $\leftrightarrow$ \lstinline[language=ebnf]{r, t | r, t} &\\
     \hline
     \lstinline[language=ebnf]{[s | t]} $\leftrightarrow$ \lstinline[language=ebnf]{[t] | [s]} &\\
     \hline
@@ -108,7 +107,7 @@ where \lstinline[language=ebnf]{r}, \lstinline[language=ebnf]{s}, and \lstinline
     \hline
     \rowcolor{headerRowColor} Symbol & Description\\
     \hline
-    \lstinline[language=ebnf]!*! & repetition\\
+    \lstinline[language=ebnf]![]!, \ldots & Bracket and quotation mark pairs\\
     \hline
     \lstinline[language=ebnf]!-! & except\\
     \hline
@@ -122,7 +121,8 @@ where \lstinline[language=ebnf]{r}, \lstinline[language=ebnf]{s}, and \lstinline
     \hline
   \end{tabular}
 \end{center}
-in order of precedence, such that \lstinline[language=ebnf]{*} has higher precedence than \lstinline[language=ebnf]{-}. These precedence rules are overridden by bracket pairs, such as \lstinline[language=ebnf]{' '}, \lstinline[language=ebnf]{" "}, \lstinline[language=ebnf]{(* *)}, \lstinline[language=ebnf]{( )}, \lstinline[language=ebnf]{[ ]}, \lstinline[language=ebnf]!{ }!, \lstinline{? ?}.
+in order of precedence, such that bracket and quotation mark pairs has higher precedence than \lstinline[language=ebnf]{-}. 
+%These precedence rules are overridden by bracket pairs, such as \lstinline[language=ebnf]{' '}, \lstinline[language=ebnf]{" "}, \lstinline[language=ebnf]{(* *)}, \lstinline[language=ebnf]{( )}, \lstinline[language=ebnf]{[ ]}, \lstinline[language=ebnf]!{ }!, \lstinline{? ?}.
 
 The proposal allows for identifies that includes space, but often a reduced form is used, where identifiers are single words, in which case the concatenation symbol \lstinline[language=ebnf]|,| is replaced by a space. Likewise, the termination symbol \lstinline[language=ebnf]|;| is often replaced with the new-line character, and if long lines must be broken, then indentation is used to signify continuation. In this relaxed EBNF, the EBNF syntax itself can be expressed in EBNF as,
 \begin{lstlisting}[language=ebnf]

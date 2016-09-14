@@ -436,7 +436,25 @@ For example $10011_2 = 1+2+16 = 19$. From decimal to binary is a little more com
 \DrawArrow[]{c2}{d1}
 \DrawArrow[]{c3}{d4}
 \FrameArea{a5}{d6}
-Here we used div and rem to signify the integer division and remainder operators. The algorithms stops, when the result of integer divsion is zero. Reading off the remainder from below and up we find the sequence $1011_2$, which is the binary form of the decimal number $11_{10}$. For integers with a fractional part, the divide-by-two may be used on the whole part, while multiply may be used in a similar manner on the fractional part.
+Here we used div and rem to signify the integer division and remainder operators. The algorithms stops, when the result of integer division is zero. Reading off the remainder from below and up we find the sequence $1011_2$, which is the binary form of the decimal number $11_{10}$. Using interactive mode, we can calculate the same as,
+\begin{codeNOutput}{: Converting the number $11_{10}$ to binary form.}
+\begin{lstlisting}[language=console]
+> printfn "(%d, %d)" (11 / 2) (11 % 2);;
+(5, 1)
+val it : unit = ()
+> printfn "(%d, %d)" (5 / 2) (5 % 2);;  
+(2, 1)
+val it : unit = ()
+> printfn "(%d, %d)" (2 / 2) (2 % 2);;  
+(1, 0)
+val it : unit = ()
+> printfn "(%d, %d)" (1 / 2) (1 % 2);;
+(0, 1)
+val it : unit = ()
+\end{lstlisting}
+\end{codeNOutput}
+Thus, but reading the second integer-respons from \lstinline!printfn! from below and up, we again obtain the binary form of $11_{10}$ to be $1011_2$. For integers with a fractional part, the divide-by-two may be used on the whole part, while multiply may be used in a similar manner on the fractional part.
+
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

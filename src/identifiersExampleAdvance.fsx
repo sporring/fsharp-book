@@ -1,7 +1,7 @@
 let solution a b c sgn =
-  let determinant a b c =
+  let discriminant a b c =
     b ** 2.0 - 2.0 * a * c
-  let d = determinant a b c
+  let d = discriminant a b c
   (-b + sgn * sqrt d) / (2.0 * a)
 
 let a = 1.0

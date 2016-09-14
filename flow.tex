@@ -133,6 +133,7 @@ Using recursion to calculate the Fibonacci number as Listing~\ref{fibFor}.
 Here we used the fact that including $\text{fib}(0)=0$ in the Fibonacci series also produces it using the rule $\text{fib}(n)=\text{fib}(n-2)+\text{fib}(n-1),\; n\geq 0$, which allowed us to define a function that is well defined for the complete set of integers. I.e., a negative argument returns 0. This is a general advice: \advice{make functions that fails gracefully.} The recursive definition allows for recursive value definitions and defining several values and functions in one expression. Recursive values is particularly useful for defining infinite sequences, see Section~\ref{sec:sequences}.
 
 \jon{Add short-cut if-then-else with and and or logical operators.}
+\jon{We need the \lstinline{and} notation to define mutually recursive functions.}
 
 % Functions may be declared using pattern matching, which is a flexible method for declaring output depending on conditions on the input value. The most common pattern matching method is by use of the \texttt{match with} syntax,
 % \fs{functionDeclarationMatchWith}{}
