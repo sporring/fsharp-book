@@ -377,9 +377,7 @@ The placeholder can be given a specified with, either by setting a specific inte
 %
 \fs{printfExample}{Examples of printf and some of its formatting options.}
 %
-Not all combinations of flags and identifier types are supported, e.g., strings cannot have number of integers after the decimal specified.
-\spec{Mono seems to have a bug, \texttt{printfn "\%.1g"   3.13;;} and \texttt{printfn "\%.1f"   3.13;;} produces different number of digits.}
-\spec{Spec-4.0 \texttt{\%s} and \texttt{\%b} are missing in Section 3.1.16.}
+Not all combinations of flags and identifier types are supported, e.g., strings cannot have number of integers after the decimal specified.\spec{Mono seems to have a bug, \texttt{printfn "\%.1g"   3.13;;} and \texttt{printfn "\%.1f"   3.13;;} produces different number of digits.}\spec{Spec-4.0 \texttt{\%s} and \texttt{\%b} are missing in Section 3.1.16.}
 The placeholder types \lstinline{"%A"}, \lstinline{"%a"}, and \lstinline{"%t"} are special for F\#, examples of their use are,
 %
 \fs{printfExampleAdvance}{}
@@ -396,24 +394,24 @@ The family of \lstinline!printf! is shown in Table~\ref{tab:printfFamily}.\idxss
     \hline
     \rowcolor{headerRowColor} Function & Example & Description\\
     \hline
-    \lstinline!printf! & \lstinline!printf "\%d apples"! \lstinline!3! & Prints to the console, i.e., \lstinline!stdout!\\
+    \lstinline!printf! & \lstinline!printf "\%d apples" 3! & Prints to the console, i.e., \lstinline!stdout!\\
     \lstinline!printfn! &  & as \lstinline!printf! and adds a newline.\\
     \hline
-    \lstinline!fprintf! & \lstinline!fprintf stream "\%d apples"! \lstinline!3! & Prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, which would be the same as \lstinline!printf! and \lstinline!eprintf!.\\
+    \lstinline!fprintf! & \lstinline!fprintf stream "\%d apples" 3! & Prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, which would be the same as \lstinline!printf! and \lstinline!eprintf!.\\
     \lstinline!fprintfn! & & as \lstinline!fprintf! but with added newline.\\
     \hline
-    \lstinline!eprintf! & \lstinline!eprintf "\%d apples"! \lstinline!3! & Print to \lstinline!stderr!\\
+    \lstinline!eprintf! & \lstinline!eprintf "\%d apples" 3! & Print to \lstinline!stderr!\\
     \lstinline!eprintfn! & & as \lstinline!eprintf! but with added newline.\\
     \hline
-    \lstinline!sprintf! & \lstinline!printf "\%d apples"! \lstinline!3! & Return printed string\\
+    \lstinline!sprintf! & \lstinline!printf "\%d apples" 3! & Return printed string\\
     \hline
-    \lstinline!failwithf! & \lstinline!failwithf "\%d failed apples"! \lstinline!3! & prints to a string and used for raising an exception.\\
+    \lstinline!failwithf! & \lstinline!failwithf "\%d failed apples" 3! & prints to a string and used for raising an exception.\\
     \hline
   \end{tabularx}
   \caption{The family of printf functions.}
   \label{tab:printfFamily}
 \end{table}
-The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, of type \lstinline!System.IO.TextWriter!. Streams will be discussed in further detail in Chapter~\ref{chap:IO}. The function \lstinline!failwithf! is used with exceptions, see Chapter~\ref{chap:exceptions} for more details. The function has a number of possible return value types, and for testing the \idx{\lstinline{ignore}} function ignores it all, e.g., \mbox{\lstinline!ignore (failwithf "\%d failed apples"   3)!}
+The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, of type \lstinline!System.IO.TextWriter!. Streams will be discussed in further detail in Chapter~\ref{chap:IO}. The function \lstinline!failwithf! is used with exceptions, see Chapter~\ref{chap:exceptions} for more details. The function has a number of possible return value types, and for testing the \idx{\lstinline{ignore}} function ignores it all, e.g., \mbox{\lstinline!ignore (failwithf "\%d failed apples" 3)!}
 \spec{Mono: \texttt{bprintf} and \texttt{kprintf} are undefined.}
 
 \section{Variables}

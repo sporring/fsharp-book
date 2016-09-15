@@ -136,13 +136,14 @@
    %sensitive=true,
    basicstyle=\ttfamily\lst@ifdisplaystyle\small\fi, % make font small for listings but not for lstinline
    breaklines=true,
+   showstringspaces=false,
    morecomment=[l][\color{commentsColor}]{///},
    morecomment=[l][\color{commentsColor}]{//},
    morecomment=[s][\color{commentsColor}]{{(*}{*)}},
    morestring=[b]",
-   showstringspaces=false,
    literate={`}{\`}1,
    stringstyle=\color{stringsColor},
+   showspaces=true,
    %aboveskip=0pt, 
    %belowskip=0pt,
    %resetmargins=true,
@@ -182,8 +183,12 @@
   % captionpos=b,
   % backgroundcolor=\color{green!10!white},
 }
-% \lstset{language=fsharp, frame=single}
-\lstset{language=fsharp,aboveskip=0pt,belowskip=0pt}
+%\lstset{language=fsharp, frame=single}
+\lstset{language=fsharp}
+\makeatletter
+\def\lst@visiblespace{ }
+\makeatother
+
 \usepackage{caption}
 %\DeclareCaptionStyle{listing} [justification=raggedright,labelfont=bf]{}
 %\captionsetup[lstlisting]{style=listing}
@@ -264,10 +269,10 @@
   % #1 = draw options
   % #2 = left point
   % #3 = right point
-  \marginpar{\begin{tikzpicture}[overlay,remember picture]
+  \begin{tikzpicture}[overlay,remember picture]
     %\draw [-latex, #1,ultra thick,red] ($(#2)+(0.1em,0.5ex)$) to ($(#3)+(0,0.5ex)$);
     \draw [-latex, #1,ultra thick,red] ($(#2) -(0,0.5ex)$) to ($(#3)+(0,2ex)$);
-  \end{tikzpicture}}%
+  \end{tikzpicture}%
 }%
 \newcommand*{\AddNote}[4]{%
   \begin{tikzpicture}[overlay, remember picture]
@@ -281,9 +286,9 @@
   % #2 = bottom right point
   % The overlay is drawn in the margin in order not to screw with
   % horizontal spacing.
-  \marginpar{\begin{tikzpicture}[overlay,remember picture]
+  \begin{tikzpicture}[overlay,remember picture]
       \draw[red,rounded corners] ([shift={(-2pt,1.9ex)}] #1)  rectangle  ([shift={(2pt,-.9ex)}] #2);
-    \end{tikzpicture}}
+    \end{tikzpicture}
 }%
 
 
