@@ -294,9 +294,9 @@
                 </td>
                 <td colspan="2">
                   <b>
-                    <a href="#M:CommentExample.determinant(System.Double,System.Double,System.Double)">determinant</a>
+                    <a href="#M:CommentExample.discriminant(System.Double,System.Double,System.Double)">discriminant</a>
                   </b>(<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a>, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a>)<nobr> : <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a></nobr><blockquote>
- Calculate the determinant of a quadratic equation with parameters a, b, and c
+ The discriminant of a quadratic equation with parameters a, b, and c
 </blockquote></td>
               </tr>
               <tr valign="top">
@@ -382,15 +382,15 @@
             <b>Assembly: </b>commentExample (in commentExample.dll)<br /><b>Assembly Versions: </b>0.0.0.0</div>
           <hr size="1" />
         </blockquote>
-        <h3 id="M:CommentExample.determinant(System.Double,System.Double,System.Double)">determinant Method</h3>
-        <blockquote id="M:CommentExample.determinant(System.Double,System.Double,System.Double):member">
+        <h3 id="M:CommentExample.discriminant(System.Double,System.Double,System.Double)">discriminant Method</h3>
+        <blockquote id="M:CommentExample.discriminant(System.Double,System.Double,System.Double):member">
           <div class="msummary">
- Calculate the determinant of a quadratic equation with parameters a, b, and c
+ The discriminant of a quadratic equation with parameters a, b, and c
 </div>
           <h2>Syntax</h2>
-          <div class="Signature">[Microsoft.FSharp.Core.CompilationArgumentCounts(Mono.Cecil.CustomAttributeArgument[])]<br />public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a> <b>determinant</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a> a, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a> b, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a> c)</div>
+          <div class="Signature">[Microsoft.FSharp.Core.CompilationArgumentCounts(Mono.Cecil.CustomAttributeArgument[])]<br />public static <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a> <b>discriminant</b> (<a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a> a, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a> b, <a href="http://www.go-mono.com/docs/monodoc.ashx?link=T:System.Double">double</a> c)</div>
           <h4 class="Subsection">Parameters</h4>
-          <blockquote class="SubsectionBox" id="M:CommentExample.determinant(System.Double,System.Double,System.Double):Parameters">
+          <blockquote class="SubsectionBox" id="M:CommentExample.discriminant(System.Double,System.Double,System.Double):Parameters">
             <dl>
               <dt>
                 <i>a</i>
@@ -413,15 +413,15 @@
             </dl>
           </blockquote>
           <h4 class="Subsection">Returns</h4>
-          <blockquote class="SubsectionBox" id="M:CommentExample.determinant(System.Double,System.Double,System.Double):Returns">
+          <blockquote class="SubsectionBox" id="M:CommentExample.discriminant(System.Double,System.Double,System.Double):Returns">
             <span class="NotEntered">Documentation for this section has not yet been entered.</span>
           </blockquote>
           <h2 class="Section">Remarks</h2>
-          <div class="SectionBox" id="M:CommentExample.determinant(System.Double,System.Double,System.Double):Remarks">
+          <div class="SectionBox" id="M:CommentExample.discriminant(System.Double,System.Double,System.Double):Remarks">
             <span class="NotEntered">Documentation for this section has not yet been entered.</span>
           </div>
           <h2 class="Section">Requirements</h2>
-          <div class="SectionBox" id="M:CommentExample.determinant(System.Double,System.Double,System.Double):Version Information">
+          <div class="SectionBox" id="M:CommentExample.discriminant(System.Double,System.Double,System.Double):Version Information">
             <b>Namespace: </b>
             <br />
             <b>Assembly: </b>commentExample (in commentExample.dll)<br /><b>Assembly Versions: </b>0.0.0.0</div>
@@ -450,13 +450,13 @@
               <dt>
                 <i>sgn</i>
               </dt>
-              <dd>+1 or -1 indicating which solution is to be calculated.</dd>
+              <dd>+1 or -1 determines the solution.</dd>
             </dl>
           </blockquote>
           <h4 class="Subsection">Returns</h4>
           <blockquote class="SubsectionBox" id="M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double):Returns">The solution to x.</blockquote>
           <h2 class="Section">Remarks</h2>
-          <div class="SectionBox" id="M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double):Remarks">Negative determinants are not checked.</div>
+          <div class="SectionBox" id="M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double):Remarks">Negative discriminant are not checked.</div>
           <h2 class="Section">Example</h2>
           <div class="SectionBox" id="M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double):Example:1">
    The following code:
@@ -467,7 +467,7 @@
      let xp = (solution a b c +1.0)
      printfn "0 = %.1fx^2 + %.1fx + %.1f =&gt; x_+ = %.1f" a b c xp
    </pre></td></tr></table>
-   results in <tt>0 = 1.0x^2 + 0.0x + -1.0 =&gt; x_+ = 0.7</tt> printed to the console.
+   prints <tt>0 = 1.0x^2 + 0.0x + -1.0 =&gt; x_+ = 0.7</tt> to the console.
  </div>
           <h2 class="Section">Requirements</h2>
           <div class="SectionBox" id="M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double):Version Information">
