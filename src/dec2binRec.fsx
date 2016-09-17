@@ -1,18 +1,16 @@
 let dec2bin n =
   let rec dec2binHelper n =
-    let mutable v = n
-    let mutable str = ""
-    while v > 0 do
-      str <- (string (v % 2)) + str
-      v <- v / 2
-    str
+    if n = 0 then ""
+    else (dec2binHelper (n / 2)) + string (n % 2)
 
   if n < 0 then
     "Illegal value"
-  elif n = 0 then
-    "0b0"
   else
-    "0b" + (dec2binHelper n)
+    "0b" + 
+    if n = 0 then
+      "0"
+    else
+      dec2binHelper n
 
 printfn "%4d -> %s" -1 (dec2bin -1)
 printfn "%4d -> %s" 0 (dec2bin 0)

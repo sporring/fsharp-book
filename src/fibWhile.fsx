@@ -1,12 +1,12 @@
 let largestFibLeq n =
-  let mutable a = 1
-  let mutable b = 1
-  let mutable f = 0
-  while f <= n do
-    f <- a + b
-    a <- b
-    b <- f
-  a
+  let mutable prev = 1
+  let mutable current = 1
+  let mutable next = 0
+  while next <= n do
+    next <- prev + current
+    prev <- current
+    current <- next
+  prev
 
 printfn "largestFibLeq(1) = 1"
 printfn "largestFibLeq(2) = 1"

@@ -63,7 +63,7 @@ Mn = ?Nonspacing combining marks?;
 Mc = ?Spacing combining marks?;
 Cf = ?Soft Hyphens?;
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{to do}
+\fsebnf{tmp.ebnf}{Identifieres}
 %
 Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. Typically, only letters from the english alphabet are used as \lstinline[language=ebnf]!letter!, and only \lstinline[language=ebnf]!_! is used for \lstinline[language=ebnf]!specialChar!, but the full definition referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=ebnf]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=ebnf]{specialChar} category.
 
@@ -94,7 +94,7 @@ pat = ...
 functionDefn = identOrOp argumentPats [":" type] "=" expr;
 argumentPats = pat | pat argumentPats;
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{to do}
+\fsebnf{tmp.ebnf}{Simple expressions.}
 %
 In the following sections, we will work through this bit by bit.
 
@@ -105,7 +105,7 @@ Binding identifiers to literals or expressions that are evaluated to be values, 
 expr = ...
   | "let" valueDefn "in" expr (*binding a value or variable*)
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{to do}
+\fsebnf{tmp.ebnf}{Value binding expression.}
 %
 The \keyword{let} bindings defines relations between patterns \lstinline[language=ebnf]!pat! and expressions \lstinline[language=ebnf]!expr! for many different purposes. Most often the pattern is an identifier \lstinline[language=ebnf]!ident!, which \idx{\keyword{let}} defines to be an alias of the expression \lstinline[language=ebnf]!expr!. The pattern may also be defined to have specific type using the \idx{\lexeme{:}} lexeme and a named \lstinline[language=ebnf]!type!. The \lexeme{\_} pattern is called the \idx{wild card} pattern and, when it is in the value-binding, then the expression is evaluated but the result is discarded. The binding may be mutable as indicated by the keyword \idx{\keyword{mutable}}, which will be discussed in Section~\ref{sec:mutableValues}, and the binding holds \idx{lexically} for the last expression as indicated by the \idx{\keyword{in}} keyword. For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as follows,
 %
@@ -194,7 +194,7 @@ A function is a mapping between an input and output domain. A key advantage of u
 expr = ...
   | "let" functionDefn "in" expr (*binding a function or operator*)
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{to do}
+\fsebnf{tmp.ebnf}{Function binding expression}
 %
 Functions may also be recursive, which will be discussed in Chapter~\ref{chap:flow}. An example in interactive mode is,
 %
@@ -315,7 +315,7 @@ A common way to output information to the console is to use one of the family of
 \begin{verbatimwrite}{tmp.ebnf}
 "printf" formatString {ident}
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{to do}
+\fsebnf{tmp.ebnf}{\lstinline{printf} statement.}
 %
 where a \lstinline[language=ebnf]!formatString! is a string (simple or verbatim) with placeholders. The function \lstinline[language=ebnf]!printf! prints \lstinline[language=ebnf]!formatString! to the console, where all \lstinline[language=ebnf]!placeholder! has been replaced by the value of the corresponding argument formatted as specified, e.g., in \mbox{\lstinline!printfn "1 2 \%d" 3!} the \lstinline[language=ebnf]!formatString! is \mbox{\lstinline!"1 2 \%d"!}, and the placeholder is \lstinline{%d}, %
 and the \lstinline{printf} replaced the placeholder with the value of the corresponding argument, and the result is printed to the console, in this case \mbox{\lstinline!1 2 3!}. Possible formats for the placeholder are,
@@ -327,7 +327,7 @@ flags = ["0"] ["+"] [SP] (* No spaces between rules *)
 width = ["-"] ("*" | [dInt]) (* No spaces between rules *)
 specifier = "b" | "d" | "i" | "u" | "x" | "X" | "o" | "e" | "E" | "f" | "F" | "g" | "G" | "M" | "O" | "A" | "a" | "t"
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{to do}
+\fsebnf{tmp.ebnf}{Placeholders in \lstinline[language=ebnf]{formatString} for \lstinline!printf! functions.}
 %
 There are specifiers for all the basic types and more as elaborated in Table~\ref{tab:printfPlaceholder}.
 \begin{table}
@@ -421,7 +421,7 @@ The \keyword{mutable} in \keyword{let} bindings means that the identifier may be
 expr = ...
   | expr "<-" expr (*assingment*)
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{to do}
+\fsebnf{tmp.ebnf}{Value reassignment for mutable variables.}
 %
 \idx{Mutable data} is synonymous with the term \idx{variable}. A variable is an area in the computers working memory associated with an identifier and a type, and this area may be read from and written to during program execution. For example,
 %

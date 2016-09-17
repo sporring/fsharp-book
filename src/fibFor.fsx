@@ -1,12 +1,12 @@
 let fib n =
-  let mutable a = 1
-  let mutable b = 1
-  let mutable f = 0
+  let mutable prev = 1
+  let mutable current = 1
+  let mutable next = 0
   for i = 3 to n do
-    f <- a + b
-    a <- b
-    b <- f
-  f
+    next <- current + prev
+    prev <- current
+    current <- next
+  next
 
 printfn "fib(1) = 1"
 printfn "fib(2) = 1"
