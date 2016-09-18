@@ -12,13 +12,13 @@ To solve for $x$ we use the quadratic formula from elementary algebra,
 \begin{equation}
   x = \frac{-b\pm\sqrt{b^2-4ac}}{2a},
 \end{equation}
-which gives the general solution for any values of the coefficients. Here, we will assume a positive discrimant, $b^2-4ac>0$. In order to write a program, where the code may be reused later, we define a function \mbox{\lstinline!discriminant : float -> float -> float!}  , that is, a function that takes 3 arguments, \lstinline!a!, \lstinline!b!, and \lstinline!c!, and calculates the distriminant. Details on function definition is given in Section~\ref{sec:functions}. Likewise, we will define functions \mbox{\lstinline!positiveSolution : float -> float -> float!} and \mbox{\lstinline!negativeSolution : float -> float -> float!}, that also takes the polynomial's coefficients as arguments and calculates the solution corresponding to choosing the postive and negative sign for $\pm$ in the equation. Our solution thus looks like Listing~\ref{identifiersExample}.
+which gives the general solution for any values of the coefficients. Here, we will assume a positive discriminant, $b^2-4ac>0$. In order to write a program, where the code may be reused later, we define a function \mbox{\lstinline!discriminant : float -> float -> float!}  , that is, a function that takes 3 arguments, \lstinline!a!, \lstinline!b!, and \lstinline!c!, and calculates the discriminant. Details on function definition is given in Section~\ref{sec:functions}. Likewise, we will define functions \mbox{\lstinline!positiveSolution : float -> float -> float!} and \mbox{\lstinline!negativeSolution : float -> float -> float!}, that also takes the polynomial's coefficients as arguments and calculates the solution corresponding to choosing the postive and negative sign for $\pm$ in the equation. Our solution thus looks like Listing~\ref{identifiersExample}.
 %
 \fs{identifiersExample}{Finding roots for quadratic equations using function name binding.}
 %
 Here, we have further defined names of values \lstinline!a!, \lstinline!b!, and \lstinline!c! used as input to our functions, and the results of function application is bound to the names \lstinline!d!, \lstinline!xn!, and \lstinline!xp!. The names of functions and values given here are examples of identifiers, and with these, we may reuse the quadratic formulas and calculated values later, while avoiding possible typing mistakes and reducing amount of code, which needs to be debugged.
 
-Before we begin a deeper discussion note that F\# has adheres to two different syntax: regular and \idx[lightweight syntax]{ligthweight}. In the regular syntax, newlines and whitespaces are generally ignored, while in lightweight syntax, certain keywords and lexemes may be replaced by specific use of newlines and whitespaces. Lightweight syntax is the most common, but the syntaxes may be mixed, and we will highlight the options, when relevant.
+Before we begin a deeper discussion note that F\# has adheres to two different syntax: regular and \idx[lightweight syntax]{lightweight}. In the regular syntax, newlines and whitespaces are generally ignored, while in lightweight syntax, certain keywords and lexemes may be replaced by specific use of newlines and whitespaces. Lightweight syntax is the most common, but the syntaxes may be mixed, and we will highlight the options, when relevant.
 
 The use of identifiers is central in programming. For F\# not to be confused by built-in functionality, identifiers must follow a specific grammar: An identifier must start with a letter, but can be followed by zero or more of letters, digits, and a range of special characters except SP, LF, and CR (space, line feed, and carriage return). An identifier must not be a keyword or a reserved-keyword listed in Figures~\ref{fig:keywords}.
 \begin{figure}
@@ -63,11 +63,11 @@ Mn = ?Nonspacing combining marks?;
 Mc = ?Spacing combining marks?;
 Cf = ?Soft Hyphens?;
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{Identifieres}
+\fsebnf{tmp.ebnf}{Identifiers}
 %
 Thus, examples of identifiers are \lstinline{a}, \lstinline{theCharacter9}, \lstinline{Next_Word}, \lstinline{_tok}. Typically, only letters from the english alphabet are used as \lstinline[language=ebnf]!letter!, and only \lstinline[language=ebnf]!_! is used for \lstinline[language=ebnf]!specialChar!, but the full definition referes to the Unicode general categories described in Appendix~\ref{sec:unicode}, and there are currently 19.345 possible Unicode code points in the \lstinline[language=ebnf]{letter} category and 2.245 possible Unicode code points in the \lstinline[language=ebnf]{specialChar} category.
 
-Expressions are a central concept in F\#. An expression can be a mathematical expression, such as $3*5$, a function application, such as $f 3$, and many other things. Central in this chapter is the binding of values and functions to indentifiers, which is done with the keyword \keyword{let}, using the following simplified syntax, e.g., \lstinline!let a = 1.0!.
+Expressions are a central concept in F\#. An expression can be a mathematical expression, such as $3*5$, a function application, such as $f 3$, and many other things. Central in this chapter is the binding of values and functions to identifiers, which is done with the keyword \keyword{let}, using the following simplified syntax, e.g., \lstinline!let a = 1.0!.
 
 Expressions has an enormous variety in how they may be written, we will in this book gradually work through some of the more important facets. For this we will extend the EBNF notation with ellipses: \lstinline[language=ebnf]{...}, to denote that what is shown is part of the complete EBNF production rule. E.g., the part of expressions, we will discuss in this chapter is specified in EBNF by,\spec{Spec-4.0 Section 6.6, function-or-value-defns, possible Mono deviation from specification: let rec functionDefn and functionDefn requires newline before and.} \spec{Spec-4.0 does not seem to mention the special identifier '\_', which discards values in 'let' statements.}
 %
@@ -78,7 +78,7 @@ expr = ...
   | "let" valueDefn "in" expr (*binding a value or variable*)
   | "let" ["rec"] functionDefn "in" expr (*binding a function or operator*)
   | "fun" argumentPats "->" expr (*anonymous function*)
-  | expr "<-" expr (*assingment*)
+  | expr "<-" expr (*assignment*)
  
 type = ...
   | longIdent (*named such as "int"*)
@@ -89,7 +89,7 @@ pat = ...
   | "_" (*wildcard*)
   | ident (*named*)
   | pat ":" type (*type constraint*)
-  | "(" pat ")" (*paranthesized*)
+  | "(" pat ")" (*parenthesized*)
 
 functionDefn = identOrOp argumentPats [":" type] "=" expr;
 argumentPats = pat | pat argumentPats;
@@ -179,7 +179,7 @@ Defining blocks is useful for controlling the extend of a lexical scope of bindi
 \fs{letValueScopeBlockProblem}{Overshadowing hides the first binding.}
 %
 will print the value 4 last bound to the identifier \lstinline!p!, since F\# interprets the above as \lstinline!let p = 3 in let p = 4 in (printfn "%A" p; printfn "%A" p)!. %
-Had we intented to print the two different values of \lstinline!p!, the we should have create a block as,
+Had we intended to print the two different values of \lstinline!p!, the we should have create a block as,
 %
 \fs{letValueScopeBlock}{Blocks allow for the return to the previous scope.}
 %
@@ -248,13 +248,13 @@ Functions may be declared from other functions
 %\fs{functionDeclarationTupleCurrying}{}
 %For functions of more than 1 argument, there exists a short notation, which is called \idx{currying} in tribute of Haskell Curry,
 %
-\fs{functionDeclarationCurrying}{}
+\fs{functionDeclarationCurrying}{A function can be defined as a subset of another by Currying.}
 %
 Here, \lstinline{mul 2.0} is a partial specification of the function \lstinline{mul x y}, where the first argument is fixed, and hence, \lstinline{timesTwo} is a function of 1 argument being the second argument of \lstinline{mul}. This notation is called \idx{currying} in tribute of Haskell Curry, and Currying is often used in functional programming, but generally \advice{currying should be used carefully, since currying may seriously reduce readability of code.}
 
 A \idx{procedure} is a generalisation of the concept of functions, and in contrast to functions procedures need not return values,
 %
-\fs{procedure}{A procedure is a function that has no return value, which in F\# implies\lexeme{()} as return value.}
+\fs{procedure}{A procedure is a function that has no return value, and in F\# returns \lexeme{()}.}
 In F\# this is automatically given the unit type as return value. Procedural thinking is useful for \idx{encapsulation} of scripts, but is prone to \idx{side-effects} and should be minimized by being replaced by functional thinking. More on side-effects in Section~\ref{sec:mutableValues}.
 %An example, we've already seen is the \texttt{printfn}, which is used to print text on the console, but does not return a value. Coincidentally, since the console is a state, printing to it is a side-effect. Above we examined 
 %\begin{fse}
@@ -269,7 +269,7 @@ In F\# this is automatically given the unit type as return value. Procedural thi
 \label{sec:operators}
 Operators are functions, and in F\#, the infix multiplication operator \lstinline!+! is equivalent to the function \lstinline!(+)!, e.g.,
 %
-\fs{addOperatorNFunction}{}
+\fs{addOperatorNFunction}{Operators have function equivalents.}
 %
 All operator has this option, and you may redefine them and define your own operators, but in F\# names of user-defined operators are limited by the following simplified EBNF:
 \begin{verbatimwrite}{tmp.ebnf}
@@ -302,11 +302,11 @@ opChar =
 %$
 The precedence rules and associativity of user-defined operators follows the rules for which they share prefixes with built-in rules, see Table~\ref{tab:operatorPrecedence}. E.g., \lstinline!.*!, \lstinline!+++!, and \lstinline!<+! are valid operator names for infix operators, they have precedence as ordered, and their associativity are all left. Using \lstinline!~! as the first character in the definition of an operator makes the operator unary and will not be part of the name. Examples of definitions and use of operators are,
 %
-\fs{operatorDefinitions}{}
+\fs{operatorDefinitions}{Operators may be (re)defined by their function equivalent.}
 %
 Operators beginning with \lstinline!*! must use a space in its definition, \lstinline!( *! in order for it not to be confused with the beginning of a comment \lstinline!(*!, see Chapter~\ref{chap:documentation} for more on comments in code.
 
-Beware, redefining existing operators lexically redefines all future uses of the operators for all types, hence \advice{it is not a good idea to redefine operators, but better to define new.}\spec{It seems there is a bug in mono: \texttt{let (~+) x = x+1 in printfn "\%A" +1;;} prints 1 and not 2.} In Chapter~\ref{chap:oop} we will discuss how to define type specific operators including prefix operators. 
+Beware, redefining existing operators lexically redefines all future uses of the operators for all types, hence \advice{it is not a good idea to redefine operators, but better to define new.}\spec{It seems there is a bug in mono: \lstinline{let (~+) x = x+1 in printfn "\%A" +1;;} prints 1 and not 2.} In Chapter~\ref{chap:oop} we will discuss how to define type specific operators including prefix operators. 
 
 \section{The Printf function}
 \label{sec:printf}
@@ -373,14 +373,14 @@ There are specifiers for all the basic types and more as elaborated in Table~\re
   \caption{Printf placeholder string}
   \label{tab:printfPlaceholder}
 \end{table}
-The placeholder can be given a specified with, either by setting a specific integer, or using the \lstinline!*! character, indicating that the with is given as an argument prior to the replacement value. Default is for the value to be right justified in the field, but left justification can be specified by the \lstinline!-! character. For number types, you can specify their format by: \lstinline!"0"! for padding the number with zeros to the left, when righ justifying the number; \lstinline!"+"! to explicitely show a plus sign for positive numbers; \lstinline!SP! to enforce a space, where there otherwise would be a plus sign for positive numbers. For floating point numbers, the precision integer specifies the number of digits displayed of the fractional part. Examples of some of these combinations are,
+The placeholder can be given a specified with, either by setting a specific integer, or using the \lstinline!*! character, indicating that the with is given as an argument prior to the replacement value. Default is for the value to be right justified in the field, but left justification can be specified by the \lstinline!-! character. For number types, you can specify their format by: \lstinline!"0"! for padding the number with zeros to the left, when right justifying the number; \lstinline!"+"! to explicitly show a plus sign for positive numbers; \lstinline!SP! to enforce a space, where there otherwise would be a plus sign for positive numbers. For floating point numbers, the precision integer specifies the number of digits displayed of the fractional part. Examples of some of these combinations are,
 %
 \fs{printfExample}{Examples of printf and some of its formatting options.}
 %
-Not all combinations of flags and identifier types are supported, e.g., strings cannot have number of integers after the decimal specified.\spec{Mono seems to have a bug, \texttt{printfn "\%.1g"   3.13;;} and \texttt{printfn "\%.1f"   3.13;;} produces different number of digits.}\spec{Spec-4.0 \texttt{\%s} and \texttt{\%b} are missing in Section 3.1.16.}
+Not all combinations of flags and identifier types are supported, e.g., strings cannot have number of integers after the decimal specified.\spec{Mono seems to have a bug, \lstinline{printfn "\%.1g"   3.13;;} and \lstinline{printfn "\%.1f"   3.13;;} produces different number of digits.}\spec{Spec-4.0 \lstinline{\%s} and \lstinline{\%b} are missing in Section 3.1.16.}
 The placeholder types \lstinline{"%A"}, \lstinline{"%a"}, and \lstinline{"%t"} are special for F\#, examples of their use are,
 %
-\fs{printfExampleAdvance}{}
+\fs{printfExampleAdvance}{Custom format functions may be used to specialize output.}
 %
 The \lstinline!%A! is special in that all built-in types including tuples, lists, and arrays to be discussed in Chapter~\ref{chap:lists} can be printed using this formatting string, but notice that the formatting performed includes the named literal string. The two formatting strings \lstinline!%t! and \lstinline!%a! are options for user-customizing the formatting, and will not be discussed further.
 
@@ -411,7 +411,7 @@ The family of \lstinline!printf! is shown in Table~\ref{tab:printfFamily}.\idxss
   \label{tab:printfFamily}
 \end{table}
 The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, of type \lstinline!System.IO.TextWriter!. Streams will be discussed in further detail in Chapter~\ref{chap:IO}. The function \lstinline!failwithf! is used with exceptions, see Chapter~\ref{chap:exceptions} for more details. The function has a number of possible return value types, and for testing the \idx{\lstinline{ignore}} function ignores it all, e.g., \mbox{\lstinline!ignore (failwithf "\%d failed apples" 3)!}
-\spec{Mono: \texttt{bprintf} and \texttt{kprintf} are undefined.}
+\spec{Mono: \lstinline{bprintf} and \lstinline{kprintf} are undefined.}
 
 \section{Variables}
 \label{sec:mutableValues}
@@ -419,7 +419,7 @@ The \keyword{mutable} in \keyword{let} bindings means that the identifier may be
 %
 \begin{verbatimwrite}{tmp.ebnf}
 expr = ...
-  | expr "<-" expr (*assingment*)
+  | expr "<-" expr (*assignment*)
 \end{verbatimwrite}
 \fsebnf{tmp.ebnf}{Value reassignment for mutable variables.}
 %
@@ -428,9 +428,9 @@ expr = ...
 \fs{mutableAssignReassingShort}{A variable is defined and later reassigned a new value.}
 %\fs{mutableAssignReassing}{}
 %
-Here, an area in memory was denoted \texttt{x}, initially assigned the integer value 5, hence the type was inferred to be \lstinline|int|.  Later, this value of \texttt{x} was replaced with another integer using the \idx{\lexeme{<-}} lexeme. The \lexeme{<-} lexeme is used to distinguish the assignment from the comparison operator, i.e., if we by mistake had written,
+Here, an area in memory was denoted \lstinline{x}, initially assigned the integer value 5, hence the type was inferred to be \lstinline|int|.  Later, this value of \lstinline{x} was replaced with another integer using the \idx{\lexeme{<-}} lexeme. The \lexeme{<-} lexeme is used to distinguish the assignment from the comparison operator, i.e., if we by mistake had written,
 %
-\fso{mutableEqual}{Common error - mistaking \lexeme{=} and \lexeme{<-} lexemes for mutable variables. The former is the test operator, while the latter is the assignment expression.}
+\fso{mutableEqual}{It is a common error to mistake \lexeme{=} and \lexeme{<-} lexemes for mutable variables.}
 % \begin{lstlisting}[language=fsharp,caption={fsharpi, example of changing the content of a variable.}]
 % > let mutable a = 0
 % - a = 3;;
@@ -451,40 +451,43 @@ A typical variable is a counter of type integer, and a typical use of counters i
 %
 \fs{mutableAssignIncrement}{Variable increment is a common use of variables.}
 %
-\begin{comment}
-  A function that elegantly implements the incrementation operation may be constructed as,
-  % 
-  \fs{mutableAssignIncrementEncapsulation}{}
-  % 
-  \jon{Explain why this works!} Here, the output of \texttt{incr} is an anonymous function, that takes no argument, increments the variable of \texttt{incr} and returns the new value of the counter. This construction is called \idx{encapsulation}, since the variable \texttt{counter} is hidden by the function \texttt{incr} from the user, i.e., the user need not be concerned with how the increment operator is implemented and the variable name used by \texttt{incr} does not clutter the scope where it is used.
-\end{comment}
-Variables implement dynamic scope, e.g., in comparison with the lexical scope, where the value of an identifier depends on which line in the program, an identifier is defined, dynamic scope depends on, when it is used. E.g., the script in Listing~\ref{lexicalScopeNFunction} defines a function using lexical scope and returns the number \lstinline!6.0!, however, if \lstinline!a! is made \lstinline!mutable!, then the behaviour is different:
+Using variables in expressions as opposed to the left-hand-side of an assignment operation, reads the value of the variable. Thus, when using a variable as the return value of a function, then the value is copied from the local scope of the function to the scope from which it is called. E.g.,
+%
+\fso{mutableAssignReturnVariable}{Returning a mutable variable returns its value.}
+%
+In the example, we see that the type is a value, and not mutable. 
+
+Variables implement dynamic scope, e.g., in comparison with the lexical scope, where the value of an identifier depends on \emph{where} it is defined, dynamic scope depends on, \emph{when} it is used. E.g., the script in Listing~\ref{lexicalScopeNFunction} defines a function using lexical scope and returns the number \lstinline!6.0!, however, if \lstinline!a! is made \lstinline!mutable!, then the behaviour is different:
 %
 \fs{dynamicScopeNFunction}{Mutual variables implement dynamics scope rules. Compare with Listing~\ref{lexicalScopeNFunction}.}
 %
 Here, the respons is \lstinline!8.0!, since the value of \lstinline!a! changed befor the function \lstinline!f! was called.
  
-Variables cannot be returned from functions, that is,
+It is possible to work with mutable variables but through a special technique called \idx{encapsulation}. E.g., in the following example the we create a counter as an encapsulated mutable variable,
+% 
+\fs{mutableAssignIncrementEncapsulation}{Local mutable content can be indirectly accessed outside its scope.}
+% 
+This works because the line \mbox{\lstinline!let mutable counter = 0!} is only executed once, when the function \lstinline!incr! is defined. This is also an example of a side-effect. \advice{Encapsulation of mutable data is good programming practice, but avoiding mutable data all together is better practice.}
+
+F\# has a variation of mutable variables called \idx{reference cells}. Reference cells have built-in function \lstinline{ref} and operators \lexeme{!} and \lexeme{:=},
 %
-\fs{mutableAssignReturnValue}{}
+\fs{refCell}{Reference cells are variants of mutable variables.}
 %
-declares a function that has no arguments and returns the value 0, while the same for a variable is invalid,
+That is, the \lstinline{ref} function creates a reference variable, the '\lexeme{!}' and the '\lexeme{:=}' operators reads and writes its value. Reference cells are in some language called pointers, and their use is strongly discouraged, since they may cause \idx{side-effects}, where variable changes are performed across independent scopes. The \lstinline!incr! example in Listing~\ref{mutableAssignIncrementEncapsulation} is an example of a side-effect. Another example is,
 %
-\fs{mutableAssignReturnVariable}{}
+\fs{mutableAssignReturnSideEffect}{Intertwining independent scopes is typically a bad idea.}
 %
-There is a workaround for this by using \idx{reference cells} by the build-in function \texttt{ref} and operators \lexeme{!} and \lexeme{:=},
+In the example, the function \lstinline{updateFactor} changes a variable in the scope of \lstinline{multiplyWithFactor}, which is prone to errors, since the computations are not local at the place of writing, i.e., in \lstinline{multiplyWithFactor}, and if \lstinline{updateFactor} were defined in a library, then the source code may not be available. Better style of programming is,
 %
-\fs{mutableAssignReturnRefCell}{}
+\fs{mutableAssignReturnWithoutSideEffect}{A solution of Listing~\ref{mutableAssignReturnSideEffect} avoiding side-effects.}
 %
-That is, the \texttt{ref} function creates a reference variable, the '\lexeme{!}' and the '\lexeme{:=}' operators reads and writes its value. Reference cells are in some language called pointers, and their use is strongly discouraged, since they may cause \idx{side-effects}, which is the effect that one function changes the state of another, such as the following example demonstrates,
+Here, there can be no doubt in \lstinline{multiplyWithFactor} that the value of \lstinline{a} is changing. Side-effects do have their use, but should in general be avoided at almost all costs, and in general it is advised to \advice{minimize the use of side effects}.
+
+Reference cells gives rise to an effect called \idx{aliasing}, where two or more identifiers refer to the same data as illustrated by the following example:
 %
-\fs{mutableAssignReturnSideEffect}{}
+\fs{refCellAliasing}{Aliasing can cause surprising results and should be avoided.}
 %
-In the example, the function \texttt{updateFactor} changes a variable in the scope of \texttt{multiplyWithFactor}, which is prone to errors, since the style of programming does not follow the usual assignment syntax. Better style of programming is,
-%
-\fs{mutableAssignReturnWithoutSideEffect}{}
-%
-Here, there can be no doubt in \texttt{multiplyWithFactor} that the value of '\texttt{a}' is changing. Side-effects do have their use, but should in general be avoided at almost all costs, and in general it is advised to \advice{refrain from using ref cells}.\jon{Add something about mutable functions}
+Here, \lstinline!a! is defined as a reference cell, and by defining \lstinline!b! to be equal to \lstinline!a!, we have created an alias. This can be very confusing, since as the example shows, changing the value of \lstinline!b! causes \lstinline!a! to change as well. Aliasing is a variant of side-effects, and \advice{aliasing should be avoided at all costs}.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

@@ -94,7 +94,7 @@ expr =
   | prefixOp expr (*prefix application*)
   | expr ".[" expr "]" (*index lookup, no space before "."*)
   | expr ".[" sliceRange "]" (*index lookup, no space before "."*)
-  | expr "<-" expr (*assingment*)
+  | expr "<-" expr (*assignment*)
   | exprTuple (*tuple*)
   | "[" (exprSeq | rangeExpr) "]" (*list*)
   | "[|" (exprSeq | rangeExpr) "|]" (*array*)
