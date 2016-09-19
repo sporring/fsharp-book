@@ -9,7 +9,7 @@ expr = ...
   | "let" functionDefn "in" expr (*binding a function or operator*)
   | "let" "rec" functionDefn {"and" functionDefn} "in" expr (*recursive fcts*)
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{Expressions for controlling the flow of execution.}
+\ebnf{tmp.ebnf}{Expressions for controlling the flow of execution.}
 
 \section{For and while loops}
 Many programming constructs need to be repeated, and F\# contains many structures for repetition such as the \keyword{for} and \keyword{while} loops, which have the syntax,
@@ -19,11 +19,11 @@ expr = ...
   | "while" expr "do" expr ["done"] (*while loop*)
   | "for" ident "=" expr "to" expr "do" expr ["done"] (*simple for loop*)
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{\lstinline{for}- and \lstinline{while}-loops.}
+\ebnf{tmp.ebnf}{\lstinline{for}- and \lstinline{while}-loops.}
 %
 As an example, consider counting from 1 to 10 with a \idx{\keyword{for}}-loop,
 %
-\fso{count}{Counting from 1 to 10 using a \keyword{for}-loop.}
+\fsOutput{count}{Counting from 1 to 10 using a \keyword{for}-loop.}
 %
 As this interactive script demonstrates, the identifier \lstinline!i! takes all the values between 1 and 10, but in spite of its changing state, it is not mutable. Note also that the return value of the \keyword{for} expression is \lexeme{()} like the \lstinline!printf! functions. 
 Using lightweight syntax the block following the \idx{\keyword{do}} keyword up to and including the \idx{\keyword{done}} keyword may be replaced by a newline and indentation, e.g.,
@@ -91,7 +91,7 @@ The grammar for conditional expressions is,
 expr = ... 
   | "if" expr "then" expr {"elif" expr "then" expr} ["else" expr] (*conditional*)
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{Conditional expressions.}
+\ebnf{tmp.ebnf}{Conditional expressions.}
 %
 and an example using conditional expressions to solve the above problem is,
 %
@@ -110,11 +110,11 @@ Note that both \keyword{elif} and \keyword{else} branches are optional, which ma
 
 % since in, e.g., \keyword{let} expressions, F\# requires all cases to be covered, 
 
-% A basic flow control mechanism used both for functional and imperative programming is the \texttt{if-then-else} construction, e.g.,
+% A basic flow control mechanism used both for functional and imperative programming is the \lstinline{if-then-else} construction, e.g.,
 % \fs{flowIfThen}{}
-% I.e., if and only if the value of the argument is postive, then it will be printed on screen. More common is to include the \texttt{else} 
+% I.e., if and only if the value of the argument is postive, then it will be printed on screen. More common is to include the \lstinline{else} 
 % \fs{flowIfThenElse}{}
-% A common construction is a nested list of \texttt{if-then-else},
+% A common construction is a nested list of \lstinline{if-then-else},
 % \fs{flowIfThenElseNested}{}
 % where the integers 0--2 are converted to characters, and integers outside this domain is converted to the nearest equivalent number. This construction is so common that a short-hand notation exists, and we may equivalently have written,
 % \fs{flowIfThenElseNestedShort}{}
@@ -126,7 +126,7 @@ Recursion is a central concept in F\#. A \idx{recursive function} is a function,
 expr = ... 
   | "let" "rec" functionDefn {"and" functionDefn} "in" expr
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{Recursive functions.}
+\ebnf{tmp.ebnf}{Recursive functions.}
 %
 An example of a recursive function that counts from 1 to 10 similarly to Listing~\ref{count} is,\jon{A drawing showing the stack for the example would be good.}
 %
@@ -154,7 +154,7 @@ But, Listing~\ref{mutuallyRecursive} is clearly to be preferred over Listing~\re
 
 In the above we used the \lstinline!even! and \lstinline!odd! function problems to demonstrate mutual recursion. There is, of course, a much simpler solution, which does not use recursion at all:
 %
-\fse{parity}{A better way to test for parity without recursion.}
+\fsCode{parity}{A better way to test for parity without recursion.}
 %
 which is to be preferred anytime as the solution to the problem.
 
@@ -179,12 +179,12 @@ Notice also, that in Listing~\ref{dec2binRec}, the prefix \lstinline!"0b"! is on
 
 Proving that Listing~\ref{dec2binRec} computes the correct sequence is easily done using the induction proof technique: The result of \lstinline!dec2binHelper 0! is clearly an empty string. For calls to \lstinline!dec2binHelper n! with $n>0$, we check that the right-most bit is correctly converted by the remainder function, and that this string is correctly concatenated with \lstinline!dec2binHelper! applied to the remaining bits. A simpler way to state this is to assume that \lstinline!dec2binHelper! has correctly programed, so that in the body of \lstinline!dec2binHelper!, then recursive calls to \lstinline!dec2binHelper! returns the correct value. Then we only need to check that the remaining computations are correct. Proving that Listing~\ref{dec2bin} calculates the correct sequence essentially involves the same steps: If $v = 0$ then the \keyword{while} loop is skipped, and the result is the initial value of \lstinline!str!. For each iteration of the \keyword{while} loop, assuming that \lstinline!str! contains the correct conversions of the bits up till now, we check that the remainder operator correctly concatenates the next bit, and that \lstinline!v! is correctly updated with the remaining bits. We finally check that the loop terminates, when no more 1-bits are left in \lstinline!v!. Comparing the two proofs, the technique of assuming that the problem has been solved, i.e., that recursive calls will work, helps us focus on the key issues for the proof. Hence, we conclude that the recursive solution is most elegantly proved, and thus preferred.
 
-% Functions may be declared using pattern matching, which is a flexible method for declaring output depending on conditions on the input value. The most common pattern matching method is by use of the \texttt{match with} syntax,
+% Functions may be declared using pattern matching, which is a flexible method for declaring output depending on conditions on the input value. The most common pattern matching method is by use of the \lstinline{match with} syntax,
 % \fs{functionDeclarationMatchWith}{}
 
-% A short-hand only for functions of 1 parameter is the \texttt{function} syntax,
+% A short-hand only for functions of 1 parameter is the \lstinline{function} syntax,
 % \fs{functionDeclarationFunction}{}
-% Note that the name given in the match, here \texttt{n}, is not used in the first line, and is arbitrary at the line of pattern matchin, and may even be different on each line. For these reasons is this syntax discouraged.
+% Note that the name given in the match, here \lstinline{n}, is not used in the first line, and is arbitrary at the line of pattern matchin, and may even be different on each line. For these reasons is this syntax discouraged.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

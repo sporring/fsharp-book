@@ -36,7 +36,7 @@ Facts about dates in the Gregorian calendar are:
 \end{itemize}
 Many solutions to the problem have been discovered, and here we will base our program on Gauss' method, which is based on integer division and calculates the weekday of the 1st of January of a given year. For any other date, we will count our way through the weeks from the previous 1st of January. The algorithm relies on an enumeration of weekdays starting with Sunday = 0, Monday = 1, \dots, and Saturday = 6. Our proposed solution is,
   %
-  \fse{date2Day}{A function that can calculate day-of-week from any date in the Gregorian calendar.}
+  \fsCode{date2Day}{A function that can calculate day-of-week from any date in the Gregorian calendar.}
   %
   %To solve this problem, we are going to implement the Doomsday algorithm by John Conway\footnote{\url{http://www.timeanddate.com/date/doomsday-weekday.html}}. The algorithm is based on the fact that calendars repeat themselves every 400 years, and within a cycle, certain dates are always the same day of week. For the 400 year cycle, 1800-2199, the algorithm uses anchor days: 1800 - 1899: Friday, 1900 - 1999: Wednesday, 2000 - 2099: Tuesday, and 2100 - 2199: Sunday. For a given date (dd, mm, yyyy), the algorithm calculates the Doomsday of the year in question as by 6 steps:
 % \begin{enumerate}
@@ -54,13 +54,14 @@ Many solutions to the problem have been discovered, and here we will base our pr
 \item Decide which are the units to test: The program shown in Listing~\ref{date2Day} has 3 functions, and we will consider these each as a unit, but we might as well just have chosen \lstinline!date2Day! as a single unit. The important part is that the union of units must cover the whole program text, and since \lstinline!date2Day! calls both \lstinline!januaryFirstDay! and \lstinline!sum!, designing test cases for the two later is superfluous. However, we may have to do this anyway, when debugging, and we may choose at a later point to use these functions separately, and in both cases we will be able to reuse the testing of the smaller units.
 \item Identify branching points: The function \lstinline!januaryFirstDay! has no branching function, \lstinline!sum! has one, and depending on the input values two paths through the code may be used, and \lstinline!date2Day! has one, where the number of days in February is decided. Note that in order to test this, our test-date must be March 1 or later. In this example, there are only examples of \keyword{if}-branch points, but they may as well be loops and pattern matching expressions. In the following code, the branch points have been given a comment and a number,
   % 
-  \fse{date2DayAnnotated}{In white-box testing, the branch points are identified.}
+  \fsCode{date2DayAnnotated}{In white-box testing, the branch points are identified.}
   % 
  \item For each unit, produce an input set that tests each branches: In our example the branch points depends on a boolean expression, and for good measure, we are going to test each term that can lead to branching. Thus,
    \begin{center}
+     \rowcolors{2}{oddRowColor}{evenRowColor}
      \begin{tabularx}{\linewidth}{|l|l|l|l|X|}
      \hline
-     Unit & Branch & Condition & Input & Expected output\\
+     \rowcolor{headerRowColor} Unit & Branch & Condition & Input & Expected output\\
      \hline
        \lstinline{januaryFirstDay} & 0 & -& \lstinline{2016} & \lstinline{5}\\
      \hline
@@ -88,7 +89,7 @@ Many solutions to the problem have been discovered, and here we will base our pr
    The impossible cases have been intentionally blank, e.g., it is not possible for $j<0$ and $j>n$ for some positive value $n$.
  \item Write a program, that test all these cases and checks the output, e.g.,
    % 
-   \fsa{date2DayWhiteTest}{firstline=22}{The tests identified by white-box analysis. The program from Listing~\ref{date2DayAnnotated} has been omitted for brevity.}
+   \fs[firstline=22]{date2DayWhiteTest}{The tests identified by white-box analysis. The program from Listing~\ref{date2DayAnnotated} has been omitted for brevity.}
    % 
 \end{enumerate}
 Notice, that the output of the tests are organized such that they are enumerated per unit, hence we can rearrange as we like and still uniquely refer to a unit's test. Also, the output of the test program produces a list of tests, that should return true or success or a similar positively loaded word, but without further or only little detail, such that we at a glance can identify any test that produced unexpected results.
@@ -109,9 +110,10 @@ In black-box testing the program is considered a black box, and no knowledge is 
   Given no information about the program's text, there are other dates, that one could consider as likely candidates of errors, but the above is judged to be a fair coverage.
 \item Choose a specific set of input and expected output relations on tabular form:
 \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|r|l|}
     \hline
-    Test number&Input& Expected output\\
+    \rowcolor{headerRowColor} Test number&Input& Expected output\\
     \hline
     \ref{allWeekDays}a&1 1 2016&Friday\\
     \ref{allWeekDays}b&2 1 2016&Saturday\\
@@ -141,7 +143,7 @@ In black-box testing the program is considered a black box, and no knowledge is 
 \end{center}
 \item Write a program executing the tests:
   % 
-  \fsa{date2DayBlackTest}{firstline=22}{The tests identified by black-box analysis. The program from Listing~\ref{date2DayAnnotated} has been omitted for brevity.}
+  \fsSeparated[firstline=22]{date2DayBlackTest}{The tests identified by black-box analysis. The program from Listing~\ref{date2DayAnnotated} has been omitted for brevity.}
   % 
   Notice how the program has been made such that it is almost a direct copy of the table, produced in the previous step.
 \end{enumerate}
@@ -170,7 +172,8 @@ Once an error has been found by testing, then the \idx{debugging} phase starts. 
 
 Consider the program,
 %
-\lstinputlisting[language=fsharp,label=gcd,numbers=left,caption={The greatest common divisor of 2 integers.},escapechar=|]{\src/gcd.fsx}
+\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},escapechar=|]{gcd}{The greatest common divisor of 2 integers.}
+%\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},escapechar=|]{gcd}{The greatest common divisor of 2 integers.}
 %
 which includes a function for calculating the greatest common divisor of 2 integers, and calls this function with the numbers 10 and 15. Hand tracing this program means that we simulate its execution and as part of that keep track of the bindings, assignments and input and output of the program. To do this, we need to consider code snippet's \idx{environment}. E.g., to hand trace the above program, we start by noting the outer environment, called $E_0$ for short. In line~\ref{gcd:gcd}, then the \lstinline!gcd! identifier is bound to a function, hence we write:
 \begin{align*}
@@ -308,7 +311,7 @@ which completes the hand tracing of \lstinline[language=console]{gcd.fsx}.
 
 F\# uses lexical scope, which implies that besides function arguments, we also at times need to consider the environment at place of writing. E.g., for the program
 %
-\lstinputlisting[language=fsharp,label=lexicalScopeTracing,numbers=left,caption={Example of lexical scope and closure environment.},escapechar=|]{\src/lexicalScopeTracing.fsx}
+\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},escapechar=|]{lexicalScopeTracing}{Example of lexical scope and closure environment.}
 %
 To hand trace this, we start by creating the outer environment, define the closure for \lstinline!testScope!, and reach line~\ref{lexicalScopeTracing:print},
 \begin{align*}
@@ -354,7 +357,7 @@ The expression in the environment $E_2$ evaluates to \lstinline!6.0!, and unrave
 
 For mutable bindings, i.e., variables, the scope is dynamic. For this we need the concept of storage, i.e., for the the program
 %
-\lstinputlisting[language=fsharp,label=dynamicScopeTracing,numbers=left,caption={Example of dynamic scope and closure environment.},escapechar=|]{\src/dynamicScopeTracing.fsx}
+\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},escapechar=|]{dynamicScopeTracing}{Example of lexical scope and closure environment.}
 %
 We add a storage area to our hand tracing, e.g.,line~\ref{dynamicScopeTracing:print},
 \begin{align*}

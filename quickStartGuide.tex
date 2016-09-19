@@ -9,7 +9,7 @@ we have written the following program in F\#,
 %
 \fs{quickStartSum}{A script to add 2 numbers and print the result to the console.}
 %
-In box the above, we see our program was saved as a script in a file called \texttt{quickStartSum.fsx}, and in the console we executed the program by typing the command \lstinline|fsharpi quickStartSum.fsx|. The result is then printed in the console to be \texttt{1221}.
+In box the above, we see our program was saved as a script in a file called \lstinline[language=console]{quickStartSum.fsx}, and in the console we executed the program by typing the command \lstinline|fsharpi quickStartSum.fsx|. The result is then printed in the console to be \lstinline{1221}.
 
 To solve the problem, we made program consisting of several lines, where each line was a \idx{statement}. The first statement \lstinline|let a = 357| used the \idx{\keyword{let}} \idx{keyword} to \idx[binding]{bind} the value 357 to the name \lstinline|a|. Likewise, we bound the value 864 to the name \lstinline|b|, but to the name \lstinline|c| we bound the result of evaluating the \idx{expression} \lstinline|a + b|. That is, first the value \lstinline|a + b| was calculated by substituting the names of \lstinline|a| and \lstinline|b| with their values to give the expression \lstinline|357 + 864|, then this expression was evaluated by adding the values to give \lstinline|1221|, and this value was finally bound to the name \lstinline|c|. The last line printed the value of \lstinline|c| to the console followed by a newline (LF possibly preceded by CR, see Appendix~\ref{sec:ascii}) with the \lstinline|printfn| function. Here \lstinline|printfn| is a function of 2 arguments: \lstinline|"%A"| %
 and \lstinline|c|. Notice, that in contrast to many other languages, F\# does not use parentheses to frame the list of arguments, nor does it use commas to separate them. In general, the \lstinline|printfn| function always has 1 or more arguments, and the first is a \idx{format string}. A \idx{string} is a sequence of characters starting and ending with double quotation marks. E.g., \lstinline|let s = "this is a string of characters"| binds the string \lstinline|"this is..."| to the name \lstinline|s|. For the \lstinline|printfn| function, the format string may be any string, but if it contains format character sequences, such as \lstinline|%A|,
@@ -34,7 +34,7 @@ For help type #help;;
 \end{comment}
 %
 %
-\fso{typeInference}{Inferred types are given as part of the response from the interpreter.}
+\fsOutput{typeInference}{Inferred types are given as part of the response from the interpreter.}
 %
 \begin{comment}
 
@@ -55,7 +55,7 @@ then we would have to use floating point arithmetic instead of integers, and the
 %
 On the surface, this could appear as an almost negligible change, but the set of integers and the set of real numbers (floats) require quite different representations, in order to be effective on a computer, and as a consequence, the implementation of their operations such as addition are very different. Thus, although the response is an integer, it has type \lstinline|float|, which is indicated by \lstinline|1221.0| which is not the same as \lstinline|1221|. F\# is very picky about types, and generally does not allow types to be mixed. E.g., in an interactive session,
 %
-\fso{typeInferenceError}{Mixing types is often not allowed.}
+\fsOutput{typeInferenceError}{Mixing types is often not allowed.}
 %
 we see that binding a name to a number without a decimal point is inferred to be integer, while when binding to a number with a decimal point, then the type is inferred to be a float, and when trying to add values of integer and floating point, then we get an error.
 
@@ -65,7 +65,7 @@ F\# is a functional first programming language, and one implication is that name
 %
 However, if the same was performed in an interactive session,
 %
-\fso{blocksNNames}{Names may be reused when separated by the lexeme \lexeme{;;}.}
+\fsOutput{blocksNNames}{Names may be reused when separated by the lexeme \lexeme{;;}.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
 % > let a = 357;;
 
@@ -81,7 +81,7 @@ then rebinding did not cause an error. The difference is that the \idx{\lexeme{;
 \begin{comment}
 Scopes can be \idx[nested scope]{nested}, and in F\# a binding may reuse names in a nested scope, in which case the previous value is \idx[overshadow]{overshadowed}. I.e., attempting the same without \lexeme{;;} between the two let statements results in an error, e.g.,
 %
-\fso{blocksNNamesError}{Inside a block, names may not be reused.}
+\fsOutput{blocksNNamesError}{Inside a block, names may not be reused.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
 %   > let a = 357 - let a = 864;;
 
@@ -118,7 +118,7 @@ In F\# \idx[function]{functions} are also values, and defining a function \lstin
 %
 Entering the function into an interactive session will illustrate the inferred type, the function \lstinline|sum| has: \lstinline{val sum : x:int -> y:int -> int}. The \lexeme{->} is the mapping operator in the sense that functions are mappings between sets. The type of the function \lstinline{sum}, should be read as \lstinline{val sum : x:int -> (y:int -> int)}, that is, \lstinline|sum| takes an integer and returns a function, which takes an integer and returns an integer. Type inference in F\# may cause problems, since the type of a function is inferred in the context, in which it is defined. E.g., in an interactive session, defining the sum in one scope on a single line will default the types to integers, F\#'s favorite type, which will give an error, if it in a nested scope is to be used for floats,
 %
-\fso{typesNBlockInferenceError}{Types are inferred in blocks, and F\# tends to prefer integers.}
+\fsOutput{typesNBlockInferenceError}{Types are inferred in blocks, and F\# tends to prefer integers.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
 % > let sum x y = x + y;;
 
@@ -136,7 +136,7 @@ Entering the function into an interactive session will illustrate the inferred t
 % \end{lstlisting}
 A remedy is to define the function in the same script-fragment as it is used, i.e,
 %
-\fso{typesNBlockInference}{Defining a function together with its use, makes F\# infer the appropriate types.}
+\fsOutput{typesNBlockInference}{Defining a function together with its use, makes F\# infer the appropriate types.}
 % \begin{lstlisting}[language=fsharp,caption=fsharpi]
 % > let sum x y = x + y
 % - let c = sum 357.6 863.4;;

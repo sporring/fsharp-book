@@ -14,7 +14,7 @@ F\# has the following simplified syntax for in-code documentation,
 blockComment = "(*" {codePoint} "*)";
 lineComment = "//" {codePoint - newline} newline;
 \end{verbatimwrite}
-\fsebnf{tmp.ebnf}{Comments.}
+\ebnf{tmp.ebnf}{Comments.}
 %
 That is, text framed as a \lstinline[language=ebnf]!blockComment! is still parsed by F\# as keywords and basic types implying that \lstinline!(* a comment (* in a comment *) *)! and \lstinline!(* "*)" *)! are valid comments, while \lstinline!(* " *)! is invalid.\jon{lstlisting colors is bad.}
 

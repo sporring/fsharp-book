@@ -189,7 +189,7 @@
 \def\lst@visiblespace{ }
 \makeatother
 
-\usepackage{caption}
+%\usepackage{caption}
 %\DeclareCaptionStyle{listing} [justification=raggedright,labelfont=bf]{}
 %\captionsetup[lstlisting]{style=listing}
 
@@ -197,48 +197,128 @@
 \verbdef{\cmdl}{>}
 
 \newcommand{\src}{src}
-\newcounter{programCounter}
 \newtcolorbox[auto counter, number within=chapter]{codeNOutput}[2][]{%
   title={Listing~\thetcbcounter#2},
   % colback=blue!5!white,
   #1}
-\newcommand{\fs}[2]{
+
+\makeatletter
+\def\fs{%
+  % input .fsx and .out listings from \src and display as code and result in same figure
+  % #1 = optional further arguments for lstinputlisting
+  % #2 = filename without suffix, and label
+  % #3 = caption
+\@ifnextchar[{\@fswith}{\@fswithout}}
+\def\@fswith[#1]#2#3{%
+  \begin{codeNOutput}[label=#2]{, #2.fsx:\\#3}
+    \lstinputlisting[language=fsharp,#1]{\src/#2.fsx}
+    \tcblower %\tcbsubtitle[before skip=\baselineskip]{Output:}
+    \lstinputlisting[language=console]{\src/#2.out}
+  \end{codeNOutput}
+}
+\def\@fswithout#1#2{%
   \begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
     \lstinputlisting[language=fsharp]{\src/#1.fsx}
     \tcblower %\tcbsubtitle[before skip=\baselineskip]{Output:}
-    % \lstinputlisting[language=console,caption={#1.fsx - #2},label=#1]{\src/#1.out}
     \lstinputlisting[language=console]{\src/#1.out}
   \end{codeNOutput}
 }
-\newcommand{\fsa}[3]{
-  \begin{codeNOutput}[label=#1]{, #1.fsx:\\#3}
-    \lstinputlisting[language=fsharp,#2]{\src/#1.fsx}
-    \tcblower %\tcbsubtitle[before skip=\baselineskip]{Output:}
-    \lstinputlisting[language=console]{\src/#1.out}
+
+\makeatletter
+\def\fsSeparated{%
+  % input .fsx and .out listings from \src and display as code and result in two separate figures
+  % #1 = optional further arguments for lstinputlisting
+  % #2 = filename without suffix, and label
+  % #3 = caption
+\@ifnextchar[{\@fsSeparatedwith}{\@fsSeparatedwithout}}
+\def\@fsSeparatedwith[#1]#2#3{%
+  \begin{codeNOutput}[label=#2]{, #2.fsx:\\#3}
+    \lstinputlisting[language=fsharp,#1]{\src/#2.fsx}
+  \end{codeNOutput}
+  \begin{codeNOutput}[label=#2Output]{, Output of Listing~\ref{#2}.}
+    \lstinputlisting[language=console]{\src/#2.out}
   \end{codeNOutput}
 }
-\newcommand{\fse}[2]{
-  \begin{codeNOutput}[label=#1]{: #2}
+\def\@fsSeparatedwithout#1#2{%
+  \begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
     \lstinputlisting[language=fsharp]{\src/#1.fsx}
   \end{codeNOutput}
+  \begin{codeNOutput}[label=#1Output]{, Output of Listing~\ref{#1}.}
+    \lstinputlisting[language=console]{\src/#1.out}
+  \end{codeNOutput}
 }
-\newcommand{\fsebnf}[2]{
-  \begin{codeNOutput}[colframe=black!60!white]{: #2}
+% \newcommand{\fse}[2]{
+%   \begin{codeNOutput}[label=#1]{: #2}
+%     \lstinputlisting[language=fsharp]{\src/#1.fsx}
+%   \end{codeNOutput}
+% }
+\makeatletter
+\def\fsCode{%
+  % dispaly input file .fsx from \src
+  % #1 = optional further arguments for lstinputlisting
+  % #2 = filename without suffix, and label
+  % #3 = caption
+\@ifnextchar[{\@fsCodewith}{\@fsCodewithout}}
+\def\@fsCodewith[#1]#2#3{%
+\begin{codeNOutput}[label=#2]{, #2.fsx:\\#3}
+    \lstinputlisting[language=fsharp,#1]{\src/#2.fsx}
+\end{codeNOutput}
+}
+\def\@fsCodewithout#1#2{%
+\begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
+    \lstinputlisting[language=fsharp]{\src/#1.fsx}
+\end{codeNOutput}
+}
+%\def\@with[#1]#2#3{\begin{codeNOutput}[label=#2]{: #3}\lstinputlisting[language=fsharp,#1]{\src/#2.fsx}\end{codeNOutput}}
+%\def\@without#1#2{\begin{codeNOutput}[label=#1]{: #2}\lstinputlisting[language=fsharp]{\src/#1.fsx}\end{codeNOutput}}
+\makeatother
+
+% \newcommand{\fso}[2]{
+%   \begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
+%     \lstinputlisting[language=console]{\src/#1.out}
+%   \end{codeNOutput}
+% }
+\makeatletter
+\def\fsOutput{%
+  % dispaly input file .fsx from \src
+  % #1 = optional further arguments for lstinputlisting
+  % #2 = filename without suffix, and label
+  % #3 = caption
+\@ifnextchar[{\@fsOutputwith}{\@fsOutputwithout}}
+\def\@fsOutputwith[#1]#2#3{%
+\begin{codeNOutput}[label=#2,width=\hsize,box align=center]{: #3}
+    \lstinputlisting[language=console,#1]{\src/#2.out}
+\end{codeNOutput}
+}
+\def\@fsOutputwithout#1#2{%
+\begin{codeNOutput}[label=#1,width=\hsize,box align=center]{: #2}
+    \lstinputlisting[language=console]{\src/#1.out}
+\end{codeNOutput}
+}
+%\def\@with[#1]#2#3{\begin{codeNOutput}[label=#2]{: #3}\lstinputlisting[language=fsharp,#1]{\src/#2.fsx}\end{codeNOutput}}
+%\def\@without#1#2{\begin{codeNOutput}[label=#1]{: #2}\lstinputlisting[language=fsharp]{\src/#1.fsx}\end{codeNOutput}}
+\makeatother
+
+\makeatletter
+\def\ebnf{%
+  % dispaly input file .fsx from \src
+  % #1 = optional further arguments for lstinputlisting
+  % #2 = filename
+  % #3 = caption
+\@ifnextchar[{\@ebnfwith}{\@ebnfwithout}}
+\def\@ebnfwith[#1]#2#3{%
+\begin{codeNOutput}[colframe=black!60!white,width=\hsize,box align=center]{: #3}
+    \lstinputlisting[language=ebnf,#1]{#2}
+\end{codeNOutput}
+}
+\def\@ebnfwithout#1#2{%
+\begin{codeNOutput}[colframe=black!60!white,width=\hsize,box align=center]{: #2}
     \lstinputlisting[language=ebnf]{#1}
-  \end{codeNOutput}
+\end{codeNOutput}
 }
-\newcommand{\fso}[2]{
-  \begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
-    \lstinputlisting[language=console]{\src/#1.out}
-  \end{codeNOutput}
-}
-\newcommand{\fsi}[2]{
-  \begin{codeNOutput}{:}
-    %\begin{minipage}[t]{#2\linewidth}
-    \lstinputlisting[aboveskip=0pt, belowskip=0pt]{\src/#1.out}
-    % \end{minipage}
-  \end{codeNOutput}
-}
+%\def\@with[#1]#2#3{\begin{codeNOutput}[label=#2]{: #3}\lstinputlisting[language=fsharp,#1]{\src/#2.fsx}\end{codeNOutput}}
+%\def\@without#1#2{\begin{codeNOutput}[label=#1]{: #2}\lstinputlisting[language=fsharp]{\src/#1.fsx}\end{codeNOutput}}
+\makeatother
 
 % Get counters from references for firstnumber references in lstinputlisting
 \usepackage{refcount}

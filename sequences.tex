@@ -4,7 +4,7 @@
 \label{sec:sequences}
 Sequences are lists, where the elements are build as needed. Examples are\jon{Mono does not support specification Spec-4.0 Section 6.3.11, seq {comp-expr}, in the form seq {3} or seq {3; 4}.}
 %
-\fso{seqExample}{Creating sequences by range explicitly stating elements, a range expressions, a computation expression, and an infinite computation expression}
+\fsOutput{seqExample}{Creating sequences by range explicitly stating elements, a range expressions, a computation expression, and an infinite computation expression}
 %
 Sequences are built using the following subset of the general syntax,
 \begin{lstlisting}[language=ebnf]
@@ -34,13 +34,13 @@ Sequence may be defined using simple range expressions but most often are define
 
 Sequences are generalisations of lists and arrays, and functions taking sequences as argument may equally take lists and arrays as argument. Sequences do not have many built-in operators, but a rich collection of functions in the \lstinline!Collections.Seq!. E.g.,\idxss{Seq.item}\idxss{Seq.take}
 %
-\fso{seqIndexing}{Index a sequence with \lstinline!Seq.item! and \lstinline!Seq.take!}
+\fsOutput{seqIndexing}{Index a sequence with \lstinline!Seq.item! and \lstinline!Seq.take!}
 %
 which as usual index from 0 and will cast an exception, if indexing is out of range for the sequence. 
 
 That sequences really are programs rather than values can be seen by the following example,
 %
-\fso{seqDelayedEval}{Sequences elements are first evaluated, when needed.}
+\fsOutput{seqDelayedEval}{Sequences elements are first evaluated, when needed.}
 %
 In the example, we see that the \lstinline!printfn! function embedded in the definition is first executed, when the 3rd item is requested.
 
@@ -96,11 +96,11 @@ which implicitly creates the corresponding expression and return the result as a
 % *****
 
 % \fs{arrayJaggedCompExpr}{}
-% Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \verb|a.Length|,  \verb|a.[i]| is the i'th array, the length of the i'th array is \verb|a.[i].Length|, and the j'th element of the i'th array is thus \verb|a.[i].[j]|. Often 2 dimensional square arrays are used, which can be implemented as a jagged array as,
+% Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \lstinline|a.Length|,  \lstinline|a.[i]| is the i'th array, the length of the i'th array is \lstinline|a.[i].Length|, and the j'th element of the i'th array is thus \lstinline|a.[i].[j]|. Often 2 dimensional square arrays are used, which can be implemented as a jagged array as,
 % \fs{arrayJaggedSquareCompExpr}{}
 % In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
 % \fs{array2DCompExpr}{}
-% Notice that the indexing uses a slightly different notation '\verb|[,]|' and the length functions are also slightly different. The statement \verb|A.Length| would return the total number of elements in the array, in this case 12.
+% Notice that the indexing uses a slightly different notation '\lstinline|[,]|' and the length functions are also slightly different. The statement \lstinline|A.Length| would return the total number of elements in the array, in this case 12.
 
 
 

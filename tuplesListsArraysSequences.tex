@@ -1,12 +1,12 @@
 \chapter{Ordered series of data}
-\label{chap:lists}\jon{possibly add maps and sets as well.}
+\label{chap:lists}
 F\# is tuned to work with ordered series, and there are several built-in lists with various properties making them useful for different tasks. E.g.,
 %
 \fs{tuplesQuadraticEq}{Using tuples to gather values.}
 %
 F\# has 4 built-in list types: strings, tuples, lists, arrays, and sequences. Strings were discussed in Chapter~\ref{chap:calculator}, sequences will be discussed in Chapter~\ref{chap:sequences}. Here we will concentrate on tuples, lists,  and arrays, and following this (simplified) syntax:
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 expr = ... 
   | exprTuple (*tuple*)
   | "[" (exprSeq | rangeExpr) "]" (*list*)
@@ -15,27 +15,29 @@ expr = ...
 exprTuple = expr | expr "," exprTuple;
 exprSeq =  expr | expr ";" exprSeq;
 rangeExpr = expr ".." expr [".." expr];
-\end{lstlisting}
+\end{verbatimwrite}
+\ebnf{tmp.ebnf}{}
 %
 \spec{Spec-4.0: grammar for list and array expressions are subsets of computation list and array expressions.} Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and 3 dimensional arrays. Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinite long sequences. In the following, we will present these data structures in detail.
 
 \section{Tuples}
 \idx[tuple]{Tuples} are unions of immutable types, 
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 expr = ... 
   | exprTuple (*tuple*)
 
 exprTuple = expr | expr "," exprTuple;
-\end{lstlisting}
+\end{verbatimwrite}
+\ebnf{tmp.ebnf}{}
 %
 and the they are identified by the \lexeme{,} lexeme. Most often the tuple is enclosed in parentheses, but that is not required. Consider the tripel, also known as a 3-tuple, \lstinline!(2,true,"hello")! in interactive mode,
 %
-\fso{tuple}{Definition of a tuple.}
+\fsOutput{tuple}{Definition of a tuple.}
 %
 The values \lstinline!2!, \lstinline!true!, and \lstinline!"hello"! are \idx[member]{members}, and the number of elements of a tuple is its \idx{length}. From the response of F\# we see that the tuple is inferred to have the type \lstinline!int * bool * string!, where the \lexeme{*} is cartesian product between the three sets.  Notice, that tuples can be products of any types and have lexical scope like value and function bindings. Notice also, that a tuple may be printed as a single entity by the \lstinline!%A! placeholder. In the example, we bound \lstinline!tp! to the tuple, the opposite is also possible,
 %
-\fso{tupleDeconstruction}{Definition of a tuple.}
+\fsOutput{tupleDeconstruction}{Definition of a tuple.}
 %
 In this a function is defined that takes 1 argument, a 3-tuple, and which is bound to a tuple with 3 named members. Since we used the \lstinline!%A! placeholder in the \lstinline!printfn! function, then the function is generic and can be called with 3-tuples of different types. Note, \advice{don't confuse a function of $n$ arguments with a function of an $n$-tuple.}  The later has only 1 argument, and the difference is the \lexeme{,}'s. Another example is \lstinline!let solution a b c = ...!, which is the beginning of the function definition in Listing~\ref{tuplesQuadraticEq}. It is a function of 3 arguments, while \lstinline!let solution (a, b, c) = ...! would be a function of 1 argument, which is a 3-tuple. Functions of several arguments makes currying easy, i.e., we could define a new function which fixes the quadratic term to be 0 as \lstinline!let solutionToLinear = solution 0.0!, that is, without needing to specify anything else. With tuples, we would need the slightly more complicated, \lstinline!let solutionToLinear (b, c) = solution (0.0, b, c)!.
 
@@ -57,13 +59,14 @@ In this example, the central computation has been packed into a single line, \ls
 
 \section{Lists}
 \idx[list]{Lists} are unions of immutable values of the same type and have a more flexible structure than tuples. Its grammar follows \idx{computation expressions}, which is very rich and shared with arrays and sequences, and we will delay a discussion on most computation expressions to Section~\ref{sec:sequences}, and here just consider a subset of the grammar:
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 expr = ... 
   | "[" (exprSeq | rangeExpr) "]" (*list*)
 
 exprSeq =  expr | expr ";" exprSeq;
 rangeExpr = expr ".." expr [".." expr];
-\end{lstlisting}
+\end{verbatimwrite}
+\ebnf{tmp.ebnf}
 Simple examples of a list grammars are, \lstinline[language=ebnf]![expr; expr; ... ; expr]!, \lstinline[language=ebnf]![expr ".." expr]!, \lstinline[language=ebnf]![expr ".." expr ".." expr]!, e.g., an explicit list \lstinline!let lst = [1; 2; 3; 4; 5]!, which may be written shortly as \idx{range expression} as \lstinline!let lst = [1 .. 5]!, and ranges may include a step size \lstinline!let lst = [1 .. 2 .. 5]!, which is the same as \lstinline!let lst = [1; 3; 5]!.
 
 Lists may be indexed and concatenated much like strings, e.g.,
@@ -75,32 +78,44 @@ A list type is identified with the \keyword{list} keyword, as here a list of int
 \fs{listSlicing}{Examples of list slicing. Compare with Listing~\ref{stringIndexing}.}
 %
 
-The basic properties and members of lists are summarized in Table~\ref{tab:list}.\idxss{Length}\idxss{List.Empty}\idxss{IsEmpty}\idxss{Item}\idxss{Head}\idxss{Tail}\idxss{Cons}
+The basic properties and members of lists are summarized in Table~\ref{tab:list}-~\ref{tab:listCont}.\idxss{Length}\idxss{List.Empty}\idxss{IsEmpty}\idxss{Item}\idxss{Head}\idxss{Tail}\idxss{Cons}
 \begin{table}
   \centering
-  \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize}X|>{\hsize=1.5\hsize}X|>{\hsize=1\hsize}X|}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+  \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize}X|>{\hsize=1.75\hsize}X|>{\hsize=.75\hsize}X|}
     \hline
-    Function name & Example & Description\\
+    \rowcolor{headerRowColor} Function name & Example & Description\\
     \hline
-    \lstinline!Length! & \fsi{listLength}{1.5} & The number of elements in a list\\
+    \lstinline!Length! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listLength}{} & The number of elements in a list\\
     \hline
-    \lstinline!List.Empty! & \fsi{listEmpty}{1.5} & An empty list of specified type\\
+    \lstinline!List.Empty! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listEmpty}{} & An empty list of specified type\\
     \hline
-    \lstinline!IsEmpty! & \fsi{listIsEmpty}{1.5} & Compare with the empty list\\
+    \lstinline!IsEmpty! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listIsEmpty}{} & Compare with the empty list\\
     \hline
-    \lstinline!Item! & \fsi{listItem}{1.5} & Indexing\\
-    \hline
-    \lstinline!Head! & \fsi{listHead}{1.5} & The first element in the list. Exception if empty.\\
-    \hline
-    \lstinline!Tail! & \fsi{listTail}{1.5} & The list except its first element. Exception if empty.\\
-    \hline
-    \lstinline!Cons! & \fsi{listCons}{1.5} & Append an element to the front of the list\\
-    \hline
-    \lstinline!@! & \fsi{listConcatenate}{1.5} & Concatenate two lists\\
+    \lstinline!Item! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listItem}{} & Indexing\\
     \hline
   \end{tabularx}
   \caption{Basic properties and members of lists. The syntax used in \lstinline{List<int>.Empty} ensures that the empty list is of type \lstinline{int}.}
   \label{tab:list}
+\end{table}
+\begin{table}
+  \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+  \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize}X|>{\hsize=1.75\hsize}X|>{\hsize=.75\hsize}X|}
+    \hline
+    \rowcolor{headerRowColor} Function name & Example & Description\\
+    \hline
+    \lstinline!Head! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listHead}{} & The first element in the list. Exception if empty.\\
+    \hline
+    \lstinline!Tail! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listTail}{} & The list except its first element. Exception if empty.\\
+    \hline
+    \lstinline!Cons! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listCons}{} & Append an element to the front of the list\\
+    \hline
+    \lstinline!@! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listConcatenate}{} & Concatenate two lists\\
+    \hline
+  \end{tabularx}
+  \caption{Basic properties and members of lists continued from Table~\ref{tab:list}.}
+  \label{tab:listCont}
 \end{table}
 In addition, lists have many other built-in functions, such as functions for converting lists to arrays and sequences,\idxss{List.toList}\idxss{List.toArray}
 %
@@ -119,13 +134,14 @@ The example shows a \idx{ragged multidimensional list}, since each row has diffe
 %\subsection{1 dimensional arrays}
 One dimensional arrays or just arrays for short are mutable lists of the same type and follow a similar syntax as lists. Its grammar follows \idx{computation expressions}, which will be discussed in Section~\ref{sec:sequences}. Here we consider a subset of the grammar:
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 expr = ... 
   | "[|" (exprSeq | rangeExpr) "|]" (*array*)
 
 exprSeq =  expr | expr ";" exprSeq;
 rangeExpr = expr ".." expr [".." expr];
-\end{lstlisting}
+\end{verbatimwrite}
+\ebnf{tmp.ebnf}{}
 %
 Thus the creation of arrays is identical to lists, but there is no explicit operator support for appending and concatenation, e.g.,
 %
@@ -160,11 +176,11 @@ Indexing arrays of arrays is done sequentially, in the sense that in the above e
 %
 Notice, the \keyword{for}-\keyword{in} cannot be used in \lstinline!pownArray!, e.g., \lstinline!for row in arr do for elm in row do elm <- pown elm p done done} since the iterator value \lstinline!elm! is not mutable even though \lstinline!arr! is an array.
 %
-In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \texttt{Array2D} is,
+In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \lstinline{Array2D} is,
 %
 \fs{array2D}{Creating a 3 by 4 rectangular arrays of intigers.}
 %
-Notice that the indexing uses a slightly different notation '\verb|[,]|' and the length functions are also slightly different. The statement \verb|A.Length| would return the total number of elements in the array, in this case 12. As can be seen, the \lstinline!printf! supports direct printing of the 2 dimensional array. Higher dimensional arrays support slicing, e.g.,
+Notice that the indexing uses a slightly different notation \lstinline|[,]| and the length functions are also slightly different. The statement \lstinline|A.Length| would return the total number of elements in the array, in this case 12. As can be seen, the \lstinline!printf! supports direct printing of the 2 dimensional array. Higher dimensional arrays support slicing, e.g.,
 %
 \fs{array2DSlicing}{Examples of Array2D slicing. Compare with Listing~\ref{array2D}.}
 %

@@ -6,14 +6,15 @@ Exceptions are runtime errors, which may be handled gracefully by F\#. Exception
 %
 The \keyword{try} expressions have the following syntax,
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 expr = ... 
   | "try" expr "with" ["|"] rules (*exception*)
   | "try" expr "finally" expr; (*exception with cleanup*)
 
 rules = rule | rule "|" rules;
 rule = pat ["when" expr] "->" expr;
-\end{lstlisting}
+\end{verbatimwrite}
+\ebnf{tmp.ebnf}{}
 %
 Exceptions are a basic-type called \lstinline!exn!, and F\# has a number of built-in, see Table~\ref{tab:exceptions}.
 \begin{table}
@@ -48,10 +49,12 @@ Exceptions are a basic-type called \lstinline!exn!, and F\# has a number of buil
 \end{table}
 The programs may define new exceptions using the syntax,
 %
-\begin{lstlisting}[language=ebnf]
+\begin{verbatimwrite}{tmp.ebnf}
 "exception" ident of typeTuple (*exception definition*)
 typeTuple = type | type "*" typeTuple;
-\end{lstlisting}
+\end{verbatimwrite}
+\ebnf{tmp.ebnf}
+%
 and any exceptions may be \idx[raise an exception]{raised} using the functions \keyword{failwith}, \keyword{invalidArg}, \keyword{raise}, and \keyword{reraise}. An example of raising an exception with the \lstinline!raise! function is,
 %
 \fs{exceptionDefinition}{A user-defined exception is raised but not caught by outer construct.}
@@ -97,16 +100,16 @@ The \lstinline!reraise! function is only allowed to be the final call in the exp
 
 At exceptions, it is not always obvious what should be returned. E.g., in the Listing~\ref{exceptionDivByZero}, the exception is handled gracefully, but the return value is somewhat arbitrarily chosen to be the largest possible integer, which is still far from infinity, which is the correct result. Instead we could use the \idx{\keyword{option}} type. The \keyword{option} type is a wrapper, that can be put around any type, and which extends the type with the special value \lstinline!None!. All other values are preceded by the \lstinline!Some! identifier. E.g., to rewrite Listing~\ref{exceptionDivByZero} to correctly represent the non-computable value, we could write
 %
-\fso{exceptionDivByZeroOptionType}{Option types can be used, when the value in case of exceptions is unclear.}
+\fsOutput{exceptionDivByZeroOptionType}{Option types can be used, when the value in case of exceptions is unclear.}
 %
 The value of an option type can be extracted by and tested for by its member function, \lstinline!IsNone!, \lstinline!IsSome!, and \lstinline!Value!, e.g.,
 %
-\fso{option}{Simple operations on option types.}
+\fsOutput{option}{Simple operations on option types.}
 %
 
 In the \keyword{try}-\keyword{finally}, the \keyword{finally} expression is always executed, e.g.,
 %
-\fso{exceptionFinally}{The \keyword{finally} expression in \keyword{try}-\keyword{finally} will always be executed.}
+\fsOutput{exceptionFinally}{The \keyword{finally} expression in \keyword{try}-\keyword{finally} will always be executed.}
 %
 This is useful for cleaning up, e.g., closing files etc.\ which we will discuss in Chapter~\ref{chap:IO}. The only way to combine \keyword{try}-\keyword{finally} with \keyword{try}-\keyword{with} is to nest the expression inside each other.
 
