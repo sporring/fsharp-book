@@ -96,7 +96,7 @@ Notice, that the output of the tests are organized such that they are enumerated
 
 After the white-box testing has failed to find errors in the program, we have some confidence in the program, since we have run every line at least once. It is, however, in no way a guarantee, that the program is error free, which is why white-box testing is often accompanied with black-box testing to be described next.
 
-\section{Back-box testing}
+\section{Black-box testing}
 In black-box testing the program is considered a black box, and no knowledge is required about how a particular problem is solved, in fact, it is often useful not to have that knowledge at all. It is rarely possible to test all input to a program, so in black-box testing, the solution is tested for typical and extreme cases based on knowledge of the problem. The procedure is as follows:
 \begin{enumerate}[label=]
 \item Decide on the interface to use: It is useful to have an agreement with the software developers about what interface is to be used, e.g., in our case, the software developer has made a function \lstinline!date2Day d m y!, where \lstinline!d!, \lstinline!m!, and \lstinline!y! are integers specifying the day, month, and year.
