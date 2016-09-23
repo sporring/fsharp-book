@@ -1,0 +1,2 @@
+List.item 1 [1; 2; 3];;
+let a = [1; 2; 3] in List.item 1 a;;
