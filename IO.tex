@@ -1,21 +1,21 @@
 \chapter{Input and Output}
 \label{chap:IO}
-\jon{Work in progress!}
 An important part of programming is handling data. A typical source of data are hard-coded bindings and expressions from libraries or the program itself, and the result is often shown on a screen either as text output on the console. This is a good starting point, when learning to program, and one which we have relied heavily upon in this book until now. However, many programs require more: We often need to ask a user to input data via, e.g., typing text on a keyboard, clicking with a mouse, striking a pose in front of a camera. We also often need to load and save data to files, retrieve and deposit information from the internet, and visualize data as graphically, as sounds, or by controlling electrical appliances. Graphical user interfaces will be discussed in Chapter~\ref{chap:windows}, and here we will concentrate on working with the console, with files, and with the general concept of streams. 
 
-File and stream input and output are supported via libraries built-in classes. The \lstinline!printf! family of functions is defined in the \lstinline!.Printf! module of the \lstinline!Fsharp.Core'! namespace, and it was discussed in Chapter~\ref{sec:printf}, and will not be discussed here. What we will concentrate on is interaction with the console through the \lstinline!System.Console! class and the \lstinline!System.IO! namespace.
+File and stream input and output are supported via built-in namespaces and classes. The \lstinline!printf! family of functions is defined in the \lstinline!Printf! module of the \lstinline!Fsharp.Core'! namespace, and it was discussed in Chapter~\ref{sec:printf}, and will not be discussed here. What we will concentrate on is interaction with the console through the \lstinline!System.Console! class and the \lstinline!System.IO! namespace.
 
-A \idx{file} on a computer is a resource used to store data in and retrieve data from. Files are often associated with a physical device, such as a harddisk, but can also be a virtual representation in memory. Files are durable, such that other programs can access them independently, given certain rules for access. A file has a name, a size, and a type, where the type is related to the basic unit of storage such as characters, bytes, and words, (\keyword{char}, \keyword{byte}, and \keyword{int32}). Often data requires a conversion from the internal format to and from the format stored in the file. E.g., floating point numbers are sometimes converted to ASCII using \lstinline!fprintf! in order to store them to file in a human readable form, and interpreted from ASCII when retrieving them at a later point from file. Files have a low-level structure and representation, which varies from device to device, and the low-level details are less relevant for the use of the file, and most often hidden for the user. Basic operations on files are creation, opening, reading from, writing to, closing, and deleting files.
+A \idx{file} on a computer is a resource used to store data in and retrieve data from. Files are often associated with a physical device, such as a harddisk, but can also be a virtual representation in memory. Files are durable, such that other programs can access them independently, given certain rules for access. A file has a name, a size, and a type, where the type is related to the basic unit of storage such as characters, bytes, and words, (\keyword{char}, \keyword{byte}, and \keyword{int32}). Often data requires a conversion from the internal format to and from the format stored in the file. E.g., floating point numbers are sometimes converted to a UTF8 string using \lstinline!fprintf! in order to store them to file in a human readable form, and interpreted from UTF8 when retrieving them at a later point from file. Files have a low-level structure and representation, which varies from device to device, and the low-level details are less relevant for the use of the file and most often hidden for the user. Basic operations on files are creation, opening, reading from, writing to, closing, and deleting files.
 
-A \idx{stream} is similar to files in that they are used to store data in and retrieve data from, but streams only allow for handling of data one element at a time like the readout of a thermometer: we can make temperature readings as often as we like, producing a history of temperatures, but we cannot access the future. Hence, streams are in principle without an end, and thus have infinite size, and data from streams are programmed locally by considering the present and previous elements, while data from files may be considered a stream but also allow for global operations on all the file's data.
+A \idx{stream} is similar to files in that they are used to store data in and retrieve data from, but streams only allow for handling of data one element at a time like the readout of a thermometer: we can make temperature readings as often as we like, making notes and thus saving a history of temperatures, but we cannot access the future. Hence, streams are in principle without an end, and thus have infinite size, and data from streams are programmed locally by considering the present and previous elements. In contrast, files are finite in size and allow for global operations on all the file's data. Files may be considered a stream, but the opposite is not true.
 
 \section{Interacting with the console}
 \jon{Spec-4.0 Section 18.2.9}
-From a programming perspective, then the console is a stream: The program may send new data to the console, but cannot return to previously sent data and make changes. Likewise, the program may retrieve input from the user, but cannot go back and ask the user to have inputted something else. The console uses 3 built-in streams in \lstinline!System.Console!,\idxss{\lstinline{stdout}},\idxss{\lstinline{stderr}},\idxss{\lstinline{stdin}}
+From a programming perspective, the console is a stream: A program may send new data to the console, but cannot return to previously sent data and make changes. Likewise, the program may retrieve input from the user, but cannot go back and ask the user to have inputted something else, nor can we peak into the future and retrieve what the user will input in the future. The console uses 3 built-in streams in \lstinline!System.Console!,\idxss{\lstinline{stdout}},\idxss{\lstinline{stderr}},\idxss{\lstinline{stdin}}
 \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
-    Stream & Description\\
+    \rowcolor{headerRowColor} Stream & Description\\
     \hline
     \lstinline{stdout} & Standard output stream used by \lstinline!printf! and \lstinline!printfn!.\\
     \hline
@@ -27,27 +27,28 @@ From a programming perspective, then the console is a stream: The program may se
 \end{center}
 On the console, the standard output and error streams are displayed as text, and it is typically not possible to see a distinction between them. However, command-line interpreters such as Bash can, and it is possible from the command-line to filter output from programs according to these streams. However, a further discussion on this is outside the scope of this text. In \lstinline!System.Console! there are many functions supporting interaction with the console, and the most important ones are,\idxss{\lstinline{System.Console.Write}}\idxss{\lstinline{System.Console.WriteLine}}\idxss{\lstinline{System.Console.Read}}\idxss{\lstinline{System.Console.ReadKey}}\idxss{\lstinline{System.Console.ReadLine}}\idxss{\lstinline{Write}}\idxss{\lstinline{WriteLine}}\idxss{\lstinline{Read}}\idxss{\lstinline{ReadKey}}\idxss{\lstinline{ReadLine}}
 \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
-    Function & Description\\
+    \rowcolor{headerRowColor} Function & Description\\
     \hline
-    \lstinline{Write string} & Write to the console. E.g., \mbox{\lstinline!System.Console.Write "Hello world."!}.\\
+    \lstinline{Write: string -> unit} & Write to the console. E.g., \mbox{\lstinline!System.Console.Write "Hello world."!}.\\
     \hline
-    \lstinline{WriteLine string} & As \lstinline!Write! but followed by newline, e.g., \mbox{\lstinline!System.Console.WriteLine "Hello world."!}.\\
+    \lstinline{WriteLine: string -> unit} & As \lstinline!Write! but followed by a newline character, e.g., \mbox{\lstinline!System.Console.WriteLine "Hello world."!}.\\
     \hline
-    \lstinline{Read ()} & Read the next key from the keyboard blocking execution as long, e.g., \mbox{\lstinline!System.Console.Read ()!}.\\
+    \lstinline{Read: unit -> int} & Read the next key from the keyboard blocking execution as long, e.g., \mbox{\lstinline!System.Console.Read ()!}.\\
     \hline
-    \lstinline{ReadKey ()} & As \lstinline!Read! but writing the key to the console as well, e.g. , \mbox{\lstinline!System.Console.ReadKey ()!}.\\
+    \lstinline{ReadKey: unit -> System.ConsoleKeyInfo} & As \lstinline!Read! but writing the key to the console as well, e.g. , \mbox{\lstinline!System.Console.ReadKey ()!}.\\
     \hline
-    \lstinline{ReadLine ()} & Read the next sequence of characters until newline from the keyboard, e.g. , \mbox{\lstinline!System.Console.ReadLine ()!}.\\
+    \lstinline{ReadLine unit -> string} & Read the next sequence of characters until newline from the keyboard, e.g. , \mbox{\lstinline!System.Console.ReadLine ()!}.\\
     \hline
   \end{tabularx}
 \end{center}
-Notice that you must supply the empty argument \lexeme{()}, in order to run most of the functions instead of referring to them as values. Note also, that 
+Note that you must supply the empty argument \lexeme{()} to the \lstinline!Read! functions, in order to run most of the functions instead of referring to them as values. The \lstinline!System.ConsoleKeyInfo! object contains the key pressed as the \lstinline!KeyChar! member as well as other information about the event. A short demonstration script is given in Listing~\ref{userDialogue}.
 %
 \fsCode{userDialogue}{Interacting with a user with \lstinline!ReadLine! and \lstinline!WriteLine!.}
 %
-An example dialogue is,
+An example dialogue using Listing~\ref{userDialogue} is,
 %
 \begin{lstlisting}[language=console]
 To perform the multiplication of a and b
@@ -56,17 +57,18 @@ Enter b: 4.5
 a * b = 10.35
 \end{lstlisting}
 %
-The \lstinline!Write! functions has less functionality than the \lstinline!printf! family, and \advice{for writing to the console, \lstinline!printf! is to be preferred.}
+Thus, \lstinline!Write! and \lstinline!WriteLine! acts as \lstinline!printfn! but without a formatting string. \advice{For writing to the console, \lstinline!printf! is to be preferred.}
  
 \section{Storing and retrieving data from a file}
-A file stored on the filesystem has a name, and it must be opened before it can be accessed and closed when finished. Opening files informs the operating system that your program is now going to use the file, and your program may request protection of the file from the operating system. E.g., if you are going to write to the file, then this typically implies that no one else may write to the file at the same time. Thus we typically say, that you reserve a file by opening it, and you release it again by closing it, such that other programs may have access to it. On the other hand, it is typically safe for several programs to read the same file at the same time, but it is still important to close files after their use, such that the operating system can effectively manage the computer's resources. Conversely, you may not succeed in opening a file, since it may not exist, you may not have sufficient rights for accessing it, or other programs may at the moment have reserved it for their use. Thus, \advice{never assume that accessing files always works, but program defensively, e.g., by checking the return status of the file accessing functions and by \keyword{try} constructions.}
+A file stored on the filesystem has a name, and it must be opened before it can be accessed and closed when finished. Opening files informs the operating system that your program is now going to use the file, and your program may request protection of the file from the operating system. E.g., if you are going to write to the file, then this typically implies that no one else may write to the file at the same time, since simultaneous writing to a file may leave the resulting file in an uncertain state. Thus, you reserve a file by opening it, and you release it again by closing it. Sometimes the operating system will realize that a file, that was opened by a program, is no longer being used, e.g., since the program is no longer running, but \advice{it is good practice always to release reserved files, e.g., by closing them as soon as possible, such that other programs may have access to it.} On the other hand, it is typically safe for several programs to read the same file at the same time, but it is still important to close files after their use, such that the operating system can effectively manage the computer's resources. Reserved files are just one of the possible obstacles that you may meet when attempting to open a file. Other points of failure may be that the file may not exist, your program may not have sufficient rights for accessing it, or the device, where the file is stored, may have unreliable access. Thus, \advice{never assume that accessing files always works, but program defensively, e.g., by checking the return status of the file accessing functions and by \keyword{try} constructions.}
 
-Data in a file may have been stored in files in various ways, e.g., it may contain UTF8 encoded characters or sequences of floating point numbers stored as raw bits in chunks of 64 bits, or it may be a sequence of bytes that are later going to be interpreted as an image in jpeg or tiff format. To aid in retrieving the data, F\# has a family of open functions, all residing in the \lstinline!System.IO.File! class. These are described in Table~\ref{tab:File.Open}.
+Data in a files may have been stored in various ways, e.g., it may contain UTF8 encoded characters or sequences of floating point numbers stored as raw bits in chunks of 64 bits, or it may be a sequence of bytes that are later going to be interpreted as an image in jpeg or tiff format. To aid in retrieving the data, F\# has a family of open functions, all residing in the \lstinline!System.IO.File! class. These are described in Table~\ref{tab:File.Open}.
 \begin{table}
   \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
     \begin{tabularx}{\linewidth}{|>{\hsize=.45\hsize\raggedright\arraybackslash}X|>{\hsize=.55\hsize\raggedright\arraybackslash}X|}
       \hline
-      \lstinline{System.IO.File} & Description\\
+      \rowcolor{headerRowColor} \lstinline{System.IO.File} & Description\\
       \hline
       \lstinline{Open:} \mbox{\lstinline{(path : string) * (mode : FileMode)}} \mbox{\lstinline{-> FileStream}} & Request the opening of a file on \lstinline{path} for reading and writing with access mode \lstinline!FileMode!, see Table~\ref{tab:filemode}. Other programs are not allowed to access the file, before this program closes it.\\
       \hline
@@ -88,9 +90,10 @@ Data in a file may have been stored in files in various ways, e.g., it may conta
 For the general \lstinline!Open! function, you must also specify how the file is to be opened. This is done with a special set of values described in Table~\ref{tab:filemode}. 
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
-    \lstinline{FileMode.} & Description\\
+    \rowcolor{headerRowColor} \lstinline{FileMode.} & Description\\
     \hline
     \lstinline{Append} & Open a file and seek to its end, if it exists, or create a new file. Can only be used together with FileAccess.Write. May throw \mbox{\lstinline{IOException}} and \mbox{\lstinline{NotSupportedException}} exceptions.\\
     \hline
@@ -108,17 +111,20 @@ For the general \lstinline!Open! function, you must also specify how the file is
   \caption{File mode values for the \lstinline!System.IO.Open! function.}
   \label{tab:filemode}
 \end{table}
-An example of how a file is opened and later closed is,
+An example of how a file is opened and later closed is shown in Listing~\ref{openFile}.
 %
 \fs{openFile}{Opening and closing a file, in this case the source code of this same file.}
 %
+Notice how the example uses the defensive programming style, where the \keyword{try}-expression is used to return the optional datatype, and further processing is made dependent on the success of the opening operation.
+
 \begin{comment}
  The \lstinline!stdout!, \lstinline!stderr!, and \lstinline!stdin! may also be opened and treated as files using functions in \lstinline!System.Console! shown in Table~\ref{tab:OpenStandard}.
 \begin{table}
   \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
     \begin{tabularx}{\linewidth}{|l|X|}
       \hline
-      \lstinline{System.Console.} & Description\\
+      \rowcolor{headerRowColor} \lstinline{System.Console.} & Description\\
       \hline
       \lstinline{OpenStandardOutput} & Request opening the standard output for writing as a if it were a file.\\
       \hline
@@ -131,10 +137,12 @@ An example of how a file is opened and later closed is,
   \caption{The \lstinline!stdout!, \lstinline!stderr!, and \lstinline!stdin! may also be opened as if they were files using functions from \lstinline!System.Console!.}
   \label{tab:OpenStandard}
 \end{table}
+\begin{table}
 \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
-    \lstinline{FileAccess.} & Description\\
+    \rowcolor{headerRowColor} \lstinline{FileAccess.} & Description\\
     \hline
     \lstinline{Read} & Request read access to a file. Files opened with this access mode cannot be written to.\\
     \hline
@@ -144,7 +152,9 @@ An example of how a file is opened and later closed is,
     \hline
   \end{tabularx}
 \end{center}
-The \lstinline{FileShare} values are used to request how the operating system will allow for access to a file by other programs, while the file is opened. Regardless of this request, other programs still need to have access right to the file.
+\end{table}
+ The \lstinline{FileShare} values are used to request how the operating system will allow for access to a file by other programs, while the file is opened. Regardless of this request, other programs still need to have access right to the file.
+\begin{table}
 \begin{center}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
@@ -164,13 +174,18 @@ The \lstinline{FileShare} values are used to request how the operating system wi
     \hline
   \end{tabularx}
 \end{center}
+\end{table}
 \end{comment}
-The return value from the open family of commands is a \lstinline!System.IO.FileStream! class. It has a number of members and methods that allow you to read and write to the file and to obtain further information about the file. Some important properties and methods are stated in Table~\ref{tab:fileStreamProperties} and~\ref{tab:fileStreamMethods}.
+
+In Fsharp the distinction between files and streams are not very clear. Fsharp offers built-in support for accessing files as bytes through the \lstinline!System.IO.FileStream! class, and for characters in a particular encoding through the \lstinline!System.IO.TextReader! and \lstinline!System.IO.TextWriter!.
+
+A successfully opened \lstinline!System.IO.FileStream! file, e.g., using \lstinline!System.IO.File.OpenRead! from Table~\ref{tab:File.Open}, will result in an \lstinline!FileStream! object. From this object we can extract information about the file, such as the permitted operations and more listed in Table~\ref{tab:fileStreamProperties}.
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
-    Property & Description\\
+    \rowcolor{headerRowColor} Property & Description\\
     \hline
     \lstinline{CanRead} & Gets a value indicating whether the current stream supports reading.(Overrides Stream.CanRead.)\\
     \hline
@@ -188,11 +203,13 @@ The return value from the open family of commands is a \lstinline!System.IO.File
   \caption{Some properties of the \lstinline!System.IO.FileStream! class.}
   \label{tab:fileStreamProperties}
 \end{table}
+This information is important in order to restrict the operation that we will perform on the file. Some typical operations are listed in and~\ref{tab:fileStreamMethods}.
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
-    \lstinline{Method} & Description\\
+    \rowcolor{headerRowColor}\lstinline{Method} & Description\\
     \hline
     \lstinline{Close ()} & Closes the stream.\\
     \hline
@@ -212,23 +229,17 @@ The return value from the open family of commands is a \lstinline!System.IO.File
   \caption{Some methods of the \lstinline!System.IO.FileStream! class.}
   \label{tab:fileStreamMethods}
 \end{table}
+E.g., we may \lstinline!Seek! a particular position in the file, but only within the range of legal postions from 0 until the length of the file. Most operating systems do not necessarily write information to files immediately after one of the \lstinline!Write! functions, but will often for optimization purposes will often collect information in a buffer that is to be written to a device in batches. However, sometimes is is useful to be able to force the operating system to empty its buffer to the device. This is called \idx{flushing} and can be forced using the \lstinline!Flush! function.
+
+Text is typically streamed through the \lstinline!StreamReader! and \lstinline!StreamWriter!. These may be considered higher order stream processing, since they include an added interpretation of the bits to strings. A \lstinline!StreamReader! has methods similar to a \lstinline!FileStream! object and a few new properties and methods, such as the \lstinline!EndOfStream! property and \lstinline!ReadToEnd! method, see Table~\ref{tab:streamReaderMethods}.
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
-    Property & Description\\
+    \rowcolor{headerRowColor}\lstinline{Property/Method} & Description\\
     \hline
     \lstinline{EndOfStream} & Check whether the stream is at its end.\\
-    \hline
-  \end{tabularx}
-  \caption{a property of the \lstinline!System.IO.StreamReader! class.}
-  \label{tab:streamReaderProperties}
-\end{table}
-\begin{table}
-  \centering
-  \begin{tabularx}{\linewidth}{|l|X|}
-    \hline
-    \lstinline{Method} & Description\\
     \hline
     \lstinline{Close ()} & Closes the stream.\\
     \hline
@@ -248,23 +259,15 @@ The return value from the open family of commands is a \lstinline!System.IO.File
   \caption{Some methods of the \lstinline!System.IO.StreamReader! class.}
   \label{tab:streamReaderMethods}
 \end{table}
+Likewise, a \lstinline!StreamWriter! has an added method for automatically flushing following every writing operation.
 \begin{table}
   \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|X|}
     \hline
-    Property & Description\\
+    \rowcolor{headerRowColor}\lstinline{Property/Method} & Description\\
     \hline
     \lstinline{AutoFlush : bool} & Get or set the auto-flush. If set, then every call to \lstinline!Write! will flush the stream.\\
-    \hline
-  \end{tabularx}
-  \caption{a property of the \lstinline!System.IO.StreamWriter! class.}
-  \label{tab:streamWriterProperties}
-\end{table}
-\begin{table}
-  \centering
-  \begin{tabularx}{\linewidth}{|l|X|}
-    \hline
-    \lstinline{Method} & Description\\
     \hline
     \lstinline{Close ()} & Closes the stream.\\
     \hline
@@ -278,21 +281,20 @@ The return value from the open family of commands is a \lstinline!System.IO.File
   \caption{Some methods of the \lstinline!System.IO.StreamWriter! class.}
   \label{tab:streamWriterMethods}
 \end{table}
-
-A simple example of opening a text-file and processing it is,
+A simple example of opening a text-file and processing it is given in Listing~\ref{readFile}.
 %
 \fs{readFile}{An example of opening a text file, and using the \lstinline!StreamReader! properties and methods.}
 %
 Here the program reads the source code of itself, and prints it to the console.
 
 \section{Working with files and directories.}
-\jon{See \url{https://msdn.microsoft.com/en-us/library/ms404278(v=vs.110).aspx}}
-In the \lstinline!System.IO.File! class there are a number of other frequently used functions summarized in Table~\ref{tab:File.Others}
+Fsharp has support for managing files summarized in the \lstinline!System.IO.File! class and summarized in Table~\ref{tab:File.Others}
 \begin{table}
   \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
     \begin{tabularx}{\linewidth}{|l|X|}
       \hline
-      Function & Description\\
+      \rowcolor{headerRowColor} Function & Description\\
       \hline
       \lstinline{Copy (src : string, dest : string)} & Copy a file from \lstinline{src} to \lstinline{dest} possibly overwriting any existing file.\\
       \hline
@@ -308,12 +310,13 @@ In the \lstinline!System.IO.File! class there are a number of other frequently u
   \label{tab:File.Others}
 \end{table}
 
-In the \lstinline!System.IO.Directory! class there are a number of other frequently used functions summarized in Table~\ref{tab:directory}
+In the \lstinline!System.IO.Directory! class there are a number of other frequently used functions summarized in Table~\ref{tab:directory}.
 \begin{table}
   \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
     \begin{tabularx}{\linewidth}{|l|X|}
       \hline
-      Function & Description\\
+      \rowcolor{headerRowColor}  Function & Description\\
       \hline
       \lstinline{CreateDirectory string} & Create the directory and all implied sub-directories.\\
       \hline
@@ -335,12 +338,13 @@ In the \lstinline!System.IO.Directory! class there are a number of other frequen
   \label{tab:directory}
 \end{table}
 
-In the \lstinline!System.IO.Path! class there are a number of other frequently used functions summarized in Table~\ref{tab:path}
+In the \lstinline!System.IO.Path! class there are a number of other frequently used functions summarized in Table~\ref{tab:path}.
 \begin{table}
   \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
     \begin{tabularx}{\linewidth}{|l|X|}
       \hline
-      Function & Description\\
+      \rowcolor{headerRowColor}  Function & Description\\
       \hline
       \lstinline{Combine string * string} & Combine 2 paths into a new path.\\
       \hline
@@ -361,6 +365,17 @@ In the \lstinline!System.IO.Path! class there are a number of other frequently u
   \caption{Some methods of the \lstinline!System.IO.Path! class.}
   \label{tab:path}
 \end{table}
+
+\section{Reading from the internet}
+The internet is a global collection of computers that are connected in a network using the internet protocol suite TCP/IP. The internet is commonly used for transport of data such as emails and for offering services such as web pages on the World Wide Web. Web resources are identified by 
+%\idx{Uniform Resource Identifiers} (\idx{URI}) such as \lstinline[language=console]!www.google.com!. A 
+a \idx{Uniform Resource Locator} (\idx{URL}) popularly known as a web page, and an URL contains information about where and how data from the web page is to be obtained. E.g., the URL \lstinline[language=console]!https://en.wikipedia.org/wiki/F_Sharp_(programming_language)!, contains 3 pieces of information: \lstinline[language=console]!https! is the protocol to be used to interact with the resource, \lstinline[language=console]!en.wikipedia.org! is the host's name, and \lstinline[language=console]!wiki/F_Sharp_(programming_language)! is the filename.
+
+Fsharp's \lstinline!System! namespace contains functions for accessing web pages as stream as illustrated in Listing~\ref{webRequest}.
+%
+\fs{webRequest}{Downloading a web page and printing the first few characters.}
+%
+To connect to a URL as a stream, we first need first format the URL string as a \idx{Uniform Resource Identifiers} (\idx{URI}), which is a generalization of the URL concept, using the \lstinline!System.Uri! function. Then we must initialize the request by the \lstinline!System.Net.WebRequest! function, and the response from the host is obtained by the \lstinline!GetResponse! method. Finally, we can access the response as a stream by the \lstinline!GetResponseStream! method. In the end, we convert the stream to a \lstinline!StreamReader!, such that we can use the methods from Table~\ref{tab:streamReaderMethods} to access the web page.
 
 \section{Programming intermezzo}
 A typical problem, when working with files, is
