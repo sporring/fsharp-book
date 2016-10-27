@@ -16,7 +16,7 @@ rule = pat ["when" expr] "->" expr;
 \end{verbatimwrite}
 \ebnf{tmp.ebnf}{}
 %
-Exceptions are a basic-type called \lstinline!exn!, and F\# has a number of built-in, see Table~\ref{tab:exceptions}.
+Exceptions are a basic-type called \lstinline!exn!, and F\# has a number of built-in, see Table~\ref{tab:exceptions}. \jon{Add example of raising builtin exceptions, e.g., \lstinline!let f () : int = raise (System.ArithmeticException "hej") in f();;!}
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -97,7 +97,7 @@ The \keyword{try} construction is typically used to gracefully handle exceptions
 %
 \fs{exceptionReraise}{Reraising an exception.}
 %
-The \lstinline!reraise! function is only allowed to be the final call in the expression of a \keyword!with! rule.
+The \lstinline!reraise! function is only allowed to be the final call in the expression of a \keyword{with} rule.
 
 At exceptions, it is not always obvious what should be returned. E.g., in the Listing~\ref{exceptionDivByZero}, the exception is handled gracefully, but the return value is somewhat arbitrarily chosen to be the largest possible integer, which is still far from infinity, which is the correct result. Instead we could use the \idx{option type}. The option type is a wrapper, that can be put around any type, and which extends the type with the special value \lstinline!None!. All other values are preceded by the \lstinline!Some! identifier. E.g., to rewrite Listing~\ref{exceptionDivByZero} to correctly represent the non-computable value, we could write
 %
@@ -105,12 +105,12 @@ At exceptions, it is not always obvious what should be returned. E.g., in the Li
 %
 The value of an option type can be extracted by and tested for by its member function, \lstinline!IsNone!, \lstinline!IsSome!, and \lstinline!Value!, e.g.,
 %
-\fsOutput{option}{Simple operations on option types.}
+\fs{option}{Simple operations on option types.}
 %
 
 In the \keyword{try}-\keyword{finally}, the \keyword{finally} expression is always executed, e.g.,
 %
-\fsOutput{exceptionFinally}{The \keyword{finally} expression in \keyword{try}-\keyword{finally} will always be executed.}
+\fs{exceptionFinally}{The \keyword{finally} expression in \keyword{try}-\keyword{finally} will always be executed.}
 %
 This is useful for cleaning up, e.g., closing files etc.\ which we will discuss in Chapter~\ref{chap:IO}. The only way to combine \keyword{try}-\keyword{finally} with \keyword{try}-\keyword{with} is to nest the expression inside each other.
 
