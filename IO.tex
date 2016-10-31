@@ -25,6 +25,7 @@ From a programming perspective, the console is a stream: A program may send new 
     \hline
   \end{tabularx}
 \end{center}
+\jon{Tilføj \lstinline{System.Console.Error.WriteLine(``Goodbye, World!'');}}
 On the console, the standard output and error streams are displayed as text, and it is typically not possible to see a distinction between them. However, command-line interpreters such as Bash can, and it is possible from the command-line to filter output from programs according to these streams. However, a further discussion on this is outside the scope of this text. In \lstinline!System.Console! there are many functions supporting interaction with the console, and the most important ones are,\idxss{\lstinline{System.Console.Write}}\idxss{\lstinline{System.Console.WriteLine}}\idxss{\lstinline{System.Console.Read}}\idxss{\lstinline{System.Console.ReadKey}}\idxss{\lstinline{System.Console.ReadLine}}\idxss{\lstinline{Write}}\idxss{\lstinline{WriteLine}}\idxss{\lstinline{Read}}\idxss{\lstinline{ReadKey}}\idxss{\lstinline{ReadLine}}
 \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -44,6 +45,7 @@ On the console, the standard output and error streams are displayed as text, and
     \hline
   \end{tabularx}
 \end{center}
+\jon{Tilføj eksemple på ConsoleModifiers, f.eks. \lstinline!readKey.fsx!}
 Note that you must supply the empty argument \lexeme{()} to the \lstinline!Read! functions, in order to run most of the functions instead of referring to them as values. The \lstinline!System.ConsoleKeyInfo! object contains the key pressed as the \lstinline!KeyChar! member as well as other information about the event. A short demonstration script is given in Listing~\ref{userDialogue}.
 %
 \fsCode{userDialogue}{Interacting with a user with \lstinline!ReadLine! and \lstinline!WriteLine!.}
@@ -337,6 +339,7 @@ In the \lstinline!System.IO.Directory! class there are a number of other frequen
   \caption{Some methods of the \lstinline!System.IO.Directory! class.}
   \label{tab:directory}
 \end{table}
+\jon{Add \lstinline!SetCurrentDirectory : string -> unit!}
 
 In the \lstinline!System.IO.Path! class there are a number of other frequently used functions summarized in Table~\ref{tab:path}.
 \begin{table}
@@ -376,6 +379,8 @@ Fsharp's \lstinline!System! namespace contains functions for accessing web pages
 \fs{webRequest}{Downloading a web page and printing the first few characters.}
 %
 To connect to a URL as a stream, we first need first format the URL string as a \idx{Uniform Resource Identifiers} (\idx{URI}), which is a generalization of the URL concept, using the \lstinline!System.Uri! function. Then we must initialize the request by the \lstinline!System.Net.WebRequest! function, and the response from the host is obtained by the \lstinline!GetResponse! method. Finally, we can access the response as a stream by the \lstinline!GetResponseStream! method. In the end, we convert the stream to a \lstinline!StreamReader!, such that we can use the methods from Table~\ref{tab:streamReaderMethods} to access the web page.
+
+\jon{Add section on command line arguments, e.g., commandLineArgs.fsx and get CommandLineArgs.fsx. Note difference between running these as compiled and interpreted code.}
 
 \section{Programming intermezzo}
 A typical problem, when working with files, is

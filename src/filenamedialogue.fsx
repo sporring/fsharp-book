@@ -7,7 +7,7 @@ let getAFileName () =
     fileExists <- System.IO.File.Exists filename
   filename
 
-let listOfFiles = System.IO.Directory.GetFiles(".")
+let listOfFiles = System.IO.Directory.GetFiles "."
 printfn "Directory contains: %A" listOfFiles
 let filename = getAFileName ()
 printfn "You typed: %s" filename

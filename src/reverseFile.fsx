@@ -16,7 +16,11 @@ let reverseString (s : string) =
 
 let inputStream = System.IO.File.OpenText "reverseFile.fsx"
 let text = readFile inputStream
+inputStream.Close ()
+printfn "%A" text
+
 let reverseText = List.map reverseString (List.rev text)
+
 let outputStream = System.IO.File.CreateText "xsf.eliFesrever"
 writeFile outputStream reverseText
 outputStream.Close ()
