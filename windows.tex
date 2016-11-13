@@ -43,13 +43,58 @@ These properties have been programmed as \idx{accessors} implying that they may 
 %
 The \lstinline!System.Drawing.Size! is a general structure for specifying sizes as height and width pair of integers.
 
-WinForms supports drawing of simple graphics primitives. Simple examples are \lstinline!System.Drawing.Pen! to specify the color to be drawn, \lstinline!System.Drawing.Point! to specify a pair of coordinates, and \lstinline!System.Drawing.Graphics.DrawLine!. \lstinline!DrawLine! is different than the previous examples since it must be related to a specific device, and it is typically accessed as an event. Displaying graphics in WinForms is performed as the reaction to an event. E.g., windows are created by the program, moved, minimized, occluded by other windows, resized, etc., by the user or the program, and each action may require that the content of the window is refreshed. Thus, we must create a function that WinForms can call, when it determines that the content needs to be redrawn. This is known as a \idx{call-back function}, and it is added to an existing form using the \lstinline!Paint.Add! function. As an example, consider the problem of draw a triangle in a window. For this we need to make a function that can draw a triangle not once, but any time WinForms determines it necessary to draw and redraw the triangle. This is done in Listing~\ref{winforms/Window}.
+WinForms supports drawing of simple graphics primitives. Simple examples are \lstinline!System.Drawing.Pen! to specify the color to be drawn, \lstinline!System.Drawing.Point! to specify a pair of coordinates, and \lstinline!System.Drawing.Graphics.DrawLine!. \lstinline!DrawLine! is different than the previous examples since it must be related to a specific device, and it is typically accessed as an event. Displaying graphics in WinForms is performed as the reaction to an event. E.g., windows are created by the program, moved, minimized, occluded by other windows, resized, etc., by the user or the program, and each action may require that the content of the window is refreshed. Thus, we must create a function that WinForms can call, when it determines that the content needs to be redrawn. This is known as a \idx{call-back function}, and it is added to an existing form using the \lstinline!Paint.Add! function. As an example, consider the problem of draw a triangle in a window. For this we need to make a function that can draw a triangle not once, but any time WinForms determines it necessary to draw and redraw the triangle. This is done in Listing~\ref{winforms/triangle}.
 %
-\fsCode{winforms/Window}{Create the window and changing its properties.}
+\fsCode{winforms/triangle}{Create the window and changing its properties.}
 %
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{triangle}
+  \caption{Result of running listing Listing~\ref{winforms/triangle}.}
+  \label{fig:triangle}
+\end{figure}
 A walk-through of the code is as follows: First we create an array of points and a pen color, then we create a pen and a window. The method for drawing the triangle is added as an anonymous function using the created window's \lstinline!Paint.Add! method. This function is to be called as a response to a paint event, and takes a \lstinline!PaintEventArgs! object, which includes the System.Drawing.Graphics object. Since this object will be related to a specific device, when \lstinline!Paint! is called then we may call the \lstinline!DrawLine! function to sequentially draw lines between our array of points. Finally, we hand the form to the event-loop, which as one of the earliest events will open the window and call the \lstinline!Paint! function we have associated with the form.
 
- \dots
+%
+\fsCode{winforms/triangleOrganized}{Create the window and changing its properties.}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{triangleOrganized}
+  \caption{Result of running listing Listing~\ref{winforms/triangleOrganized}.}
+  \label{fig:triangleOrganized}
+\end{figure}
+\jon{requires the introduction of type declarations.}\jon{Remember to talk about pen width.}
+
+%
+\fsCode[lastline=38]{winforms/transformWindows}{Create the window and changing its properties: top part.}
+\fsCode[firstline=40]{winforms/transformWindows}{Create the window and changing its properties: bottom part.}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{transformWindows}
+  \caption{Result of running listing Listing~\ref{winforms/transformWindows}.}
+  \label{fig:transformWindow}
+\end{figure}
+
+\begin{problem}
+  Given a triangle produce a Mandela drawing, where $n$ rotated versions of the triangle is drawn around its center of mass.
+\end{problem}
+%
+\fsCode[firstline=40]{winforms/rotationalSymmetry}{Create the window and changing its properties.}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{rotationalSymmetry}
+  \caption{Result of running listing Listing~\ref{winforms/rotationalSymmetry}.}
+  \label{fig: rotationalSymmetry}
+\end{figure}
+
+\jon{Add other things to draw: filled stuff, clearing, circles, text}
+
+\section{Buttons and stuff}
+
+\dots
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
