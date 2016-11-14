@@ -31,4 +31,4 @@ let pen = (Color.Black, 1.0)
 
 // Create form and start the event-loop.
 let win = createForm backgroundColor size title (drawPoints coords pen) 
-Application.Run win // win.Show()
+Application.Run win

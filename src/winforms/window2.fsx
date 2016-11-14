@@ -24,4 +24,4 @@ let color = System.Drawing.Color.Black
 
 // Create form and start the event-loop.
 let win = createForm backgroundColor size title (drawPoints coords color) 
-System.Windows.Forms.Application.Run win // win.Show()
+System.Windows.Forms.Application.Run win

@@ -1,4 +1,4 @@
 // Create a window
 let win = new System.Windows.Forms.Form ()
-// Start the event-loop. Use "win.Show()" on Microsoft Windows instead.
+// Start the event-loop.
 System.Windows.Forms.Application.Run win
