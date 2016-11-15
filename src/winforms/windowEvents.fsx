@@ -11,7 +11,20 @@ let createForm backgroundColor (width, height) title draw =
   win.Text <- title
   win.BackColor <- backgroundColor
   win.Size <- Size (width, height)
+  // Paint event
   win.Paint.Add draw
+  // Window event
+  win.Move.Add (fun e -> printfn "Move: %A" win.Location)
+  win.Resize.Add (fun _ -> printfn "Resize: %A" win.DisplayRectangle)
+  // Mouse event
+  let mutable record = false;
+  win.MouseMove.Add (fun e -> if record then printfn "MouseMove: %A" e.Location)
+  win.MouseDown.Add (fun e -> printfn "MouseDown: %A" e.Location; (record <- true))
+  win.MouseUp.Add (fun e -> printfn "MouseUp: %A" e.Location; (record <- false))
+  win.MouseClick.Add (fun e -> printfn "MouseClick: %A" e.Location)
+  // Keyboard event
+  win.KeyPreview <- true
+  win.KeyPress.Add (fun e -> printfn "KeyPress: %A" (e.KeyChar.ToString ()))
   win
 
 /// Draw a polygon with a specific color
@@ -25,31 +38,10 @@ let drawPoints (polygLst : polygon list) (e : PaintEventArgs) =
     let Points = Array.map pairToPoint (List.toArray coords)
     e.Graphics.DrawLines (pen, Points)
     
-/// Translate a point
-let translatePoint (dx, dy) (x, y) =
-  (x + dx, y + dy)
-
-/// Translate point array
-let translatePoints (dx, dy) arr =
-  List.map (translatePoint (dx, dy)) arr
-
-/// Rotate a point
-let rotatePoint theta (x, y) =
-  (x * cos theta - y * sin theta, x * sin theta + y * cos theta)
-
-/// Rotate point array
-let rotatePoints theta arr =
-  List.map (rotatePoint theta) arr
-
-// Setup drawing details
-let title = "Transforming polygons"
-let backgroundColor = Color.White
-let size = (400, 200)
-let points = [(0.0, 0.0); (10.0, 170.0); (320.0, 20.0); (0.0, 0.0)]
-let polygLst =
-  [(points, (Color.Black, 1.0));
-   (translatePoints (40.0, 30.0) points, (Color.Red, 2.0));
-   (rotatePoints (1.0 *System.Math.PI / 180.0) points, (Color.Green, 1.0))]
+let backgroundColor = System.Drawing.Color.White
+let title = "Window events"
+let size = (200, 200)
+let polygLst = []
 
 // Create form and start the event-loop.
 let win = createForm backgroundColor size title (drawPoints polygLst) 

@@ -25,16 +25,20 @@ let drawPoints (polygLst : polygon list) (e : PaintEventArgs) =
     let Points = Array.map pairToPoint (List.toArray coords)
     e.Graphics.DrawLines (pen, Points)
     
+/// Translate a point
+let translatePoint (dx, dy) (x, y) =
+  (x + dx, y + dy)
+
 /// Translate point array
 let translatePoints (dx, dy) arr =
-  let translatePoint (dx, dy) (x, y) =
-    (x + dx, y + dy)
   List.map (translatePoint (dx, dy)) arr
+
+/// Rotate a point
+let rotatePoint theta (x, y) =
+  (x * cos theta - y * sin theta, x * sin theta + y * cos theta)
 
 /// Rotate point array
 let rotatePoints theta arr =
-  let rotatePoint theta (x, y) =
-    (x * cos theta - y * sin theta, x * sin theta + y * cos theta)
   List.map (rotatePoint theta) arr
 
 /// Calculate the mass center of a list of points

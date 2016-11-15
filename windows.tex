@@ -43,7 +43,7 @@ These properties have been programmed as \idx{accessors} implying that they may 
 %
 The \lstinline!System.Drawing.Size! is a general structure for specifying sizes as height and width pair of integers.
 
-WinForms supports drawing of simple graphics primitives. Simple examples are \lstinline!System.Drawing.Pen! to specify the color to be drawn, \lstinline!System.Drawing.Point! to specify a pair of coordinates, and \lstinline!System.Drawing.Graphics.DrawLine!. \lstinline!DrawLine! is different than the previous examples since it must be related to a specific device, and it is typically accessed as an event. Displaying graphics in WinForms is performed as the reaction to an event. E.g., windows are created by the program, moved, minimized, occluded by other windows, resized, etc., by the user or the program, and each action may require that the content of the window is refreshed. Thus, we must create a function that WinForms can call, when it determines that the content needs to be redrawn. This is known as a \idx{call-back function}, and it is added to an existing form using the \lstinline!Paint.Add! function. As an example, consider the problem of draw a triangle in a window. For this we need to make a function that can draw a triangle not once, but any time WinForms determines it necessary to draw and redraw the triangle. This is done in Listing~\ref{winforms/triangle}.
+WinForms supports drawing of simple graphics primitives. Simple examples are \lstinline!System.Drawing.Pen! to specify the color to be drawn, \lstinline!System.Drawing.Point! to specify a pair of coordinates, and \lstinline!System.Drawing.Graphics.DrawLine!. \lstinline!DrawLine! is different than the previous examples since it must be related to a specific device, and it is typically accessed as an event. Displaying graphics in WinForms is performed as the reaction to an event. E.g., windows are created by the program, moved, minimized, occluded by other windows, resized, etc., by the user or the program, and each action may require that the content of the window is refreshed. Thus, we must create a function that WinForms can call, when it determines that the content needs to be redrawn. This is known as a \idx{call-back function}, and it is added to an existing form using the \lstinline!Paint.Add! function. As an example, consider the problem of draw a triangle in a window. For this we need to make a function that can draw a triangle not once, but any time WinForms determines it necessary to draw and redraw the triangle. Drawing is done with reference to a coordinate system. WinForms operates with several coordinate systems, the most important is the \idx{screen coordinates}. Screen coordinate $(x,y)$ have their origin in the top-left corner, and $x$ increases to the right, while $y$ increases down.\jon{Possibly something about client coordinates and world coordinates.} Thus, we may draw a triangle as demonstrated in Listing~\ref{winforms/triangle}.
 %
 \fsCode{winforms/triangle}{Create the window and changing its properties.}
 %
@@ -67,8 +67,8 @@ A walk-through of the code is as follows: First we create an array of points and
 \jon{requires the introduction of type declarations.}\jon{Remember to talk about pen width.}
 
 %
-\fsCode[lastline=38]{winforms/transformWindows}{Create the window and changing its properties: top part.}
-\fsCode[firstline=40]{winforms/transformWindows}{Create the window and changing its properties: bottom part.}
+\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},lastline=42]{winforms/transformWindows}{Create the window and changing its properties: top part.}
+\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},firstnumber=44,firstline=44]{winforms/transformWindows}{Create the window and changing its properties: bottom part.}
 %
 \begin{figure}
   \centering
@@ -81,18 +81,233 @@ A walk-through of the code is as follows: First we create an array of points and
   Given a triangle produce a Mandela drawing, where $n$ rotated versions of the triangle is drawn around its center of mass.
 \end{problem}
 %
-\fsCode[firstline=40]{winforms/rotationalSymmetry}{Create the window and changing its properties.}
+\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},firstnumber=44,firstline=44]{winforms/rotationalSymmetry}{Create the window and changing its properties.}
 %
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{rotationalSymmetry}
   \caption{Result of running listing Listing~\ref{winforms/rotationalSymmetry}.}
-  \label{fig: rotationalSymmetry}
+  \label{fig:rotationalSymmetry}
 \end{figure}
 
 \jon{Add other things to draw: filled stuff, clearing, circles, text}
 
+\begin{table}
+  \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+    \begin{tabularx}{\linewidth}{|l|X|}
+      \hline
+      \rowcolor{headerRowColor}  Function & Description\\
+      \hline
+      \lstinline{DrawArc : Pen * Rectangle * Single * Single}
+      &Draws an arc representing a portion of an ellipse specified by a Rectangle structure.\\
+      \hline
+      \lstinline{DrawBezier : Pen * Point * Point * Point * Point}	
+      &Draws a Bézier spline defined by four Point structures.\\
+      \hline
+      \lstinline{DrawClosedCurve : Pen * Point[]}	
+      &Draws a closed cardinal spline defined by an array of Point structures.\\
+      \hline
+      \lstinline{DrawCurve : Pen * Point[]}	
+      &Draws a cardinal spline through a specified array of Point structures.\\
+      \hline
+      \lstinline{DrawEllipse : Pen * Rectangle}	
+      &Draws an ellipse specified by a bounding Rectangle structure.\\
+      \hline
+      \lstinline{DrawImage : Image * Point[]}	
+      &Draws the specified Image at the specified location and with the specified shape and size.\\
+      \hline
+      \lstinline{DrawLines : Pen * Point[]}	
+      &Draws a series of line segments that connect an array of Point structures.\\
+      \hline
+      \lstinline{DrawPie : Pen * Rectangle * Single * Single}	
+      &Draws a pie shape defined by an ellipse specified by a Rectangle structure and two radial lines.\\
+      \hline
+      \lstinline{DrawPolygon : Pen * Point[]}	
+      &Draws a polygon defined by an array of Point structures.\\
+      \hline
+      \lstinline{DrawRectangles : Pen * Rectangle[]}	
+      &Draws a series of rectangles specified by Rectangle structures.\\
+      \hline
+      \lstinline{DrawString : String * Font * Brush * PointF}	
+      &Draws the specified text string at the specified location with the specified Brush and Font objects.\\
+      \hline
+      \lstinline{FillClosedCurve : Brush * Point[]}	
+      &Fills the interior of a closed cardinal spline curve defined by an array of Point structures.\\
+      \hline
+      \lstinline{FillEllipse : Brush * Rectangle}	
+      &Fills the interior of an ellipse defined by a bounding rectangle specified by a Rectangle structure.\\
+      \hline
+      \lstinline{FillPie : Brush * Rectangle * Single * Single}	
+      &Fills the interior of a pie section defined by an ellipse specified by a RectangleF structure and two radial lines.\\
+      \hline
+      \lstinline{FillPolygon : Brush * Point[]}	
+      &Fills the interior of a polygon defined by an array of points specified by Point structures.\\
+      \hline
+      \lstinline{FillRectangle : Brush * Rectangle}	
+      &Fills the interior of a rectangle specified by a Rectangle structure.\\
+      \hline
+      \lstinline{FillRegion : Brush * Region}	
+      &Fills the interior of a Region.\\
+      \hline
+    \end{tabularx}
+  \end{center}
+  \caption{Some methods of the \lstinline!System.IO.Path! class.}
+  \label{tab:path}
+\end{table}
+
+\section{Programming intermezzo}
+\begin{problem}
+  Consider a curve consisting of piecewise straight lines all with the same length but with varying angles $0^{\circ}$, $90^{\circ}$, $180^{\circ}$, or $270^{\circ}$ w.r.t.\ the horisontal axis. To draw this curve we need 3 basic operations: Draw ($F$), turn right ($+$), and turn left ($-$). The turning is w.r.t.\ the present diretion. A Hilbert Curve is a spacefilling curve, which be expressed recursively as:
+\begin{align}
+  A &\rightarrow -BF+AFA+FB-\label{eq:hilbertA}\\
+  B &\rightarrow +AF-BFB-FA+\label{eq:hilbertB}
+\end{align}
+starting with $A$. The order of the curve is the depth of the recursion, and to draw a 0'th order curve, we don't recurse at all, i.e., ignore all occurrences of the symbols $A$ and $B$ on the right-hand-side of \eqref{eq:hilbertA}, and get $-F+F+F-$. For the 1'st order curve, we recurse once, i.e., 
+\begin{align*}
+  A 
+  \rightarrow &-BF+AFA+FB- \\
+  \rightarrow &-(+AF-BFB-FA+)F\\
+               &\quad+(-BF+AFA+FB-)F(-BF+AFA+FB-)\\
+               &\qquad +F(+AF-BFB-FA+)-\\
+  \rightarrow &AF-BFB-FA+FBF+AFA+FB-F-BF+AFA+FBF+AF-BFB-FA\\
+  \rightarrow &F-F-F+FF+F+F-F-F+F+FF+F-F-F
+\end{align*}
+Make a program, that given an order produces an image of the Hilbert curve.
+\end{problem}
+%
+\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},firstnumber=44,firstline=44]{winforms/hilbert}{Create the window and changing its properties.}
+%
+
+%
+\fsCode{winforms/windowEvents}{Catching window, mouse, and keyboard events..}
+%
+
 \section{Buttons and stuff}
+
+%
+\fsCode{winforms/buttonControl}{Create the button and an event.}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{buttonControl}
+  \caption{Result of running listing Listing~\ref{winforms/buttonControl}.}
+  \label{fig:buttonControl}
+\end{figure}
+\jon{\lstinline!Click.Add! expects a function \lstinline!System.EventArgs -> unit! therfore the \lstinline!ignore! function.}
+
+\begin{table}
+  \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+    \begin{tabularx}{\linewidth}{|l|X|}
+      \hline
+      \rowcolor{headerRowColor}  Function & Description\\
+      \hline
+      \lstinline{DataGridView}
+      &Display data on a table.\\
+      \hline
+      \lstinline{TextBox}
+      &Display editable text.\\
+      \hline
+      \lstinline{Label}
+      &Display text.\\
+      \hline
+      \lstinline{LinkLabel}
+      &Display clickable text.\\
+      \hline
+      \lstinline{ProgressBar}
+      &Display the current progress as a bar.\\
+      \hline
+      \lstinline{WebBrwoser}
+      &Enable navigation of the web.\\
+      \hline
+      \lstinline{CheckedListBox}
+      &Display a scrollable check box list.\\
+      \hline
+      \lstinline{ComboBox}
+      &Display a drop-down list.\\
+      \hline
+      \lstinline{ListBox}
+      &Display a list of text and icons.\\
+      \hline
+      \lstinline{PictureBox}
+      &Display a bitmap image\\
+      \hline
+      \lstinline{CheckBox}
+      &Display a checkbox and a label of text.\\
+      \hline
+      \lstinline{RadioButton}
+      &Display an on-off radio button\\
+      \hline
+      \lstinline{TrackBar}
+      &Enable the user to input value by moving a cursor on a slider bar\\
+      \hline
+      \lstinline{DateTimePicker}
+      &Enable the user to select a date from a graphical calendar\\
+      \hline
+      \lstinline{ColorDialogue}
+      &Enable the user to pick a color\\
+      \hline
+      \lstinline{FontDialog}
+      &Enable the user to pick a font and its attributes\\
+      \hline
+      \lstinline{OpenFileDialog}
+      &Enable the user to navigate the file system and select a file..\\
+      \hline
+      \lstinline{PrintDialog}
+      &Enable the user to select a printer and its attributes.\\
+      \hline
+      \lstinline{SaveDialog}
+      &Enable the user to navigate the file system and specify a filename.\\
+      \hline
+      \lstinline{MenuStrip}
+      &Allow the user to choose from a custom menu\\
+      \hline
+      \lstinline{Button}
+      &Display a clickable button with text\\
+      \hline
+      \lstinline{Tooltip}
+      &Briefly display a pop-up window, when the user rests the pointer on the control\\
+      \hline
+      \lstinline{SoundPlayer}
+      &Play sounds in the \lstinline{.wav} format.\\
+      \hline
+    \end{tabularx}
+  \end{center}
+  \caption{Some controls available in WinForms.}
+  \label{tab:controls}
+\end{table}
+
+\begin{table}
+  \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+    \begin{tabularx}{\linewidth}{|l|X|}
+      \hline
+      \rowcolor{headerRowColor}  Function & Description\\
+      \hline
+      \lstinline{Panel}
+      &Groups a set of controls in a scrollable frame.\\
+      \hline
+      \lstinline{GroupBox}
+      &Group a set of controls in a non-scrollable frame.\\
+      \hline
+      \lstinline{TabControl}
+      &Group controls in tabpages, A tabpage is selected by clicking on its tab.\\
+      \hline
+      \lstinline{SplitContainer}
+      &Group controls into two resizable panels.\\
+      \hline
+      \lstinline{TableLayoutPanel}
+      &Group controls into a grid.\\
+      \hline
+      \lstinline{FlowLayoutPanel}
+      &Group controls into a set of flowable panels. The panels may flow horizontally or vertically as a response to window resizing.\\
+      \hline
+    \end{tabularx}
+  \end{center}
+  \caption{Some controls for grouping other controls.}
+  \label{tab:controlGroups}
+\end{table}
 
 \dots
 
