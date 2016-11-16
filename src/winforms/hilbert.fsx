@@ -79,7 +79,7 @@ let (_, dir, C) = hilbertA order (l, 0.0, [(0.0, 0.0)])
 let title = "Hilbert's curve"
 let backgroundColor = Color.White
 let cMax = maximum C
-let size = (int (fst cMax), int (snd cMax))
+let size = (int (fst cMax)+1, int (snd cMax)+1)
 let polygLst = [(C, (Color.Black, 3.0))]
 
 // Create form and start the event-loop.

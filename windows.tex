@@ -178,6 +178,15 @@ Make a program, that given an order produces an image of the Hilbert curve.
 %
 \fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},firstnumber=44,firstline=44]{winforms/hilbert}{Create the window and changing its properties.}
 %
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\textwidth]{hilbert1}
+  \includegraphics[width=0.45\textwidth]{hilbert2}
+  \includegraphics[width=0.45\textwidth]{hilbert3}
+  \includegraphics[width=0.45\textwidth]{hilbert5}
+  \caption{Result of running listing Listing~\ref{winforms/hilbert}.}
+  \label{fig:hilbert1}
+\end{figure}
 
 %
 \fsCode{winforms/windowEvents}{Catching window, mouse, and keyboard events..}
@@ -194,6 +203,35 @@ Make a program, that given an order produces an image of the Hilbert curve.
   \caption{Result of running listing Listing~\ref{winforms/buttonControl}.}
   \label{fig:buttonControl}
 \end{figure}
+
+%
+\fsCode{winforms/panel}{Create a panel, label, text input controls.}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{panel}
+  \caption{Result of running listing Listing~\ref{winforms/panel}.}
+  \label{fig:panel}
+\end{figure}
+
+%
+\fsCode[lastline=42]{winforms/flowLayoutPanel}{Create a flowLayoutPanel, with checkbox and radiobuttons.}
+%
+%
+\fsCode[firstnumber=43,firstline=43,lastline=87]{winforms/flowLayoutPanel}{Create a flowLayoutPanel, with checkbox and radiobuttons.}
+%
+%
+\fsCode[firstnumber=88,firstline=88]{winforms/flowLayoutPanel}{Create a flowLayoutPanel, with checkbox and radiobuttons.}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{flowLayoutPanel}
+  \caption{Result of running listing Listing~\ref{winforms/flowLayoutPanel}.}
+  \label{fig:flowLayoutPanel}
+\end{figure}
+
+
+
 \jon{\lstinline!Click.Add! expects a function \lstinline!System.EventArgs -> unit! therfore the \lstinline!ignore! function.}
 
 \begin{table}
