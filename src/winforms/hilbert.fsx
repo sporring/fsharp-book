@@ -10,7 +10,7 @@ let createForm backgroundColor (width, height) title draw =
   let win = new Form ()
   win.Text <- title
   win.BackColor <- backgroundColor
-  win.Size <- Size (width, height)
+  win.ClientSize <- Size (width, height)
   win.Paint.Add draw
   win
 
@@ -71,7 +71,7 @@ and hilbertB n (l, dir, c) =
     (l, dir, c)
 
 // Calculate curve
-let order = 3
+let order = 5
 let l = 20.0
 let (_, dir, C) = hilbertA order (l, 0.0, [(0.0, 0.0)])
 
@@ -79,13 +79,9 @@ let (_, dir, C) = hilbertA order (l, 0.0, [(0.0, 0.0)])
 let title = "Hilbert's curve"
 let backgroundColor = Color.White
 let cMax = maximum C
-let size = (int (fst cMax)+1, int (snd cMax)+1)
+let size = (int (fst cMax), int (snd cMax))
 let polygLst = [(C, (Color.Black, 3.0))]
 
 // Create form and start the event-loop.
-let initSize = (200, 200)
-let win = createForm backgroundColor initSize title (drawPoints polygLst) 
-// Correct for difference between drawable area and outer size of window
-let rect = win.DisplayRectangle
-win.Size <- new Size ((fst size) + (fst initSize) - rect.Width, (snd size) + (snd initSize) - rect.Height)
+let win = createForm backgroundColor size title (drawPoints polygLst) 
 System.Windows.Forms.Application.Run win

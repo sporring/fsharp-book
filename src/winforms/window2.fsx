@@ -3,7 +3,7 @@ let createForm backgroundColor (width, height) title draw =
   let win = new System.Windows.Forms.Form ()
   win.Text <- title
   win.BackColor <- backgroundColor
-  win.Size <- System.Drawing.Size (width, height)
+  win.ClientSize <- System.Drawing.Size (width, height)
   win.Paint.Add draw
   win
   
