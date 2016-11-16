@@ -17,12 +17,12 @@ The program present information to the user in terms of text and images, and has
 \section{Drawing primitives in Windows}
 WinForms is based on two namespaces: \lstinline!System.Windows.Forms! and \lstinline!System.Drawing!. To start making a graphical display on the screen, the first thing to do is open a window, which acts as a reserved screen space for our output. With WinForms, this may be done as shown in Listing~\ref{winforms/openWindow}, and the result is shown in Figure~\ref{fig:openWindow}.
 %
-\fsCode{winforms/openWindow}{Create the window and turn over control to the operating system. Use \lstinline!win.Show()! on Microsoft Windows instead.}
+\fsCode{winforms/openWindow}{Create the window and turn over control to the operating system.}
 %
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{openWindow}
-  \caption{Result of running listing Listing~\ref{winforms/openWindow}.}
+  \caption{A window opened by Listing~\ref{winforms/openWindow}.}
   \label{fig:openWindow}
 \end{figure}
 The \lstinline!new System.Windows.Forms.Form ()! creates an object (See Chapter~\ref{chap:oop}), but does not display the window on the screen. When the function \lstinline!System.Windows.Forms.Application.Run! is applied to the object, then the control is handed over to the WinForm's \idx{event-loop}, which continues until the window is closed by, e.g., pressing the icon designated by the operating system. On the mac OSX that is the red button in the top left corner of the window frame, and on Window it is the cross on the top right corner of the window frame.
@@ -34,7 +34,7 @@ The window, which WinForms calls a form, has a long list of \idx{methods} and \i
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{windowAttributes}
-  \caption{Result of running listing Listing~\ref{winforms/windowAttributes}.}
+  \caption{A window with user-specified size and background color, see Listing~\ref{winforms/windowAttributes}.}
   \label{fig:openWindow}
 \end{figure}
 These properties have been programmed as \idx{accessors} implying that they may used as mutable variables. The \idx{\lstinline{System.Drawing.Color}} is a general structure for specifying colors as 4 channels: alpha, red, green, blue, where each channel is an 8 bit unsigned integer, where the alpha channel specifies the transparency of a color, where values 0--255 denotes the range of fully transparent to fully opaque, and the remaining channels denote the amount of red, green, and blue where 0 is none and 255 is full intensity. Any color may be created using the \lstinline!FromArgb! method, e.g., an opaque red is given by \lstinline!System.Drawing.Color.FromArgb (255, 255, 0, 0)!. There are also many build-in colors, e.g., the same red color is also a known color and may be obtained as \lstinline!System.Drawing.Color.Red!. For a given color, then the 4 alpha, red, green, and blue channel's values may be obtained as the \lstinline!A!, \lstinline!R!, \lstinline!G!, \lstinline!B!, see Listing~\ref{drawingColors}
@@ -45,35 +45,37 @@ The \lstinline!System.Drawing.Size! is a general structure for specifying sizes 
 
 WinForms supports drawing of simple graphics primitives. Simple examples are \lstinline!System.Drawing.Pen! to specify the color to be drawn, \lstinline!System.Drawing.Point! to specify a pair of coordinates, and \lstinline!System.Drawing.Graphics.DrawLine!. \lstinline!DrawLine! is different than the previous examples since it must be related to a specific device, and it is typically accessed as an event. Displaying graphics in WinForms is performed as the reaction to an event. E.g., windows are created by the program, moved, minimized, occluded by other windows, resized, etc., by the user or the program, and each action may require that the content of the window is refreshed. Thus, we must create a function that WinForms can call, when it determines that the content needs to be redrawn. This is known as a \idx{call-back function}, and it is added to an existing form using the \lstinline!Paint.Add! function. As an example, consider the problem of draw a triangle in a window. For this we need to make a function that can draw a triangle not once, but any time WinForms determines it necessary to draw and redraw the triangle. Drawing is done with reference to a coordinate system. WinForms operates with several coordinate systems, the most important is the \idx{screen coordinates}. Screen coordinate $(x,y)$ have their origin in the top-left corner, and $x$ increases to the right, while $y$ increases down.\jon{Possibly something about client coordinates and world coordinates.} Thus, we may draw a triangle as demonstrated in Listing~\ref{winforms/triangle}.
 %
-\fsCode{winforms/triangle}{Create the window and changing its properties.}
+\fsCode{winforms/triangle}{Adding line graphics to a window.}
 %
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{triangle}
-  \caption{Result of running listing Listing~\ref{winforms/triangle}.}
+  \caption{Drawing a triangle using Listing~\ref{winforms/triangle}.}
   \label{fig:triangle}
 \end{figure}
 A walk-through of the code is as follows: First we create an array of points and a pen color, then we create a pen and a window. The method for drawing the triangle is added as an anonymous function using the created window's \lstinline!Paint.Add! method. This function is to be called as a response to a paint event, and takes a \lstinline!PaintEventArgs! object, which includes the System.Drawing.Graphics object. Since this object will be related to a specific device, when \lstinline!Paint! is called then we may call the \lstinline!DrawLine! function to sequentially draw lines between our array of points. Finally, we hand the form to the event-loop, which as one of the earliest events will open the window and call the \lstinline!Paint! function we have associated with the form.
 
 %
-\fsCode{winforms/triangleOrganized}{Create the window and changing its properties.}
+\fsCode{winforms/triangleOrganized}{Improved organization of code for
+  drawing a triangle. Compare with Listing~\ref{winforms/triangle}.}
 %
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{triangleOrganized}
-  \caption{Result of running listing Listing~\ref{winforms/triangleOrganized}.}
+  \caption{Better organization of the code for drawing a triangle, see Listing~\ref{winforms/triangleOrganized}.}
   \label{fig:triangleOrganized}
 \end{figure}
 \jon{requires the introduction of type declarations.}\jon{Remember to talk about pen width.}
 
 %
-\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},lastline=42]{winforms/transformWindows}{Create the window and changing its properties: top part.}
-\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},firstnumber=44,firstline=44]{winforms/transformWindows}{Create the window and changing its properties: bottom part.}
+\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},lastline=42]{winforms/transformWindows}{Reusable
+  code for drawing in windows.}
+\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},firstnumber=44,firstline=44]{winforms/transformWindows}{Code for drawing triangles using the reusable part shown in Listing~\ref{winforms/transformWindows}.}
 %
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{transformWindows}
-  \caption{Result of running listing Listing~\ref{winforms/transformWindows}.}
+  \caption{Transformed versions of the same triangle resulting from running the code in Listing~\ref{winforms/transformWindows}.}
   \label{fig:transformWindow}
 \end{figure}
 
@@ -86,7 +88,7 @@ A walk-through of the code is as follows: First we create an array of points and
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{rotationalSymmetry}
-  \caption{Result of running listing Listing~\ref{winforms/rotationalSymmetry}.}
+  \caption{A symmetric figure resulting from Listing~\ref{winforms/rotationalSymmetry}.}
   \label{fig:rotationalSymmetry}
 \end{figure}
 
@@ -184,7 +186,7 @@ Make a program, that given an order produces an image of the Hilbert curve.
   \includegraphics[width=0.45\textwidth]{hilbert2}
   \includegraphics[width=0.45\textwidth]{hilbert3}
   \includegraphics[width=0.45\textwidth]{hilbert5}
-  \caption{Result of running listing Listing~\ref{winforms/hilbert}.}
+  \caption{Hilbert curves of order 1, 2, 3, and 5 by code in Listing~\ref{winforms/hilbert}.}
   \label{fig:hilbert1}
 \end{figure}
 
@@ -200,7 +202,7 @@ Make a program, that given an order produces an image of the Hilbert curve.
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{buttonControl}
-  \caption{Result of running listing Listing~\ref{winforms/buttonControl}.}
+  \caption{A button is pressed and the event handler calls the \lstinline!MessageBox.Show! dialogue window by the code in Listing~\ref{winforms/buttonControl}.}
   \label{fig:buttonControl}
 \end{figure}
 
@@ -210,7 +212,7 @@ Make a program, that given an order produces an image of the Hilbert curve.
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{panel}
-  \caption{Result of running listing Listing~\ref{winforms/panel}.}
+  \caption{A panel including a label and a text input field, see Listing~\ref{winforms/panel}.}
   \label{fig:panel}
 \end{figure}
 
@@ -226,7 +228,7 @@ Make a program, that given an order produces an image of the Hilbert curve.
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{flowLayoutPanel}
-  \caption{Result of running listing Listing~\ref{winforms/flowLayoutPanel}.}
+  \caption{Demonstration of the \lstinline!FlowLayoutPanel! panel, \lstinline!CheckBox!, and \lstinline!RadioButton! controls, see Listing~\ref{winforms/flowLayoutPanel}.}
   \label{fig:flowLayoutPanel}
 \end{figure}
 
