@@ -15,7 +15,7 @@ WinForms is designed for \idx{event driven programs}, which spends most time wai
 The program present information to the user in terms of text and images, and has areas that when activated by clicking with a mouse or similar allows the user to, e.g., go to other web-pages by type URL, to follow hyperlinks, and to generate new pages by entering search queries.
 
 \section{Drawing primitives in Windows}
-WinForms is based on two namespaces: \lstinline!System.Windows.Forms! and \lstinline!System.Drawing!. To start making a graphical display on the screen, the first thing to do is open a window, which acts as a reserved screen space for our output. With WinForms, this may be done as shown in Listing~\ref{winforms/openWindow}, and the result is shown in Figure~\ref{fig:openWindow}.
+WinForms is based on two namespaces: \lstinline!System.Windows.Forms!  and \lstinline!System.Drawing!. These give access to the \idx{Windows Graphics Device Interface} (\idx{CGI+}), which allows you to create and manipulate graphics objects.  To start making a graphical display on the screen, the first thing to do is open a window, which acts as a reserved screen space for our output. With WinForms, windows are called \idx{forms}. Code for opening a window is shown in Listing~\ref{winforms/openWindow}, and the result is shown in Figure~\ref{fig:openWindow}.
 %
 \fsCode{winforms/openWindow}{Create the window and turn over control to the operating system.}
 %
@@ -41,9 +41,40 @@ These properties have been programmed as \idx{accessors} implying that they may 
 %
 \fs{drawingColors}{Defining colors and accessing their values.}
 %
-The \lstinline!System.Drawing.Size! is a general structure for specifying sizes as height and width pair of integers.
+The \lstinline!System.Drawing.Size! is a general structure for specifying sizes as height and width pair of integers. WinForms uses a number of types for specifying various objects some of which are shown in Table~\ref{tab:basicStructures}.
+\begin{table}
+  \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+    \begin{tabularx}{\linewidth}{|l|X|}
+      \hline
+      \rowcolor{headerRowColor}  Constructor & Description\\
+      \hline
+      \begin{minipage}{0.4\linewidth}
+        \lstinline{Point(int, int)}\\
+        \lstinline{Point(Size)}
+      \end{minipage}
+      &An ordered pair of integers specifying x- and y-coordinates in the plane.\\
+      \hline
+      \begin{minipage}{0.4\linewidth}
+        \lstinline{Size(int, int)}\\
+        \lstinline{Size(Point)}
+      \end{minipage}
+      &An ordered pair of integers specifying height and width in the plane.\\
+      \hline
+     \begin{minipage}{0.4\linewidth}
+       \lstinline{Rectangle(int, int, int, int)}\\
+       \lstinline{Rectangle(Point, Size)}
+     \end{minipage}
+     &A structure specifying a rectangular region by its upper left corner and its size.\\
+      \hline
+    \end{tabularx}
+  \end{center}
+  \caption{Basic geometrical structures in WinForms.}
+  \label{tab:basicStructures}
+\end{table}
+\jon{Note on difference between Size and ClientSize.}\jon{Do something about the vertical alignment of minpage.}
 
-WinForms supports drawing of simple graphics primitives. Simple examples are \lstinline!System.Drawing.Pen! to specify the color to be drawn, \lstinline!System.Drawing.Point! to specify a pair of coordinates, and \lstinline!System.Drawing.Graphics.DrawLine!. \lstinline!DrawLine! is different than the previous examples since it must be related to a specific device, and it is typically accessed as an event. Displaying graphics in WinForms is performed as the reaction to an event. E.g., windows are created by the program, moved, minimized, occluded by other windows, resized, etc., by the user or the program, and each action may require that the content of the window is refreshed. Thus, we must create a function that WinForms can call, when it determines that the content needs to be redrawn. This is known as a \idx{call-back function}, and it is added to an existing form using the \lstinline!Paint.Add! function. As an example, consider the problem of draw a triangle in a window. For this we need to make a function that can draw a triangle not once, but any time WinForms determines it necessary to draw and redraw the triangle. Drawing is done with reference to a coordinate system. WinForms operates with several coordinate systems, the most important is the \idx{screen coordinates}. Screen coordinate $(x,y)$ have their origin in the top-left corner, and $x$ increases to the right, while $y$ increases down.\jon{Possibly something about client coordinates and world coordinates.} Thus, we may draw a triangle as demonstrated in Listing~\ref{winforms/triangle}.
+WinForms supports drawing of simple graphics primitives. Simple examples are \lstinline!System.Drawing.Pen! to specify the color to be drawn, \lstinline!System.Drawing.Point! to specify a pair of coordinates, and \lstinline!System.Drawing.Graphics.DrawLine!. \lstinline!DrawLine! is different than the previous examples, since it must be related to a specific device, and it is typically accessed as an event. Displaying graphics in WinForms is performed as the reaction to an event. E.g., windows are created by the program, moved, minimized, occluded by other windows, resized, etc., by the user or the program, and each action may require that the content of the window is refreshed. Thus, we must create a function that WinForms can call, when it determines that the content needs to be redrawn. This is known as a \idx{call-back function}, and it is added to an existing form using the \lstinline!Paint.Add! function. As an example, consider the problem of draw a triangle in a window. For this we need to make a function that can draw a triangle not once, but any time WinForms determines it necessary to draw and redraw the triangle. Drawing is done with reference to a coordinate system. WinForms operates with 2 coordinate systems: \idx{screen coordinates} and \idx{client coordinates}. Screen coordinate $(x,y)$ have their origin in the top-left corner of the screen, and $x$ increases to the right, while $y$ increases down. Client coordinates refers to the drawable area of a form or a control, i.e., for a window this will be the area without the window borders, scroll and title bars. A control is a graphical object such as a clickable button, which will be discussed later. Conversion between client and screen coordinates is done with \idx{\lstinline!PointToClient!} and \idx{\lstinline!PointToScreen!}. Thus, we may draw a triangle as demonstrated in Listing~\ref{winforms/triangle}.
 %
 \fsCode{winforms/triangle}{Adding line graphics to a window.}
 %
@@ -54,6 +85,7 @@ WinForms supports drawing of simple graphics primitives. Simple examples are \ls
   \label{fig:triangle}
 \end{figure}
 A walk-through of the code is as follows: First we create an array of points and a pen color, then we create a pen and a window. The method for drawing the triangle is added as an anonymous function using the created window's \lstinline!Paint.Add! method. This function is to be called as a response to a paint event, and takes a \lstinline!PaintEventArgs! object, which includes the System.Drawing.Graphics object. Since this object will be related to a specific device, when \lstinline!Paint! is called then we may call the \lstinline!DrawLine! function to sequentially draw lines between our array of points. Finally, we hand the form to the event-loop, which as one of the earliest events will open the window and call the \lstinline!Paint! function we have associated with the form.
+
 
 %
 \fsCode{winforms/triangleOrganized}{Improved organization of code for
@@ -160,7 +192,7 @@ A walk-through of the code is as follows: First we create an array of points and
 
 \section{Programming intermezzo}
 \begin{problem}
-  Consider a curve consisting of piecewise straight lines all with the same length but with varying angles $0^{\circ}$, $90^{\circ}$, $180^{\circ}$, or $270^{\circ}$ w.r.t.\ the horisontal axis. To draw this curve we need 3 basic operations: Draw ($F$), turn right ($+$), and turn left ($-$). The turning is w.r.t.\ the present diretion. A Hilbert Curve is a spacefilling curve, which be expressed recursively as:
+  Consider a curve consisting of piecewise straight lines all with the same length but with varying angles $0^{\circ}$, $90^{\circ}$, $180^{\circ}$, or $270^{\circ}$ w.r.t.\ the horisontal axis. To draw this curve we need 3 basic operations: Draw ($F$), turn right ($+$), and turn left ($-$). The turning is w.r.t.\ the present direction. A Hilbert Curve is a space-filling curve, which be expressed recursively as:
 \begin{align}
   A &\rightarrow -BF+AFA+FB-\label{eq:hilbertA}\\
   B &\rightarrow +AF-BFB-FA+\label{eq:hilbertB}
@@ -234,7 +266,7 @@ Make a program, that given an order produces an image of the Hilbert curve.
 
 
 
-\jon{\lstinline!Click.Add! expects a function \lstinline!System.EventArgs -> unit! therfore the \lstinline!ignore! function.}
+\jon{\lstinline!Click.Add! expects a function \lstinline!System.EventArgs -> unit! therefore the \lstinline!ignore! function.}
 
 \begin{table}
   \begin{center}
