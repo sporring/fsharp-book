@@ -41,47 +41,49 @@ let rotatePoint theta (x, y) =
 let rotatePoints theta arr =
   List.map (rotatePoint theta) arr
 
+type curve = float * float * coordinates
+
 /// Turn 90 degrees left
-let turnLeft (l, dir, c) = (l, dir + 3.141592/2.0, c)
+let left (l, dir, c) : curve = (l, dir + 3.141592/2.0, c)
 
 /// Turn 90 degrees right
-let turnRight (l, dir, c) = (l, dir - 3.141592/2.0, c)
+let right (l, dir, c) : curve = (l, dir - 3.141592/2.0, c)
 
 /// Add a line to the curve of present direction
-let draw (l, dir, (c : coordinates)) =
+let forward (l, dir, c) : curve =
   let nextPoint = rotatePoint dir (l, 0.0)
   (l, dir, c @ [translatePoint c.[c.Length-1] nextPoint])
 
 /// Find the maximum value of each coordinate element in a list
-let maximum c =
-  let maxPoint (p1 : float*float) (p2 : float*float) =
+let maximum (c : coordinates) =
+  let maxPoint p1 p2 =
     (max (fst p1) (fst p2), max (snd p1) (snd p2))
-  List.fold maxPoint (-infinity, -infinity) c    
+  List.fold maxPoint (-infinity, -infinity) c
 
 /// Hilbert recursion production rules
-let rec hilbertA n (l, dir, c) =
+let rec ruleA n C : curve =
   if n > 0 then
-    ((l, dir, c) |> turnLeft |> hilbertB (n-1) |> draw |> turnRight |> hilbertA (n-1) |> draw |> hilbertA (n-1) |> turnRight |> draw |> hilbertB (n-1) |> turnLeft)
+    (C |> left |> ruleB (n-1) |> forward |> right |> ruleA (n-1) |> forward |> ruleA (n-1) |> right |> forward |> ruleB (n-1) |> left)
   else
-    (l, dir, c)
-and hilbertB n (l, dir, c) = 
+    C
+and ruleB n C : curve = 
   if n > 0 then
-    ((l, dir, c) |> turnRight |> hilbertA (n-1) |> draw |> turnLeft |> hilbertB (n-1) |> draw |> hilbertB (n-1) |> turnLeft |> draw |> hilbertA (n-1) |> turnRight)
+    (C |> right |> ruleA (n-1) |> forward |> left |> ruleB (n-1) |> forward |> ruleB (n-1) |> left |> forward |> ruleA (n-1) |> right)
   else
-    (l, dir, c)
+    C
 
 // Calculate curve
 let order = 5
 let l = 20.0
-let (_, dir, C) = hilbertA order (l, 0.0, [(0.0, 0.0)])
+let (_, dir, c) = ruleA order (l, 0.0, [(0.0, 0.0)])
 
 // Setup drawing details
 let title = "Hilbert's curve"
 let backgroundColor = Color.White
-let cMax = maximum C
+let cMax = maximum c
 let size = (int (fst cMax)+1, int (snd cMax)+1)
-let polygLst = [(C, (Color.Black, 3.0))]
+let polygLst = [(c, (Color.Black, 3.0))]
 
 // Create form and start the event-loop.
 let win = createForm backgroundColor size title (drawPoints polygLst) 
-System.Windows.Forms.Application.Run win
+Application.Run win

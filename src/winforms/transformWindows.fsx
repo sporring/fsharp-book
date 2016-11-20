@@ -53,4 +53,4 @@ let polygLst =
 
 // Create form and start the event-loop.
 let win = createForm backgroundColor size title (drawPoints polygLst) 
-System.Windows.Forms.Application.Run win
+Application.Run win
