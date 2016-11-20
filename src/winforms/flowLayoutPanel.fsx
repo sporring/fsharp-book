@@ -13,8 +13,8 @@ let initiallyWrapped = true
 let radioButtonLst =
   [(new RadioButton (), (3, 34), "TopDown", FlowDirection.TopDown);
    (new RadioButton (), (3, 62), "BottomUp", FlowDirection.BottomUp);
-   (new RadioButton (), (111, 34),"LeftToRight", FlowDirection.LeftToRight);
-   (new RadioButton (), (111, 62),"RightToLeft", FlowDirection.RightToLeft)]
+   (new RadioButton (), (111, 34), "LeftToRight", FlowDirection.LeftToRight);
+   (new RadioButton (), (111, 62), "RightToLeft", FlowDirection.RightToLeft)]
 
 // customize buttons
 for (btn, txt) in buttonLst do

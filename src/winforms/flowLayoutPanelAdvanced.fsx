@@ -1,7 +1,10 @@
 open System.Windows.Forms
 open System.Drawing
+open System
 
+let win = new Form ()
 let mainPanel = new FlowLayoutPanel ()
+let mainPanelBorder = 5
 let flowLayoutPanel = new FlowLayoutPanel ()
 let buttonLst =
   [(new Button (), "Button0");
@@ -39,22 +42,26 @@ wrapContentsCheckBox.Checked <- initiallyWrapped
 wrapContentsCheckBox.CheckedChanged.Add (fun _ -> flowLayoutPanel.WrapContents <- wrapContentsCheckBox.Checked)
 
 // customize panel
-//panel.Controls.Add (wrapContentsCheckBox)
-for (btn, txt, dir) in radioButtonLst do
-  btn.Width <- 75
-  panel.Controls.Add (btn)
+// changing border style changes ClientSize
 panel.BorderStyle <- BorderStyle.Fixed3D
+let width = panel.ClientSize.Width / 2 - panel.Margin.Left - panel.Margin.Right
+for (btn, txt, dir) in radioButtonLst do
+  btn.Width <- width
+  panel.Controls.Add (btn)
 
-mainPanel.Location <- new Point (5, 5)
+mainPanel.Location <- new Point (mainPanelBorder, mainPanelBorder)
 mainPanel.BorderStyle <- BorderStyle.Fixed3D
-mainPanel.Size <- new Size (220, 350)
 mainPanel.Controls.Add flowLayoutPanel
-mainPanel.Controls.Add (wrapContentsCheckBox)
+mainPanel.Controls.Add wrapContentsCheckBox
 mainPanel.Controls.Add panel
 
 // Create a window, add controlse, and start event-loop
-let win = new Form ()
-win.ClientSize <- new Size (320, 420)
+win.ClientSize <- new Size (220, 256)
+let windowResize _ =
+  let size = win.DisplayRectangle.Size
+  mainPanel.Size <- new Size (size.Width - 2 * mainPanelBorder, size.Height - 2 * mainPanelBorder)
+windowResize ()
+win.Resize.Add windowResize
 win.Controls.Add mainPanel
-win.Text <- "A Flowlayout Example"
+win.Text <- "Advanced Flowlayout"
 Application.Run win
