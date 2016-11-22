@@ -58,7 +58,7 @@ mainPanel.Controls.Add flowLayoutPanel
 mainPanel.Controls.Add wrapContentsCheckBox
 mainPanel.Controls.Add panel
 
-// Create a window, add controlse, and start event-loop
+// customize window, add controls, and start event-loop
 win.ClientSize <- new Size (220, 256)
 let windowResize _ =
   let size = win.DisplayRectangle.Size

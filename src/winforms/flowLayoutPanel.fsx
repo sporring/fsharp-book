@@ -47,7 +47,7 @@ for (btn, loc, txt, dir) in radioButtonLst do
 panel.Location <- new Point (47, 190)
 panel.BorderStyle <- BorderStyle.Fixed3D
 
-// Create a window, add controlse, and start event-loop
+// Create a window, add controls, and start event-loop
 let win = new Form ()
 win.ClientSize <- new Size (302, 356)
 win.Controls.Add flowLayoutPanel
