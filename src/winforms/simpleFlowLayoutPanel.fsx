@@ -24,6 +24,6 @@ for (ctrl, txt, col) in controlLst do
 
 // customize window, add controls, and start event-loop
 win.Text <- "TablelayoutPanel"
-win.ClientSize <- new Size (220, 256)
+win.ClientSize <- new Size (220, 100)
 win.Controls.Add panel
 Application.Run win

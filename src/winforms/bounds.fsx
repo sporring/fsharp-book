@@ -4,12 +4,12 @@ open System.Windows.Forms
 // Initialize a form 
 let win = new Form ()
 win.Text <- "Window with a panel"
-win.ClientSize <- new Size (300, 300)
+win.ClientSize <- new Size (200, 150)
 
 // Set the button size and location using 
 // the Size and Location properties.
 let buttonOK = new Button ()
-buttonOK.Location <- new Point (136,248)
+buttonOK.Location <- new Point (36,98)
 buttonOK.Size <- new Size (75,25)
 buttonOK.Text <- "OK"
 

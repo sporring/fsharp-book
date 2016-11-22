@@ -351,8 +351,71 @@ The program in Listing~\ref{winforms/flowLayoutPanel} has not completely separat
   \caption{Nested \lstinline!FlowLayoutPanel!, see Listing~\ref{winforms/flowLayoutPanelAdvanced}, allows for dynamic arrangement of content. Content flows, when the window is resized.}
   \label{fig:flowLayoutPanelAdvanced}
 \end{figure}
-\jon{Add \lstinline{TableLayoutPanel}, e.g., \lstinline!flowLayoutPanelAdvanced2.fsx!.}
+\jon{Add simple panel code \lstinline!simpleFlowLayoutPanel.fsx! and \lstinline!simpleTableLayoutPanel.fsx!.}  
+\jon{Add \lstinline{Dock}, \lstinline{Padding} structure, \lstinline{Margin}, \lstinline{Padding}, \lstinline{Controls.AddRange} , and \lstinline{AutoSize} properties. Add figure, e.g., \lstinline!IC138411.jpeg.gif!.}
+\jon{Add \lstinline{GroupBox} and discuss difference to \lstinline{Panel}.}
 
+%
+\fsCode{winforms/simpleFlowLayoutPanel}{\dots}
+%
+\begin{figure}
+  \centering
+  \subfigure[]{\includegraphics[width=0.45\textwidth]{simpleFlowLayoutPanel1}}
+  \subfigure[]{\includegraphics[width=0.9\textwidth]{simpleFlowLayoutPanel2}}
+  \subfigure[]{\includegraphics[width=0.225\textwidth]{simpleFlowLayoutPanel3}}
+  \caption{See Listing~\ref{winforms/simpleFlowLayoutPanel}.}
+  \label{fig: simpleFlowLayoutPanel}
+\end{figure}
+
+%
+\fsCode{winforms/simpleTableLayoutPanel}{\dots}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{simpleTableLayoutPanel}
+  \caption{See Listing~\ref{winforms/simpleTableLayoutPanel}.}
+  \label{fig: simpleTableLayoutPanel}
+\end{figure}
+
+%
+\fsCode{winforms/bounds}{\dots}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\textwidth]{bounds}
+  \caption{See Listing~\ref{winforms/bounds}.}
+  \label{fig:bounds}
+\end{figure}
+
+%
+\fsCode{winforms/tabControl}{\dots}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\textwidth]{tabControl}
+  \caption{See Listing~\ref{winforms/tabControl}.}
+  \label{fig: tabControl}
+\end{figure}
+
+%
+\fsCode{winforms/trackBar}{\dots}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\textwidth]{trackBar}
+  \caption{See Listing~\ref{winforms/trackBar}.}
+  \label{fig: trackBar}
+\end{figure}
+
+%
+\fsCode{winforms/progressBar}{\dots}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\textwidth]{progressBar}
+  \caption{See Listing~\ref{winforms/progressBar}.}
+  \label{fig:bounds}
+\end{figure}
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
