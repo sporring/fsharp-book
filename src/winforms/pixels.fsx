@@ -1,4 +1,4 @@
-﻿/// Open a window using winforms in Mono. The program opens a window
+/// Open a window using winforms in Mono. The program opens a window
 /// and draws a bitmap of black and white squares.
 ///
 /// How to compile:
