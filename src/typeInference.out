@@ -1,0 +1,15 @@
+> let a = 357;;         
+
+val a : int = 357
+
+> let b = 864;;
+
+val b : int = 864
+
+> let c = a + b;;
+
+val c : int = 1221
+
+> printfn "%A" c;;
+1221
+val it : unit = ()

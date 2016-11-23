@@ -1,0 +1,4 @@
+> List.length [1; 2; 3];;
+val it : int = 3
+> let a = [1; 2; 3] in List.length a;;
+val it : int = 3

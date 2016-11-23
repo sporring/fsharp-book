@@ -1,0 +1,8 @@
+> let g () =
+-   let x = 0
+-   x
+- let a = g ();;
+
+val g : unit -> int
+val a : int = 0
+

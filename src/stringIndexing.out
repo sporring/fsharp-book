@@ -1,0 +1,12 @@
+> "abcdefg".[0];;
+val it : char = 'a'
+> "abcdefg".[3];;
+val it : char = 'd'
+> "abcdefg".[3..];;
+val it : string = "defg"
+> "abcdefg".[..3];;
+val it : string = "abcd"
+> "abcdefg".[1..3];;
+val it : string = "bcd"
+> "abcdefg".[*];;
+val it : string = "abcdefg"

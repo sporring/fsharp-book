@@ -1,0 +1,6 @@
+
+
+/Users/sporring/repositories/fsharpNotes/src/letValueTypeError.fsx(1,17): error FS0001: This expression was expected to have type
+    float    
+but here has type
+    int    

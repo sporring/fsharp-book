@@ -1,0 +1,4 @@
+> [1; 2; 3].Head;;
+val it : int = 1
+> let a = [1; 2; 3] in a.Head;;
+val it : int = 1

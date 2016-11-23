@@ -1,0 +1,4 @@
+> [1; 2; 3].Item 1;;
+val it : int = 2
+> let a = [1; 2; 3] in a.Item 1;;
+val it : int = 2

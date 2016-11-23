@@ -1,0 +1,17 @@
+> printfn "a b a*b a+b not a"                                       
+- printfn "%A %A %A %A %A"
+-   false false (false && false) (false || false) (not false)
+- printfn "%A %A %A %A %A"
+-   false true (false && true) (false || true) (not false)
+- printfn "%A %A %A %A %A"
+-   true false (true && false) (true || false) (not true)
+- printfn "%A %A %A %A %A"
+-   true true (true && true) (true || true) (not true);;
+a b a*b a+b not a
+false false false false true
+false true false true true
+true false false true false
+true true true true false
+
+val it : unit = ()
+

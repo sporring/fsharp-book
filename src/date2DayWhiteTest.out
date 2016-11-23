@@ -1,0 +1,12 @@
+White-box testing of date2Day.fsx
+  Unit: januaryFirstDay
+    Branch: 0 - true
+  Unit: sum
+    Branch: 1a - true
+    Branch: 1b - true
+    Branch: 1c - true
+  Unit: date2Day
+    Branch: 1a - true
+    Branch: 1b - true
+    Branch: 1c - true
+    Branch: 1d - true

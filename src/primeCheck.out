@@ -1,0 +1,8 @@
+10 % i = 0?
+i = 2? true
+i = 3? false
+i = 5? true
+i = 7? false
+i = 11? false
+i = 13? false
+i = 17? false

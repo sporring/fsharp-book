@@ -1,0 +1,6 @@
+> float (int (7.0 / 2.5));;
+val it : float = 2.0
+> (float (int (7.0 / 2.5))) * 2.5;;
+val it : float = 5.0
+> (float (int (7.0 / 2.5))) * 2.5 + 7.0 % 2.5;;
+val it : float = 7.0

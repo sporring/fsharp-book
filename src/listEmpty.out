@@ -1,0 +1,8 @@
+> let a : int list = List.Empty;;
+
+val a : int list = []
+
+> let b = List<int>.Empty;;
+
+val b : int list = []
+

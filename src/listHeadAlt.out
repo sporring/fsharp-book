@@ -1,0 +1,4 @@
+> List.head [1; 2; 3];;
+val it : int = 1
+> let a = [1; 2; 3] in List.head a;;
+val it : int = 1

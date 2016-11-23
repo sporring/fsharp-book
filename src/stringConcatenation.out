@@ -1,0 +1,2 @@
+> "hello" + " " + "world";;
+val it : string = "hello world"

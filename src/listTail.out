@@ -1,0 +1,4 @@
+> [1; 2; 3].Tail;;
+val it : int list = [2; 3]
+> let a = [1; 2; 3] in a.Tail;;
+val it : int list = [2; 3]

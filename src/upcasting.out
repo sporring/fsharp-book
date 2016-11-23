@@ -1,0 +1,2 @@
+> float 3;;
+val it : float = 3.0

@@ -1,0 +1,8 @@
+> System.Convert.ToBoolean 1;;
+val it : bool = true
+> System.Convert.ToBoolean 0;;
+val it : bool = false
+> System.Convert.ToInt32 true;;
+val it : int = 1
+> System.Convert.ToInt32 false;;
+val it : int = 0

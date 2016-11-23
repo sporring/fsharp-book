@@ -1,0 +1,4 @@
+> @"This is a verbatim ""quote"".";;
+val it : string = "This is a verbatim "quote"."
+> """This is a verbatim "quote".""";; 
+val it : string = "This is a verbatim "quote"."

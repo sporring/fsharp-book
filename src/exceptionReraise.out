@@ -1,0 +1,4 @@
+The castle of "Arrrrg"
+System.Exception: Arrrrg
+  at <StartupCode$FSI_0001>.$FSI_0001.main@ () <0x6745e88 + 0x00053> in <filename unknown>:0 
+Stopped due to error

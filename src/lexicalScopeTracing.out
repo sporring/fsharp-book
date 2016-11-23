@@ -1,0 +1,9 @@
+
+
+/Users/sporring/repositories/fsharpNotes/src/lexicalScopeTracing.fsx(1,19): error FS0010: Unexpected symbol '|' in binding
+
+
+/Users/sporring/repositories/fsharpNotes/src/lexicalScopeTracing.fsx(3,3): warning FS0058: Possible incorrect indentation: this token is offside of context started at position (2:3). Try indenting this token further or using standard formatting conventions.
+
+
+/Users/sporring/repositories/fsharpNotes/src/lexicalScopeTracing.fsx(4,3): warning FS0058: Possible incorrect indentation: this token is offside of context started at position (3:3). Try indenting this token further or using standard formatting conventions.

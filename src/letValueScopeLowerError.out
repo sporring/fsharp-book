@@ -1,0 +1,3 @@
+
+
+/Users/sporring/repositories/fsharpNotes/src/letValueScopeLowerError.fsx(2,5): error FS0037: Duplicate definition of value 'p'

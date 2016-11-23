@@ -1,0 +1,7 @@
+> let p = 2.0
+- printfn "%A" (3.0 ** p);;
+9.0
+
+val p : float = 2.0
+val it : unit = ()
+
