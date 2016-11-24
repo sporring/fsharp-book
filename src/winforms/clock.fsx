@@ -5,11 +5,10 @@ open System.Windows.Forms
 // create forms, controls, and timer, and link them
 let clock = new Form ()
 let panel = new TableLayoutPanel ()
-let lbltime = new Label()  
-let timeobject = new Timer()
-let exitbutton = new Button ()
-panel.Controls.Add(lbltime)  
-panel.Controls.Add(exitbutton)  
+let label = new Label()  
+let button = new Button ()
+panel.Controls.Add(label)  
+panel.Controls.Add(button)  
 clock.Controls.Add panel
 
 // customize window
@@ -22,27 +21,28 @@ panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.0f));
 panel.Dock <- DockStyle.Fill
 
 // customize timer text
-lbltime.Font <- new Font("Arial", 14.5F)
-lbltime.Margin <- Padding 10
-
-// customize timer
-timeobject.Interval <- 1000
-timeobject.Enabled <- true  
-let setTime (label : Label) showtime =
-  let time = string System.DateTime.Now
-  label.Text <- time.[11..]
-timeobject.Tick.Add (setTime lbltime)
-setTime lbltime ()
+label.Font <- new Font("Arial", 14.5F)
+label.Margin <- Padding 10
 
 // customize exit button
-exitbutton.Text<-"Exit"
-exitbutton.BackColor<-Color.Ivory
+button.Text<-"Exit"
+button.BackColor<-Color.Ivory
 let exit (timer : Timer) (form : Form) _ =
   timer.Stop()
   form.Close()
-exitbutton.Click.Add (exit timeobject clock)
-exitbutton.Margin <- Padding 10
-exitbutton.Anchor <- AnchorStyles.None
+button.Click.Add (exit timer clock)
+button.Margin <- Padding 10
+button.Anchor <- AnchorStyles.None
+
+// make a timer and link to label
+let timer = new Timer()
+timer.Interval <- 1000
+timer.Enabled <- true  
+let setTime (label : Label) showtime =
+  let time = string System.DateTime.Now
+  label.Text <- time.[11..]
+timer.Tick.Add (setTime label)
+setTime label ()
 
 // start event-loop
 Application.Run clock  
