@@ -36,7 +36,7 @@ Facts about dates in the Gregorian calendar are:
 \end{itemize}
 Many solutions to the problem have been discovered, and here we will base our program on Gauss' method, which is based on integer division and calculates the weekday of the 1st of January of a given year. For any other date, we will count our way through the weeks from the previous 1st of January. The algorithm relies on an enumeration of weekdays starting with Sunday = 0, Monday = 1, \dots, and Saturday = 6. Our proposed solution is,
   %
-  \fsCode{date2Day}{A function that can calculate day-of-week from any date in the Gregorian calendar.}
+  \fsCode{date2Day}{date2Day}{A function that can calculate day-of-week from any date in the Gregorian calendar.}{}
   %
   %To solve this problem, we are going to implement the Doomsday algorithm by John Conway\footnote{\url{http://www.timeanddate.com/date/doomsday-weekday.html}}. The algorithm is based on the fact that calendars repeat themselves every 400 years, and within a cycle, certain dates are always the same day of week. For the 400 year cycle, 1800-2199, the algorithm uses anchor days: 1800 - 1899: Friday, 1900 - 1999: Wednesday, 2000 - 2099: Tuesday, and 2100 - 2199: Sunday. For a given date (dd, mm, yyyy), the algorithm calculates the Doomsday of the year in question as by 6 steps:
 % \begin{enumerate}
@@ -54,7 +54,7 @@ Many solutions to the problem have been discovered, and here we will base our pr
 \item Decide which are the units to test: The program shown in Listing~\ref{date2Day} has 3 functions, and we will consider these each as a unit, but we might as well just have chosen \lstinline!date2Day! as a single unit. The important part is that the union of units must cover the whole program text, and since \lstinline!date2Day! calls both \lstinline!januaryFirstDay! and \lstinline!sum!, designing test cases for the two later is superfluous. However, we may have to do this anyway, when debugging, and we may choose at a later point to use these functions separately, and in both cases we will be able to reuse the testing of the smaller units.
 \item Identify branching points: The function \lstinline!januaryFirstDay! has no branching function, \lstinline!sum! has one, and depending on the input values two paths through the code may be used, and \lstinline!date2Day! has one, where the number of days in February is decided. Note that in order to test this, our test-date must be March 1 or later. In this example, there are only examples of \keyword{if}-branch points, but they may as well be loops and pattern matching expressions. In the following code, the branch points have been given a comment and a number,
   % 
-  \fsCode{date2DayAnnotated}{In white-box testing, the branch points are identified.}
+  \fsCode{date2DayAnnotated}{date2DayAnnotated}{In white-box testing, the branch points are identified.}{}
   % 
  \item For each unit, produce an input set that tests each branches: In our example the branch points depends on a boolean expression, and for good measure, we are going to test each term that can lead to branching. Thus,
    \begin{center}
@@ -172,7 +172,7 @@ Once an error has been found by testing, then the \idx{debugging} phase starts. 
 
 Consider the program,
 %
-\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},escapechar=|]{gcd}{The greatest common divisor of 2 integers.}
+\fsCode{gcd}{gcd}{The greatest common divisor of 2 integers.}{escapechar=|}
 %\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},escapechar=|]{gcd}{The greatest common divisor of 2 integers.}
 %
 which includes a function for calculating the greatest common divisor of 2 integers, and calls this function with the numbers 10 and 15. Hand tracing this program means that we simulate its execution and as part of that keep track of the bindings, assignments and input and output of the program. To do this, we need to consider code snippet's \idx{environment}. E.g., to hand trace the above program, we start by noting the outer environment, called $E_0$ for short. In line~\ref{gcd:gcd}, then the \lstinline!gcd! identifier is bound to a function, hence we write:
@@ -311,7 +311,7 @@ which completes the hand tracing of \lstinline[language=console]{gcd.fsx}.
 
 F\# uses lexical scope, which implies that besides function arguments, we also at times need to consider the environment at place of writing. E.g., for the program
 %
-\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},escapechar=|]{lexicalScopeTracing}{Example of lexical scope and closure environment.}
+\fsCode{lexicalScopeTracing}{lexicalScopeTracing}{Example of lexical scope and closure environment.}{escapechar=|}
 %
 To hand trace this, we start by creating the outer environment, define the closure for \lstinline!testScope!, and reach line~\ref{lexicalScopeTracing:print},
 \begin{align*}
@@ -357,7 +357,7 @@ The expression in the environment $E_2$ evaluates to \lstinline!6.0!, and unrave
 
 For mutable bindings, i.e., variables, the scope is dynamic. For this we need the concept of storage, i.e., for the the program
 %
-\fsCode[numbers=left,numbersep=6pt,numberstyle=\scriptsize\color{white},escapechar=|]{dynamicScopeTracing}{Example of lexical scope and closure environment.}
+\fsCode{dynamicScopeTracing}{dynamicScopeTracing}{Example of lexical scope and closure environment.}{escapechar=|}
 %
 We add a storage area to our hand tracing, e.g.,line~\ref{dynamicScopeTracing:print},
 \begin{align*}

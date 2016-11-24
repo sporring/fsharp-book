@@ -33,7 +33,7 @@ The implementation, signature, and script files are all typically compiled to pr
 Programs may either be executed by the interpreter or by compiling and executing the compiled code. 
 
 In Mono the interpreter is called \lstinline[language=console]{fsharpi} and can be used in 2 ways: interactively, where a user enters 1 or more script-fragments separated by the \lexeme{;;} lexeme, or to execute a script file treated as a single script-fragment. To illustrate the difference, consider the following program, which declares a value \lstinline{a} to be the decimal value 3.0 and finally print it to the console:
-\fsCode{gettingStartedStump}{A simple demonstration script.}
+\fsCode{gettingStartedStump}{gettingStartedStump}{A simple demonstration script.}{}
 An interactive session is obtained by starting the console, typing the \lstinline[language=console]{fsharpi} command, typing the lines of the program, and ending the script-fragment with the \lexeme{;;} lexeme. The following dialogue demonstrates the workflow, where what the user types has been highlighted by a \tikzmark{tl}box\tikzmark{br}\FrameArea{tl}{br}:
 \begin{codeNOutput}{: An interactive session.}
   \begin{lstlisting}[language=console,escapechar=§]

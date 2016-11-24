@@ -19,9 +19,9 @@ The program present information to the user in terms of text and images and has 
 \section{Drawing primitives in Windows}
 The main workhorse of WinForms are the functions and classes defined in the namespaces: \idx{\lstinline{System.Windows.Forms}}  and \idx{\lstinline{System.Drawing}}. These give access to the \idx{Windows Graphics Device Interface} (\idx{GDI+}), which allows you to create and manipulate graphics objects targeting several platforms such as screens and paper. 
 
-To display a graphical user interface on the screen, the first thing to do is open a window, which acts as a reserved screen-space for our output. In WinForms windows are called \idx{forms}. Code for opening a window is shown in Listing~\ref{lst:openWindow}, and the result is shown in Figure~\ref{fig:openWindow}.
+To display a graphical user interface on the screen, the first thing to do is open a window, which acts as a reserved screen-space for our output. In WinForms windows are called \idx{forms}. Code for opening a window is shown in Listing~\ref{winforms/openWindow}, and the result is shown in Figure~\ref{fig:openWindow}.
 %
-\fsCode{winforms/openWindow}{lst:openWindow}{Create the window and turn over control to the operating system.}{}
+\fsCode{winforms/openWindow}{winforms/openWindow}{Create the window and turn over control to the operating system.}{}
 %
 %
 %\codeFromFile{winforms/openWindow}{openWindow}{Create the window and turn over control to the operating system.}
@@ -42,7 +42,7 @@ The window has a long list of \idx{methods} and \idx{properties}. E.g., the back
   \centering
   \includegraphics[width=0.6\textwidth]{windowAttributes}
   \caption{A window with user-specified size and background color, see Listing~\ref{winforms/windowAttributes}.}
-  \label{fig:openWindow}
+  \label{fig:windowAttributes}
 \end{figure}
 These properties have been programmed as \idx{accessors} implying that they may used as mutable variables. 
 
@@ -166,7 +166,7 @@ Organizing code into functions that operate on data structures as Listing~\ref{w
 Figure~ \ref{fig:transformWindow}.
 %
 \fsCode{winforms/transformWindows}{winforms/transformWindowsTop}{Reusable  code for drawing in windows.}{lastline=42}
-\fsCode{winforms/transformWindows}{winforms/transformWindows}{Code for drawing triangles using the reusable part shown in Listing~\ref{winforms/transformWindowsTop}.}{firstnumber=44,firstline=44}
+\fsCode{winforms/transformWindows}{winforms/transformWindows}{Code for drawing triangles. Continued from Listing~\ref{winforms/transformWindowsTop}.}{firstnumber=44,firstline=44}
 %
 \begin{figure}
   \centering
@@ -180,7 +180,7 @@ We now have a basis for solving the following problem:
 \end{problem}
 Reusing the top part of Listing~\ref{winforms/transformWindows} and replacing the bottom part with the code shown in Listing~\ref{winforms/rotationalSymmetry}, we arrive a the solution illustrated in Figure~\ref{fig:rotationalSymmetry}.
 %
-\fsCode{winforms/rotationalSymmetry}{winforms/rotationalSymmetry}{Create the window and changing its properties. See Listing~\ref{winforms/transformWindowsTop} for top part of the code.}{firstnumber=44,firstline=44}
+\fsCode{winforms/rotationalSymmetry}{winforms/rotationalSymmetry}{Create the window and changing its properties. Continued from Listing~\ref{winforms/transformWindowsTop}.}{firstnumber=44,firstline=44}
 %
 \begin{figure}
   \centering
@@ -279,7 +279,7 @@ Make a program, that given an order produces an image of the Hilbert curve.
 \end{problem}
 Our strategy will be to draw the curve sequentially from the origin to the end point. For this we will make a data structure \lstinline!type curve = float * float * coordinates)! with length and the orientation of the next forward move and a partial list straight line pieces. The initial point would thus be \lstinline(1.0, 0.0, [(0.0, 0.0)]). We will also make 2 mutually recursive functions \lstinline!ruleA : float curve -> curve! and \lstinline!ruleB : float curve -> curve!, which takes n order and our data structure as input and for positive orders adds its rule to the end of the curve. We also need the three basic operations. To move forward, we will use the \lstinline!rotatePoint! and \lstinline!translatePoint! functions from Listing~\ref{winforms/transformWindows}, that is, we may take a line piece of specified length starting in the origin, rotate it according to the present orientation of the curve, and translate it to the present end-point of the curve. The two turn right and left only need to add or subtract $90^{\circ}$ to the present orientation. Thus, reusing the top part of Listing~\ref{winforms/transformWindows} we arrive at the solutions shown in Listing~\ref{winforms/hilbert}. In Figure~\ref{fig:hilbert} are shown the result of using the program to draw Hilbert curves of orders 1, 2, 3, and 5.
 %
-\fsCode{winforms/hilbert}{winforms/hilbert}{Create the window and changing its properties.  See Listing~\ref{winforms/transformWindowsTop} for top part of the code.}{firstnumber=44,firstline=44}
+\fsCode{winforms/hilbert}{winforms/hilbert}{Create the window and changing its properties.  Continued from Listing~\ref{winforms/transformWindowsTop}.}{firstnumber=44,firstline=44}
 %
 \begin{figure}
   \centering
@@ -292,13 +292,13 @@ Our strategy will be to draw the curve sequentially from the origin to the end p
 \end{figure}
 
 \section{Events, Controls, and Panels}
-In the previous section, we have looked at how to draw graphics using the \lstinline!Paint! method of an existing form object. Forms have many other event listeners, that we may use to interact with the user. Listing~\ref{winforms/windowEvents} demonstrates event handlers for moving and resizing a window, for clicking in a window, and for typing on the keyboard.
+In the previous section, we have looked at how to draw graphics using the \lstinline!Paint! method of an existing form object. Forms have many other event listeners, that we may use to interact with the user. Listing~\ref{winforms/windowEventsCode} demonstrates event handlers for moving and resizing a window, for clicking in a window, and for typing on the keyboard.
 %
-\fsCode{winforms/windowEvents}{winforms/windowEvents}{Catching window, mouse, and keyboard events.}{}
+\fsCode{winforms/windowEvents}{winforms/windowEventsCode}{Catching window, mouse, and keyboard events.}{}
 %
-\fsOutput{winforms/windowEvents}{winforms/windowEvents}{Output from an interaction with the program in Listing~\ref{winforms/windowEvents}.}
+\fsOutput{winforms/windowEvents}{winforms/windowEvents}{Output from an interaction with the program in Listing~\ref{winforms/windowEventsCode}.}
 %
-In Listing~\ref{winforms/windowEvents} is shown the output from an interaction with the program which is the result of the following actions: moving the window, resizing the window, clicking the left mouse key, pressing and holding the down the left mouse key while moving the mouse, and releasing the left mouse key, and type ``fsharp''. As demonstrated, some actions like moving the mouse results in a lot of events, and some like the initial window moves results are surprising. Thus, event drivent programming should take care to interpret the events robustly and carefully.
+In Listing~\ref{winforms/windowEventsCode} is shown the output from an interaction with the program which is the result of the following actions: moving the window, resizing the window, clicking the left mouse key, pressing and holding the down the left mouse key while moving the mouse, and releasing the left mouse key, and type ``fsharp''. As demonstrated, some actions like moving the mouse results in a lot of events, and some like the initial window moves results are surprising. Thus, event drivent programming should take care to interpret the events robustly and carefully.
 
 In WinForms buttons, menus and other interactive elements are called \idx{Controls}. A form is a type of control, and thus, programming controls are very similar to programming windows. In Listing~\ref{winforms/buttonControl} is shown a small program that displays a button in a window, and when the button is pressed, then a dialogue is opened in another window. Figure~\ref{fig:buttonControl} shows an example dialogue.
 %
@@ -325,10 +325,10 @@ The label and textbox are children of the panel, and the main advantage of using
 
 Several types of panels exists in WinForms. A very flexible panel is the \idx{\lstinline{System.Windows.Forms.FlowLayoutPanel}}, which arranges its objects according to the space available. This is useful for graphical user interfaces targeting varying device sizes, such as a computer monitor and a tablet, and it also allows the program to gracefully adapt, when the user changes window size. A demonstration of \lstinline{System.Windows.Forms.FlowLayoutPanel} together with \lstinline{System.Windows.Forms.CheckBox} and \lstinline{System.Windows.Forms.RadioButton} is given in Listing~\ref{winforms/flowLayoutPanel} and in Figure~\ref{fig:flowLayoutPanel}. The program illustrates how the button elements flow under four possible \lstinline{System.Windows.FlowDirection}s, and how \lstinline{System.Windows.WrapContents} influences, what happens to content that flows outside the panels region. 
 %
-\fsCode{winforms/flowLayoutPanel}{winforms/flowLayoutPanel}{Create a FlowLayoutPanel, with checkbox and radiobuttons.}{lastline=34}
+\fsCode{winforms/flowLayoutPanel}{winforms/flowLayoutPanelTop}{Create a FlowLayoutPanel, with checkbox and radiobuttons.}{lastline=34}
 %
 %
-\fsCode{winforms/flowLayoutPanel}{winforms/flowLayoutPanel}{Create a FlowLayoutPanel, with checkbox and radiobuttons.}{firstline=36,firstnumber=36}
+\fsCode{winforms/flowLayoutPanel}{winforms/flowLayoutPanel}{Create a FlowLayoutPanel, with checkbox and radiobuttons. Continued from Listing~\ref{winforms/flowLayoutPanelTop}.}{firstline=36,firstnumber=36}
 %
 \begin{figure}
   \centering
@@ -342,7 +342,7 @@ The program in Listing~\ref{winforms/flowLayoutPanel} has not completely separat
 %
 \fsCode{winforms/flowLayoutPanelAdvanced}{winforms/flowLayoutPanelAdvancedTop}{Create nested FlowLayoutPanel.}{lastline=42}
 %
-\fsCode{winforms/flowLayoutPanelAdvanced}{winforms/flowLayoutPanelAdvanced}{Create nested FlowLayoutPanel, see Listing~\ref{winforms/flowLayoutPanelAdvancedTop}.}{firstline=44,firstnumber=44}
+\fsCode{winforms/flowLayoutPanelAdvanced}{winforms/flowLayoutPanelAdvanced}{Create nested FlowLayoutPanel. Continued from Listing~\ref{winforms/flowLayoutPanelAdvancedTop}.}{firstline=44,firstnumber=44}
 %
 \begin{figure}
   \centering
@@ -415,7 +415,7 @@ The program in Listing~\ref{winforms/flowLayoutPanel} has not completely separat
   \centering
   \includegraphics[width=0.3\textwidth]{progressBar}
   \caption{See Listing~\ref{winforms/progressBar}.}
-  \label{fig:bounds}
+  \label{fig:progressBar}
 \end{figure}
 
 %

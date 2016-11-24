@@ -205,11 +205,11 @@ and we see that the function is interpreted to have the type \lstinline!val sum 
 
 Not all types need to be declared, just sufficient for F\# to be able to infer the types for the full statement. In the example, one specification is sufficient, and we could just have specified the type of the result,
 %
-\fsCode{letFunctionAlterantive}{All types need most often not be specified.}
+\fsCode{letFunctionAlterantive}{letFunctionAlterantive}{All types need most often not be specified.}{}
 %
 or even just one of the arguments,
 %
-\fsCode{letFunctionAlterantive2}{Just one type is often enough for F\# to infer the rest.}
+\fsCode{letFunctionAlterantive2}{letFunctionAlterantive2}{Just one type is often enough for F\# to infer the rest.}{}
 %
 In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx[operand]{operands} of the same type, then when the type of either the result, any or both operands are declared, then the type of the remaining follows directly.  As for values, lightweight syntax automatically inserts the keyword \keyword{in} and the lexeme \lexeme{;},
 %
@@ -261,7 +261,7 @@ In F\# this is automatically given the unit type as return value. Procedural thi
 %   let updateFactor factor = 
 %    factor := 2
 %\end{fse}
-%\fsCode{mutableAssignReturnSideEffectStump}{}
+%\fsCode{mutableAssignReturnSideEffectStump}{mutableAssignReturnSideEffectStump}{}{}
 %which also does not have a return value. 
 \advice{Procedural thinking is useful for encapsulation, but is prone to side-effects and should be minimized by being replaced by functional thinking.}
 

@@ -47,7 +47,7 @@ From a programming perspective, the console is a stream: A program may send new 
 \jon{Tilføj eksemple på ConsoleModifiers, f.eks. \lstinline!readKey.fsx!}
 Note that you must supply the empty argument \lexeme{()} to the \lstinline!Read! functions, in order to run most of the functions instead of referring to them as values. The \lstinline!System.ConsoleKeyInfo! object contains the key pressed as the \lstinline!KeyChar! member as well as other information about the event. A short demonstration script is given in Listing~\ref{userDialogue}.
 %
-\fsCode{userDialogue}{Interacting with a user with \lstinline!ReadLine! and \lstinline!WriteLine!.}
+\fsCode{userDialogue}{userDialogue}{Interacting with a user with \lstinline!ReadLine! and \lstinline!WriteLine!.}{}
 %
 An example dialogue using Listing~\ref{userDialogue} is,
 %
@@ -388,7 +388,7 @@ A typical problem, when working with files, is
 \end{problem}
 Such a dialogue most often requires the program to aid the user, e.g., by telling the user, which files are available, and to check that the filename entered is an existing file. A solution could be,
 %
-\fsCode{filenamedialogue}{}
+\fsCode{filenamedialogue}{filenamedialogue}{\dots}{}
 %
 
 A practice problem could be,
