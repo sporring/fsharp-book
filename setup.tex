@@ -42,13 +42,6 @@
 
 % Clickable table of content
 \usepackage[pdfpagelabels]{hyperref}
-\hypersetup{
-    colorlinks,
-    citecolor=black,
-    filecolor=black,
-    linkcolor=black,
-    urlcolor=black
-}
 
 % List of indices
 \usepackage{makeidx}
@@ -93,7 +86,7 @@
   middle=1mm,
   arc=2mm,
 }
-%\tcbuselibrary{listings}
+\tcbuselibrary{listings}
 %\newenvironment{problem}{\begin{quote}}{\end{quote}}
 %\newmdenv[linecolor=black,linewidth=1.5pt,roundcorner=10pt,frametitle={Problem:}]{problem}
 % \newtcblisting{problem}{%
@@ -256,32 +249,32 @@
 %     \lstinputlisting[language=fsharp]{\src/#1.fsx}
 %   \end{codeNOutput}
 % }
-\makeatletter
-\def\fsCode{%
-  % dispaly input file .fsx from \src
-  % #1 = optional further arguments for lstinputlisting
-  % #2 = filename without suffix, and label
-  % #3 = caption
-\@ifnextchar[{\@fsCodewith}{\@fsCodewithout}}
-\def\@fsCodewith[#1]#2#3{%
-\begin{codeNOutput}[label=#2]{, #2.fsx:\\#3}
-    \lstinputlisting[language=fsharp,#1]{\src/#2.fsx}
-\end{codeNOutput}
-}
-\def\@fsCodewithout#1#2{%
-\begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
-    \lstinputlisting[language=fsharp]{\src/#1.fsx}
-\end{codeNOutput}
-}
-%\def\@with[#1]#2#3{\begin{codeNOutput}[label=#2]{: #3}\lstinputlisting[language=fsharp,#1]{\src/#2.fsx}\end{codeNOutput}}
-%\def\@without#1#2{\begin{codeNOutput}[label=#1]{: #2}\lstinputlisting[language=fsharp]{\src/#1.fsx}\end{codeNOutput}}
-\makeatother
 
-% \newcommand{\fso}[2]{
-%   \begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
-%     \lstinputlisting[language=console]{\src/#1.out}
-%   \end{codeNOutput}
+% \makeatletter
+% \def\fsCode{%
+%   % dispaly input file .fsx from \src
+%   % #1 = optional further arguments for lstinputlisting
+%   % #2 = filename without suffix, and label
+%   % #3 = caption
+% \@ifnextchar[{\@fsCodewith}{\@fsCodewithout}}
+% \def\@fsCodewith[#1]#2#3{%
+% \begin{codeNOutput}[label=#2]{, #2.fsx:\\#3}
+%     \lstinputlisting[language=fsharp,#1]{\src/#2.fsx}
+% \end{codeNOutput}
 % }
+% \def\@fsCodewithout#1#2{%
+% \begin{codeNOutput}[label=#1]{, #1.fsx:\\#2}
+%     \lstinputlisting[language=fsharp]{\src/#1.fsx}
+% \end{codeNOutput}
+% }
+% \makeatother
+\newtcbinputlisting[auto counter,number within=chapter]{\fsCode}[4]{%
+  listing file={src/#1.fsx},
+  listing only,
+  listing options={language=fsharp,#4},
+  title=\textbf{Listing \thetcbcounter}\textbf{:} {#1.fsx:\\#3},
+  label={#2},
+}
 \makeatletter
 \def\fsOutput{%
   % dispaly input file .fsx from \src
