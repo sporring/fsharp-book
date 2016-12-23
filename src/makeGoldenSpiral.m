@@ -33,8 +33,6 @@ function makeGoldenSpiral
       v = endPoint-startPoint;
       y = y+v*ones(1,size(y,2));
       b = A*b+v*ones(1,size(b,2));
-      zero = v;
-      one = A*fibb(i+1)*[1;-1]+v;
       hold on
       plotArc(y,b);
       hold off

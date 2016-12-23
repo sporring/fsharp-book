@@ -1,9 +1,10 @@
 \documentclass{article}
 \usepackage{listings}
-\lstset{showspaces=true}
-\makeatletter
-\def\lst@visiblespace{ }
-\makeatother
+\lstset{keepspaces=true}
+% \lstset{showspaces=true}
+% \makeatletter
+% \def\lst@visiblespace{ }
+% \makeatother
 \begin{document}
 \noindent Here is an example of gobbling spaces after quotes in lstinline. I am testing the combinations of with and without '[b]"' and ttfamily fonts:
 
@@ -23,14 +24,14 @@
   \item[3:] \lstinline[morestring={[b]"}]!printfn "Test 1 2 %d"   3!
   \end{description}
 \item[ttfamily: more than 1 space removed]~\\
-   \begin{description}
+  \begin{description}
   \item[0:] \lstinline[basicstyle=\ttfamily]!printfn "Test 1 2 %d"3!
   \item[1:] \lstinline[basicstyle=\ttfamily]!printfn "Test 1 2 %d" 3!
   \item[2:] \lstinline[basicstyle=\ttfamily]!printfn "Test 1 2 %d"  3!
   \item[3:] \lstinline[basicstyle=\ttfamily]!printfn "Test 1 2 %d"   3!
   \end{description}
 \item[{[b]"} and ttfamily - first 2 spaces are removed]~\\
-   \begin{description}
+  \begin{description}
   \item[0:] \lstinline[morestring={[b]"},basicstyle=\ttfamily]!printfn "Test 1 2 %d"3!
   \item[1:] \lstinline[morestring={[b]"},basicstyle=\ttfamily]!printfn "Test 1 2 %d" 3!
   \item[2:] \lstinline[morestring={[b]"},basicstyle=\ttfamily]!printfn "Test 1 2 %d"  3!
