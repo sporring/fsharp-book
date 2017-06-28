@@ -3,41 +3,42 @@
 \input{setup}
 
 \title{Learning to program with F\#}
-\author{Jon Sporring}
+\author{Jon Sporring \& Torben Mogensen\\[1cm]Department of Computer Science,\\University of Copenhagen}
 
-% \includeonly{%
-%   % preface
-%   % ,introduction
-%   % ,part1Intro 
-%   % ,gettingStartedFsharp
-%   % ,quickStartGuide
-%   % ,numbersCharsNStrings
-%   % ,bindings
-%   % ,comments
-%   % ,flow 
-%   % ,tuplesListsArraysSequences
-%   % ,testing
-%   % ,exceptions
-%   % ,IO
-%   % % ,part2Intro 
-%   ,windows
-%   % % ,imperativeProgramming
-%   % % ,part3Intro 
-%   % % ,sequences
-%   % % ,patterns
-%   % % ,typesNMeasures
-%   % % ,functionalProgramming
-%   % % ,part4Intro 
-%   % % ,nameSpacesNModules
-%   % % ,objectOrientedProgramming
-%   % ,part5Intro 
-%   % ,numberSystems
-%   % ,characterSets
-%   % ,extendedBackusNaurForm
-%   % ,fflat
-%   % ,languageDetails
-%    %,collection
-% }
+\includeonly{%
+  % preface
+  % ,introduction
+  % ,part1Intro 
+  % ,gettingStartedFsharp
+  % ,quickStartGuide
+  % ,numbersCharsNStrings
+  % ,bindings
+  % ,comments
+  % ,flow 
+  % ,tuplesListsArraysSequences
+  % ,testing
+  % ,exceptions
+  % ,IO
+  % % ,part2Intro 
+  % ,windows
+  % % ,imperativeProgramming
+  %,part3Intro 
+  %,sequences
+  %,patterns
+  %,typesNMeasures
+  %,functionalProgramming
+  ,part4Intro
+  ,nameSpacesNModules
+  ,objectOrientedProgramming
+  % ,part5Intro 
+  % ,numberSystems
+  % ,characterSets
+  % ,extendedBackusNaurForm
+  % ,fflat
+  % ,languageDetails
+  %,collection
+  ,todos
+}
 
 \begin{document}
 %\counterwithin{lstlisting}{chapter} % Fix reference bug in listing package
@@ -110,6 +111,8 @@
 \include{languageDetails}
 
 \include{collection}
+
+\include{todos}
 
 \clearpage
 \addcontentsline{toc}{chapter}{Bibliography}
