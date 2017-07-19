@@ -97,12 +97,14 @@
 %   title={Problem:}
 % }
 \newtcolorbox[auto counter, number within=chapter]{problem}[1][]{%
-  title=Problem~\thetcbcounter:,
+  title=\textbf{Problem~\thetcbcounter:},
   colframe=green!30!blue,
   #1}
 
 %% lstlisting stuff
 \usepackage{listings}
+\lstset{numberbychapter=true} % This does not solve the problem that
+                              % every include has the error, "No counter 'tcb@cnt@fsCode' defined"!!!!
 \usepackage{moreverb} % To use verbatimwrite to write listing to file.
 %\usepackage{chngcntr}
 %\usepackage[framemethod=tikz]{mdframed}
@@ -196,7 +198,7 @@
 
 \newcommand{\src}{src}
 \newtcolorbox[auto counter, number within=chapter]{codeNOutput}[2][]{%
-  title={Listing~\thetcbcounter#2},
+  title=\textbf{Listing~\thetcbcounter: #2},
   %float,
   % colback=blue!5!white,
   #1}
@@ -270,11 +272,25 @@
 % \end{codeNOutput}
 % }
 % \makeatother
-\newtcbinputlisting[auto counter,number within=chapter]{\fsCode}[4]{%
+\newtcbinputlisting[use counter from=codeNOutput]{\fsCode}[4]{%
   listing file={src/#1.fsx},
   listing only,
   listing options={language=fsharp,#4},
-  title=\textbf{Listing \thetcbcounter}\textbf{:} {#1.fsx:\\#3},
+  title=\textbf{Listing \thetcbcounter} {#1.fsx:\\#3},
+  label={#2},
+}
+\newtcbinputlisting[use counter from=codeNOutput]{\fsSignature}[4]{%
+  listing file={src/#1.fsi},
+  listing only,
+  listing options={language=fsharp,#4},
+  title=\textbf{Listing \thetcbcounter} {#1.fsx:\\#3},
+  label={#2},
+}
+\newtcbinputlisting[use counter from=codeNOutput]{\fsImplementation}[4]{%
+  listing file={src/#1.fs},
+  listing only,
+  listing options={language=fsharp,#4},
+  title=\textbf{Listing \thetcbcounter} {#1.fsx:\\#3},
   label={#2},
 }
 \makeatletter
@@ -331,6 +347,12 @@
 % highlighted text snippets
 \newcommand{\advice}[1]{\marginpar{Advice}{\textbf{#1}}}
 \newcommand{\advanced}[1]{\marginpar{Advanced material}\textbf{#1}}
+% sometimes we need to include hash sign as arguments
+\begingroup\catcode`\#=12
+\newcommand\hashchar{}%check that is doesn't exist
+\gdef\hashchar{#}
+\endgroup
+
 
 % paragraph indentation is stupid
 \setlength\parindent{0pt}

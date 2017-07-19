@@ -8,14 +8,15 @@ Consider the following problem:
 \begin{problem}
   Design a library of utility functions that may be reused in several programs. The library should as minimum include the function:
 \begin{lstlisting}[numbers=none]
-let apply (f : float->float->float) (x : float) (y : float) : float = f x y
+type floatFunction = float -> float -> float
+let apply (f : floatFunction) (x : float) (y : float) : float = f x y
 \end{lstlisting}
 \end{problem}
 The function \lstinline{apply} here serves as a dummy. 
 
 An F\# \idx{module}, not to be confused with a Common Language Infrastructure module see Chapter~\ref{chap:cli}, is a programming structure used to organise type declarations, values, functions etc. 
 
-Every file implementation\jon{check} and script file in F\# implicitly defines a module, and the module name is given by the filename. Thus, creating a file \filename{Meta.fsx} with the following content:
+Every implementation and script file in F\# implicitly defines a module, and the module name is given by the filename. Thus, creating a script file \filename{Meta.fsx} with the following content:
 %
 \fsCode{Meta}{Meta}{A script file defining the \lstinline{apply} function.}{}
 %
@@ -134,7 +135,12 @@ $ mono MetaUse.exe
 3.0 + 4.0 = 7.0
 \end{lstlisting}%$
 \end{codeNOutput}
-Libraries can of course be a compilation of any number of files into a single \filename{.dll} file. \filename{.dll}-files may be loaded dynamically in script files (\filename{.fsx}-files) using the \lstinline{#r} directive as illustrated below.
+Libraries can of course be a compilation of any number of files into a single \filename{.dll} file. \filename{.dll}-files may be loaded dynamically in script files (\filename{.fsx}-files) using the 
+\begingroup % The hash sign causes problems for this combination of advice and lstinline, so we locally redefine it according to https://tex.stackexchange.com/questions/294765/file-path-with-symbol-causes-error/294791#294791
+\catcode`\#=12
+\idx{\lstinline{#r} directive}
+\endgroup
+as illustrated below.
 %
 \fsCode{MetaUseHash}{MetaUseHash}{Defining a namespace containing a meta function.}{}
 %
@@ -148,14 +154,18 @@ $ mono MetaUseHash.exe
 3.0 + 4.0 = 7.0
 \end{lstlisting}
 \end{codeNOutput}
-However, this requires that the filesystem path to the library is coded inside the script. As for module names, direct linking of filenames with the internal workings of a program is a needless complication of structure, and 
+The \lstinline{#r} directive is also used to include a library in interactive mode. However, for code to be compiled, the use of the \lstinline{#r} directive requires that the filesystem path to the library is coded inside the script. As for module names, direct linking of filenames with the internal workings of a program is a needless complication of structure, and 
 \begingroup % The hash sign causes problems for this combination of advice and lstinline, so we locally redefine it according to https://tex.stackexchange.com/questions/294765/file-path-with-symbol-causes-error/294791#294791
 \catcode`\#=12
 \advice{it is recommended not to rely on the use of the \lstinline{#r} directive.}
 \endgroup
 
+In the above, we have compiled \idx{script files} into libraries. However, F\# has reserved the \filename{.fs} filename suffix for library files, and such files are called \idx{implementation files}. In contrast to script files, implementation files do not support the \lstinline{#r} directive. When compiling a list of implementation and script files all but the last file must explicitely define a module or a namespace.
 
-, and can cause and cannot be recommended
+Both script and implementation files may be augmented with \idx{signature files}. A signature file contains no implementation but only type definitions. Signature files can be generated automatically using the \filename{--sig:<filename>} compiler directive. To demonstrate this, This offers three distinct features. Firstly, signature files can be used as part of the documentation of code, since type information is of paramount importance for an application programmer to use a library. Secondly, 
+
+
+Code to be compile to libraries are 
 
 Things to remember: 
 \begin{itemize}
