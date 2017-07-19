@@ -392,6 +392,15 @@
     \end{tikzpicture}
 }%
 
+% One can write to a file during compilation with the following
+% low-level code.
+%  \newwrite\tempfile
+%  \immediate\openout\tempfile=list.tex
+%  \immediate\write\tempfile{Text to write to file}
+%  \immediate\closeout\tempfile
+
+
+
 % Notes to self
 \newcommand{\jon}[1]{\footnote{Todo: \textbf{#1}}}
 %\renewcommand{\jon}[1]{}

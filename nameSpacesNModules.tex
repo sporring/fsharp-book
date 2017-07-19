@@ -122,7 +122,7 @@ The order matters since \filename{namespaceExtension.fsx} relies on the definiti
 
 Namespaces may also be nested. In contrast to modules, nesting defined using the \lexeme{.} notation, i.e., to create a child namespace \lstinline{more} of \lstinline{Utilities} we must use initially write \lstinline{namespace Utilities.more}. Indentation is ignored in the \lstinline{namespace} line, thus left-most indentation is almost always used. Namespaces observed lexical scope, and identically to modules, namespaces containing mutually dependent children can be declared using the \keyword{rec} keyword, e.g., \lstinline{namespace rec Utilities}.
 
-Libraries may be distributed in compile form as \filename{.dll} files. This saves the use for having recompile a possibly large library every time an application program needs it. In order to produce a library file from \filename{MetaExplicitModuleDefinition.fsx} and then compile an application program, we first use the compiler's \lstinline[language=console]{-a} option to produce the \filename{.dll}, and the \lstinline[language=console]{-r} option to compile the application program with the newly created library.\jon{This is the MacOS option standard, Windows is slightly different.}
+Libraries may be distributed in compile form as \filename{.dll} files. This saves the use for having recompile a possibly large library every time an application program needs it. In order to produce a library file from \filename{MetaExplicitModuleDefinition.fsx} and then compile an application program, we first use the compiler's \filename{-a} option to produce the \filename{.dll}, and the \filename{-r} option to compile the application program with the newly created library.\jon{This is the MacOS option standard, Windows is slightly different.}
 \begin{codeNOutput}{: A stand-alone \filename{.dll} file is created and used with special compile commands.}
 \begin{lstlisting}[language=console,escapechar=§]
 $ fsharpc -a MetaExplicitModuleDefinition.fsx
@@ -186,14 +186,30 @@ Freely distributed under the Apache 2.0 Open Source License
 MetaWAdd.fs(4,48): warning FS0988: Main module of program is empty: nothing will happen when it is run
 \end{lstlisting}%$
 \end{codeNOutput}
-The warning can safely be ignored, since it is at this point not our intention to produce runable code. The above has generated the following signature file.
+The warning can safely be ignored, since it is at this point not our intention to produce runnable code. The above has generated the following signature file.
 %
 \fsSignature{MetaWAdd}{MetaWAdd}{An automatically generated signature file from \filename{MetaWAdd.fs}.}{}
 %
-We can generate a library using the automatically generated signature file using \lstinline[language=console]{fsharpc -a MetaWAdd.fsi MetaWAdd.fs}, however this is identical to compiling the \filename{.dll} file without the signature file.
+We can generate a library using the automatically generated signature file using \filename{fsharpc -a MetaWAdd.fsi MetaWAdd.fs}, however this is identical to compiling the \filename{.dll} file without the signature file. However, if we remove, e.g., the type definition for \lstinline{add} in the signature file, then this function becomes private to the module, and cannot be accessed outside. Hence, using 
+%
+\fsSignature{MetaWAddRemoved}{MetaWAddRemoved}{Removing the type defintion for \lstinline{add} from \filename{MetaWAdd.fsi}.}{}
+%
+recompiling the \filename{.dll} and then attempting to use it with an application program
+\begin{codeNOutput}{: Automatic generation of a signature file at compile time.}
+\begin{lstlisting}[language=console,escapechar=§]
+$ fsharpc -a MetaWAddRemoved.fsi MetaWAdd.fs
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
+$ fsharpc -r MetaWAdd.dll MetaWAddUse.fs 
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
 
-\jon{demonstrate what happens, if we exclude add in the signature file.}
+/Users/sporring/repositories/fsharpNotes/src/MetaWAddUse.fs(2,25): error FS0039: The value or constructor 'add' is not defined.
+\end{lstlisting}
+\end{codeNOutput}
+results in an error. I.e., the signature file is a subset of the types defined in the implementation file, and building of the \filename{.dll} file is successful. But attempt at accessing \lstinline{add} in the application file is not allowed, since it is not part of the signature file.
 
+\jon{Possible highlight changes in code stumps, and possibly improve reference to code used fore each compilation example.}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

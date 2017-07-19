@@ -2,14 +2,17 @@
 
 \input{setup}
 
-\title{Learning to program with F\#}
-\author{Jon Sporring \& Torben Mogensen\\[1cm]Department of Computer Science,\\University of Copenhagen}
+\title{Learning to program with F\#} 
+%
+\author{Jon Sporring\\[1cm]Department of Computer Science,\\University of Copenhagen} 
+%
+%\author{Jon Sporring \& Torben Mogensen\\[1cm]Department of Computer Science,\\University of Copenhagen}
 
 \includeonly{%
   % preface
   %,introduction
   % ,part1Intro 
-  ,gettingStartedFsharp
+  %,gettingStartedFsharp
   %,quickStartGuide
   % ,numbersCharsNStrings
   % ,bindings
@@ -27,9 +30,10 @@
   %,patterns
   %,typesNMeasures
   %,functionalProgramming
-  ,part4Intro
-  ,nameSpacesNModules
-  %,objectOrientedProgramming
+  %,part4Intro
+  %,nameSpacesNModules
+  ,objectOrientedProgramming
+  %,objectOrientedDesign
   % ,part5Intro 
   % ,numberSystems
   % ,characterSets
@@ -55,7 +59,7 @@
 
 \include{introduction}
 
-\include{part1Intro}
+%\include{part1Intro}
 
 \include{gettingStartedFsharp}
 
@@ -69,37 +73,40 @@
 
 \include{flow}
 
-\include{tuplesListsArraysSequences}
+\include{nameSpacesNModules}
 
 \include{testing}
+
+\include{tuplesListsArraysSequences}
+
+\include{patterns}
 
 \include{exceptions}
 
 \include{IO}
 
-\include{part2Intro}
+%\include{part2Intro}
 
 \include{windows}
 
-\include{imperativeProgramming}
+%\include{imperativeProgramming}
 
-\include{part3Intro}
+%\include{part3Intro}
 
-\include{sequences}
+%\include{sequences}
 
-\include{patterns}
+%\include{typesNMeasures}
 
-\include{typesNMeasures}
+%\include{functionalProgramming}
 
-\include{functionalProgramming}
-
-\include{part4Intro}
-
-\include{nameSpacesNModules}
+%\include{part4Intro}
 
 \include{objectOrientedProgramming}
 
-\include{part5Intro}
+\include{objectOrientedDesign}
+
+%\include{part5Intro}
+\appendix
 
 \include{numberSystems}
 
@@ -111,9 +118,9 @@
 
 \include{fflat}
 
-\include{languageDetails}
+%\include{languageDetails}
 
-\include{collection}
+%\include{collection}
 
 \include{todos}
 
@@ -125,4 +132,5 @@
 \clearpage
 \addcontentsline{toc}{chapter}{Index}
 \printindex
+
 \end{document}
