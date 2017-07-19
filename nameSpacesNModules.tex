@@ -1,44 +1,167 @@
-\chapter{Namespaces and Modules}
+\chapter{Modules and Namespaces}
 \label{chap:modules}
+In this chapter we will focus on a number of ways to make it available as a \idx{library} function in F\#, and by library we mean a collection of types, values and functions that an application program can use. A library does not perform calculations on its own.
+
+F\# includes several programming structures to organize code in libraries: Modules, namespaces and classes. In this chapter, we will describe modules and namespaces. Classes will be described in detail in Chapter~\ref{chap:oop}.
+
+Consider the following problem:
+\begin{problem}
+  Design a library of utility functions that may be reused in several programs. The library should as minimum include the function:
+\begin{lstlisting}[numbers=none]
+let apply (f : float->float->float) (x : float) (y : float) : float = f x y
+\end{lstlisting}
+\end{problem}
+The function \lstinline{apply} here serves as a dummy. 
+
+An F\# \idx{module}, not to be confused with a Common Language Infrastructure module see Chapter~\ref{chap:cli}, is a programming structure used to organise type declarations, values, functions etc. 
+
+Every file implementation\jon{check} and script file in F\# implicitly defines a module, and the module name is given by the filename. Thus, creating a file \filename{Meta.fsx} with the following content:
+%
+\fsCode{Meta}{Meta}{A script file defining the \lstinline{apply} function.}{}
+%
+we've implicitely defined a module of name \lstinline{Meta}. Another script file may now use this function, and it is access using the \lexeme{.} notation, i.e., \lstinline{Meta.apply} will refer to this function in other programs. A use could be:
+%
+\fsCode{MetaUse}{MetaUse}{Defining a script calling the module.}{}
+%
+In the above, we have explicitly used the module's type definition for illustration purposes. A shorter and possibly simpler program would have been to define \lstinline{add} as \lstinline{let add x y = x + y}, since F\#'s typesystem will deduce the its implied type. However, \advice{explicit definitions of types is recommended for readability.} Hence, an alternative to the above's use of lambda functions is, \lstinline{let add (x: float) (y: float) : float = x + y}. To compile the module and the application program, we write:
+\begin{codeNOutput}{: File order matters, when compiling several files.}
+\begin{lstlisting}[language=console,escapechar=§]
+$ fsharpc Meta.fsx MetaUse.fsx
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
+$ mono MetaUse.exe 
+3.0 + 4.0 = 7.0
+\end{lstlisting}
+\end{codeNOutput}
+Notice, since the F\# compiler reads through the files once, the order of the filenames in the compile command is very important. Hence, the script containing the module and function definitions must be to the left of the script containing their use. Notice also that if not otherwise specified, then the F\# compiler produces an \filename{.exe} file derived from the last filename in the list of filenames.
+
+We may also explicitely define the module name using the \keyword{module} as illustrated here:
+%
+\fsCode{MetaExplicitModuleDefinition}{MetaExplicitModuleDefinition}{Defining a module containing a meta function.}{}
+%
+Since created a new file, where the module \lstinline{Meta} is explicitly defined, we can use the same application program.
+\begin{codeNOutput}{: File order matters, when compiling several files.}
+\begin{lstlisting}[language=console,escapechar=§]
+$ fsharpc MetaExplicitModuleDefinition.fsx MetaUse.fsx
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
+$ mono MetaUse.exe 
+3.0 + 4.0 = 7.0
+\end{lstlisting}
+\end{codeNOutput}
+Note that, since \filename{MetaExplicitModuleDefinition.fsx}  explicitly defines the module name, \lstinline{apply} is not available to an application program as \lstinline{MetaExplicitModuleDefinition.apply}. \advice{It is recommended that module names are defined explicitely, since filenames may change due to external conditions.} I.e., filenames are typically set from the perspective of the filesystem.  The user may choose to change names to suit a filesystem structure, or different platforms may impose different filenaming convention. Thus, direct linking of filenames with the internal workings of a program is a needless complication of structure.
+
+The definitions inside a module may be access directly from an application program omitting the \lexeme{.}-notation by use of the \keyword{open} keyword. I.e., we can modify \filename{MetaUse.fsx} to
+%
+\fsCode{MetaUseWOpen}{MetaUseWOpen}{Defining a script calling the module.}{}
+%
+In this case, the namespace of our previsously define module is included into the scope of the application functions, and its types, values, functions etc. can be used directly. Thus
+\begin{codeNOutput}{: File order matters, when compiling several files.}
+\begin{lstlisting}[language=console,escapechar=§]
+$ fsharpc MetaExplicitModuleDefinition.fsx MetaUseWOpen.fsx
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
+$ mono MetaUseWOpen.exe 
+3.0 + 4.0 = 7.0
+\end{lstlisting}
+\end{codeNOutput}
+The \keyword{open}-keyword should used sparingly, since including a library's definitions into the application scope can cause surprising naming conflicts, since the user of a library typically has no knowledge of the inner workings of the library. E.g., the user may accidentally use code defined in the libary, but with different type and functionality than intended, which the typesystem will use to deduce types in the application program, and therefore will either give syntax or run-time errors that are difficult to understand.  This is known as \idx{namespace polution}, and for clarity \advice{it is recommended to use the \keyword{open}-keyword sparingly}. Note that for historical reasons, the work namespace polution is used to cover both polution due to modules and namespaces.
+
+Modules may also be nested, in which case the nested definitions must use the \lexeme{=}-sign and must be appropriately indendet.
+%
+\fsCode{nestedModules}{nestedModules}{A script file defining the \lstinline{apply} function.}{}
+%
+In this case, \lstinline{Meta} and \lstinline{MathFcts} are defined on the same level and said to be siblings, while \lstinline{Utilities} is defined on a higher level. In this relation the former two are said to be the children of the latter.  Note that the nesting respects the lexical scope rules, such that the constant \lstinline{PI} is directly accessible in both modules \lstinline{Meta} and \lstinline{MathFcts}, as is the module \lstinline{Meta} in \lstinline{MathFcts} but not \lstinline{MathFcts} in \lstinline{Meta}.  The \lexeme{.}-notation is reused to index deeper into the module hierarchy as the following example shows.
+%
+\fsCode{nestedModulesUse}{nestedModulesUse}{Defining a script calling the module.}{}
+%
+Modules can be recursive using the \keyword{rec}-keyword, meaning that in our example we can make the outer module recursive as follows.\jon{Dependence on version 4.1 and higher.}
+%
+\fsCode{nestedRecModules}{nestedRecModules}{A script file defining the \lstinline{apply} function.}{}
+%
+The consequence is that the modules \lstinline{Meta} and \lstinline{MathFcts} are accessible in both modules, but compilation will now give a warning, since soundness of the code will first be checked at run-time. In general it is adviced to \advice{avoid programming constructions, whose validity cannot be checked at compile-time.}
+
+An alternative structure to modules is a \idx{namespace}, which only can hold modules and type declarations and only works in compiled mode. Namespaces are defined as explicitely defined outer modules, e.g.,
+%
+\fsCode{namespace}{namespace}{Defining a namespace containing a meta function.}{}
+%
+Note that when putting code in a namespace, then the first line of the file other than comments and compiler directives must be the one starting with \lstinline{namespace}.
+
+As for modules, the content of a namespace is accessed using the \lexeme{.} notation.
+%
+\fsCode{namespaceUse}{namespaceUse}{Defining a script calling the namespace.}{}
+%
+Likewise, compilation is performed identically.
+\begin{codeNOutput}{: File order matters, when compiling several files.}
+\begin{lstlisting}[language=console,escapechar=§]
+$ fsharpc namespace.fsx namespaceUse.fsx                                           
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
+$ mono namespaceUse.exe 
+3.0 + 4.0 = 7.0
+\end{lstlisting}
+\end{codeNOutput}
+Hence, from an application point of view, it is not immediately possible to see, that \lstinline{Utilities} is defined as a namespace and not a module.  However, in contrast to modules, namespaces may span several files. E.g., we may add a third file containing extending the \lstinline{Utilities} namespace with the \lstinline{MathFcts} module as demonstrated below.
+%
+\fsCode{namespaceExtension}{namespaceExtension}{Defining a namespace containing a meta function.}{}
+%
+To compile we now need to include all three files in the right order.
+%
+Likewise, compilation is performed identically.
+\begin{codeNOutput}{: File order matters, when compiling several files.}
+\begin{lstlisting}[language=console,escapechar=§]
+$ fsharpc namespace.fsx namespaceExtension.fsx namespaceUse.fsx                                           
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
+$ mono namespaceUse.exe 
+3.0 + 4.0 = 7.0
+\end{lstlisting}
+\end{codeNOutput}
+The order matters since \filename{namespaceExtension.fsx} relies on the definition of \lstinline{floatFunction} in \filename{namespace.fsx}. You can use extensions to extend existing namespaces included with the F\# compiler.\jon{Perhaps something about the global namespace \lstinline{global}.}
+
+Namespaces may also be nested. In contrast to modules, nesting defined using the \lexeme{.} notation, i.e., to create a child namespace \lstinline{more} of \lstinline{Utilities} we must use intially write \lstinline{namespace Utilities.more}. Indentation is ignored in the \lstinline{namespace} line, thus left-most indentation is almost always used. Namespaces observed lexical scope, and identically to modules, namespaces containing mutually dependent children can be declared using the \keyword{rec} keyword, e.g., \lstinline{namespace rec Utilities}.
+
+Libraries may be distributed in compile form as \filename{.dll} files. This saves the use for having recompile a possibly large library everytime an application program needs it. In order to produce a library file from \filename{MetaExplicitModuleDefinition.fsx} and then compile an application program, we first use the compiler's \lstinline[language=console]{-a} option to produce the \filename{.dll}, and the \lstinline[language=console]{-r} option to compile the application program with the newly created library.\jon{This is the MacOS option standard, Windows is slightly different.}
+\begin{codeNOutput}{: File order matters, when compiling several files.}
+\begin{lstlisting}[language=console,escapechar=§]
+$ fsharpc -a MetaExplicitModuleDefinition.fsx
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
+$ fsharpc -r MetaExplicitModuleDefinition.dll MetaUse.fsx 
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
+$ mono MetaUse.exe 
+3.0 + 4.0 = 7.0
+\end{lstlisting}%$
+\end{codeNOutput}
+Libraries can of course be a compilation of any number of files into a single \filename{.dll} file. \filename{.dll}-files may be loaded dynamically in script files (\filename{.fsx}-files) using the \lstinline{#r} directive as illustrated below.
+%
+\fsCode{MetaUseHash}{MetaUseHash}{Defining a namespace containing a meta function.}{}
+%
+We may now ommit the explicit mentioning of the library when compiling.
+\begin{codeNOutput}{: File order matters, when compiling several files.}
+\begin{lstlisting}[language=console,escapechar=§]
+$ fsharpc MetaUseHash.fsx 
+F# Compiler for F# 4.1
+Freely distributed under the Apache 2.0 Open Source License
+$ mono MetaUseHash.exe 
+3.0 + 4.0 = 7.0
+\end{lstlisting}
+\end{codeNOutput}
+However, this requires that the filesystem path to the library is coded inside the script. As for module names, direct linking of filenames with the internal workings of a program is a needless complication of structure, and 
+\begingroup % The hash sign causes problems for this combination of advice and lstinline, so we locally redefine it according to https://tex.stackexchange.com/questions/294765/file-path-with-symbol-causes-error/294791#294791
+\catcode`\#=12
+\advice{it is recommended not to rely on the use of the \lstinline{#r} directive.}
+\endgroup
+
+
+, and can cause and cannot be recommended
+
 Things to remember: 
 \begin{itemize}
 \item difference between .fs and .fsx Spec-4.0 Chapter 12.1 and 12.3
 \item signature files and their usefulness
 \end{itemize}
-
-
-A script file consists of a sequence of \idx{module elements}
-\begin{lstlisting}[language=ebnf]
-script-file = implementation-file
-
-implementation-file =
-  namespace-decl-groupList
-  | named-module
-  | anonynmous-module
-
-namespace-decl-groupList = namespace-decl-group | namespace-decl-group namespace-decl-groupList
- 
-named-module = "module" long-ident module-elems
-
-anonymous-module = module-elems
-
-module-elems = module-elem | module-elem module-elems
-
-namespace-decl-group = "namespace" long-ident module-elems | "namespace" global module-elems
-
-module-elem = 
-  module-function-or-value-defn type-defns
-  | exception-defn
-  | module-defn
-  | module-abbrev
-  | import-decl compiler-directive-decl
-\end{lstlisting}
-
-F\# source code units are made up of declarations grouped using namespaces, type definitions, and module definitions. A file may contain multipe namespaces each defining types and modules, these in turn may contain function and value definitions, which in turn contains expressions.\jon{Spec-4.0 Chapter 10.} 
-
-With no leading namespace or module declaration, then F\# will immediately insert a module, where the name of the module is the same as the file name with capitalized first letter.\jon{\url{https://en.wikibooks.org/wiki/F_Sharp_Programming/Modules_and_Namespaces}}
-
-Namespaces is an optional hierarchial catergorization of modules, classes, and other namespaces primarily used to avoid naming conflicts. There is no default namespace, and namespaces may contain type definitions but not function and value definitions. Namespace do not work in script-fragments.\jon{\url{https://fsharpforfunandprofit.com/posts/organizing-functions/}}
 
 \jon{Difference between namespaces and modules \url{https://stackoverflow.com/questions/795172/what-the-difference-between-a-namespace-and-a-module-in-f}}
 \jon{\url{https://fsharpforfunandprofit.com/posts/organizing-functions/},

@@ -185,6 +185,8 @@
 \def\lst@visiblespace{ }
 \makeatother
 
+\newcommand{\filename}[1]{\lstinline[language=console]{#1}}
+
 %\usepackage{caption}
 %\DeclareCaptionStyle{listing} [justification=raggedright,labelfont=bf]{}
 %\captionsetup[lstlisting]{style=listing}
@@ -327,7 +329,7 @@
 % \lstinputlisting[firstline=\thelstFrom,lastline=\thelstTo,escapechar=|]{\src/dynamicScopeTracing.fsx}
 
 % highlighted text snippets
-\newcommand{\advice}[1]{\marginpar{Advice}\textbf{#1}}
+\newcommand{\advice}[1]{\marginpar{Advice}{\textbf{#1}}}
 \newcommand{\advanced}[1]{\marginpar{Advanced material}\textbf{#1}}
 
 % paragraph indentation is stupid
