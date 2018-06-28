@@ -1,0 +1,11 @@
+// To see, what gtk library mono has, and which members etc. are included, in fsharpi do:
+open System.Reflection;;
+let a = Assembly.LoadFrom  @"/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/gtk-sharp-2.0/gtk-sharp.dll";;
+let ts = a.GetExportedTypes();;
+
+let m = ts |> Array.find (fun t -> t.Name = "Window");;
+m;;
+let m = ts |> Array.find (fun t -> t.Name = "Label");; 
+m;;
+let m = ts |> Array.find (fun t -> t.Name = "Application");;
+m;;

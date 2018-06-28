@@ -1,0 +1,7 @@
+./myfsharpc button.fsx && mono button.exe
+mcs -pkg:gtk-sharp-2.0 helloworld.cs
+mcs -pkg:glade-sharp-2.0 -resource:gui.glade glade.cs
+./myfsharpc -r /Library/Frameworks/Mono.framework/Versions/Current/lib/mono/gac/glade-sharp/2.12.0.0__35e10195dab3c99f/glade-sharp.dll --resource:gui.glade glade.fsx
+
+fsharpc -I "C:\Program Files (x86)\Mono\lib\gtk-sharp-2.0" -r atk-sharp.dll -r glib-sharp.dll -r gtk-sharp.dll button.fsx
+fsharpc -I "C:\Program Files (x86)\Mono\lib\gtk-sharp-2.0" -r atk-sharp.dll -r glib-sharp.dll -r gtk-sharp.dll -I "C:\Program Files (x86)\Mono\lib\glade" -r glade-sharp.dll --resource:gui.glade glade.fsx
