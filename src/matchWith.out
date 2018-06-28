@@ -1,3 +1,4 @@
+$ fsharpc --nologo matchWith.fsx && mono matchWith.exe
 "I owe 3 apples"
 "I owe 1 apples"
 "I have no apples"

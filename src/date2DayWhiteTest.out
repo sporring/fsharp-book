@@ -1,3 +1,4 @@
+$ fsharpc --nologo date2DayWhiteTest.fsx && mono date2DayWhiteTest.exe
 White-box testing of date2Day.fsx
   Unit: januaryFirstDay
     Branch: 0 - true

@@ -1,2 +1,4 @@
+$ fsharpc --nologo exceptionDefinitionNCatch.fsx
+$ mono exceptionDefinitionNCatch.exe
 picky 3 = 3
 Exception caught with message: 5 sucks

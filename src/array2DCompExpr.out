@@ -1,3 +1,4 @@
+$ fsharpc --nologo array2DCompExpr.fsx && mono array2DCompExpr.exe
  1  2  3  4 
  1  4  9 16 
  1  8 27 64 

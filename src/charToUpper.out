@@ -1,0 +1,3 @@
+$ fsharpc --nologo charToUpper.fsx && mono charToUpper.exe
+
+charToUpper.fsx(6,1): warning FS0988: Main module of program is empty: nothing will happen when it is run

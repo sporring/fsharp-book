@@ -1,3 +1,4 @@
+$ fsharpc --nologo tupleCompare.fsx && mono tupleCompare.exe
 ('a', 'b', 'c') < ('d', 'e', 'f') is true
 ('a', 'b', 'c') < ('a', 'b', 'b') is false
 ('a', 'b', 'c') < ('a', 'b', 'd') is true

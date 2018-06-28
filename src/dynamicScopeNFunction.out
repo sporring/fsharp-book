@@ -1,1 +1,3 @@
+$ fsharpc --nologo dynamicScopeNFunction.fsx
+$ mono dynamicScopeNFunction.exe
 8.0

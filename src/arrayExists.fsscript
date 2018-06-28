@@ -1,0 +1,1 @@
+let odd x = (x % 2 = 1) in Array.exists odd [|0 .. 2 .. 4|];;

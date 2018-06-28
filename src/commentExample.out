@@ -1,1 +1,2 @@
+$ fsharpc --nologo commentExample.fsx && mono commentExample.exe
 0 = 1.0x^2 + 0.0x + -1.0 => x_+ = 1.0

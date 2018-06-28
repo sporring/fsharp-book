@@ -1,2 +1,5 @@
+$ fsharpc --nologo userDialogue.fsx && mono userDialogue.exe
 To perform the multiplication of a and b
-Enter a: Enter b: a * b = 10.35
+Enter a: 3.5
+Enter b: 7.4
+a * b = 25.9

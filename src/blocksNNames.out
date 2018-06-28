@@ -1,8 +1,6 @@
 > let a = 357;;
-
 val a : int = 357
 
 > let a = 864;;
-
 val a : int = 864
 

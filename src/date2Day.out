@@ -1,0 +1,3 @@
+$ fsharpc --nologo date2Day.fsx && mono date2Day.exe
+
+date2Day.fsx(22,1): warning FS0988: Main module of program is empty: nothing will happen when it is run

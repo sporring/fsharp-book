@@ -1,1 +1,3 @@
+$ fsharpc --nologo exceptionMatchWildcard.fsx
+$ mono exceptionMatchWildcard.exe
 So failed

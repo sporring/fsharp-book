@@ -1,0 +1,2 @@
+let idxFct i j = i + 10 * j
+Array2D.init 3 4 idxFct;;

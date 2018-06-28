@@ -1,14 +1,18 @@
-// Choose some points and a color
-let Points =
-  [|System.Drawing.Point (0,0);
-   System.Drawing.Point (10,170);
-   System.Drawing.Point (320,20);
-   System.Drawing.Point (0,0)|]
-let penColor = System.Drawing.Color.Black
-// Create window and setup drawing function
-let pen = new System.Drawing.Pen (penColor)
-let win = new System.Windows.Forms.Form ()
-win.Text <- "A triangle"
-win.Paint.Add (fun e -> e.Graphics.DrawLines (pen, Points))
+// Open often used libraries, be ware of namespace polution!
+open System.Windows.Forms
+open System.Drawing
+
+// Prepare window form
+let win = new Form ()
+win.Size <- Size (320, 170)
+
+// Set paint call-back function
+let paint (e : PaintEventArgs) : unit =
+  let pen = new Pen (Color.Black)
+  let points =
+    [|Point (0,0); Point (10,170); Point (320,20); Point (0,0)|]
+  e.Graphics.DrawLines (pen, points)
+win.Paint.Add paint
+
 // Start the event-loop.
-System.Windows.Forms.Application.Run win
+Application.Run win // Start the event-loop.

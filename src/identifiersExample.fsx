@@ -8,5 +8,5 @@ let c = -1.0
 let d = discriminant a b c
 let xp = positiveSolution a b c
 let xn = negativeSolution a b c
-printfn "0 = %A * x ** 2.0 + %A * x + %A" a b c
-printfn "  has discriminant %A and solutions %A and %A" d xn xp
+do printfn "0 = %A * x ** 2.0 + %A * x + %A" a b c
+do printfn "  has discriminant %A and solutions %A and %A" d xn xp

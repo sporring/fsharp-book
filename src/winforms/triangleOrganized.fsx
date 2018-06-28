@@ -1,34 +1,26 @@
+// Open often used libraries, be ware of namespace polution!
 open System.Windows.Forms
 open System.Drawing
 
-type coordinates = (float * float) list
-type pen = Color * float
+///////////// WinForm specifics /////////////
+/// Setup a window form and return function to activate
+let view (sz : Size) (pen : Pen) (pts : Point []) : (unit -> unit) =
+  let win = new System.Windows.Forms.Form ()
+  win.ClientSize <- sz
+  win.Paint.Add (fun e -> e.Graphics.DrawLines (pen, pts))
+  fun () -> Application.Run win // function as return value
 
-/// Create a form and add a paint function
-let createForm backgroundColor (width, height) title draw =
-  let win = new Form ()
-  win.Text <- title
-  win.BackColor <- backgroundColor
-  win.ClientSize <- Size (width, height)
-  win.Paint.Add draw
-  win
-
-/// Draw a polygon with a specific color
-let drawPoints (coords : coordinates) (pen : pen) (e : PaintEventArgs) =
-  let pairToPoint (x : float, y : float) =
-    Point (int (round x), int (round y))
-  let color, width = pen
-  let Pen = new Pen (color, single width)
-  let Points = Array.map pairToPoint (List.toArray coords)
-  e.Graphics.DrawLines (Pen, Points)
+///////////// Model /////////////
+// A black triangle, using winform primitives for brevity
+let model () : Size * Pen * (Point []) = 
+  let size = Size (320, 170)
+  let pen = new Pen (Color.FromArgb (0, 0, 0))
+  let lines =
+    [|Point (0,0); Point (10,170); Point (320,20); Point (0,0)|]
+  (size, pen, lines)
   
-// Setup drawing details
-let title = "A well organized triangle"
-let backgroundColor = Color.White
-let size = (400, 200)
-let coords = [(0.0, 0.0); (10.0, 170.0); (320.0, 20.0); (0.0, 0.0)]
-let pen = (Color.Black, 1.0)
-
-// Create form and start the event-loop.
-let win = createForm backgroundColor size title (drawPoints coords pen) 
-Application.Run win
+///////////// Connection //////////////
+// Tie view and model together and enter main event loop
+let (size, pen, lines) = model ()
+let run = view size pen lines
+run ()

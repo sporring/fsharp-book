@@ -1,0 +1,1 @@
+String.iteri (fun i c -> printfn "%d: %c" i c) "abc";;

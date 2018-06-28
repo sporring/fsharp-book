@@ -1,0 +1,178 @@
+\chapter{Programming with types}
+\label{chap:type}
+F\# is a strongly typed language, meaning that types are known or inferred at compile time. In the previous chapters, we have used \idx{primitive types} such as \lstinline{float} and \lstinline{bool},  function types, and compound types implicitly defined by tuples. These types are used for simple programming tasks, and everything that can be programmed can be accomplished using these types. However, larger programs are often easier to read and write when using more complicated type structures. In this chapter, we will discuss type abbreviations, enumerated types, discriminated unions, records, and structs. Class types are discussed in depth in \Cref{chap:oop}.
+
+\section{Type abbreviations}
+\label{sec:typeAbbreviations}
+F\# allows for renaming of types, which is called \idx{type abbreviation} or \idx{type aliasing}. The syntax is
+%
+\begin{verbatimwrite}{\ebnf/typeAbbreviation.ebnf}
+type <*ident*> = <*aType*>
+\end{verbatimwrite}
+\syntax{\ebnf/typeAbbreviation.ebnf}{Syntax for type abbreviation.}
+%
+where the identifier is a new name, and the type-name is an existing or a compound of existing types. E.g., in \Cref{typeAbbreviation} several type abbreviations are defined.
+%
+\fs{typeAbbreviation}{Defining 3 type abbreviations, two of which are compound types.}
+%
+Here we define the abbreviations \lstinline{size}, \lstinline{position}, \lstinline{person}, and \lstinline{intToFloat}, and later make bindings enforcing the usage of these abbreviations.
+
+Type abbreviations are used as short abbreviations of longer types, and they add semantic content to the program text, thus making programs shorter and easier to read. Type abbreviations allow the programmer to focus on the intended structure at a higher level by, e.g., programming in terms of a type \lstinline{position} rather than \lstinline{float * float}. Thus, they often result in programs with fewer errors. Type abbreviations also make maintenance easier. For instance, if we at a later stage decide that positions only can have integer values, then we only need to change the definition of the type abbreviation, not every place, a value of type \lstinline{position} is used.
+
+\section{Enumerations}
+\label{sec:enums}
+\idx[enumerations]{Enumerations} or \idx{enums} for short are types with named values. Names in enums are assigned to a subset of integer or char values. Their syntax is as follows:
+%
+\begin{verbatimwrite}{\ebnf/enums.ebnf}
+type <*ident*> = 
+  [* | *] <*ident*> = <*integerOrChar*>
+  | <*ident*> = <*integerOrChar*>
+  | <*ident*> = <*integerOrChar*>
+  ...
+\end{verbatimwrite}
+\syntax{\ebnf/enums.ebnf}{Syntax for enumerations.}
+%
+An example of using enumerations is given in \Cref{enum}.
+%
+\fs{enum}{An enum type acts as a typed alias to a set of integers or chars.}
+%
+In the example, we define an enumerated type for medals, which allows us to work with the names rather than the values. Since the values most often are arbitrary, we can program using semantically meaningful names instead. Being able to refer to an underlying integer type allows us to interface with other -- typically low-level -- programs that require integers, and to perform arithmetic. E.g., for the medal example, we can typecast the enumerated types to integers and calculate an average medal harvest.
+
+\section{Discriminated Unions}
+\label{sec:discriminatedUnions}
+A discriminated union is a union of a set of named cases. These cases can further be of specified types. The syntax for defining a discriminated union is as follows:
+%
+\begin{verbatimwrite}{\ebnf/discrimiatedUnions.ebnf}
+[*<*attributes*>*] 
+type <*ident*> = 
+  [*| *]<*ident*> [*of [*<*ident*> :*] <*aType*> [** [*<*ident*> :*] <*aType*> ...*]*]
+  | <*ident*> [*of [*<*ident*> :*] <*aType*> [** [*<*ident*> :*] <*aType*> ...*]*]
+  ...
+\end{verbatimwrite}
+\syntax{\ebnf/discrimiatedUnions.ebnf}{Syntax for type abbreviation.}
+%
+Discriminated unions are reference types, i.e., their content is stored on \idx{The Heap}, see \Cref{sec:referenceCells} for a discussion on reference types. Since they are immutable, there is no risk of side-effects. As reference types, when used as arguments to and returned from a function, then only a reference is passed. This is in contrast to value types, which transport a complete copy of the data structure. Discriminated unions are thus effective for large data structures. However, there is a slight overhead, since working with the content of reference types is indirect through their reference. Discriminated unions can also be represented as structures using the \lstinline{[<Struct>]} attribute, in which case they are value types. See \Cref{sec:structs} for a discussion on structs.
+
+An example just using the named cases but no further specification of types is given in \Cref{discriminatedUnions}.
+%
+\fs{discriminatedUnions}{A discriminated union of medals. Compare with \Cref{enum}.}
+%
+Here we define a discriminated union as three named cases signifying three different types of medals. Comparing with the enumerated type in \Cref{enum}, we see that the only difference is that the cases of the discriminated unions have no value. A commonly used discriminated union is the \idx{option type}, see \Cref{sec:optionType} for more detail.
+
+Discriminated unions may also be used to store data. Where the names in enumerated types are aliases of single values, the names used in discriminated unions can hold any value specified at the time of creation. An example is given in \Cref{discriminatedUnionsOf}.
+%
+\fs{discriminatedUnionsOf}{A discriminated union using explicit subtypes.}
+%
+In this case, we define a discriminated union of two and three-dimensional vectors. Values of these types are created using their names followed by a tuple of their arguments. As can be seen, the arguments may be given field names, and if they are, then the names may be used when creating values of this type. As also demonstrated, the field names can be used to specify the field values in arbitrary order. However, values for all fields must be given.
+
+Discriminated unions can be defined recursively. This feature is demonstrated in \Cref{discriminatedUnionTree}.
+%
+\fs{discriminatedUnionTree}{A discriminated union modelling binary trees.}
+%
+In this example we define a tree as depicted in \Cref{fig:discriminatedUnionTree}.
+\begin{figure}
+  \Tree [.\framebox{Node} [.\framebox{Node} [. {\framebox{Leaf 1}} {\framebox{Leaf 2}} ] ] {\framebox{Leaf 3}} ]
+  \caption{The tree with 3 leaves.}
+  \label{fig:discriminatedUnionTree}
+\end{figure}
+
+
+Pattern matching must be used in order to define functions on values of a discriminated union. E.g., in \Cref{discriminatedUnionPatternMatching} we define a function that traverses a tree and prints the content of the nodes.\jon{Example uses pattern matching, which has yet to be introduced.}
+%
+\fs{discriminatedUnionPatternMatching}{A discriminated union modelling binary trees.}
+%
+
+Discriminated unions are very powerful and can often be used instead of class hierarchies. Class hierarchies are discussed in \Cref{sec:inheritance}.
+
+\section{Records}
+\label{sec:records}
+A record is a compound of named values, and a record type is defined as follows:
+%
+\begin{verbatimwrite}{\ebnf/records.ebnf}
+[* <*attributes*> *] 
+type <*ident*> = {
+  [* mutable *] <*label1*> : <*type1*>
+  [* mutable *] <*label2*> : <*type2*>
+  ...
+}
+\end{verbatimwrite}
+\syntax{\ebnf/records.ebnf}{Syntax for defining record types.}
+%
+Records are collections of named variables and values of possibly different types. They are reference types, and thus their content is stored on \idx{The Heap}, see \Cref{sec:referenceCells} for a discussion on reference types. Records can also be \idx{struct records} using the \lstinline{[<Struct>]} attribute, in which case they are value types. See \Cref{sec:structs} for a discussion on structs. An example of using records is given in \Cref{records}. The values of individual members of a record are obtained using the \idx[.@\lstinline{.}]{\lexeme{.}} notation
+%
+\fs{records}{A record is defined for holding information about a person.}
+%
+The examples illustrate a how record type is defined to store varied data about a person, and how a value is created by a record expression defining its field values.
+
+If two record types are defined with the same label set, then the latter dominates the former, and the compiler will at a binding infer that later. This is demonstrated in \Cref{recordsDominance}.
+%
+\fs{recordsDominance}{Redefined types dominates old record types, but earlier definitions are still accessible using explicit or implicit specification for bindings.}
+%
+In the example, two identical record types are defined, and we use the built-in \lstinline{GetType()} method to inspect the type of bindings. We see that \lstinline{lecturer} is of \lstinline{RecordsDominance+teacher} type, since \lstinline{teacher} dominates the identical \lstinline{author} type definition. However, we may enforce the \lstinline{person} type by either specifying it for the name as in \lstinline{let author : person = ...} or by fully or partially specifying it in the record expression following the \lexeme{=} sign. In both cases, they are therefore of \lstinline{RecordsDominance+author} type. The built-in \lstinline{GetType()} method is inherited from the base class for all types, see \Cref{chap:oop} for a discussion on classes and inheritance.
+
+Note that when creating a record, you must supply a value to all fields, and you cannot refer to other fields of the same record, e.g., \lstinline!{name = "Jon"; age = height * 3; height = 1.75}! is illegal.
+
+Since records are per default reference types, binding creates aliases not copies. This matters for mutable members, in which case when copying, we must explicitly create a new record with the old data. Copying can be done either by using referencing to the individual members of the source or using the short-hand \idx[with@\lstinline{with}]{\keyword{with}} notation. This is demonstrated in \Cref{recordCopy}.
+%
+\fs{recordCopy}{Bindings are references. To copy and not make an alias, explicit copying must be performed.}
+%
+Here \lstinline{age} is defined as a mutable value, and can be changed using the usual \lexeme{<-} assignment operator. The example demonstrates two different ways to create records. Note that when the mutable value \lstinline{author.age} is changed in line~\ref{recordCopyAgeUpdate}, then \lstinline{authorAlias} also changes, since it is an alias of \lstinline{author}, but neither \lstinline{authorCopy} nor \lstinline{authorCopyAlt} changes, since they are copies. As illustrated, copying using \keyword{with} allows for easy copying and partial updates of another record value.
+
+\section{Structures}
+\label{sec:structs}
+\idx[structures]{Structures} or \idx{structs} for short have much in common with records. They specify a compound type with named fields, but they are value types, and they allow for some customization of what is to happen when a value of its type is created. Since they are value types, then they are best used for small amount of data. The syntax for defining struct types are:
+%
+\begin{verbatimwrite}{\ebnf/structs.ebnf}
+[* <*attributes*> *] 
+[<Struct>] 
+type <*ident*> =
+  val [* mutable *] <*label1*> : <*type1*>
+  val [* mutable *] <*label2*> : <*type2*>
+  ...
+  [*new (<*arg1*>, <*arg2*>, ...) = {<*label1*> = <*arg1*>; <*label1*> = <*arg2*>; ...}
+  [*new (<*arg1*>, <*arg2*>, ...) = {<*label1*> = <*arg1*>; <*label1*> = <*arg2*>; ...}
+  ...
+\end{verbatimwrite}
+\syntax{\ebnf/structs.ebnf}{Syntax for type abbreviation.}
+%
+The syntax makes use of the \idx[val@\lstinline{val}]{\keyword{val}} and \idx[new@\lstinline{new}]\idx{\keyword{new}} keywords. Keyword \keyword{val} like \keyword{let} binds a name to a value, but unlike \keyword{let} the value is always the type's default value. The \keyword{new} keyword denotes the function used to fill values into the fields at time of creation. This function is called the \idx{constructor}. No \keyword{let} nor \keyword{do} bindings are allowed in structure definitions. Fields are accessed using the \idx[.@\lstinline{.}]{\lexeme{.}} notation. An example is given in \Cref{struct}.
+%
+\fs{struct}{Defining a struct type and creating a value of it.}
+%
+
+Structs are small versions of classes and allows, e.g., for overloading\idxs{overload} of the \keyword{new} constructor and for overriding\idxs{override} of the inherited \idx[ToString@\lstinline{ToString()}]{\lstinline{ToString()}} function. This is demonstrated in \Cref{structOverloadNOverride}.
+%
+\fs{structOverloadNOverride}{Overloading the \keyword{new} constructor and overriding the default \lstinline{ToString()} function.}
+%
+We defer further discussion of these concepts to \Cref{chap:oop}.
+
+The use of structs are generally discouraged, and instead, it is recommended to use enums, records, and discriminated unions possibly with the \lstinline{[<Struct>]} attribute for the last two in order to make them value types.
+
+\section{Variable types}
+\label{sec:variableTypes}
+An advanced topic in F\# is \idx{variable types}. There are three different versions of variable types in F\#: \idx[runtime resolved variable type]{runtime resolved}, which has the syntax \lstinline[language=syntax]{'<*ident*>}, \idx[anonymous variable type]{anonymous}, which are written as \idx[_@\lstinline{_}]{\lexeme{_}}, and \idx[statically resolved variable type]{statically resolved}, which have the syntax \lstinline[language=syntax]{^<*ident*>}. Variable types are particularly useful for functions that work for many types.  An example of a generic function and its use is given in \Cref{variableType}.
+%
+\fs{variableType}{A function \lstinline{apply} with runtime resolved types.}
+%
+In this example, the function \lstinline{apply} has runtime resolved variable type, and it accepts three parameters \lstinline{f}, \lstinline{x}, and \lstinline{y}. The function will work as long as the parameters for \lstinline{f} is a function of two parameters of identical type, and \lstinline{x} and \lstinline{y} are values of the same type. Thus, in the \lstinline{printfn} statement, we are able to use \lstinline{apply} for both an integer and a float variant.
+
+The example in \Cref{variableType} illustrates a very complicated way to add two numbers. And the \lexeme{+} operator works for both types out of the box, so why not something simpler like relying on the F\# type inference system by not explicitly specifying types as attempted in \Cref{variableTypeError}.
+%
+\fs{variableTypeError}{Even though the \lexeme{+} operator is defined for both integers and floats, the type inference is static and infers \lstinline{plus : int -> int}.}
+%
+Unfortunately, the example fails to compile, since the type inference is performed at compile time, and by \lstinline{plus 1 2}, it is inferred that \lstinline{plus : int -> int}. Hence, calling \lstinline{plus 1.0 2.0} is a type error. Function bindings allow for the use of the \idx[inline@\lstinline{inline}]{\keyword{inline}} keyword, and adding this successfully reuses the definition of \lstinline{plus} for both types as shown in \Cref{variableTypeInline}.
+%
+\fs{variableTypeInline}{The keyword \keyword{inline} forces static and independent inference each place the function is used. Compare to the error case in \Cref{variableTypeError}.}
+%
+In the example, adding the \keyword{inline} does two things: Firstly, it copies the code to be performed to each place, the function is used, and secondly, it forces statically resolved variable type checking independently in each place. The type annotations inferred as a result of the \keyword{inline}-keyword may be written explicitly as shown in \Cref{compiletimeVariableType}.
+%
+\fs{compiletimeVariableType}{Explicitely spelling out of the statically resolved type variables from \Cref{variableTypeError}.}
+%
+The example in \Cref{compiletimeVariableType} demonstrates the statically resolved variable type syntax, \lstinline[language=syntax]{^<*ident*>}, as well as the use of \idx{type constraints} using the keyword \idx[when@\lstinline{when}]{\keyword{when}}.  Type constraints have a rich syntax, but will not be discussed further in this book.\jon{Should I extend on type constraints? Perhaps it is better left for a specialize chapter on generic functions.} In the example, the type constraint \lstinline{when ^a : (static member ( + ) :  ^a * ^a -> ^a)} is given using the object oriented properties of the type variable \lstinline{^a}, meaning that the only acceptable type values are those, which have a member function \lstinline{(+)} taking a tuple and giving a value all of identical type, and which where the type can be inferred at compile time. See \Cref{chap:oop} for details on member functions.
+
+The \keyword{inline} construction is useful when generating generic functions and still profiting from static type checking. However, explicit copying of functions is often something better left to the compiler to optimize over. An alternative seems to be using runtime resolved variable types with the \lstinline[language=syntax]{'<*ident*>} syntax. Unfortunately, this is not possible in case of most operators, since they have been defined in the \lstinline{FSharp.Core} namespace to be statically resolved variable type. E.g., the \lexeme{+} operator has type \lstinline{( + ) : ^T1 -> ^T2 -> ^T3 (requires ^T1 with static member (+) and ^T2 with static member (+))}.
+
+%%% Local Variables:
+%%% TeX-master: "fsharpNotes"
+%%% End:
+

@@ -1,3 +1,4 @@
+$ fsharpc --nologo array2DSlicing.fsx && mono array2DSlicing.exe
 11
 [[10]
  [11]]

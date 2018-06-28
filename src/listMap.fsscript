@@ -1,0 +1,1 @@
+let square x = x*x in List.map square [0 .. 9];;

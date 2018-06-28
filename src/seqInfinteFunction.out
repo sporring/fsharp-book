@@ -1,1 +1,2 @@
+$ fsharpc --nologo seqInfinteFunction.fsx && mono seqInfinteFunction.exe
 seq [1; 2; 3; 1; ...]

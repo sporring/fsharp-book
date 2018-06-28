@@ -1,2 +1,3 @@
+$ fsharpc --nologo option.fsx && mono option.exe
 Some 3 <null>
 3 false true

@@ -1,3 +1,5 @@
+$ fsharpc --nologo flowIfThenElseNested.fsx
+$ mono flowIfThenElseNested.exe
 1
 2
 0

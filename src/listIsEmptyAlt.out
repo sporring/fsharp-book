@@ -1,4 +1,6 @@
 > List.isEmpty [1; 2; 3];;
 val it : bool = false
+
 > let a = [1; 2; 3] in List.isEmpty a;;
 val it : bool = false
+

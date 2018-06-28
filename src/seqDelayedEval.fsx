@@ -1,7 +1,2 @@
-let s = seq { yield 1; yield 2; printfn "The sequence was evaluated to this point."; yield 3};;
-printfn "%A" (Seq.item 0 s);;
-printfn "That was 0"
-printfn "%A" (Seq.item 1 s);;
-printfn "That was 1"
-printfn "%A" (Seq.item 2 s);;
-printfn "That was 2"
+let a = seq {for i in 0..10 do if i%2=0 then printf "(calculating item %d)" i; yield i}
+for i in a do printf "%d " i; done; printfn ""

@@ -1,1 +1,2 @@
+$ fsharpc --nologo listConversion.fsx && mono listConversion.exe
 ['a'; 'b'; 'c'], [|'a'; 'b'; 'c'|]

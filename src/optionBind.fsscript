@@ -1,0 +1,1 @@
+Option.bind (fun x -> Some (2*x)) (Some 3);;

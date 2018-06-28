@@ -5,7 +5,7 @@ if [ -f $i.out ]; then
     mv $i.out $i.bckp
 fi
 ./automatedFsharpi.exp $i.fsscript > /tmp/tmp.out
-cat /tmp/tmp.out | sed '1,9d' | sed -n -e :a -e '1,2!{P;N;D;};N;ba' | sed 's/.*3H//' | sed 's///' > $i.out
+cat /tmp/tmp.out | sed '1,9d' | sed -n -e :a -e '1,2!{P;N;D;};N;ba' | sed 's/.*3H//' | sed 's///' | sed "s#`pwd`/##" > $i.out
 #cat /tmp/tmp.out | sed 's/.*H//' | sed 's///' | sed '1,9d' | sed -n -e :a -e '1,2!{P;N;D;};N;ba' > $i.out
 #cat /tmp/tmp.out | sed 's/.*H//' | sed 's///' > $i.out
 cmp --silent $i.out $i.bckp && rm $i.bckp

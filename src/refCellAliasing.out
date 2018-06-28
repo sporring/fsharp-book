@@ -1,2 +1,3 @@
+$ fsharpc --nologo refCellAliasing.fsx && mono refCellAliasing.exe
 1, 1
 2, 2

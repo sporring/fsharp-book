@@ -5,4 +5,4 @@ let rec prt a b =
     printf "%d " a
     prt (a + 1) b
 
-prt 1 10
+prt 1 10 (*//§\label{countRecursiveCall}§*)

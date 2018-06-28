@@ -1,7 +1,4 @@
-picky 3 = 3
-FSI_0001+DontLikeFive: Exception of type 'FSI_0001+DontLikeFive' was thrown.
-  at FSI_0001.picky (Int32 a) <0x66f3f58 + 0x00057> in <filename unknown>:0 
-  at <StartupCode$FSI_0001>.$FSI_0001.main@ () <0x66f31a0 + 0x0017f> in <filename unknown>:0 
-  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&)
-  at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) <0x1a7c270 + 0x000a1> in <filename unknown>:0 
-Stopped due to error
+$ fsharpc --nologo exceptionDefinition.fsx
+$ mono exceptionDefinition.exe
+picky 3 = "3"
+picky 5 = "Exception of type 'ExceptionDefinition+DontLikeFive' was thrown."

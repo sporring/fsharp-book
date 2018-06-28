@@ -1,3 +1,4 @@
+$ fsharpc --nologo reverseFile.fsx && mono reverseFile.exe
 ["let rec readFile (stream : System.IO.StreamReader) =";
  "  if not(stream.EndOfStream) then";
  "    (stream.ReadLine ()) :: (readFile stream)"; "  else"; "    []"; "";

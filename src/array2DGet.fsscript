@@ -1,0 +1,2 @@
+let arr = Array2D.init 3 4 (fun i j -> i + 10 * j)
+Array2D.get arr 1 2;;

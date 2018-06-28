@@ -1,22 +1,15 @@
 \chapter{Handling Errors and Exceptions}
-\label{chap:exceptions}
-Exceptions are runtime errors, which may be handled gracefully by F\#. Exceptions are handled by the \keyword{try} keyword both in expressions. E.g., Integer division by zero raises and exception, but it may be handled in a script as follows,
-%
-\fs{exceptionDivByZero}{A division by zero is caught and a default value is returned.}
-%
-The \keyword{try} expressions have the following syntax,
-%
-\begin{verbatimwrite}{tmp.ebnf}
-expr = ... 
-  | "try" expr "with" ["|"] rules (*exception*)
-  | "try" expr "finally" expr; (*exception with cleanup*)
+\label{chap:errors}
 
-rules = rule | rule "|" rules;
-rule = pat ["when" expr] "->" expr;
-\end{verbatimwrite}
-\ebnf{tmp.ebnf}{}
+\section{Exceptions}
+\label{sec:exceptions}
+Exceptions are runtime errors, such as division by zero. E.g., attempting integer division by zero halts execution and a long somewhat cryptic error message is written to screen as illustrated in \Cref{DivByZero}.
 %
-Exceptions are a basic-type called \lstinline!exn!, and F\# has a number of built-in, see Table~\ref{tab:exceptions}. \jon{Add example of raising builtin exceptions, e.g., \lstinline!let f () : int = raise (System.ArithmeticException "hej") in f();;!}
+\fsOutput{DivByZero}{Division by zero halts execution with an error message.}
+%
+The error message starts by \lstinline[language=console]{System.DivideByZeroException: Attempted to divide by zero}, followed by a description of which libraries were involved when the error occurred, and finally F\# informs us that it \lstinline[language=console]{Stopped due to error}. The type \lstinline{System.DivideByZeroException} is a built-in exception type, and the built-in integer division operator chooses to raise the exception when the undefined division by zero is attempted. Many times such errors can be avoided by clever program design. However, this is not always possible or desirable, which is why F\# implements exception handling for graceful control.
+
+Exceptions are a basic-type called \idx[exn@\lstinline{exn}]{\lstinline{exn}}, and F\# has a number of built-in, a few of which are listed in \Cref{tab:exceptions}.\idxss{ArgumentException@\lstinline{ArgumentException}}\idxss{DivideByZeroException@\lstinline{DivideByZeroException}}\idxss{NotFiniteNumberException@\lstinline{NotFiniteNumberException}}\idxss{OverflowException@\lstinline{OverflowException}}\idxss{IndexOutOfRangeException@\lstinline{IndexOutOfRangeException}}
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -24,109 +17,216 @@ Exceptions are a basic-type called \lstinline!exn!, and F\# has a number of buil
     \hline
     \rowcolor{headerRowColor} Attribute & Description\\
     \hline
-    \lstinline!System.ArithmeticException! & Failed arithmetic operation.\\
-   \hline
-    \lstinline!System.ArrayTypeMismatchException! & Failed attempt to store an element in an array failed because of type mismatch.\\
-   \hline
-    \lstinline!System.DivideByZeroException! & Failed due to division by zero.\\
-   \hline
-    \lstinline!System.IndexOutOfRangeException! & Failed to access an element in an array because the index is less than zero or equal or greater than the length of the array.\\
-   \hline
-    \lstinline!System.InvalidCastException! & Failed to explicitly convert a base type or interface to a derived type at run time.\\
-   \hline
-    \lstinline!System.NullReferenceException! & Failed use of a \lstinline!null! reference was used, since it required the referenced object.\\
-   \hline
-    \lstinline!System.OutOfMemoryException! & Failed to use \lstinline!new! to allocate memory.\\ 
-   \hline
-    \lstinline!System.OverflowException! & Failed arithmetic operation in a checked context which caused an overflow.\\
-   \hline
-    \lstinline!System.StackOverflowException ! & Failed use of the internal stack caused by too many pending method calls, e.g., from deep or unbounded recursion.\\
-   \hline
-    \lstinline!System.TypeInitializationException! & Failed initialization of code for a type, which was not caught.\\
-   \hline
+    \lstinline!ArgumentException! & Arguments provided are invalid.\\
+    \hline
+    \lstinline!DivideByZeroException! & Division by zero.\\
+    \hline
+    \lstinline!NotFiniteNumberException! & floating point value is plus or minus infinity, or Not-a-Number (NaN).\\
+    \hline
+    \lstinline!OverflowException! & Arithmetic or casting caused an overflow.\\
+    \hline
+    \lstinline!IndexOutOfRangeException! & Attempting to access an element of an array using an index which is less than zero or equal or greater than the length of the array.\\
+    \hline
   \end{tabularx}
-  \caption{Built-in exceptions.}
+  \caption{Some built-in exceptions. The prefix \lstinline{System.} has been omitted for brevity.}
   \label{tab:exceptions}
 \end{table}
-The programs may define new exceptions using the syntax,
+
+Exceptions are handled by the \keyword{try}--keyword expressions. We say that an expression may \idx[raising exception]{raise} or \idx[casting exceptions]{cast} an exception, the \keyword{try}--expression may \idx[catching exception]{catch} and \idx[handling exception]{handle} the exception by another expression.
+
+Exceptions like in \Cref{DivByZero} may be handled by \keyword{try}--\keyword{with} expressions as demonstrated in \Cref{exceptionDivByZero}.
 %
-\begin{verbatimwrite}{tmp.ebnf}
-"exception" ident of typeTuple (*exception definition*)
-typeTuple = type | type "*" typeTuple;
+\fs{exceptionDivByZero}{A division by zero is caught and a default value is returned.}
+%
+In the example, when the division operator raises the \lstinline{System.DivideByZeroException} exception, then \keyword{try}--\keyword{with} catches it and returns the value \lstinline{System.Int32.MaxValue}. Division by zero is still an undefined operation, but with the exception system, the program is able to receive a message about this undefined situation and choose an appropriate action.
+
+The \keyword{try} expressions comes in two flavors: \keyword{try}--\keyword{with} and \keyword{try}--\keyword{finally} expressions.
+
+The \idx[trywith@\keyword{try}--\keyword{with}]{\keyword{try}--\keyword{with}} expression has the following syntax,
+%
+\begin{verbatimwrite}{\ebnf/exceptionWith.ebnf}
+try
+   <*testExpr*>
+with
+   [* | *] <*pat1*> -> <*exprHndl1*>
+   | <*pa2*> -> <*exprHndl2*>
+   | <*pat3*> -> <*exprHndl3*>
+   ...
 \end{verbatimwrite}
-\ebnf{tmp.ebnf}{}
+\syntax{\ebnf/exceptionWith.ebnf}{Syntax for the \keyword{try}--\keyword{with} exception handling.}
 %
-and any exceptions may be \idx[raise an exception]{raised} using the functions \keyword{failwith}, \keyword{invalidArg}, \keyword{raise}, and \keyword{reraise}. An example of raising an exception with the \lstinline!raise! function is,
+where \lstinline[language=syntax]{<*testExpr*>} is an expression, which might raise an exception, \lstinline[language=syntax]{<*patn*>} is a pattern, and \lstinline[language=syntax]{<*exprHndln*>} is the corresponding exception handler. The value of the \keyword{try}--expression is either the value of \lstinline[language=syntax]{<*testExpr*>}, if it does not raise an exception, or the value of the exception handler \lstinline[language=syntax]{<*exprHndln*>} of the first matching pattern \lstinline[language=syntax]{<*patn*>}. The above is lightweight syntax. Regular syntax omits newlines.
+
+In \Cref{exceptionDivByZero} \idx[dynamic type pattern]{dynamic type matching} is used (see \Cref{{sec:staticNDynamicTypePattern}}) using the \lexeme{:?} lexeme, i.e., the pattern matches exceptions at runtime which has the \lstinline{System.DivideByZeroException} type. The exception value may contain furter information and can be accessed if named using the \idx[as@\lstinline{as}]{\lstinline{as}}--keyword as demonstrated in \Cref{exceptionDivByZeroNamed}.
+%
+\fs{exceptionDivByZeroNamed}{Exception value is bound to a name. Compare to \Cref{exceptionDivByZero}.}
+%
+Here the exception value is bound to the name \lstinline{ex}.
+
+All exceptions may be caught as the dynamic type \lstinline{System.Exception}, and F\# implements a short-hand for catching exceptions and binding its value to a name as demonstrated in 
+%
+\fs{exceptionDivByZeroShortHand}{An exception of type \lstinline{System.Exception} is bound to a name. Compare to \Cref{exceptionDivByZeroNamed}.}
+%
+Finally, the short-hand may be guarded with a \idx[when@\keyword{when}]{\keyword{when}}--guard as demonstrated in \Cref{exceptionDivByZeroGuard}.
+%
+\fs{exceptionDivByZeroGuard}{An exception of type \lstinline{System.Exception} is bound to a name and guarded. Compare to \Cref{exceptionDivByZeroShortHand}.}
+%
+The first pattern only matches the \lstinline{System.Exception} exception when \lstinline{enum} is 0, in which case the exception handler returns 0.
+
+Thus, if you don't care about the type of exception, then you need only use the short-hand pattern matching and name binding demonstrated in \Cref{exceptionDivByZeroShortHand} and \Cref{exceptionDivByZeroGuard}, but if you would like to distinguish between types of exceptions, then you must use explicit type matching and possibly value binding demonstrated in \Cref{exceptionDivByZero} and \Cref{exceptionDivByZeroNamed}
+
+The \idx[trywith@\keyword{try}--\keyword{finally}]{\keyword{try}--\keyword{finally}} expression has the following syntax,
+%
+\begin{verbatimwrite}{\ebnf/exceptionFinally.ebnf}
+try
+   <*testExpr*>
+finally
+   <*cleanupExpr*>
+\end{verbatimwrite}
+\syntax{\ebnf/exceptionFinally.ebnf}{Syntax for the \keyword{try}--\keyword{finally} exception handling.}
+%
+The \keyword{try}--\keyword{finally} expression evaluates the \lstinline[language=syntax]{<*cleanupExpr*>} expression following evaluation of the \lstinline[language=syntax]{<*testExpr*>} regardless of whether an exception is raised or not as illustrated in \Cref{exceptionDivByZeroFinally}.
+%
+\fs{exceptionDivByZeroFinally}{The \keyword{finally} branch is executed regardless of an exception.}
+%
+Here, the \keyword{finally} branch is evaluated following the evaluation of the test expression regardless of whether the test expression raises an exception or not. However, if an exception is raised in a \keyword{try}--\keyword{finally} expression and there is no outer \keyword{try}--\keyword{with} expression, then execution stops without having evaluated the \keyword{finally} branch.
+
+
+Exceptions can be raised using the \idx[raise@\lstinline{raise}]{\lstinline{raise}}-function
+%
+\begin{verbatimwrite}{\ebnf/raise.ebnf}
+raise (<*expr*>)
+\end{verbatimwrite}
+\syntax{\ebnf/raise.ebnf}{Syntax for the \lstinline{raise} function that raises exceptions.}
+%
+An example of raising the \lstinline{System.ArgumentException} is shown in \Cref{raiseArgumentException}
+% 
+\fs{raiseArgumentException}{Raising the division by zero with customized message.}
+%
+In this example, division by zero is never attempted, instead an exception is raised, which must be handled by the caller. Note that the type of \lstinline!div! is \lstinline!int -> int -> int! because \lstinline{denom} is compared with an integer in the conditional statement. This contradicts the typical requirements for \keyword{if} statements, where every branch has to return the same type. However, any code that explicitly raises exceptions are ignored, and the type is inferred by the remaining branches.
+
+Programs may define new exceptions using the syntax,
+%
+\begin{verbatimwrite}{\ebnf/exceptionDef.ebnf}
+exception <*ident*> of <*typeId*> {** <*typeId*>*} 
+\end{verbatimwrite}
+\syntax{\ebnf/exceptionDef.ebnf}{Syntax for defining new exceptions.}
+%
+An example of defining a new exception and raising it is given in \Cref{exceptionDefinition}.
 %
 \fs{exceptionDefinition}{A user-defined exception is raised but not caught by outer construct.}
 %
-Here an exception called \lstinline!DontLikeFive! is defined, and it is raised in the function \lstinline!picky!. When run, F\# stops at run-time after the program has raised the exception with a long description of the reason including the name of the exception. Exceptions include messages, and the message for \lstinline!DontLikeFive! is of type \lstinline!string!. This message is passed to the \keyword{try} expression and may be processed as e.g., 
+Here an exception called \lstinline!DontLikeFive! is defined, and it is raised in the function \lstinline!picky!. The example demonstrates that catching the exception as a \lstinline{System.Exception} as in \Cref{exceptionDivByZeroShortHand} the \lstinline{Message} property includes information about the exception name but not its argument. To retrieve the argument \lstinline{"5 sucks"}, we must match the exception with correct exception name as demonstrated in \Cref{exceptionDefinitionNCatch}. 
 %
 \fs{exceptionDefinitionNCatch}{Catching a user-defined exception.}
 %
-Note that the type of \lstinline!picky! is \lstinline!a:int -> int! because its argument is compared with an integer in the conditional statement. This contradicts the typical requirements for \keyword{if} statements, where every branch has to return the same type. However, any code that explicitly raises exceptions are ignored, and the type is inferred by the remaining branches.
 
-The \lstinline!failwith : string -> exn! function takes a string and raises the built-in \lstinline!System.Exception! exception, 
+F\# includes the \idx[failwith@\lstinline{failwith}]{\lstinline{failwith}} function to simplify the most common use of exceptions. It is defined as \lstinline!failwith : string -> exn! and takes a string and raises the built-in \lstinline!System.Exception! exception. An example of its use is shown in \Cref{exceptionFailwith}.
 %
 \fs{exceptionFailwith}{An exception raised by \lstinline{failwith}.}
 %
-To catch the \lstinline!failwith! exception, there are two choices, either use the \lstinline!:?! or the \lstinline!Failure! pattern. the \lstinline!:?! pattern matches types, and we can match with the type of \lstinline!System.Exception! as,
+To catch the \lstinline!failwith! exception, there are two choices, either use the \lstinline!:?! or the \lstinline!Failure! pattern. the \lstinline!:?! pattern matches types, and we can match with the type of \lstinline!System.Exception! as shown in \Cref{exceptionSystemException}.
 %
 \fs{exceptionSystemException}{Catching a \lstinline{failwith} exception using type matching pattern.}
 %
-However, this gives annoying warnings, since F\# internally is built such that all exception matches the type of \lstinline!System.Exception!. Instead it is better to either match anything,
+However, this gives annoying warnings, since F\# internally is built such that all exception matches the type of \lstinline!System.Exception!. Instead it is better to either match using the wildcard pattern as in \Cref{exceptionMatchWildcard},
 %
 \fs{exceptionMatchWildcard}{Catching a \lstinline{failwith} exception using the wildcard pattern.}
 %
-or use the built-in \lstinline!Failure! pattern,
+or use the built-in \lstinline!Failure! pattern as in \Cref{exceptionFailure}.
 %
 \fs{exceptionFailure}{Catching a \lstinline{failwith} exception using the \lstinline{Failure} pattern.}
 %
 Notice how only the \lstinline!Failure! pattern allows for the parsing of the message given to \lstinline!failwith! as argument.
 
-The \lstinline!invalidArg! takes 2 strings and raises the built-in \lstinline!ArgumentException!
+%, \idx[invalidArg@\lstinline{invalidArg}]{\lstinline{invalidArg}}, \idx[raise@\lstinline{raise}]{\lstinline{raise}}, and \idx[reraise@\lstinline{reraise}]{\lstinline{reraise}}. 
+Invalid arguments is such a common reason for failures that a built-in function has been supplied in F\#. The \idx[invalidArg@\lstinline{invalidArg}]{\lstinline{invalidArg}} takes 2 strings and raises the built-in \lstinline!ArgumentException!
 %
-\fs{exceptionInvalidArg}{An exception raised by \lstinline{invalidArg}.}
+\fs{exceptionInvalidArg}{An exception raised by \lstinline{invalidArg}. Compare with \Cref{raiseArgumentException}.}
 %
-This would be caught by type matching as,
+The \lstinline{invalidArg} function raises an \lstinline{System.ArgumentException} as shown in \Cref{exceptionInvalidArgNCatch}.
 %
 \fs{exceptionInvalidArgNCatch}{Catching the exception raised by \lstinline{invalidArg}.}
 %
 
-The \keyword{try} construction is typically used to gracefully handle exceptions, but there are times, where you may want to pass on the bucket, so to speak, and reraise the exception. This can be done with the \keyword{reraise}.
+The \keyword{try} construction is typically used to gracefully handle exceptions, but there are times, where you may want to pass on the bucket, so to speak, and re-raise the exception. This can be done with the \idx[reraise@\keyword{reraise}]{\keyword{reraise}} as shown in \Cref{exceptionReraise}.
 %
 \fs{exceptionReraise}{Reraising an exception.}
 %
 The \lstinline!reraise! function is only allowed to be the final call in the expression of a \keyword{with} rule.
 
-At exceptions, it is not always obvious what should be returned. E.g., in the Listing~\ref{exceptionDivByZero}, the exception is handled gracefully, but the return value is somewhat arbitrarily chosen to be the largest possible integer, which is still far from infinity, which is the correct result. Instead we could use the \idx{option type}. The option type is a wrapper, that can be put around any type, and which extends the type with the special value \lstinline!None!. All other values are preceded by the \lstinline!Some! identifier. E.g., to rewrite Listing~\ref{exceptionDivByZero} to correctly represent the non-computable value, we could write
+\section{Option types}
+\label{sec:optionType}
+At exceptions, it is not always obvious what should be returned. E.g., in the \Cref{exceptionDivByZero}, the exception is handled gracefully, but the return value is somewhat arbitrarily chosen to be the largest possible integer, which is still far from infinity, which is the correct result. Instead we could use the \idx{option type}. The option type is a wrapper, that can be put around any type, and which extends the type with the special value \idx[none@\lstinline{None}]{\lstinline{None}}. All other values are preceded by the \idx[some@\lstinline{Some}]{\lstinline{Some}} identifier. An example of rewriting \Cref{exceptionDivByZero} to correctly represent the non-computable value is shown in \Cref{exceptionDivByZeroOptionType}.
 %
 \fsOutput{exceptionDivByZeroOptionType}{Option types can be used, when the value in case of exceptions is unclear.}
 %
-The value of an option type can be extracted by and tested for by its member function, \lstinline!IsNone!, \lstinline!IsSome!, and \lstinline!Value!, e.g.,
+The value of an option type can be extracted by and tested for by its member function, \idx[isnone@\lstinline{IsNone}]{\lstinline{IsNone}}, \idx[issome@\lstinline{IsSome}]{\lstinline{IsSome}}, and \idx[value@\lstinline{Value}]{\lstinline{Value}} as illustrated in \Cref{option}.
 %
 \fs{option}{Simple operations on option types.}
 %
+The \lstinline{Value} member is not defined for \lstinline{None}, thus \advice{explicit pattern matching for extracting values from an option type is preferred, e.g., \lstinline{let get (opt : 'a option) (def : 'a) = match opt with Some x -> x | _ -> def}}. Note also that \lstinline{printf} prints the value \lstinline{None} as \lstinline{<null>}. This author hopes, that future versions of the option type will have better visual representations of the \lstinline{None} value.
 
-In the \keyword{try}-\keyword{finally}, the \keyword{finally} expression is always executed, e.g.,
+Functions of option types are defined using the \idx[option@\keyword{option}]{\keyword{option}}--keyword. E.g., to define a function with explicit type annotation that always returns \lstinline{None}, write \lstinline{let f (x : 'a option) = None}.
+
+F\# includes an extensive \lstinline{Option} module. It defines among many other functions \idx[option.bind@\lstinline{Option.bind}]{\lstinline{Option.bind}} which implements \lstinline{let bind f opt = match opt with None -> None | Some x -> f x}. The function \lstinline{Option.bind} is demonstrated in \Cref{optionBind}.
 %
-\fs{exceptionFinally}{The \keyword{finally} expression in \keyword{try}-\keyword{finally} will always be executed.}
+\fsOutput{optionBind}{\lstinline{Option.bind} is useful for cascading calculations on option types.}
 %
-This is useful for cleaning up, e.g., closing files etc.\ which we will discuss in Chapter~\ref{chap:IO}. The only way to combine \keyword{try}-\keyword{finally} with \keyword{try}-\keyword{with} is to nest the expression inside each other.
+The \lstinline{Option.bind} is a useful tool for cascading functions that evaluates to option types.
+%This is called \idx{railway} error pipelining.
+% \begin{figure}
+%   \centering
+%   \begin{tikzpicture}[thick]
+%     \node (input) [label=above:x] {};
+%     \node[place] (f) [right=of input, label=above:f] {};
+%     \node (some) [right=of f, label=above:Some] {};
+%     \node (none) [below=of some, label=above:None] {};
+%     \draw [->] (input) to (f);
+%     \draw [->] (f) to (some);
+%     \draw [->] (f) to [bend right=45] (none);
+%   \end{tikzpicture}
+%   \caption{Railway example of function type \lstinline{f : x:'a option -> 'b option}}
+%   \label{fig:railway}
+% \end{figure}
+
+\section{Programming intermezzo: Sequential division of floats}
+The following problem illustrates cascading error handling:
+\begin{problem}
+  Given a list of floats such as \lstinline{[1.0; 2.0; 3.0]}, calculate the sequential division \lstinline{1.0/2.0/3.0}. 
+\end{problem}
+A sequential division is safe if the list does not contain zero values. However, if any element in the list is zero, then error handling must be performed. An example using \lstinline{failwith} is given in \Cref{seqDiv}.
+%
+\fs{seqDiv}{Sequentially dividing a list of numbers.}
+%
+In this example, a recursive function is defined which updates an accumulator element, initially set to the neutral value 1.0. Division by zero results in a \lstinline{failwith} exception, wherefore we must wrap its use in a \keyword{try}--\keyword{with} expression.
+
+Instead of using exceptions, we may use \lstinline{Option.bind}. In order to use \lstinline{Option.bind} for a sequence of non-option floats, we will define a division operator, that reverses the order of operands. This is shown in \Cref{seqDivOption}.
+%
+\fs{seqDivOption}{Sequentially dividing a sequence of numbers using \lstinline{Option.bind}. Compare with \Cref{seqDiv}.}
+%
+Here the function \lstinline{divideBy} takes two non-option arguments and returns an option type. Thus, \lstinline{Option.bind (divideBy 2.0) (Some 1.0)} is equal to \lstinline{Some 0.5}, since \lstinline{divideBy 2.0} is a function that divides any float argument by 2.0. Iterating \lstinline{Option.bind (divideBy 3.0) (Some 0.5)} we calculate \lstinline{Some 0.1666666667} or \lstinline{Some (1.0/6.0)} as expected. In \Cref{seqDivOption} this is written as a single \keyword{let} binding using piping. And since \lstinline{Option.bind} correctly handles the distinction between \lstinline{Some} and \lstinline{None} values, such piping sequences correctly handles possible errors as shown in \Cref{seqDivOption}.
+
+The sequential application can be extended to lists using \lstinline{List.foldBack} as demonstrated in \Cref{seqDivOptionAdv}.
+%
+\fs{seqDivOptionAdv}{Sequentially dividing a list of numbers using \lstinline{Option.bind} and \lstinline{List.foldBack}. Compare with \Cref{seqDivOption}.}
+%
+Since \lstinline{List.foldBack} processes the list from the right, the list of integers have been reversed. Notice how \lstinline{divideByOption} is the function spelled out in each piping step of \Cref{seqDivOption}.
+
+Exceptions and option type are systems to communicate errors up through a hierarchy of function calls. While exceptions favor imperative style programming, option types are functional style programming. Exceptions allow for a detailed report of the type of error to the caller, whereas option types only allow for flagging that an error has occurred.
 
 \begin{comment}
-\begin{itemize}
-\item exn type Spec-4.0 Chapter 18.1
-\item Spec-4.0 Section 18.2.8
-\end{itemize}
+  \begin{itemize}
+  \item exn type Spec-4.0 Chapter 18.1
+  \item Spec-4.0 Section 18.2.
+  \item Husk, som if-else skal try-with branches være af samme type. Giv eksempel på parsning af argument til selvdefineret exception. Gå problem med divmed0exception igennem: 3 cases, failsafe værdier, undtagelser, eller option typer.
+  \item Extend railway paradigm, \url{https://fsharpforfunandprofit.com/posts/computation-expressions-bind/}
+  \item Extend notion of exception heriarchy and relation to catching or not.
+  \end{itemize}
 \end{comment}
-
-\jon{Husk, som if-else skal try-with branches være af samme type. Giv
-  eksempel på parsning af argument til selvdefineret exception. Gå
-  problem med divmed0exception igennem: 3 cases, failsafe værdier,
-  undtagelser, eller option typer.}
 
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
+

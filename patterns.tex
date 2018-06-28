@@ -1,34 +1,227 @@
-\chapter{Patterns}
+\chapter{Pattern matching}
 \label{chap:patterns}
-\section{Pattern matching}
-Conditional expressions are so common that a short-hand notation called \idx{pattern matching} is available in F\#. For the 
-Consider the task,
+Pattern matching is used to transform values and variables into a syntactical structure. The simplest example is value-bindings. The \idx[let@\lstinline{let}]{\keyword{let}}-keyword was introduced in \Cref{sec:values}, its extension with pattern matching is given as,
+%
+\begin{verbatimwrite}{\ebnf/letLiteral.ebnf}
+[*[<Literal>]*]
+let [*mutable*] <*pat*> [*: <*returnType*>*] = <*bodyExpr*> [*in <*expr*>*]
+\end{verbatimwrite}
+\syntax{\ebnf/letLiteral.ebnf}{Syntax for \keyword{let}-expressions with pattern matching.}
+%
+A typical use of this is to extract elements of tuples as demonstrated in \Cref{letPattern}.
+%
+\fs{letPattern}{Patterns in \keyword{let} expressions may be used to extract elements of tuples.}
+%
+Here we extract the elements of a pair twice. First by binding to \lstinline{x} and \lstinline{y}, and second by binding to \lstinline{alsoX} while using the wildcard pattern to ignore the second element. Thus, again the wildcard pattern in value-bindings is used to underline a disregarded value.
+
+Another common use of patterns is as alternative to \keyword{if} -- \keyword{then} -- \keyword{else} expressions particularly when parsing input for a function. Consider the example in \Cref{switch}.
+%
+\fs{switch}{Using \keyword{if} -- \keyword{then} -- \keyword{else} to print discriminated unions.}
+%
+In the example, is a discriminated union and a function defined. The funciton converts each case to a supporting statement using an \keyword{if}-expression. The same can be done with the \idx[match@\lstinline{match}]{\keyword{match}} -- \idx[with@\lstinline{with}]{\keyword{with}} expression and patterns as is demonstrated in \Cref{switchPattern}.
+%
+\fs{switchPattern}{Using \keyword{match} -- \keyword{with} to print discriminated unions.}
+%
+Here we used a pattern for the discriminated union cases and a wildcard pattern as default. The lightweight syntax for \keyword{match}-expressions is,
+%
+\begin{verbatimwrite}{\ebnf/match.ebnf}
+match <*inputExpr*> with 
+ [*| *]<*pat*> [*when <*guardExpr*>*] -> <*caseExpr*> 
+ | <*pat*> [*when <*guardExpr*>*] -> <*caseExpr*> 
+ | <*pat*> [*when <*guardExpr*>*] -> <*caseExpr*> 
+ ...
+\end{verbatimwrite}
+\syntax{\ebnf/match.ebnf}{Syntax for \keyword{match}-expressions.}
+%
+where \lstinline[language=syntax]{<*inputExpr*>} is the \idx{input pattern} to find matches of, \lstinline[language=syntax]{<*pat*>} is a pattern to match with, \lstinline[language=syntax]{<*guardExpr*>} is an optional guard expression, and \lstinline[language=syntax]{<*caseExpr*>} is the resulting expression. Each set starting with \lstinline[language=syntax]{<*pat*>} is called a case.  In lightweight syntax, the indentation must be equal to or higher than the indentation of \keyword{match}. All cases must return a value of the same type, and F\# report an error, when not the complete domain of the input pattern is covered by cases in \keyword{match}-expressions.
+
+Patterns are also used in a version of \idx[for@\lstinline{for}]{\keyword{for}}-loop expressions, and its lightweight syntax is given as,
+%
+\begin{verbatimwrite}{\ebnf/forPattern.ebnf}
+for <*pat*> in <*sourceExpr*> do 
+  <*bodyExpr*>
+ \end{verbatimwrite}
+\syntax{\ebnf/forPattern.ebnf}{Syntax for \keyword{for}-expressions with pattern matching.}
+%
+Typically, \lstinline[language=syntax]{<*sourceExpr*>} is a list or an array. An example is given in \Cref{forPattern}.
+%
+\fs{forPattern}{Patterns may be used in \keyword{for}-loops.}
+%
+The wildcard pattern is used to disregard the first element in a pair while iterating over the complete list. It is good practice to \advice{use wildcard patterns to emphasize unused values.}
+
+The final expression involving patterns to be discussed is \idx{anonymous functions}. Patterns for anonymous functions have the syntax,
+%
+\begin{verbatimwrite}{\ebnf/funPattern.ebnf}
+fun <*pat*> [*<*pat*> ...*] -> <*bodyExpr*>
+\end{verbatimwrite}
+\syntax{\ebnf/funPattern.ebnf}{Syntax for anonymous functions with pattern matching.}
+%
+This is an extension of the syntax discussed in \Cref{sec:functions}. A typical use for patterns in \idx[fun@\lstinline{fun}]{\keyword{fun}}-expressions is shown in \Cref{funPattern}.
+%
+\fs{funPattern}{Patterns may be used in \keyword{fun}-expressions.}
+%
+Here we use an anonymous function expression and bind it to \lstinline{f}. The expression has one argument of any type, which it ignores using the wildcard pattern. Some limitations apply to the patterns allowed in \keyword{fun}-expressions.\jon{Remove or elaborate.} The wildcard pattern in \keyword{fun}-expressions are often used for \idx{mockup functions}, where the code requires the said function, but its content has yet to be decided. Thus, mockup functions can be used as loose place-holders, while experimenting with program design.
+
+Patterns are also used in exceptions to be discussed in \Cref{sec:exceptions}, and in conjunction with the \keyword{function}-keyword, a keyword we discourage in this book. We will now demonstrate a list of important patterns in F\#.
+
+\section{Wildcard pattern}
+\label{sec:wildcardPattern}
+A \idx{wildcard pattern} is denoted \idx[_@\lstinline{_}]{\lexeme{_}} and matches anything, see e.g., \Cref{wildcardPattern}.
+%
+\fs{wildcardPattern}{Constant patterns matches to constants.}
+%
+In this example, anything matches the wildcard pattern, so all cases are covered and the function always returns the same sentence. This is rarely a useful structure on its own since this could be replaced by a value binding or by a function ignoring its input. However, wildcard patterns are extremely useful, since they act as the final \keyword{else} in \keyword{if}-expressions.
+
+\section{Constant and literal patterns}
+A \idx{constant pattern} matches any input pattern with constants, see e.g., \Cref{constPattern}.
+%
+\fs{constPattern}{Constant patterns matches to constants.}
+%
+In this example, the input pattern is queried for a match with \lstinline{0} and \lstinline{1} or the wildcard pattern. Any simple literal type constants may be used in the constant pattern such as \lstinline{8}, \lstinline{23y}, \lstinline{1010u}, \lstinline{1.2}, \lstinline{"hello world"}, \lstinline{'c'}, and , \lstinline{false}.  Here we also use the wildcard pattern. Notice, matching is performed in a lazy manner and stops for the first matching case from the top. Thus, although the wildcard pattern matches everything, its case expression is only executed if none of the previous patterns matches the input.
+
+Constants can also be pre-bound by the \lstinline{[<Literal>]} attribute for value-bindings. This is demonstrated in \Cref{literalPattern}.
+%
+\fs{literalPattern}{A variant of constant patterns are literal patterns.}
+%
+The attributed is used to identify the value-binding \lstinline{TheAnswer} to be used as if it were a simple literal type. Literal patterns must be either uppercase or module prefixed identifiers.
+
+\section{Variable patterns}
+A \idx{variable pattern} is a single lower-case letter identifier. Variable pattern identifiers are assigned the value and type of the input pattern. Combinations of constant and variable patterns are also allowed together with records and arrays. This is demonstrated in \Cref{variablePattern}.
+%
+\fs{variablePattern}{Variable patterns are useful for extracting and naming fields etc.}
+%
+In this example, the use of the value identifier \lstinline{n} has the function of a named wildcard pattern. Hence, the case could as well have been \lstinline{| _ -> (string age) + "years old"}, since \lstinline{age} is already defined in this scope. However, variable patterns syntactically act as an argument to an anonymous function and thus act to isolate the dependencies. They are also very useful together with guards, see \Cref{sec:guards}.
+
+\section{Guards}
+\label{sec:guards}
+A \idx{guard} is a pattern used together with \keyword{match}-expressions including the \idx[when@\lstinline{when}]{\keyword{when}}-keyword, as shown in \Cref{\ebnf/match.ebnf}. 
+%
+\fs{guardPattern}{Guard expressions can be used with other patterns to restrict matches.}
+%
+Here guards are used to iteratively carve out subset of integers to assign different strings to each set. The guard expression in \lstinline[language=syntax]{<*pat*> when <*guardExpr*> -> <*caseExpr*>} is any expression evaluating to a Boolean, and the case expression is only executed for the matching case.
+
+\section{List patterns}
+Lists have a concatenation pattern\idxs{list pattern} associated with them. The \idx[::@\lstinline{::}]{\lexeme{::}} cons-operator is used to to match the head and the rest of a list, and \idx[{[]}@\lstinline{[]}]{\lexeme{[]}} is used to match an empty list, which is also sometimes called the nil-case. This is very useful, when recursively processing lists as shown in \Cref{listPattern}
+%
+\fs{listPattern}{Recursively parsing a list using list patterns.}
+%
+In the example, the function \lstinline{sumList} uses the cons operator to match the head of the list with \lstinline{n} and the tail with \lstinline{rest}. The pattern \lstinline{n :: tail} also matches \lstinline{3 :: []}, and in that case \lstinline{tail} would be assigned the value \lstinline{[]}. When \lstinline{lst} is empty, then it matches with \lexeme{[]}. List patterns can also be matched explicitly named elements as demonstrated in the \lstinline{sumThree} function. The elements to be matched can be any mix of constants and variables.
+
+\section{Array, record, and discriminated union patterns}
+\idx[array pattern]{Array}, \idx[record pattern]{record}, and \idx{discriminated union patterns} are direct extensions on constant, variable, and wildcard patterns. \Cref{arrayPattern} gives examples of array patterns.
+%
+\fs{arrayPattern}{Using variable patterns to match on size and content of arrays.}
+%
+In the function \lstinline{arrayToString}, the first case matches arrays of 3 elements, where the first is the integer 1, the second case matches arrays of 3 elements, where the second is a 1 and names the first \lstinline{x}, and the final case matches all arrays and works as a default match case. As demonstrated, the cases are treated from first to last, and only the expression of the first case that matches is executed.
+
+For record pattern, we use the field names to specify matching criteria. This is demonstrated in \Cref{recordPattern}.
+%
+\fs{recordPattern}{Variable patterns for records to match on field values.}
+%
+Here, the record type \lstinline{Address} is created, and in the function \lstinline{getZip}, a variable pattern \lstinline{z} is created for naming zip values, and the remaining fields are ignored. Since the fields are named, the pattern match needs not mention the ignored fields, and the example match is equivalent to \lstinline!{zip = z} -> z!. The curly brackets are required for record patterns.
+
+Discriminated union patterns are similar. For discriminated unions with arguments, the arguments can be matched as constants, variables, or wildcards. A demonstration is given in \Cref{unionPattern}.
+%
+\fs{unionPattern}{Matching on discriminated union types.}
+%
+In the \lstinline{project}-function, three-dimensional vectors are projected to two dimensions by removing the third element. Two-dimensional vectors are unchanged. The example uses the wildcard pattern to emphasize, that the third element of three-dimensional vectors is ignored. Named arguments can also be matched, in which case \lexeme{;} is used to delimit the fields in the match instead of \lexeme{,}.
+
+\section{Disjunctive and conjunctive patterns}
+Patterns may be combined disjunctively using the \idx[|@\lstinline{|}]{\lexeme{|}} lexeme and conjunctively using the \idx[{&}@\lstinline{&}]{\lexeme{&}} lexeme. \idx[disjunctive pattern]{Disjunctive patterns} combine as fall-through as illustrated in \Cref{disjunctivePattern}.
+%
+\fs{disjunctivePattern}{Patterns can be combined logically as 'or' syntax structures.}
+%
+Here one or more cases must match for the final case expression, and thus, any vowel results in the same case expression \lstinline{true}. All else is matched with the wildcard pattern. 
+
+For \idx{conjunctive patterns} all patterns must match, which is illustrated in \Cref{conjunctivePattern}.
+%
+\fs{conjunctivePattern}{Patterns can be combined logically as 'or' syntax structures.}
+%
+In this case, we separately check the elements of a pair for the constant value \lstinline{1} and return true only when both elements are \lstinline{1}. In many cases, conjunctive patters can be replaced by more elegant matches, e.g., using tuples, and in the above example a single case \lstinline!(1,1) -> true! would have been simpler. Nevertheless, conjunctive patterns are used together with active patterns, to be discussed below.
+
+\section{Active Pattern}
+The concept of patterns is extendable to functions. Such functions are called \idx{active patterns}, and active patterns comes in two flavors: regular and option types. The active pattern cases are constructed as function bindings, but using a special notation. They all take the pattern input as last argument, and may take further preceding arguments. The syntax for active patterns is one of,
+%
+\begin{verbatimwrite}{\ebnf/activePattern.ebnf}
+let (|<*caseName*>|[*_| *]) [* <*arg*> [*<*arg*> ... *]*] <*inputArgument*> = <*expr*>
+let (|<*caseName*>|<*caseName*>|...|<*caseName*>|) <*inputArgumetn*> = <*expr*>
+\end{verbatimwrite}
+\syntax{\ebnf/activePattern.ebnf}{Syntax for binding active patterns to expressions.}
+%
+When using the \lstinline[language=syntax]{(|<*caseName*>|_|])} variants, then the active pattern function must return an option type. The multi-case variant \lstinline[language=syntax]{(|<*caseName*>|<*caseName*>|...|<*caseName*>|)} must return a \lstinline{Fsharp.Core.Choice} type. All other variants can return any type. There are no restrictions on arguments \lstinline[language=syntax]{<*arg*>}, and \lstinline[language=syntax]{<*inputArgumetn*>} is the input pattern to be matched. Notice in particular that the multi-case variant only takes one argument and cannot be combined with the option-type syntax. Below we will demonstrate how the various patterns are used by example.
+
+The single case, \lstinline[language=syntax]{(|<*caseName*>|])} matches all, and is useful for extracting information from complex types, as demonstrated in \Cref{activePattern}.
+%
+\fs{activePattern}{Single case active pattern for deconstructing complex types.}
+%
+Here we define a record to represent two-dimensional vectors and two different single case active patterns. Note that in the binding of the active pattern functions in line~\ref{activePatternCartesian} and~\ref{activePatternPolar}, the argument is the input expression \lstinline[language=syntax]{match <*inputExpr*> with ...}, see \Cref{\ebnf/match.ebnf}. However, the argument for the cases in line~\ref{activePatternCartesianApp} and~\ref{activePatternPolarApp} are names bound to the output of the active pattern function.
+
+Both \lstinline{Cartesian} and \lstinline{Polar} matches a vector record, but they dismantle the contents differently. For an alternative solution using Class types, see \Cref{sec:constructor}. 
+
+More complicated behavior is obtainable by supplying additional arguments to the single case. This is demonstrated in \Cref{activeArgumentsPattern}.
+%
+\fs{activeArgumentsPattern}{All but the multi-case active pattern may take additional arguments.}
+%
+Here we supply an offset, which should be subtracted prior to calculating lengths and angles. Notice in line~\ref{activeArgumentsPatternApp}, that the argument is given prior to the result binding.
+
+Active pattern functions return option types are called \idx{partial pattern functions}. The option type allows for specifying mismatches as illustrated in \Cref{activeOptionPattern}.
+%
+\fs{activeOptionPattern}{Option type active patterns mismatches on \lstinline{None} results.}
+%
+In the example, we use the \lstinline[language=syntax]{(|<*caseName*>|_|])} variant to indicate, that the active pattern returns an option type. Nevertheless, the result binding \lstinline{res} in line~\ref{activeOptionPatternApp} uses the underlying value of \lstinline{Some}. And in contrast to the two previous examples of single case patterns, the value \lstinline{None} results in a mismatch. Thus in this case, if the denominator is \lstinline{0.0}, then \lstinline{Div res} does not match but the wildcard pattern does.
+
+\idx[multicase active patterns]{Multicase active patterns} work similarly to discriminated unions without arguments.\jon{This maybe too advanced for this book.} An example is given in \Cref{activeMultiCasePattern}.
+%
+\fs{activeMultiCasePattern}{Multi-case active patterns have a syntactical structure similar to discriminated unions.}
+%
+In this example, we define three cases in line~\ref{activeMultiCasePatternDef}. The result of the active pattern function must be one of these cases. For the \keyword{match}-expression, the match is based on the output of the active pattern function, hence in line~\ref{activeMultiCasePatternApp}, the case expression is executed, when the result of applying the active pattern function to the input expression \lstinline{i} is \lstinline{Gold}. In this case, a solution based on discriminated unions would probably be clearer.
+
+\section{Static and dynamic type pattern}
+\label{sec:staticNDynamicTypePattern}
+Input patterns can also be matched on type. For \idx[static type pattern]{static type matching} the matching is performed at compile time, and indicated using the \idx[:@\lstinline{:}]{\lexeme{:}} lexeme followed by the type name to be matched. Static type matching is further used as input to the type inference performed at compile time to infer non-specified types as illustrated in \Cref{staticTypePattern}.
+%
+\fs{staticTypePattern}{Static matching on type binds the type of other values by type inference.}
+%
+Here the head of the list \lstinline{n} in the list pattern is explicitly matched as an integer, and the type inference system thus concludes that \lstinline{lst} must be a list of integers.
+
+In contrast to static type matching, \idx[dynamic type pattern]{dynamic type matching} is performed at runtime, and indicated using the \idx[:?@\lstinline{:?}]{\lexeme{:?}} lexeme followed by a type name. Dynamic type patterns allow for matching generic values at runtime. This is an advanced topic, which is included here for completeness. An example is given in \Cref{dynamicTypePattern}.
+%
+\fs{dynamicTypePattern}{Static matching on type binds the type of other values by type inference.}
+%
+In F\# all types are also objects, whose type is denoted \lstinline{obj}. Thus, the example uses the generic type when defining the argument to \lstinline{isString}, and then dynamic type pattern matching for further processing. See \Cref{chap:oop} for more on objects. Dynamic type patterns are often used for analyzing exceptions, which is discussed in \Cref{sec:exceptions}. While dynamic type patterns are useful, they imply runtime checking, and \advice{it is almost always better to prefer compile time than runtime type checking.}
+
+\begin{comment} 
+\section{Programming intermezzo} 
+
+Conditional expressions are so common that a short-hand notation called \idx{pattern matching} is available in F\#. For the Consider the task, 
 \begin{problem}
   Write a function that given $n$ writes the sentence, ``I have n apple(s)'', where the plural 's' is added appropriately.
 \end{problem}
 For this we need to test on $n$'s size, and one option is to use conditional expressions like,
 %
-\fs{matchWith}{Using the \keyword{match}-keyword{with} programming construct to vary calculation based on the input value.}
+\fs{matchWith}{Using the \keyword{match} -- \keyword{with} programming construct to vary calculation based on the input value.}
 %
-Here the \idx{\keyword{match}}-\idx{\keyword{with}} keywords starts a sequence of conditions separated by the \lexeme{|} lexeme, where the default operator is the \lexeme{=} comparison operator, but where others can be used with the \idx{\keyword{when}}. The syntax of \keyword{match} expressions is,
+Here the \keyword{match} -- \keyword{with} keywords starts a sequence of conditions separated by the \lexeme{|} lexeme, where the default operator is the \lexeme{=} comparison operator, but where others can be used with the \keyword{when}. The syntax of \keyword{match} expressions is, 
 \begin{lstlisting}[language=ebnf]
-pat = const | "_" | ...
-guard = "when" expr
-rule = pat [guard] -> expr
-rules = "|" rule | "|" rule rules (* first "|'' is optional' *)
-expr = ... 
+  pat = const | "_" | ... guard = "when" expr rule = pat [guard] ->
+  expr rules = "|" rule | "|" rule rules (* first "|'' is optional' *)
+  expr = ...
   | "match" expr "with" rules (* match expression *)
   | "function" rules (* matching function expression *)
   | ...
 \end{lstlisting}
-As for conditional expressions, the rules are treated sequentially from first to last, and the expression following the first rule with a true condition is the the result of the entire expression. The rules are versatile in their possible expression, e.g., the line \lstinline!| 1 -> "I have no apples"! is equivalent to \lstinline!elif n < 1 then "I have no apples"|, and the \lstinline!| \_ -> "I have " + (string n) + " apples"!, matches the \lstinline!else "I have " + (string n) + " apples"!, since the \lexeme{_} lexeme is a wildcard pattern matching anything. Finally, the first rule is a guarded rule indicated by the \keyword{when} keyword, \lstinline!i when i < 0 -> "I owe " + (string -i) + " apples"!. It uses the optional disregard of the \lexeme{|} lexeme and is equivalent to \lstinline!if n < 0 then "I owe " + (string -n) + " apples"!. Guarded rules can be any rules, and here we used the identifier \lstinline!i! meaning \lstinline!let i = n in if i < 0 then ...!, i.e., \lstinline!n! is renamed. One way to think of guarded expressions is that \lstinline!i when i < 0! is a set, and the condition is on \lstinline!n! being part of the set or not. 
+As for conditional expressions, the rules are treated sequentially from first to last, and the expression following the first rule with a true condition is the the result of the entire expression. The rules are versatile in their possible expression, e.g., the line \lstinline!| 1 -> "I have no apples"! is equivalent to \lstinline!elif n < 1 then "I have no apples"|, and the \lstinline!| \_ -> "I have " + (string n) + " apples"!, matches the \lstinline!else "I have " + (string n) + " apples"!, since the \lexeme{_} lexeme is a wildcard pattern matching anything. Finally, the first rule is a guarded rule indicated by the \keyword{when} keyword, \lstinline!i when i < 0 -> "I owe " + (string -i) + " apples"!. It uses the optional disregard of the \lexeme{|} lexeme and is equivalent to \lstinline!if n < 0 then "I owe " + (string -n) + " apples"!. Guarded rules can be any rules, and here we used the identifier \lstinline!i! meaning \lstinline!let i = n in if i < 0 then ...!, i.e., \lstinline!n! is renamed. One way to think of guarded expressions is that \lstinline!i when i < 0! is a set, and the condition is on \lstinline!n! being part of the set or not.
 
-Using lightweight syntax, the rules may be put on separate lines but must start in the column, where the \keyword{match} starts or greater.\spec{Spec-4.0 weirdness: Offside rule for match is different for function.} Match with can only take one identifier, but this can be tuples for matching with combinations of identifiers, see Chapter~\ref{chap:lists} for more on tuples. A \keyword{match} expression is general but is most often seen as the initial part of a function definition. This is so common, that F\# has a special syntax integrating function definitions and match with expressions using the \idx{\keyword{function}} keyword,
+Using lightweight syntax, the rules may be put on separate lines but must start in the column, where the \keyword{match} starts or greater.\spec{Spec-4.0 weirdness: Offside rule for matching is different for function.} Match with can only take one identifier, but this can be tuples for matching with combinations of identifiers, see \Cref{chap:lists} for more on tuples. A \keyword{match} expression is general but is most often seen as the initial part of a function definition. This is so common, that F\# has a special syntax integrating function definitions and match with expressions using the \idx[function@\lstinline{function}]{\keyword{function}} keyword,
 %
-\fs{functionKeyword}{Function definition and \keyword{match} expressions are integrated using the \keyword{function} keyword. Compare with Listing~\ref{matchWith}}
+\fs{functionKeyword}{Function definition and \keyword{match} expressions are integrated using the \keyword{function} keyword. Compare with \Cref{matchWith}}
 %
-Comparing with Listing~\ref{matchWith} notice that the function definition does not explicitly name an argument but assumes one, following the \keyword{function} follows immediately the rules, and the wildcard pattern \lexeme{_} is replaced with an identifier without any guards, which thus matches everything. Replacing the wildcard pattern with a name has the advantage that this name can be used locally in the expression belonging to this rule, i.e., it acts as a \lstinline!let n = ! on the implicit argument of the function. Implicit arguments makes the code hard to read and, thus \advice{the use of function definitions with the keyword \keyword{function} should be avoided.}\jon{Should we extend this with a more detail description of possiblities from Spec-4.0 Chapter 7?}
-
+Comparing with \Cref{matchWith} notice that the function definition does not explicitly name an argument but assumes one, following the \keyword{function} follows immediately the rules, and the wildcard pattern \lexeme{_} is replaced with an identifier without any guards, which thus matches everything. Replacing the wildcard pattern with a name has the advantage that this name can be used locally in the expression belonging to this rule, i.e., it acts as a \lstinline!let n = ! on the implicit argument of the function. Implicit arguments make the code hard to read and, thus \advice{the use of function
+  definitions with the keyword \keyword{function} should be
+  avoided.}\jon{Should we extend this with a more detail description
+  of possibilities from Spec-4.0 Chapter 7?}
+ \end{comment}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
+

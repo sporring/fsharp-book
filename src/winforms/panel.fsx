@@ -1,33 +1,27 @@
 open System.Drawing
 open System.Windows.Forms
 
-// Initialize a form containing a panel, textbox, and a label
-let win = new Form ()
-let panel = new Panel ()
-let textBox = new TextBox ()
-let label = new Label ()
-
-// Customize the window
-win.Text <- "Window with a panel"
-win.ClientSize <- new Size (400, 300)
+let win = new Form () // Create a window form
+win.ClientSize <- new Size (200, 100)
 
 // Customize the Panel control
-panel.Location <- new Point (56,72)
-panel.Size <- new Size (264, 152)
+let panel = new Panel ()
+panel.ClientSize <- new Size (160, 60)
+panel.Location <- new Point (20,20)
 panel.BorderStyle <- BorderStyle.Fixed3D
+win.Controls.Add panel // Add panel to window
 
 // Customize the Label and TextBox controls
-label.Location <- new Point (16,16)
-label.Text <- "label"
-label.Size <- new Size (104, 16)
-textBox.Location <- new Point (16,32)
+let label = new Label ()
+label.ClientSize <- new Size (120, 20)
+label.Location <- new Point (15,5)
+label.Text <- "Input"
+panel.Controls.Add label // add label to panel
+
+let textBox = new TextBox ()
+textBox.ClientSize <- new Size (120, 20)
+textBox.Location <- new Point (20,25)
 textBox.Text <- "Initial text"
-textBox.Size <- new Size (152, 20)
+panel.Controls.Add textBox // add textbox to panel
 
-// Add panel to window and label and textBox to panel
-win.Controls.Add panel
-panel.Controls.Add label
-panel.Controls.Add textBox
-
-// Start the event-loop
-Application.Run win
+Application.Run win // Start the event-loop

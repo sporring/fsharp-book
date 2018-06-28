@@ -7,7 +7,7 @@
 
 \section{\lstinline{System.String}}
 \label{sec:system.string}
-The list of built-in methods accessible with the dot notation is defined in \lstinline|System.String| class and is long. Here follows short descriptions of some useful methods:
+The list of built-in methods accessible with the dot notation is defined in \lstinline|System.String| class and is long. Here follow short descriptions of some useful methods:
 \begin{description}
 %\item[\lstinline{Clone}] Returns a reference to this instance of String.
 \item[\lstinline{Compare(String, String)}] Compares two specified String objects and returns an integer that indicates their relative position in the sort order.
@@ -130,80 +130,6 @@ The list of built-in methods accessible with the dot notation is defined in \lst
 \item[\lstinline{TrimStart}] Removes all leading occurrences of a set of characters specified in an array from the current String object.
 \end{description}
 
-
-\section{List, arrays, and sequences}
-In Table~\ref{tab:arrayMethods}.
-\begin{table}
-  \centering
-  \begin{tabularx}{\textwidth}{|>{\hsize=.2\hsize}X|>{\hsize=1.8\hsize}X|}
-    \hline
-    append &Creates an array that contains the elements of one array followed by the elements of another array.\\
-    average & Returns the average of the elements in an array.\\
-    blit &Reads a range of elements from one array and writes them into another. \\
-    choose &Applies a supplied function to each element of an array. Returns an array that contains the results x for each element for which the function returns Some(x).\\
-    collect &Applies the supplied function to each element of an array, concatenates the results, and returns the combined array.\\
-    concat &Creates an array that contains the elements of each of the supplied sequence of arrays.\\
-    copy &Creates an array that contains the elements of the supplied array.\\
-    create &Creates an array whose elements are all initially the supplied value.\\
-    empty &Returns an empty array of the given type.\\
-    exists &Tests whether any element of an array satisfies the supplied predicate.\\
-    fill &Fills a range of elements of an array with the supplied value.\\
-    filter &Returns a collection that contains only the elements of the supplied array for which the supplied condition returns true.\\
-    find &Returns the first element for which the supplied function returns true. Raises System.Collections.Generic.KeyNotFoundException if no such element exists.\\
-    findIndex &Returns the index of the first element in an array that satisfies the supplied condition. Raises System.Collections.Generic.KeyNotFoundException if none of the elements satisfy the condition.\\
-    fold &Applies a function to each element of an array, threading an accumulator argument through the computation. If the input function is f and the array elements are i0...iN, this function computes f (...(f s i0)...) iN.\\
-    foldBack &Applies a function to each element of an array, threading an accumulator argument through the computation. If the input function is f and the array elements are i0...iN, this function computes f i0 (...(f iN s)).\\
-    forall &Tests whether all elements of an array satisfy the supplied condition.\\
-    isEmpty &Tests whether an array has any elements.\\
-    iter &Applies the supplied function to each element of an array.\\
-    init &\dots\\
-    length &Returns the length of an array. The System.Array.Length property does the same thing.\\
-    map &Creates an array whose elements are the results of applying the supplied function to each of the elements of a supplied array.\\
-    mapi &\\
-    max &Returns the largest of all elements of an array. Operators.max is used to compare the elements.\\
-    min &Returns the smallest of all elements of an array. Operators.min is used to compare the elements.\\
-    ofList &Creates an array from the supplied list.\\
-    ofSeq &Creates an array from the supplied enumerable object.\\
-    partition &Splits an array into two arrays, one containing the elements for which the supplied condition returns true, and the other containing those for which it returns false.\\
-    rev &Reverses the order of the elements in a supplied array. \\
-    sort &Sorts the elements of an array and returns a new array. Operators.compare is used to compare the elements.\\
-    sub &Creates an array that contains the sup<plied subrange, which is specified by starting index and length.\\
-    sum &Returns the sum of the elements in the array.\\
-    toList &Converts the supplied array to a list.\\
-    toSeq &Views the supplied array as a sequence.\\
-    unzip &Splits an array of tuple pairs into a tuple of two arrays.\\
-    zeroCreate &Creates an array whose elements are all initially zero.\\
-    zip &Combines two arrays into an array of tuples that have two elements. The two arrays must have equal lengths; otherwise, System.ArgumentException is raised.\\
-    \hline
-  \end{tabularx}
-  \caption{Some built-in procedures in the Array module for arrays (from \protect\url{https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/fsharp-core-library-reference})}
-  \label{tab:arrayMethods}
-\end{table}
-Thus, the \lstinline{arrayReassign.fsx} program can be written using arrays as,
-\fs{arrayReassignModule}{}
-and the \lstinline{flowForListsIndex.fsx} program can be written using arrays as,
-\fs{flowForListsIndexModule}{}
-Both cases avoid the use of variables and side-effects which is a big advantage for code safety.
-
-There are a bit few built-in procedures for 2 dimensional array types, some of which are summarized in Table~\ref{tab:array2dMethods}
-\begin{table}
-  \centering
-  \begin{tabularx}{\textwidth}{|>{\hsize=.2\hsize}X|>{\hsize=1.8\hsize}X|}
-    \hline
-    blit &Reads a range of elements from one array and writes them into another. \\
-    copy &Creates an array that contains the elements of the supplied array.\\
-    create &Creates an array whose elements are all initially the supplied value.\\
-    iter &Applies the supplied function to each element of an array.\\
-    length1 &Returns the length of an array in the first dimension.\\
-    length2 &Returns the length of an array in the second dimension.\\
-    map &Creates an array whose elements are the results of applying the supplied function to each of the elements of a supplied array.\\
-    mapi &\\
-    zeroCreate &Creates an array whose elements are all initially zero.\\
-    \hline
-  \end{tabularx}
-  \caption{Some built-in procedures in the Array2D module for arrays (from \protect\url{https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/fsharp-core-library-reference})}
-  \label{tab:array2dMethods}
-\end{table}
 
 \section{WinForms Details}
 
@@ -336,3 +262,4 @@ There are a bit few built-in procedures for 2 dimensional array types, some of w
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
+

@@ -1,8 +1,3 @@
-> let a : int list = List.Empty;;
-
+> let a : int list = List.empty;;
 val a : int list = []
-
-> let b = List<int>.Empty;;
-
-val b : int list = []
 

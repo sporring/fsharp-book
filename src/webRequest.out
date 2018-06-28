@@ -1,3 +1,4 @@
+$ fsharpc --nologo webRequest.fsx && mono webRequest.exe
 Downloaded "http://fsharp.org". First 40 characters are: "<!DOCTYPE html>
 <html lang="en">
 <head>"

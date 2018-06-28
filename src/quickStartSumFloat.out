@@ -1,1 +1,2 @@
+$ fsharpc --nologo quickStartSumFloat.fsx && mono quickStartSumFloat.exe
 1221.0

@@ -1,0 +1,2 @@
+let dc = int 'A' - int 'a'
+String.map (fun c -> c + char dc) "abcd";;

@@ -1,1 +1,3 @@
+$ fsharpc --nologo functionDeclarationMatchWith.fsx
+$ mono functionDeclarationMatchWith.exe
 120

@@ -81,7 +81,7 @@ type kg
 [<Measure>]
 type N = kg m/s ^ 2
 \end{lstlisting}
-For fans of the metric system there is the International System of Units, and these are built-in in \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols| and give in Table~\ref{tab:siUnits}.
+For fans of the metric system there is the International System of Units, and these are built-in in \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols| and give in \Cref{tab:siUnits}.
 \begin{table}
   \centering
   \begin{tabularx}{0.75\linewidth}{|l|X|}
@@ -134,7 +134,7 @@ To make the use of these predefined symbols easier, we can import them into the 
 
 val a : float<s> = 10.0
 \end{lstlisting}
-The \keyword{open} keyword should be used with care, since now all the bindings in \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols| have been imported into the present scope, and since we most likely do not know, which bindings have been used by the programmers of \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols|, we do not know which identifiers to avoid, when using \keyword{let} statements. We have obtained, what is known as \idx{namespace pollution}. Read more about namespaces in Part~\ref{part:structured}.
+The \keyword{open} keyword should be used with care, since now all the bindings in \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols| have been imported into the present scope, and since we most likely do not know, which bindings have been used by the programmers of \lstinline|Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols|, we do not know which identifiers to avoid, when using \keyword{let} statements. We have obtained, what is known as \idx{namespace pollution}. Read more about namespaces in \Cref{part:structured}.
 
 Using unit of measures is advisable for calculations involving real-world values, since some semantical errors of arithmetic expressions may be discovered by checking the resulting unit of measure.
 

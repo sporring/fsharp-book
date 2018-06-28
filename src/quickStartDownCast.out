@@ -1,1 +1,2 @@
+$ fsharpc --nologo quickStartDownCast.fsx && mono quickStartDownCast.exe
 357.6 -> 357

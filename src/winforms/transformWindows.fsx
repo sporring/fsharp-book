@@ -1,56 +1,49 @@
+// Open often used libraries, be ware of namespace polution!
 open System.Windows.Forms
 open System.Drawing
 
-type coordinates = (float * float) list
-type pen = Color * float
-type polygon = coordinates * pen
+///////////// WinForm specifics /////////////
+/// Setup a window form and return function to activate
+let view (sz : Size) (shapes : (Pen * (Point [])) list) : (unit -> unit) =
+  let win = new System.Windows.Forms.Form ()
+  win.ClientSize <- sz
+  let paint (e : PaintEventArgs) ((p, pts) : (Pen * (Point []))) : unit = 
+    e.Graphics.DrawLines (p, pts)
+  win.Paint.Add (fun e -> List.iter (paint e) shapes)
+  fun () -> Application.Run win // function as return value
 
-/// Create a form and add a paint function
-let createForm backgroundColor (width, height) title draw =
-  let win = new Form ()
-  win.Text <- title
-  win.BackColor <- backgroundColor
-  win.ClientSize <- Size (width, height)
-  win.Paint.Add draw
-  win
+///////////// Model /////////////
+// A black triangle, using winform primitives for brevity
+let model () : Size * ((Pen * (Point [])) list) = 
+  /// Translate a primitive
+  let translate (d : Point) (arr : Point []) : Point [] =
+    let add (d : Point) (p : Point) : Point =
+      Point (d.X + p.X, d.Y + p.Y)
+    Array.map (add d) arr
 
-/// Draw a polygon with a specific color
-let drawPoints (polygLst : polygon list) (e : PaintEventArgs) =
-  let pairToPoint (x : float, y : float) =
-    Point (int (round x), int (round y))
+  /// Rotate a primitive
+  let rotate (theta : float) (arr : Point []) : Point [] =
+    let toInt = int << round
+    let rot (t : float) (p : Point) : Point =
+      let (x, y) = (float p.X, float p.Y)
+      let (a, b) = (x * cos t - y * sin t, x * sin t + y * cos t)
+      Point (toInt a, toInt b)
+    Array.map (rot theta) arr
 
-  for polyg in polygLst do
-    let coords, (color, width) = polyg
-    let pen = new Pen (color, single width)
-    let Points = Array.map pairToPoint (List.toArray coords)
-    e.Graphics.DrawLines (pen, Points)
-    
-/// Translate a point
-let translatePoint (dx, dy) (x, y) =
-  (x + dx, y + dy)
+  let size = Size (400, 200)
+  let lines =
+    [|Point (0,0); Point (10,170); Point (320,20); Point (0,0)|]
+  let black = new Pen (Color.FromArgb (0, 0, 0))
+  let red = new Pen (Color.FromArgb (255, 0, 0))
+  let green = new Pen (Color.FromArgb (0, 255, 0))
+  let shapes =
+    [(black, lines);
+     (red, translate (Point (40, 30)) lines);
+     (green, rotate (1.0 *System.Math.PI / 180.0) lines)]
+  (size, shapes)
 
-/// Translate point array
-let translatePoints (dx, dy) arr =
-  List.map (translatePoint (dx, dy)) arr
-
-/// Rotate a point
-let rotatePoint theta (x, y) =
-  (x * cos theta - y * sin theta, x * sin theta + y * cos theta)
-
-/// Rotate point array
-let rotatePoints theta arr =
-  List.map (rotatePoint theta) arr
-
-// Setup drawing details
-let title = "Transforming polygons"
-let backgroundColor = Color.White
-let size = (400, 200)
-let points = [(0.0, 0.0); (10.0, 170.0); (320.0, 20.0); (0.0, 0.0)]
-let polygLst =
-  [(points, (Color.Black, 1.0));
-   (translatePoints (40.0, 30.0) points, (Color.Red, 2.0));
-   (rotatePoints (1.0 *System.Math.PI / 180.0) points, (Color.Green, 1.0))]
-
-// Create form and start the event-loop.
-let win = createForm backgroundColor size title (drawPoints polygLst) 
-Application.Run win
+///////////// Connection //////////////
+// Tie view and model together and enter main event loop
+let (size, shapes) = model ()
+let run = view size shapes
+run ()

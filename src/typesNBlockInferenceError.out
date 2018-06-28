@@ -1,13 +1,11 @@
-> let sum x y = x + y;;
-
 val sum : x:int -> y:int -> int
 
 > let c = sum 357.6 863.4;;
-
   let c = sum 357.6 863.4;;
   ------------^^^^^
 
-/Users/sporring/repositories/fsharpNotes/src/stdin(3,13): error FS0001: This expression was expected to have type
-    int    
+stdin(3,13): error FS0001: This expression was expected to have type
+    'int'    
 but here has type
-    float    
+    'float'    
+

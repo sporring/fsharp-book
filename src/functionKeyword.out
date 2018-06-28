@@ -1,3 +1,4 @@
+$ fsharpc --nologo functionKeyword.fsx && mono functionKeyword.exe
 "I owe 3 apples"
 "I owe 1 apples"
 "I have no apples"

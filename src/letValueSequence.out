@@ -1,2 +1,3 @@
+$ fsharpc --nologo letValueSequence.fsx && mono letValueSequence.exe
 2.0
 9.0

@@ -1,3 +1,7 @@
+$ fsharpc --nologo mutableAssignScope.fsx && mono mutableAssignScope.exe
 
+mutableAssignScope.fsx(6,3): error FS0039: The value or constructor 'msg' is not defined. Maybe you want one of the following:
+   MS
 
-/Users/sporring/repositories/fsharpNotes/src/mutableAssignScope.fsx(6,3): error FS0039: The value or constructor 'msg' is not defined
+mutableAssignScope.fsx(9,14): error FS0039: The value or constructor 'msg' is not defined. Maybe you want one of the following:
+   MS

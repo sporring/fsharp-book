@@ -1,2 +1,4 @@
+$ fsharpc --nologo mutableAssignReassingShort.fsx
+$ mono mutableAssignReassingShort.exe
 5
 -3

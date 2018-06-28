@@ -1,2 +1,4 @@
+$ fsharpc --nologo mutableAssignReturnRefCell.fsx
+$ mono mutableAssignReturnRefCell.exe
 (0, 0)
 (1, 0)

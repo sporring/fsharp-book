@@ -1,24 +1,32 @@
 \chapter{In-code documentation}
 \label{chap:documentation}
-Documentation is a very important part of writing programs, since it is most unlikely, that you will be writing really obvious code. And what seems obvious at the point of writing may be mystifying months later to the author and to others. The documentation serves several purposes:
+Documentation is a very important part of writing programs, since it is most unlikely, that you will be writing really obvious code. Moreover, what seems obvious at the point of writing may be mystifying months later to the author and to others. Documentation serves several purposes:
 \begin{enumerate}
 \item Communicate what the code should be doing
 \item Highlight big insights essential for the code
 \item Highlight possible conflicts and/or areas, where the code could be changed later
 \end{enumerate}
-The essential point is that coding is a journey in problem solving, and proper documentation is an aid in understanding the solution and the journey that lead to it. Documentation is most often a mixture between in-code documentation and accompanying documents. Here, we will focus on in-code documentation, but arguably this does cause problems in multi-language environments, and run the risk of bloating code.
+The essential point is that coding is a journey in problem-solving, and proper documentation is an aid in understanding the solution and the journey that lead to it. Documentation is most often a mixture of in-code documentation and accompanying documents. Here, we will focus on in-code documentation, which arguably causes problems in multi-language environments and run the risk of bloating code.
 
-F\# has the following simplified syntax for in-code documentation,
+F\# has two different syntaxes for comments. Comments are either block comments,
 %
-\begin{verbatimwrite}{tmp.ebnf}
-blockComment = "(*" {codePoint} "*)";
-lineComment = "//" {codePoint - newline} newline;
+\begin{verbatimwrite}{\ebnf/blockComment.ebnf}
+(*<*any text*>*)
 \end{verbatimwrite}
-\ebnf{tmp.ebnf}{Comments.}
+\syntax{\ebnf/blockComment.ebnf}{Block comments.\idxss{(**)@\lstinline{(**)}}}
 %
-That is, text framed as a \lstinline[language=ebnf]!blockComment! is still parsed by F\# as keywords and basic types implying that \lstinline!(* a comment (* in a comment *) *)! and \lstinline!(* "*)" *)! are valid comments, while \lstinline!(* " *)! is invalid.\jon{lstlisting colors is bad.}
+The comment text \lstinline[language=syntax]{(*<*any text*>*)} can be any text and it is stilled parsed by F\# as keywords and basic types implying that \lstinline!(* a comment (* in a comment *) *)! and \lstinline[morecomment={[l][\color{commentsColor}]{(*}}]!(* "*)" *)! are valid comments, while \lstinline!(* " *)! is invalid.
 
-The F\# compiler has an option for generating \idx{Extensible Markup Language} (\idx{XML}) files from scripts using the C\# documentation comments tags\footnote{For specification of C\# documentations comments see ECMA-334 3rd Edition, Annex E, Section 2: \url{http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-334.pdf}}. The XML documentation starts with a triple-slash \lstinline{///}, i.e., a lineComment and a slash, which serves as comments for the code construct, that follows immediately after. XML consists of tags which always appears in pairs, e.g., the tag ``tag'' would look like \lstinline[language=xml]!<tag> ... </tag>!. The F\# accept any tags, but recommends those listed in Table~\ref{tab:xmlTags}.
+Alternatively, comments may be given as line comments,
+%
+\begin{verbatimwrite}{\ebnf/lineComment.ebnf}
+//<*any text*>newline
+\end{verbatimwrite}
+\syntax{\ebnf/lineComment.ebnf}{Line comments.\idxss{//@\lstinline{//}}}
+%
+where the comment text ends after the first newline.
+
+The F\# compiler has an option for generating \idx{Extensible Markup Language} (\idx{XML}) files from scripts using the C\# documentation comments tags\footnote{For specification of C\# documentations comments see ECMA-334 3rd Edition, Annex E, Section 2: \url{http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-334.pdf}}. The XML documentation starts with a triple-slash \lstinline{///}, i.e., a lineComment and a slash, which serves as comments for the code construct, that follows immediately after. XML consists of tags which always appears in pairs, e.g., the tag ``tag'' would look like \lstinline[language=xml]!<tag> ... </tag>!. The F\# accept any tags, but recommends those listed in \Cref{tab:xmlTags}.
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -66,8 +74,8 @@ The F\# compiler has an option for generating \idx{Extensible Markup Language} (
 \end{table}
 If no tags are used, then it is automatically assumed to be a \lstinline[language=xml]!<summary>!. An example of a documented script is,\fs{commentExample}{Code with XML comments.}
  
-Mono's \lstinline[language=console]{fsharpc} command may be used to extract the comments into an XML file,
-\begin{codeNOutput}{, Converting in-code comments to XML.}
+Mono's \lstinline[language=console]{fsharpc} command may be used to extract the comments into an XML file as demonstrated in \Cref{convertingToXML}.
+\begin{codeNOutput}[label=convertingToXML]{, Converting in-code comments to XML.}
   \begin{lstlisting}[language=console]
 $ fsharpc --doc:commentExample.xml commentExample.fsx 
 F# Compiler for F# 4.0 (Open Source Edition)
@@ -75,16 +83,16 @@ Freely distributed under the Apache 2.0 Open Source License
 \end{lstlisting}
 % $
 \end{codeNOutput}
-This results in an XML file with the following content,
-\begin{codeNOutput}{, An XML file generated by \lstinline[language=console]{fsharpc}.}
-  \lstinputlisting[language=xml]{src/commentExample.xml}
+This results in an XML file with the following content as shown in \Cref{XMLExample}.
+\begin{codeNOutput}[label=XMLExample]{, An XML file generated by \lstinline[language=console]{fsharpc}.}
+  \lstinputlisting[language=xml, numbers=left, numbersep=6pt, numberstyle=\scriptsize\color{white}, breakatwhitespace=false]{src/commentExample.xml}
 \end{codeNOutput}
-The extracted XML is written in C\# type by convention, since F\# is part of the Mono and .Net framework that may be used by any of the languages using Assemblies. Besides the XML inserted in the script, the XML has added \lstinline[language=xml]!<?xml ...>! header, \lstinline[language=xml]!<doc>!, \lstinline[language=xml]!<assembly>!, \lstinline[language=xml]!<members>!, and \lstinline[language=xml]!<member>! tags. The header and the  \lstinline[language=xml]!<doc>! tag are standards for XML. The extracted XML is geared towards documenting big libraries of codes and thus highlights the structured programming organization, see Part~\ref{part:structured}, and \lstinline[language=xml]!<assembly>!, \lstinline[language=xml]!<members>!, and \lstinline[language=xml]!<member>! are indications for where the functions belong in the hierarchy. As an example, the prefix \lstinline[language=xml]!M:CommentExample.! means that it is a method in the namespace CommentExample, which in this case is the name of the file. Further, the function type \lstinline!val solution : a:float -> b:float -> c:float -> sgn:float -> float! is in the XML documentation \lstinline[language=xml]!M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double)!, which is the C\# equivalent.
+The extracted XML is written in C\# type by convention, since F\# is part of the Mono and .Net framework that may be used by any of the languages using Assemblies. Besides the XML inserted in the script, the XML has added \lstinline[language=xml]!<?xml ...>! header, \lstinline[language=xml]!<doc>!, \lstinline[language=xml]!<assembly>!, \lstinline[language=xml]!<members>!, and \lstinline[language=xml]!<member>! tags. The header and the  \lstinline[language=xml]!<doc>! tag are standards for XML. The extracted XML is geared towards documenting big libraries of codes and thus highlights the structured programming organisation, see \Cref{chap:modules,chap:oop}, and \lstinline[language=xml]!<assembly>!, \lstinline[language=xml]!<members>!, and \lstinline[language=xml]!<member>! are indications for where the functions belong in the hierarchy. As an example, the prefix \lstinline[language=xml]!M:CommentExample.! means that it is a method in the namespace \lstinline{commentExample}, which in this case is the name of the file. Further, the function type \lstinline!val solution : a:float -> b:float -> c:float -> sgn:float -> float! is in the XML documentation \lstinline[language=xml]!M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double)!, which is the C\# equivalent.
 
-An accompanying program in the Mono suite is \lstinline[language=console]!mdoc!, whose primary use is to perform a syntax analysis of an assembly and generate a scaffold XML structure for an accompanying document. With the \lstinline[language=console]!-i! flag, it is further possible to include the in-code comments as initial descriptions in the XML. The XML may be updated gracefully by \lstinline[language=console]!mdoc! as the code develops, without destroying manually entered documentation in the accompanying documentation. Finally, the XML may be exported to HTML
+An accompanying program in the Mono suite is \lstinline[language=console]!mdoc!, whose primary use is to perform a syntax analysis of an assembly and generate a scaffold XML structure for an accompanying document. With the \lstinline[language=console]!-i! flag, it is further possible to include the in-code comments as initial descriptions in the XML. The XML may be updated gracefully by \lstinline[language=console]!mdoc! as the code develops, without destroying manually entered documentation in the accompanying documentation. Finally, the XML may be exported to HTML.
 
-The primary use of the \lstinline[language=console]{mdoc} command is to analyze compiled code and generate an empty XML structure with placeholders to describe functions, values, and variables. This structure can then be updated and edited as the program develops. The edited XML files can then be exported to \idx{Hyper Text Markup Language} (\idx{HTML}) files, which can be viewed in any browser. Using the console, all of this is accomplished by,
-\begin{codeNOutput}{, Converting an XML file to HTML.}
+The primary use of the \lstinline[language=console]{mdoc} command is to analyze compiled code and generate an empty XML structure with placeholders to describe functions, values, and variables. This structure can then be updated and edited as the program develops. The edited XML files can then be exported to \idx{Hyper Text Markup Language} (\idx{HTML}) files, which can be viewed in any browser. Using the console, all of this is accomplished by the procedure shown in \Cref{XMLToHTML}, and the result is shown in \Cref{fig:htmlDocumentExample}.
+\begin{codeNOutput}[label=XMLToHTML]{, Converting an XML file to HTML.}
 \begin{lstlisting}[language=console]
 $ mdoc update -o commentExample -i commentExample.xml commentExample.exe 
 New Type: CommentExample
@@ -101,7 +109,6 @@ $ mdoc export-html -out commentExampleHTML commentExample
 .CommentExample
 \end{lstlisting}
 \end{codeNOutput}
-The primary use of the \lstinline[language=console]{mdoc} command is to analyze compiled code and generate an empty XML structure with placeholders to describe functions, values, and variables. This structure can then be updated and edited as the program develops. The edited XML files can then be exported to HTML files, which can be viewed in any browser, an example of which is shown in Figure~\ref{fig:htmlDocumentExample}.
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{mdocOutput}
@@ -113,3 +120,4 @@ A full description of how to use \lstinline[language=console]{mdoc} is found her
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
+

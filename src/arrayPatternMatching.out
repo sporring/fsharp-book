@@ -1,3 +1,5 @@
+$ fsharpc --nologo arrayPatternMatching.fsx
+$ mono arrayPatternMatching.exe
 Sporring, Jon
 Church, Alonzo
 McCarthy, John

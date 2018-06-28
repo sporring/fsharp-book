@@ -1,14 +1,12 @@
 > let a = 357;;
-
 val a : int = 357
 
 > let b = 863.4;;
-
 val b : float = 863.4
 
 > let c = a + b;;
-
   let c = a + b;;
   ------------^
 
-/Users/sporring/repositories/fsharpNotes/src/stdin(4,13): error FS0001: The type 'float' does not match the type 'int'
+stdin(4,13): error FS0001: The type 'float' does not match the type 'int'
+

@@ -1,0 +1,1 @@
+let odd x = (x % 2 = 1) in List.filter odd [0 .. 9];;

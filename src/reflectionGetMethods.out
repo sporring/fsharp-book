@@ -1,38 +1,12 @@
-> let a = System.Reflection.Assembly.LoadFrom @"/Library/Frameworks/Mono.framework/Versions/4.4.1/lib/mono/4.0-api/System.Windows.Forms.dll"
+> ms.dll"
 - let ts = a.GetExportedTypes ()
 - let tm = ts |> Array.filter (fun t -> t.Namespace.StartsWith "System.Windows.Form")
 - tm.[0].GetMethods ();;
-
-val a : System.Reflection.Assembly =
-  System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-val ts : System.Type [] =
-  [|System.Resources.ResXResourceReader; System.Resources.ResXResourceSet;
-    System.Resources.ResXResourceWriter; System.Resources.ResXDataNode;
-    System.Resources.ResXFileRef; System.Resources.ResXFileRef+Converter;
-    System.Windows.Forms.Design.ComponentEditorForm;
-    System.Windows.Forms.Design.ComponentEditorPage;
-    System.Windows.Forms.Design.EventsTab;
-    System.Windows.Forms.Design.IUIService;
-    System.Windows.Forms.Design.IWindowsFormsEditorService;
-    System.Windows.Forms.Design.PropertyTab;
-    System.Windows.Forms.Design.ToolStripItemDesignerAvailability;
-    System.Windows.Forms.Design.ToolStripItemDesignerAvailabilityAttribute;
-    System.Windows.Forms.Design.WindowsFormsComponentEditor;
-    System.Windows.Forms.PropertyGridInternal.PropertiesTab;
-    System.Windows.Forms.AccessibleEvents;
-    System.Windows.Forms.AccessibleNavigation;
-    System.Windows.Forms.AccessibleObject; System.Windows.Forms.AccessibleRole;
-    System.Windows.Forms.AccessibleSelection;
-    System.Windows.Forms.AccessibleStates;
-    System.Windows.Forms.AmbientProperties; System.Windows.Forms.AnchorStyles;
-    System.Windows.Forms.Appearance; System.Windows.Forms.Application;
-    System.Windows.Forms.Application+MessageLoopCallback;
-    System.Windows.Forms.ApplicationContext;
-    System.Windows.Forms.ArrangeDirection;
-    System.Windows.Forms.ArrangeStartingPosition;
-    System.Windows.Forms.ArrowDirection; System.Windows.Forms.AutoCompleteMode;
-    System.Windows.Forms.AutoCompleteSource;
-    System.Windows.Forms.AutoCompleteStringCollection;
-    System.Windows.Forms.AutoScaleMode; System.Windows.Forms.AutoSizeMode;
-    System.Windows.Forms.AutoValidate; System.Windows.Forms.AxHost;
-    System.Windows.Forms.AxHost+ActiveXInvokeKind;
+System.IO.FileNotFoundException: 
+File name: '/Library/Frameworks/Mono.framework/Versions/4.4.1/lib/mono/4.0-api/System.Windows.Forms.dll'
+  at (wrapper managed-to-native) System.Reflection.Assembly:LoadFrom (string,bool)
+  at System.Reflection.Assembly.LoadFrom (System.String assemblyFile) [0x00000] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at <StartupCode$FSI_0002>.$FSI_0002.main@ () [0x00001] in <9c2968da421443f5ae3d6c327333a896>:0 
+  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&)
+  at System.Reflection.MonoMethod.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00032] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+Stopped due to error

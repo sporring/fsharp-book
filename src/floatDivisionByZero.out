@@ -1,4 +1,6 @@
 > 1.0/0.0;;
 val it : float = infinity
+
 > 0.0/0.0;;
 val it : float = nan
+

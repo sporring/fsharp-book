@@ -1,0 +1,2 @@
+let arr = Array.zeroCreate 10;
+Array.fill arr 2 5 2;;

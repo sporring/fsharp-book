@@ -1,0 +1,274 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9193,        265]
+NotebookOptionsPosition[      8705,        243]
+NotebookOutlinePosition[      9062,        259]
+CellTagsIndexPosition[      9019,        256]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"t", " ", "=", " ", 
+   RowBox[{"RescalingTransform", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "0.1"}], ",", "3.1"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "0.1"}], ",", "2.1"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "0.5"}], ",", "0.5"}], "}"}]}], "}"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"m", " ", "=", " ", 
+   RowBox[{"TransformationMatrix", "[", "t", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"p", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"1", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "1", ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "1", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "0", ",", "1"}], "}"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"sa", " ", "=", " ", 
+   RowBox[{"Text", "[", 
+    RowBox[{
+     RowBox[{"StyleForm", "[", 
+      RowBox[{
+       RowBox[{"Subscript", "[", 
+        RowBox[{"v", ",", "1"}], "]"}], ",", 
+       RowBox[{"FontSize", "\[Rule]", "42"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0.8", ",", "1.2", ",", "0"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"a", " ", "=", " ", 
+   RowBox[{"Arrow", "[", 
+    RowBox[{"Tube", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "2", ",", "0"}], "}"}]}], "}"}], ",", "0.02"}], 
+     "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"sb", " ", "=", " ", 
+   RowBox[{"Text", "[", 
+    RowBox[{
+     RowBox[{"StyleForm", "[", 
+      RowBox[{
+       RowBox[{"Subscript", "[", 
+        RowBox[{"v", ",", "2"}], "]"}], ",", 
+       RowBox[{"FontSize", "\[Rule]", "42"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"2.7", ",", "1.7", ",", "0"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"b", " ", "=", " ", 
+   RowBox[{"Arrow", "[", 
+    RowBox[{"Tube", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"2", ",", "2", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"3", ",", "1", ",", "0"}], "}"}]}], "}"}], ",", "0.02"}], 
+     "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"sc", " ", "=", " ", 
+   RowBox[{"Text", "[", 
+    RowBox[{
+     RowBox[{"StyleForm", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Subscript", "[", 
+         RowBox[{"v", ",", "1"}], "]"}], "+", 
+        RowBox[{"Subscript", "[", 
+         RowBox[{"v", ",", "2"}], "]"}]}], ",", 
+       RowBox[{"FontSize", "\[Rule]", "42"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"2.0", ",", "0.3", ",", "0"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"c", " ", "=", 
+   RowBox[{"Arrow", "[", 
+    RowBox[{"Tube", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"3", ",", "1", ",", "0"}], "}"}]}], "}"}], ",", "0.02"}], 
+     "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"h", " ", "=", " ", 
+   RowBox[{"Graphics3D", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"Red", ",", " ", 
+        RowBox[{"Arrowheads", "[", "0.1", "]"}], ",", "a", ",", "b", ",", "c",
+         ",", "Black", ",", "sa", ",", "sb", ",", "sc"}], "}"}], "}"}], ",", 
+     RowBox[{"ViewMatrix", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"m", ",", "p"}], "}"}]}], ",", 
+     RowBox[{"Axes", "\[Rule]", "False"}], ",", 
+     RowBox[{"AxesLabel", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<X\>\"", ",", "\"\<Y\>\""}], "}"}]}], ",", 
+     RowBox[{"Lighting", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"{", 
+        RowBox[{"\"\<Directional\>\"", ",", "White", ",", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", "2", ",", 
+           RowBox[{"-", "1"}]}], "}"}]}], "}"}], "}"}]}], ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Large"}], ",", " ", 
+     RowBox[{"Boxed", "\[Rule]", "False"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", "h", "]"}]}], "Input",
+ CellChangeTimes->CompressedData["
+1:eJwdz1sowwEYBfDFEB6mJXPNNpqXqZnSmobVYpuSyP1BFkVTWygaNQppaY1Y
+2Fw2m/Yyc1nLAyUx2h6WFqYkkahRs1zClJ3/w9evznk4fQyZoq4rhkQiZUcP
+2mZ649jWoPCyPZQE16VCCnz4+0mBxmpJBtysamLBkb1iHnTUBgaIPlmmgo8R
+6TAMb82pIVfZPwadqRXzMO1IYIAt+RQTTM/jW+FxkdEBX3kbhPHv3U4ip1Fd
+cGn68BT+Htg8sE9764P1wZUruMDcfYE5bF0ITrblfsBKC/eT+Mt9EVsYVeXT
+kGGYxsqEs4nnWXC1RUEn+lEJA4qUZA5spJfy4POauBw+yfgi+GU6EcN7i7QG
+chb3G6CJ0doDIzbNINR7p4Zg6rVfDSe+R7SwxDSuh+aEgAHqOnfMsNleZoVv
+y0E7ZPmZLnjnEOzDsw65G1LlNx5if7vAC/8BxkfiGA==
+  "]],
+
+Cell[BoxData[
+ Graphics3DBox[
+  {RGBColor[1, 0, 0], Arrowheads[0.1], 
+   Arrow3DBox[TubeBox[{{{0., 0., 0.}, {2., 2., 0.}}}, 0.02]], 
+   Arrow3DBox[TubeBox[{{{2., 2., 0.}, {3., 1., 0.}}}, 0.02]], 
+   Arrow3DBox[TubeBox[{{{0., 0., 0.}, {3., 1., 0.}}}, 0.02]], 
+   {GrayLevel[0], Text3DBox[
+     TagBox[
+      StyleBox[
+       SubscriptBox["v", "1"],
+       FontSize->42],
+      StyleForm[#, FontSize -> 42]& ], {0.8, 1.2, 0}], Text3DBox[
+     TagBox[
+      StyleBox[
+       SubscriptBox["v", "2"],
+       FontSize->42],
+      StyleForm[#, FontSize -> 42]& ], {2.7, 1.7, 0}], Text3DBox[
+     TagBox[
+      StyleBox[
+       RowBox[{
+        SubscriptBox["v", "1"], "+", 
+        SubscriptBox["v", "2"]}],
+       FontSize->42],
+      StyleForm[#, FontSize -> 42]& ], {2., 0.3, 0}]}},
+  Axes->False,
+  AxesLabel->{
+    FormBox["\"X\"", TraditionalForm], 
+    FormBox["\"Y\"", TraditionalForm]},
+  Boxed->False,
+  ImageSize->Large,
+  Lighting->{{"Directional", 
+     GrayLevel[1], {0, 2, -1}}},
+  ViewMatrix->{{{0.3125, 0., 0., 0.03125}, {0., 0.45454545454545453`, 0., 
+    0.045454545454545456`}, {0., 0., 1., 0.5}, {0., 0., 0., 1.}}, {{1, 0, 0, 
+    0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}}}]], "Output",
+ CellChangeTimes->{{3.710477121327248*^9, 3.710477224271954*^9}, 
+   3.7104772751290617`*^9, 3.710477310297266*^9, 3.7104773925519667`*^9, {
+   3.710477524393029*^9, 3.710477530458075*^9}, 3.710477580907095*^9, 
+   3.710477611312011*^9, 3.710477694051351*^9, 3.710477911518598*^9, 
+   3.710477962920691*^9, {3.7104779991266603`*^9, 3.710478015769696*^9}, 
+   3.7104782162188387`*^9, 3.7104782583952217`*^9, {3.710478368892169*^9, 
+   3.710478373138013*^9}, {3.710478548395835*^9, 3.710478559221212*^9}, 
+   3.710478602836336*^9, 3.710478740394678*^9, {3.710478776587628*^9, 
+   3.710478787332898*^9}, {3.710478844267034*^9, 3.7104788822840014`*^9}, 
+   3.7104789204302053`*^9, {3.710478955994813*^9, 3.710478962903884*^9}, {
+   3.710479074226828*^9, 3.710479085730509*^9}, {3.7104791315550203`*^9, 
+   3.710479179461574*^9}, 3.710479300992594*^9, 3.7104793685571413`*^9, {
+   3.7104794135959578`*^9, 3.710479476440383*^9}, 3.710479545043696*^9, {
+   3.710479645225794*^9, 3.710479658600896*^9}, 3.710479737881176*^9, {
+   3.710479770421496*^9, 3.710479794137825*^9}, {3.710479852798891*^9, 
+   3.710479923823031*^9}, 3.71047996283622*^9}]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.7104774001144876`*^9, 3.710477400166355*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<vectorAddition.pdf\>\"", ",", " ", "h", ",", 
+   RowBox[{"\"\<AllowRasterization\>\"", "\[Rule]", "True"}], ",", 
+   RowBox[{"ImageSize", "\[Rule]", "360"}], ",", 
+   RowBox[{"ImageResolution", "\[Rule]", "600"}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.710478479108685*^9, {3.71047856651224*^9, 3.710478583733482*^9}, {
+   3.710479980184657*^9, 3.710479982769952*^9}}],
+
+Cell[BoxData["\<\"vectorAddition.pdf\"\>"], "Output",
+ CellChangeTimes->{
+  3.710478230476809*^9, 3.710478393767376*^9, 3.710478483020074*^9, 
+   3.710478576747943*^9, 3.710478609645485*^9, 3.710479936187262*^9, {
+   3.710479966940446*^9, 3.710479987678204*^9}}]
+}, Open  ]]
+},
+WindowSize->{933, 728},
+WindowMargins->{{14, Automatic}, {Automatic, 0}},
+FrontEndVersion->"10.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (September 9, \
+2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 4938, 144, 233, "Input"],
+Cell[5521, 168, 2343, 50, 591, "Output"]
+}, Open  ]],
+Cell[7879, 221, 94, 1, 28, InheritFromParent],
+Cell[CellGroupData[{
+Cell[7998, 226, 426, 8, 28, "Input"],
+Cell[8427, 236, 262, 4, 86, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

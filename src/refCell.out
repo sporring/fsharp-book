@@ -1,2 +1,3 @@
+$ fsharpc --nologo refCell.fsx && mono refCell.exe
 0
 1

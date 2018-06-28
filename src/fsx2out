@@ -8,4 +8,5 @@ fi
 fsharpi $i.fsx > $i.out 2>&1
 cmp --silent $i.out $i.bckp && rm $i.bckp
 #mv filenamedialogue.fscript filenamedialogue.fsx
+cat $i.out
 exit 0

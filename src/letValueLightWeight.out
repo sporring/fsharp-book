@@ -1,1 +1,3 @@
+$ fsharpc --nologo letValueLightWeight.fsx
+$ mono letValueLightWeight.exe
 9.0

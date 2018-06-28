@@ -1,3 +1,4 @@
+$ fsharpc --nologo arraySlicing.fsx && mono arraySlicing.exe
 'a'
 'd'
 [|'d'; 'e'; 'f'; 'g'|]

@@ -1,2 +1,4 @@
+$ fsharpc --nologo identifiersExampleAdvance.fsx
+$ mono identifiersExampleAdvance.exe
 0 = 1.0 * x ** 2.0 + 0.0 * x + -1.0
   has solutions -0.7071067812 and 0.7071067812

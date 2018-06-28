@@ -1,3 +1,5 @@
+$ fsharpc --nologo conditionalLightWeight.fsx
+$ mono conditionalLightWeight.exe
 "I owe 3 apples"
 "I owe 1 apple"
 "I have no apples"

@@ -1,1 +1,3 @@
+$ fsharpc --nologo functionDeclarationAnonymousAdvanced.fsx
+$ mono functionDeclarationAnonymousAdvanced.exe
 18

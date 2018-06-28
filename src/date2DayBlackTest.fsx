@@ -1,17 +1,23 @@
+// Unit: januaryFirstDay
 let januaryFirstDay (y : int) =
   let a = (y - 1) % 4
   let b = (y - 1) % 100
   let c = (y - 1) % 400
   (1 + 5 * a + 4 * b + 6 * c) % 7
 
+// Unit: sum
 let rec sum (lst : int list) j =
+  (* WB: 1 *)
   if 0 <= j && j < lst.Length then
     lst.[0] + sum lst.[1..] (j - 1)
   else
     0
   
+// Unit: date2Day
 let date2Day d m y =
-  let dayPrefix = ["Sun"; "Mon"; "Tues"; "Wednes"; "Thurs"; "Fri"; "Satur"]
+  let dayPrefix =
+    ["Sun"; "Mon"; "Tues"; "Wednes"; "Thurs"; "Fri"; "Satur"]
+  (* WB: 1 *)
   let feb = if (y % 4 = 0) && ((y % 100 <> 0) || (y % 400 = 0)) then 29 else 28
   let daysInMonth = [31; feb; 31; 30; 31; 30; 31; 31; 30; 31; 30; 31]
   let dayOne = januaryFirstDay y
@@ -33,7 +39,7 @@ let testCases = [
     (1, 1, 2015, "Thursday");
     (30, 9, 2017, "Saturday");
     (1, 10, 2017, "Sunday")]);
-  ("Across feburary bondary",
+  ("Across feburary boundary",
    [(28, 2, 2016, "Sunday");
     (29, 2, 2016, "Monday");
     (1, 3, 2016, "Tuesday");

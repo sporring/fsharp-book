@@ -1,0 +1,3 @@
+$ fsharpc --nologo array2dconcat.fsx && mono array2dconcat.exe
+
+array2dconcat.fsx(8,1): warning FS0988: Main module of program is empty: nothing will happen when it is run

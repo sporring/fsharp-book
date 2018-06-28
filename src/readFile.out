@@ -1,3 +1,4 @@
+$ fsharpc --nologo readFile.fsx && mono readFile.exe
 let printFile (reader : System.IO.StreamReader) =
   while not(reader.EndOfStream) do
     let line = reader.ReadLine ()

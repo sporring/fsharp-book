@@ -1,0 +1,1 @@
+String.mapi (fun i c -> char (int c + i)) "aaaa";;

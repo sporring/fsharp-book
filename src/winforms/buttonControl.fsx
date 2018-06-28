@@ -1,21 +1,26 @@
-open System
 open System.Windows.Forms
 open System.Drawing
+open System
 
-/// A button event
-let buttonClicked (e : EventArgs) =
-  MessageBox.Show "You clicked the button." |> ignore
+let win = new Form () // make a window form
+win.ClientSize <- Size (140, 120)
 
+// Create a label
+let label = new Label()  
+win.Controls.Add label
+label.Location <- new Point (20, 20)
+label.Width <- 120
+let mutable clicked = 0
+let setLabel clicked =
+  label.Text <- sprintf "Clicked %d times" clicked
+setLabel clicked
+  
 // Create a button
 let button = new Button ()
-button.Size <- new Size (100, 40)
-button.Location <- new Point (20, 20)
-button.Text <- "Click me"
-button.Click.Add buttonClicked
-
-// Create a window and add button
-let win = new Form ()
 win.Controls.Add button
+button.Size <- new Size (100, 40)
+button.Location <- new Point (20, 60)
+button.Text <- "Click me"
+button.Click.Add (fun e -> clicked <- clicked + 1; setLabel clicked)
 
-// Start the event-loop.
-Application.Run win
+Application.Run win // Start the event-loop.

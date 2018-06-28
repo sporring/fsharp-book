@@ -1,4 +1,4 @@
-\documentclass{report}
+\documentclass[oneside]{book}
 
 \input{setup}
 
@@ -8,41 +8,41 @@
 %
 %\author{Jon Sporring \& Torben Mogensen\\[1cm]Department of Computer Science,\\University of Copenhagen}
 
-\includeonly{%
-  % preface
-  %,introduction
-  % ,part1Intro 
-  %,gettingStartedFsharp
-  %,quickStartGuide
-  % ,numbersCharsNStrings
-  % ,bindings
-  % ,comments
-  % ,flow 
-  % ,tuplesListsArraysSequences
-  % ,testing
-  % ,exceptions
-  % ,IO
-  % % ,part2Intro 
-  % ,windows
-  % % ,imperativeProgramming
-  %,part3Intro 
-  %,sequences
-  %,patterns
-  %,typesNMeasures
-  %,functionalProgramming
-  %,part4Intro
-  %,nameSpacesNModules
-  ,objectOrientedProgramming
-  %,objectOrientedDesign
-  % ,part5Intro 
-  % ,numberSystems
-  % ,characterSets
-  %,commonLanguageInfrastructure
-  % ,extendedBackusNaurForm
-  % ,fflat
-  % ,languageDetails
-  %,collection
-  ,todos
+\includeonly{
+  preface,
+  introduction,
+  gettingStartedFsharp,
+  quickStartGuide,
+  numbersCharsNStrings,
+  bindings,
+  comments,
+  flow,
+  nameSpacesNModules,
+  testing,
+  tuplesListsArraysSequences,
+  imperativeProgrammingParadigm,
+  recursion,
+  types,
+  patterns,
+  higherOrderFunctions,
+  functionalProgrammingParadigm,
+  exceptions,
+  IO,
+  classes,
+  inheritance,
+  objectOrientedProgrammingParadigm,
+  windows,
+  eventDrivenProgrammingParadigm,
+  future,
+  console,
+  numberSystems,
+  characterSets,
+  commonLanguageInfrastructure,
+   % extendedBackusNaurForm,
+   % fflat,
+   languageDetails,
+   % collection,
+   % todos
 }
 
 \begin{document}
@@ -58,8 +58,6 @@
 \include{preface}
 
 \include{introduction}
-
-%\include{part1Intro}
 
 \include{gettingStartedFsharp}
 
@@ -79,34 +77,41 @@
 
 \include{tuplesListsArraysSequences}
 
+\include{imperativeProgrammingParadigm}
+
+\include{recursion}
+
+\include{types}
+
 \include{patterns}
+
+\include{higherOrderFunctions}
+
+\include{functionalProgrammingParadigm}
 
 \include{exceptions}
 
 \include{IO}
 
-%\include{part2Intro}
-
-\include{windows}
-
-%\include{imperativeProgramming}
-
-%\include{part3Intro}
-
 %\include{sequences}
 
 %\include{typesNMeasures}
 
-%\include{functionalProgramming}
+\include{classes}
 
-%\include{part4Intro}
+\include{inheritance}
 
-\include{objectOrientedProgramming}
+\include{objectOrientedProgrammingParadigm}
 
-\include{objectOrientedDesign}
+\include{windows}
 
-%\include{part5Intro}
+\include{eventDrivenProgrammingParadigm}
+
+\include{future}
+
 \appendix
+
+\include{console}
 
 \include{numberSystems}
 
@@ -114,11 +119,11 @@
 
 \include{commonLanguageInfrastructure}
 
-\include{extendedBackusNaurForm}
+%\include{extendedBackusNaurForm}
 
-\include{fflat}
+%\include{fflat}
 
-%\include{languageDetails}
+\include{languageDetails}
 
 %\include{collection}
 

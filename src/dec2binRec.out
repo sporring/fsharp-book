@@ -1,3 +1,4 @@
+$ fsharpc --nologo dec2binRec.fsx && mono dec2binRec.exe
   -1 -> Illegal value
    0 -> 0b0
    1 -> 0b1

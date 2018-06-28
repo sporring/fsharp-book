@@ -1,1 +1,3 @@
+$ fsharpc --nologo exceptionInvalidArgNCatch.fsx
+$ mono exceptionInvalidArgNCatch.exe
 Argument is no good!

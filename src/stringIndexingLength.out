@@ -1,4 +1,6 @@
 > "abcdefg".Length;;
 val it : int = 7
+
 > "abcdefg".[7-1];;
 val it : char = 'g'
+

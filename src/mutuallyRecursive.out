@@ -1,3 +1,4 @@
+$ fsharpc --nologo mutuallyRecursive.fsx && mono mutuallyRecursive.exe
     i  even   odd
     1 false  true
     2  true false

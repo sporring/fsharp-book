@@ -30,7 +30,7 @@ expr = ...
   | ...
 \end{lstlisting}
 %
-Sequence may be defined using simple range expressions but most often are defined as a small program, that generates values with the \keyword{yield} keyword or \keyword{yield!} keyword. The \keyword{yield!} is called \idx{yield bang}, and appends a sequence instead of adding a sequence as an element. Thus, \lstinline!seq {3; 5}! is not permitted, but \lstinline!seq {yield 3; yield 5}! and \lstinline|seq {yield! (seq {yield 3; yield 5})}| are, both creating \lstinline!seq<int> = seq [3; 5]!, i.e., a sequence of integers. Most often computation expressions are used to produced members that are not just ranges, but more complicated expressions of ranges, e.g., \lstinline!c! in the example. Sequences may even in principle be infinitely long, e.g., \lstinline!d!. Calculating the complete sequence at the point of definition is impossible due to lack of memory, as is accessing all its elements due to lack of time. But infinite sequences are still very useful, e.g., identifier \lstinline!d! illustrates the parametrization of a circle, which is an infinite domain, and any index will be converted to the equivalent 60th degree angle in radians. F\# warns against recursive values, as defined in the example, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!.
+Sequence may be defined using simple range expressions but most often are defined as a small program, that generates values with the \keyword{yield} keyword or \keyword{yield!} keyword. The \keyword{yield!} is called \idx{yield bang}, and appends a sequence instead of adding a sequence as an element. Thus, \lstinline!seq {3; 5}! is not permitted, but \lstinline!seq {yield 3; yield 5}! and \lstinline|seq {yield! (seq {yield 3; yield 5})}| are, both creating \lstinline!seq<int> = seq [3; 5]!, i.e., a sequence of integers. Most often computation expressions are used to produced members that are not just ranges, but more complicated expressions of ranges, e.g., \lstinline!c! in the example. Sequences may even in principle be infinitely long, e.g., \lstinline!d!. Calculating the complete sequence at the point of definition is impossible due to lack of memory, as is accessing all its elements due to lack of time. But infinite sequences are still very useful, e.g., identifier \lstinline!d! illustrates the parametrization of a circle, which is an infinite domain, and any index will be converted to the equivalent 60th degree angle in radians. F\# warns against recursive values, as defined in the example, since it will check the soundness of the value at runtime rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!.
 
 Sequences are generalisations of lists and arrays, and functions taking sequences as argument may equally take lists and arrays as argument. Sequences do not have many built-in operators, but a rich collection of functions in the \lstinline!Collections.Seq!. E.g.,\idxss{Seq.item}\idxss{Seq.take}
 %
@@ -46,7 +46,7 @@ In the example, we see that the \lstinline!printfn! function embedded in the def
 
 \jon{Mono, missing support for Spec-4.0 Chapter 6, \lstinline!do!-\lstinline!in! in sequences. E.g., \lstinline!seq {let _ = printfn "hej" in yield 3}! is ok, but \lstinline!seq {do printfn "hej" in yield 3}! not. One could argue, that computation expression is the framework and that it is the seq implementation, which does not provide full access to the framework. but this is confusing, since seq gets special attention in the specification.}
 
-The only difference between computation expression's programming constructs and the similar regular expressions constructs is that they must return a value with the \keyword{yield} or \keyword{yield!} keywords.\jon{Mono implements if-elif-else, but this is not in the specification.} The \keyword{try}-keyword constructions will be discussed in Chapter~\ref{chap:exceptions}, and the \keyword{use}-keyword is a variant of \keyword{let} but used in asynchronous computations, which will not be treated here.
+The only difference between computation expression's programming constructs and the similar regular expressions constructs is that they must return a value with the \keyword{yield} or \keyword{yield!} keywords.\jon{Mono implements if-elif-else, but this is not in the specification.} The \keyword{try}-keyword constructions will be discussed in \Cref{chap:errors}, and the \keyword{use}-keyword is a variant of \keyword{let} but used in asynchronous computations, which will not be treated here.
 
   % "let" pat "=" expr "in" comp-expr
   % | "use" pat = expr "in" comp-expr
@@ -64,17 +64,17 @@ Infinite sequences is a useful concept in many programs and may be generated in 
 %
 \fs{seqInfinteValue2}{Recursive value definitions gives a warning.  Compare with Listing\ref{seqInfinteValue}, \ref{seqInfinteFunction}, and \ref{seqInitInfinite}.}
 %
-F\# warns against using recursive values, since it will check the soundness of the value at run-time rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!, but \advice{warnings are messages from the designers of F\# that your program is non-optimal, and you should avoid structures that throw warnings instead of relying on \lstinline{\#nowarn} and similar constructions.} Instead we may create an infinite loop using the \keyword{while}-\keyword{do} computation expression, as
+F\# warns against using recursive values, since it will check the soundness of the value at runtime rather than at compile-time. The warning can be removed by adding \lstinline!#nowarn "40"! in the script or \lstinline!--nowarn:40! as argument to \lstinline[language=console]!fsharpi! or \lstinline[language=console]!fsharpc!, but \advice{warnings are messages from the designers of F\# that your program is non-optimal, and you should avoid structures that throw warnings instead of relying on \lstinline{\#nowarn} and similar constructions.} Instead we may create an infinite loop using the \keyword{while}-\keyword{do} computation expression, as
 %
-\fs{seqInfinteValue}{Infinite value definition without recursion nor warning.  Compare with Listing~\ref{seqInfinteValue2}, \ref{seqInfinteFunction}, and\ref{seqInitInfinite}.}
+\fs{seqInfinteValue}{Infinite value definition without recursion nor warning.  Compare with \Cref{seqInfinteValue2}, \ref{seqInfinteFunction}, and\ref{seqInitInfinite}.}
 %
 or alternatively define a recursive function,
 %
-\fs{seqInfinteFunction}{Recursive function definitions gives no a warning.  Compare with Listing~\ref{seqInfinteValue2}, \ref{seqInfinteValue}, and \ref{seqInitInfinite}.}
+\fs{seqInfinteFunction}{Recursive function definitions gives no a warning.  Compare with \Cref{seqInfinteValue2}, \ref{seqInfinteValue}, and \ref{seqInitInfinite}.}
 %
 Infinite expressions have built-in support through the \lstinline!Seq! module using \idxss{Seq.initInfinite},
 %
-\fs{seqInitInfinite}{Using \lstinline{Seq.initInfinte} and a function to generate an infinte sequence. Compare with Listing~\ref{seqInfinteValue2}, \ref{seqInfinteValue}, and \ref{seqInfinteFunction}.}
+\fs{seqInitInfinite}{Using \lstinline{Seq.initInfinte} and a function to generate an infinte sequence. Compare with \Cref{seqInfinteValue2}, \ref{seqInfinteValue}, and \ref{seqInfinteFunction}.}
 %
 which takes a function as argument. Here we have used currying, i.e., \lstinline!get items! is a function that takes on variable and returns a value. The use of the remainder operator makes the example rather contrived, since it might have been simpler to use the \lstinline!get! indexing function directly.
 
@@ -82,7 +82,7 @@ Sequences are easily converted to and from lists and arrays as,\idxss{Seq.toList
 %
 \fs{seqConversion}{Conversion between sequences and lists and arrays using the \lstinline!List! module.}
 %
-There are quite a number of built-in functions for sequences many which will be discussed in Chapter~\ref{chap:collection}.
+There are quite a number of built-in functions for sequences many which will be discussed in \Cref{chap:collection}.
  
 Lists and arrays may be created from sequences through the short-hand notation called \idx[list sequence expression]{list and array sequence expressions}\idxss{array sequence expressions},
 \begin{lstlisting}[language=ebnf]

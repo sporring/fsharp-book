@@ -1,15 +1,21 @@
 \chapter{Executing F\# code}
 
 \section{Source code}
-F\# is a functional first programming language, meaning that it has strong support for functional programming, but F\# also supports imperative and object oriented programming. It also has strong support for parallel programming and information rich programs. It was originally developed for Microsoft's .Net platform, but is available as open source for many operating systems through Mono. In this text we consider F\# 4.0 and its Mono implementation, which is different from .Net mainly in terms of the number of libraries accessible. The complete language specification is described in \url{http://fsharp.org/specs/language-spec/4.0/FSharpSpec-4.0-latest.pdf}. 
+F\# is a functional first programming language, meaning that it has strong support for functional programming, but F\# also supports imperative and object-oriented programming. It also has strong support for parallel programming and information-rich programs. It was originally developed for Microsoft's .Net platform, but is available as open source for many operating systems through Mono. In this text, we consider F\# \fsharpVersion and its Mono implementation, which is different from .Net mainly in terms of the number of libraries accessible. The complete language specification is described in \url{http://fsharp.org/specs/language-spec/}. 
 
-F\# has 2 modes of execution, \idx{interactive} and \idx{compiled}. Interactive mode is well suited for small experiments or back-of-an-envelope calculations, but not for programming in general. In Mono, the interactive system is started by calling \lstinline[language=console]{fsharpi} from the \idx{console}, while compilation is performed with \lstinline[language=console]{fsharpc} and execution of the compiled code is performed using the \lstinline[language=console]{mono} command. The various forms of fsharp programs are identified by suffixes:
+F\# has 2 modes of execution, \idx[interactive mode]{interactive} and \idx[compile mode]{compiled}. Interactive mode is well suited for small experiments or back-of-an-envelope calculations, but not for programming in general. Both modes can be accessed via the \idx{console}, see \Cref{chap:console} for more information on the console.  The interactive system is started by calling \lstinline[language=console]{fsharpi} at the command prompt in the console, while compilation is performed with \lstinline[language=console]{fsharpc}, and execution of the compiled code is performed using the \lstinline[language=console]{mono} command. 
+
+F\# programs come in many forms, which are identified by suffixes. The \idx{source code} is an F\# program written in human-readable form using an editor. F\# recognizes the following types of source code files:
 \begin{description}
 \item[\texttt{.fs}] An \idx{implementation file}, e.g., \lstinline[language=console]{myModule.fs}
 \item[\texttt{.fsi}] A \idx{signature file}, e.g., \lstinline[language=console]{myModule.fsi}
 \item[\texttt{.fsx}] A \idx{script file}, e.g., \lstinline[language=console]{gettingStartedStump.fsx}
 \item[\texttt{.fsscript}] Same as \lstinline[language=console]{.fsx}, e.g., \lstinline[language=console]{gettingStartedStump.fsscript}
-\item[\texttt{.exe}] An \idx{executable file}, e.g., \lstinline[language=console]{gettingStartedStump.exe}
+\end{description}
+Compiled code is source code translated into a machine-readable language, which can be executed by a machine. Compiled F\# code is either:
+\begin{description}
+\item[\texttt{.dll}] A \idx{library file}, e.g., \lstinline[language=console]{myModule.dll}
+\item[\texttt{.exe}] A stand-alone \idx{executable file}, e.g., \lstinline[language=console]{gettingStartedStump.exe}
 \end{description}
 % \begin{table}
 %   \centering
@@ -27,25 +33,32 @@ F\# has 2 modes of execution, \idx{interactive} and \idx{compiled}. Interactive 
 %   \caption{Source file suffixes in F\#}
 %   \label{tab:suffix}
 % \end{table}
-The implementation, signature, and script files are all typically compiled to produce an executable file, but syntactical correct code can also be entered into the interactive system, in which case these are called \idx{script-fragments}. The implementation and signature files are special kinds of script files used for building \idx{modules}. Modules are collections of smaller programs used by other programs, which will be discussed in detail in Part~\ref{part:structured}.
+The implementation, signature, and script files are all typically compiled to produce an executable file, in which case they are called \idx{scripts}, but can also be entered into the interactive system, in which case these are called \idx[script-fragment]{script-fragments}. The implementation and signature files are special kinds of script files used for building libraries. Libraries in F\# are called modules, and they are collections of smaller programs used by other programs, which will be discussed in detail in \Cref{chap:modules}.
 
 \section{Executing programs}
-Programs may either be executed by the interpreter or by compiling and executing the compiled code. 
+Programs may either be executed by the interpreter or by compiling and executing the compiled code. In Mono the interpreter is called \lstinline[language=console]{fsharpi} and can be used in two ways: interactively, where a user enters one or more script-fragments separated by the \lexeme{;;} characters, or to execute a script file treated as a single script-fragment. \jon{Too early to introduce lexeme: ``F\# uses many characters which at times are given special meanings, e.g., the characters \lexeme{;;} is compound character denoting the end of a script-fragment. Such possibly compound characters are called %\idx[lexeme]{lexemes}
+lexemes.''}
 
-In Mono the interpreter is called \lstinline[language=console]{fsharpi} and can be used in 2 ways: interactively, where a user enters 1 or more script-fragments separated by the \lexeme{;;} lexeme, or to execute a script file treated as a single script-fragment. To illustrate the difference, consider the following program, which declares a value \lstinline{a} to be the decimal value 3.0 and finally print it to the console:
+To illustrate the difference between interactive and compile mode, consider the program in \Cref{gettingStartedStump}.
+%
 \fsCode{gettingStartedStump}{gettingStartedStump}{A simple demonstration script.}{}
-An interactive session is obtained by starting the console, typing the \lstinline[language=console]{fsharpi} command, typing the lines of the program, and ending the script-fragment with the \lexeme{;;} lexeme. The following dialogue demonstrates the workflow, where what the user types has been highlighted by a \tikzmark{tl}box\tikzmark{br}\FrameArea{tl}{br}:
-\begin{codeNOutput}{: An interactive session.}
+%
+The code declares a value \lstinline{a} to be the decimal value 3.0 and finally prints it to the console. The \mbox{\lstinline{do printfn}} is a statement for displaying the content of a value to the screen, and \lstinline{"%g"} %
+is a special notation to control how the value is printed. In this case, it is printed as a decimal number. This and more will be discussed at length in the following chapters. For now, we will concentrate on how to interact with the F\# interpreter and compiler.
+
+An interactive session is obtained by starting the console, typing the \lstinline[language=console]{fsharpi} command, typing the lines of the program, and ending the script-fragment with \lexeme{;;}. The dialogue in \Cref{interactiveSession} demonstrates the workflow. What the user types has been highlighted by a \tikzmark{tl}box\tikzmark{br}\FrameArea{tl}{br}.
+%
+\begin{codeNOutput}[label=interactiveSession]{: An interactive session.}
   \begin{lstlisting}[language=console,escapechar=§]
 $ §\tikzmark{lst1_5-tl}§fsharpi§\tikzmark{lst1_5-br}§
 
-F# Interactive for F# 4.0 (Open Source Edition)
+F# Interactive for F# 4.1 (Open Source Edition)
 Freely distributed under the Apache 2.0 Open Source License
 
 For help type #help;;
 
 > §\tikzmark{lst1_4-tl}§let a = 3.0§\tikzmark{lst1_1-start}§
-- printfn "%g" a;;§\tikzmark{lst1_4-br}§§\tikzmark{lst1_1-end}§
+- do printfn "%g" a;;§\tikzmark{lst1_4-br}§§\tikzmark{lst1_1-end}§
 3§\tikzmark{lst1_2-start}§
 
 val a : float = 3.0 §\tikzmark{lst1_2-align}§
@@ -53,9 +66,10 @@ val it : unit = ()
 §\tikzmark{lst1_2-end}§
 > §\tikzmark{lst1_6-tl}§#quit;;§\tikzmark{end_3}§§\tikzmark{lst1_6-br}§
 \end{lstlisting}%$
-\end{codeNOutput}
-\FrameArea{lst1_4-tl}{lst1_4-br}
-\FrameArea{lst1_5-tl}{lst1_5-br}
+\label{interactiveSessiont}
+\end{codeNOutput}%
+\FrameArea{lst1_4-tl}{lst1_4-br}%
+\FrameArea{lst1_5-tl}{lst1_5-br}%
 \FrameArea{lst1_6-tl}{lst1_6-br}%
 % \tikzmark{start_1}\AddNote{lst1_1-start}{lst1_1-end}{lst1_1-end}{\tikzmark{end_1}}\DrawArrow[red,thick, out=-60, in=0]{start_1}{end_1} 
 % \tikzmark{start_2}\AddNote{lst1_2-start}{lst1_2-end}{lst1_2-align}{\tikzmark{end_2}}\DrawArrow[red,thick, out=-60, in=0]{start_2}{end_2} 
@@ -72,19 +86,28 @@ val it : unit = ()
 % \tikzmark{start}\AddNote{lst1_1-start}{lst1_1-end}{lst1_1-end}{You write}%
 % \tikzmark{start}\AddNote{lst1_2-start}{lst1_2-end}{lst1_2-align}{Fsharp responds}%
 % \tikzmark{start}\AddNote{lst1_3-start}{lst1_3-end}{lst1_3-end}{You write}%
-The interpreter is stopped by pressing \lstinline[language=console]{ctrl-d} or typing "\lstinline[language=console]{#quit;;}". Conversely, executing the file with the interpreter as follows,
-\begin{codeNOutput}{: Using the interpreter to execute a script.}
+%
+We see that after typing \lstinline[language=console]{fsharpi}, then the program starts by stating details about itself followed by \lstinline{>} indicating that it is ready to receive commands. The user then types \lstinline{let a = 3.0} and presses \lstinline[language=console]{enter}, to which the interpreter responds with \lstinline{-}. This indicates that the line has been received, that the script-fragment is not yet completed, and that it is ready to receive more input. When the user types \lstinline{do printfn "%g" a;;} %
+followed by \lstinline[language=console]{enter}, then by \lexeme{;;} the interpreter knows that the script-fragment is completed, it interprets the script-fragment, responds with \lstinline{3} and extra type information about the entered code, and with \lstinline{>} to indicate, that it is ready for more script-fragments. The interpreter is stopped, when the user types \lstinline[language=console]{#quit;;}. It is also possible to stop the interpreter by typing \lstinline[language=console]{ctrl-d}.
+
+Instead of running \lstinline[language=console]{fsharpi} interactively, we can write the script-fragment from \Cref{gettingStartedStump} into a file, here called \lstinline[language=console]{gettingStartedStump.fsx}. This file can be interpreted directly by \lstinline[language=console]{fsharpi} as shown in \Cref{commandlineInterpreter}.
+%
+\begin{codeNOutput}[label=commandlineInterpreter]{: Using the interpreter to execute a script.}
 \begin{lstlisting}[language=console,escapechar=§]
 $ §\tikzmark{lst2_1-tl}§fsharpi gettingStartedStump.fsx§\tikzmark{lst2_1-br}§
 3
 \end{lstlisting}%$
 \end{codeNOutput}
 \FrameArea{lst2_1-tl}{lst2_1-br}%
- Finally, compiling and executing the code is performed as,
-\begin{codeNOutput}{: Compiling and executing a script.}
+%
+Notice that in the file, \lexeme{;;} is optional. We see that the interpreter executes the code and prints the result on screen without the extra type information.
+
+Finally, the file containing \Cref{gettingStartedStump} may be compiled into an executable file with the program \lstinline[language=console]{fsharpc}, and run using the program \lstinline[language=console]{mono} from the console. This is demonstrated in \Cref{compiler}.
+%
+\begin{codeNOutput}[label=compiler]{: Compiling and executing a script.}
 \begin{lstlisting}[language=console,escapechar=§]
 $ §\tikzmark{lst3_1-tl}§fsharpc gettingStartedStump.fsx §\tikzmark{lst3_1-br}§
-F# Compiler for F# 4.0 (Open Source Edition)
+F# Compiler for F# 4.1 (Open Source Edition)
 Freely distributed under the Apache 2.0 Open Source License
 $ §\tikzmark{lst3_2-tl}§mono gettingStartedStump.exe§\tikzmark{lst3_2-br}§
 3
@@ -92,9 +115,12 @@ $ §\tikzmark{lst3_2-tl}§mono gettingStartedStump.exe§\tikzmark{lst3_2-br}§
 \end{codeNOutput}
 \FrameArea{lst3_1-tl}{lst3_1-br}%
 \FrameArea{lst3_2-tl}{lst3_2-br}%
- Both the interpreter and the compiler translates the source code into a format, which can be executed by the computer. While the compiler performs this translation once and stores the result in the executable file, the interpreter translates the code every time the code is executed. Thus, to run the program again with the interpreter, then it must be retranslated as "\lstinline[language=console]{$fsharpi gettingStartedStump.fsx}''. %$
-In contrast, compiled code does not need to be recompiled to be run again, only re-executed using "\lstinline[language=console]{$ mono gettingStartedStump.exe}".%$
-On a Macbook Pro, with a 2.9 Ghz Intel Core i5, the time the various stages takes for this script are:
+%
+The compiler takes \lstinline[language=console]{gettingStartedStump.fsx} and produces \lstinline[language=console]{gettingStarted.exe}, which can be run using \lstinline[language=console]{mono}.
+
+Both the interpreter and the compiler translates the source code into a format, which can be executed by the computer. While the compiler performs this translation once and stores the result in the executable file, the interpreter translates the code every time the code is executed. Thus, to run the program again with the interpreter, it must be retranslated as "\lstinline[language=console]{$fsharpi gettingStartedStump.fsx}''. %$
+In contrast, compiled code does not need to be recompiled to be run again, only re-executed using "\lstinline[language=console]{$ mono gettingStartedStump.exe}". %$
+On a MacBook Pro, with a 2.9 GHz Intel Core i5, the time the various stages take for this script are:
 \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|}
@@ -109,8 +135,9 @@ On a Macbook Pro, with a 2.9 Ghz Intel Core i5, the time the various stages take
 \end{center}
 I.e., executing the script with \lstinline[language=console]|fsharpi| is slightly faster than by first compiling it with \lstinline[language=console]|fsharpc| and then executing the result with \lstinline[language=console]|mono|, $1.88\text{s} < 0.05\text{s}+1.90\text{s}$ , if the script were to be executed only once, but every future execution of the script using the compiled version requires only the use of \lstinline[language=console]|mono|, which is much faster than \lstinline[language=console]|fsharpi|, $1.88\text{s}\gg 0.05\text{s}$.
 
-The interactive session results in extra output on the \idx{type inference} performed, which is very useful for \idx{debugging} and development of code-fragments, but both executing programs with the interpreted directly from a file and compiling and executing the program is much preferred for programming complete programs, since the starting state is well defined, and since this better supports \idx{unit-testing}, which is a method for debugging programs.
+The interactive session results in extra output on the \idx{type inference} performed, which is very useful for \idx{debugging} and development of code-fragments, but both executing programs with the interpreted directly from a file and compiling and executing the program is much preferred for programming complete programs, since the starting state is well defined, and since this better supports \idx{unit-testing}, which is a method for debugging programs. Thus, \advice{prefer compiling over interpretation.}
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
+

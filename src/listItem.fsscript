@@ -1,2 +1,1 @@
-[1; 2; 3].Item 1;;
-let a = [1; 2; 3] in a.Item 1;;
+let a = [1; -3; 0] in a.Item 1;;

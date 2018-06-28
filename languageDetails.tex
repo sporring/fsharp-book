@@ -54,7 +54,7 @@ This appendix lists various language details.
     \lstinline!\~\~\~op!&ints&&\lstinline!\~\~\~0b00001100uy!&\lstinline!0b11110011uy!&bitwise boolean negation\\
     \hline
   \end{tabularx}
-  \caption{Arithmetic operators on basic types. Ints, floats, chars, and strings means all built-in integer types etc.. Note that for the bitwise operations, digits \lstinline{0} and \lstinline{1} are taken to be \lstinline{true} and \lstinline{false}.}
+  \caption{Arithmetic operators on basic types. Ints, floats, chars, and strings means all built-in integer types etc. Note that for the bitwise operations, digits \lstinline{0} and \lstinline{1} are taken to be \lstinline{true} and \lstinline{false}.}
   \label{tab:preNInfixOperators}
 \end{table}
 
@@ -196,6 +196,7 @@ This appendix lists various language details.
 \clearpage
 
 \section{Precedence and associativity}
+\begin{comment}
 \begin{table}[ht]
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -223,9 +224,10 @@ This appendix lists various language details.
     \lstinline+||+ & Left & Boolean or\\
     \hline
   \end{tabularx}
-  \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|leftOp * rightOp| has higher precedence than \lstinline|leftOp + rightOp|. Operators in the same row has same precedence. Full table is given in Table~\ref{tab:operatorPrecedence}.}
+  \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|leftOp * rightOp| has higher precedence than \lstinline|leftOp + rightOp|. Operators in the same row has same precedence. Full table is given in \Cref{tab:operatorPrecedence}.}
   \label{tab:someOperatorPrecedences}
 \end{table}
+\end{comment}
 
 \idxs{boolean or}\idxs{boolean and}
 \begin{table}[ht]
@@ -287,14 +289,14 @@ This appendix lists various language details.
      \lstinline[language=ebnf]|"as"| & Right & \\
      \hline
   \end{tabularx}
-  \caption{Precedence and associativity of operators. Operators in the same row has same precedence. See Listing~\ref{list:infixOrPrefixOperators} for the definition of \lstinline!prefixOp!}
+  \caption{Precedence and associativity of operators. Operators in the same row has same precedence. See \Cref{list:infixOrPrefixOperators} for the definition of \lstinline!prefixOp!}
   \label{tab:operatorPrecedence}
 \end{table}
 \clearpage
 
 \begin{comment}
 \section{Behind the scene}
-\jon{I'm not sure, whether it will be a good idea to describe this. Could be used as the umbrella for the specifikation of the program.} When a program is compiled or interpreted the following steps are performed by the system
+\jon{I'm not sure, whether it will be a good idea to describe this. Could be used as the umbrella for the specification of the program.} When a program is compiled or interpreted the following steps are performed by the system
   \begin{enumerate}
   \item Decoding
   \item Tokenization
@@ -308,9 +310,10 @@ This appendix lists various language details.
   \dots
 \end{comment}
 
-\section{Lightweight Syntax}
-To appear later.\jon{See Lightweight Syntax, Spec-4.0 Chapter 15.1}
+%\section{Lightweight Syntax}
+%To appear later.\jon{See Lightweight Syntax, Spec-4.0 Chapter 15.1}
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
+

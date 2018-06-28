@@ -1,3 +1,4 @@
+$ fsharpc --nologo date2DayBlackTest.fsx && mono date2DayBlackTest.exe
 Black-box testing of date2Day.fsx
   1. A complete week
     test 1 - true
@@ -12,7 +13,7 @@ Black-box testing of date2Day.fsx
     test 2 - true
     test 3 - true
     test 4 - true
-  3. Across feburary bondary
+  3. Across feburary boundary
     test 1 - true
     test 2 - true
     test 3 - true

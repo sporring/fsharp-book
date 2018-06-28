@@ -1,2 +1,1 @@
-[1; 2; 3].Tail;;
-let a = [1; 2; 3] in a.Tail;;
+let a = [1; -2; 0] in a.Tail;;

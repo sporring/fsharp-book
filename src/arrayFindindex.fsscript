@@ -1,0 +1,1 @@
+let isK x = (x = 'k') in Array.findIndex isK [|'a' .. 'z'|];;

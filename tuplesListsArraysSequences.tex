@@ -1,204 +1,497 @@
-\chapter{Ordered series of data}
+\chapter{Collections of data}
 \label{chap:lists}
-F\# is tuned to work with ordered series, and there are several built-in lists with various properties making them useful for different tasks. E.g.,
-%
-\fs{tuplesQuadraticEq}{Using tuples to gather values.}
-%
-F\# has four built-in list types: strings, tuples, lists, arrays, and sequences. Strings were discussed in Chapter~\ref{chap:calculator}, sequences will be discussed in Chapter~\ref{chap:sequences}. Here we will concentrate on tuples, lists,  and arrays, and following this (simplified) syntax:
-%
-\begin{verbatimwrite}{tmp.ebnf}
-expr = ... 
-  | exprTuple (*tuple*)
-  | "[" (exprSeq | rangeExpr) "]" (*list*)
-  | "[|" (exprSeq | rangeExpr) "|]" (*array*)
+F\# is tuned to work with collections of data, and there are several built-in types of collections with various properties making them useful for different tasks. Examples include strings, lists, arrays, and sequences. Strings were discussed in \Cref{chap:calculator} and will be revisited here in more details. Sequences will not be discussed,\jon{Should we discuss sequences?} and we will concentrate on lists and one- and two-dimensional arrays.
 
-exprTuple = expr | expr "," exprTuple;
-exprSeq =  expr | expr ";" exprSeq;
-rangeExpr = expr ".." expr [".." expr];
-\end{verbatimwrite}
-\ebnf{tmp.ebnf}{}
-%
-\spec{Spec-4.0: grammar for list and array expressions are subsets of computation list and array expressions.} Tuples are a direct extension of constants. They are immutable and do not have concatenations nor indexing operations. This is in contrast to lists. Lists are also immutable, but have a simple syntax for concatenation and indexing. Arrays are mutable lists, and support higher order structures such as tables and three dimensional arrays. 
-%Sequences are like lists, but with the added advantage of a very flexible construction mechanism, and the option of representing infinitely long sequences. In the following, we will present these data structures in detail.
+\section{Strings}
+\label{sec:strings}
+Strings have been discussed in \Cref{chap:calculator}, the content of which will be briefly revisited here followed by a description of some of the many supporting built-in functions in F\# on strings.
 
-\section{Tuples}
-\idx[tuple]{Tuples} are unions of immutable types, 
-%
-\begin{verbatimwrite}{tmp.ebnf}
-expr = ... 
-  | exprTuple (*tuple*)
+A \idx{string} is a sequence of characters. Each character is represented using UTF-16, see \Cref{sec:characterSets} for further details on the unicode standard. The type \lstinline{string} is an alias for \idx[System.string@\lstinline{System.string}]{\lstinline{System.string}}. String literals are delimited by quotation marks \lexeme{"} and inside the delimiters, character escape sequences are allowed (see \Cref{tab:escapeChar}), which are replaced by the corresponding character code. Examples are \lstinline{"This is a string"}, \lstinline{"\tTabulated string"}, \lstinline{"A \"quoted\" string"}, and \lstinline{""}. Strings may span several lines, and new lines inside strings are part of the string unless the line is ended with a backslash. Strings may be \idx[verbatim string]{verbatim} by preceding the string with \lexeme{@}, in which case escape sequences are not replaced, but a double quotation marks is an escape sequence which is replaced by a single, e.g., \lstinline{@"This is a string"}, \lstinline{@"\tNon-tabulated string"}, \lstinline{@"A ""quoted"" string"}, and \lstinline{@""}. Alternatively, a verbatim string may be delimited by tripple quotes, e.g.,  \lstinline{"""This is a string"""}, \lstinline{"""\tNon-tabulated string"""}, \lstinline{"""A "quoted" string"""}, and \lstinline{""""""}. Strings may be indexed using the \lstinline{.[]} notation, as demonstrated in \Cref{stringIndexing}.
 
-exprTuple = expr | expr "," exprTuple;
-\end{verbatimwrite}
-\ebnf{tmp.ebnf}{}
-%
-and the they are identified by the \lexeme{,} lexeme. Most often the tuple is enclosed in parentheses, but that is not required. Consider the tripel, also known as a 3-tuple, \lstinline!(2,true,"hello")! in interactive mode,
-%
-\fsOutput{tuple}{Definition of a tuple.}
-%
-The values \lstinline!2!, \lstinline!true!, and \lstinline!"hello"! are \idx[member]{members}, and the number of elements of a tuple is its \idx{length}. From the response of F\# we see that the tuple is inferred to have the type \lstinline!int * bool * string!, where the \lexeme{*} is cartesian product between the three sets.  Notice, that tuples can be products of any types and have lexical scope like value and function bindings. Notice also, that a tuple may be printed as a single entity by the \lstinline!%A! placeholder. In the example, we bound \lstinline!tp! to the tuple, the opposite is also possible,
-%
-\fsOutput{tupleDeconstruction}{Definition of a tuple.}
-%
-In this a function is defined that takes 1 argument, a 3-tuple, and which is bound to a tuple with 3 named members. Since we used the \lstinline!%A! placeholder in the \lstinline!printfn! function, then the function is generic and can be called with 3-tuples of different types. Note, \advice{don't confuse a function of $n$ arguments with a function of an $n$-tuple.}  The later has only 1 argument, and the difference is the \lexeme{,}s. Another example is \lstinline!let solution a b c = ...!, which is the beginning of the function definition in Listing~\ref{tuplesQuadraticEq}. It is a function of 3 arguments, while \lstinline!let solution (a, b, c) = ...! would be a function of 1 argument, which is a 3-tuple. Functions of several arguments makes currying easy, i.e., we could define a new function which fixes the quadratic term to be 0 as \lstinline!let solutionToLinear = solution 0.0!, that is, without needing to specify anything else. With tuples, we would need the slightly more complicated, \lstinline!let solutionToLinear (b, c) = solution (0.0, b, c)!.
+\subsection{String properties}
+Strings have a few properties, which are values attached to each string and access using the \lexeme{.} notation. The only to be mentioned here is:
+\begin{description}
+\item[\texttt{Length}:] Returns the length of the string. Compare with \lstinline{String.length} method.
+  \fsOutput{stringLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
+\end{description}
 
-Tuples comparison are defined similarly as strings. Tuples of different lengths are different. For tuples of equal length, then they are compared element by element. E.g., \lstinline!(1,2) = (1,3)! is false, while \lstinline!(1,2) = (1,2)! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered lexicographically, such that \lstinline!('a', 'b', 'c') < ('a', 'b', 's') && ('a', 'b', 's') <  ('c', 'o', 's')! is true, that is, the \lexeme{<} operator on two tuples is true, if the left operand should come before the right, when sorting alphabetically like. 
-%
-\fs{tupleCompare}{Tuples are compared as strings are compared alphabetically.}
-%
-The algorithm for deciding the boolean value of \lstinline!(a1, a2) < (b1, b2)! is as follows: we start by examining the first elements, and if \lstinline!la1! and \lstinline!b1! are different, then the \lstinline!(a1, a2) < (b1, b2)! is equal to \lstinline!a1 < b1!. If \lstinline!la1! and \lstinline!b1! are equal, then we move onto the next letter and repeat the investigation. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined similarly.
-
-Binding tuples to mutables does not make the tuple mutable, e.g.,
-%
-\fs{tupleOfMutables}{A mutable change value, but the tuple defined by it does not refer to the new value.}
-%
-However, it is possible to define a mutable variable of type tuple such that new tuple values can be assigned to it, e.g., in the Fibonacci example, we can write a more compact script by using mutable tuples and the \keyword{fst} and \keyword{snd} functions as follows.
-%
-\fs{fibTuple}{Calculating Fibonacci numbers using a mutable tuple.}
-%
-In this example, the central computation has been packed into a single line, \lstinline!prev <- (snd prev, (fst prev) + (snd prev))!, where both the calculation of $\text{fib}(n) = \text{fib}(n-2) + \text{fib}(n-1)$ and the rearrangement of memory to hold the new values $\text{fib}(n)$ and $\text{fib}(n-1)$ based on the old values $\text{fib}(n-2) + \text{fib}(n-1)$. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, and in this case, an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
+\subsection{String module}
+In the \lstinline{String} module the following functions are available.
+\begin{description}
+\item[\texttt{String.collect}:] \lstinline{(char -> string) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each of the characters of the input string and concatenating the resulting strings.
+  \fsOutput{stringCollect}{\lstinline{String.collect}}\idxss{String.collect@\lstinline{String.collect}}
+\item[\texttt{String.concat}:] \lstinline{string -> seq<string> -> string}. Returns a new string made by concatenating the given strings with a separator. Here \lstinline{seq<string>} is a sequence but can also be a list or an array. 
+\fsOutput{stringConcat}{\lstinline{String.concat}}\idxss{String.concat@\lstinline{String.concat}}
+\item[\texttt{String.exists}:] \lstinline{(char -> bool) -> string -> bool}. Tests if any character of the string satisfies the given predicate.
+\fsOutput{stringExists}{\lstinline{String.exists}}\idxss{String.exists@\lstinline{String.exists}}
+\item[\texttt{String.forall}:] \lstinline{(char -> bool) -> string -> bool}. Tests if all characters in the string satisfy the given predicate.
+\fsOutput{stringForall}{\lstinline{String.forall}}\idxss{String.forall@\lstinline{String.forall}}
+\item[\texttt{String.init}:] \lstinline{int -> (int -> string) -> string}. Creates a new string whose characters are the results of applying a specified function to each index and concatenating the resulting strings.
+\fsOutput{stringInit}{\lstinline{String.init}}\idxss{String.init@\lstinline{String.init}}
+\item[\texttt{String.iter}:] \lstinline{(char -> unit) -> string -> unit}. Applies a specified function to each character in the string.
+\fsOutput{stringIter}{\lstinline{String.iter}}\idxss{String.iter@\lstinline{String.iter}}
+\item[\texttt{String.iteri}:] \lstinline{(int -> char -> unit) -> string -> unit}. Applies a specified function to the index of each character in the string and the character itself.
+\fsOutput{stringIterI}{\lstinline{String.iteri}}\idxss{String.iteri@\lstinline{String.iteri}}
+\item[\texttt{String.length}:] \lstinline{string -> int}. Returns the length of the string.
+\fsOutput{stringLength}{\lstinline{String.length}}\idxss{String.length@\lstinline{String.length}}
+\item[\texttt{String.map}:] \lstinline{(char -> char) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each of the characters of the input string.
+\fsOutput{stringMap}{\lstinline{String.map}}\idxss{String.map@\lstinline{String.map}}
+\item[\texttt{String.mapi}:] \lstinline{(int -> char -> char) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each character and index of the input string.
+\fsOutput{stringMapI}{\lstinline{String.mapi}}\idxss{String.mapi@\lstinline{String.mapi}}
+\item[\texttt{String.replicate}:] \lstinline{int -> string -> string}. Returns a string by concatenating a specified number of instances of a string.
+\fsOutput{stringReplicate}{\lstinline{String.replicate}}\idxss{String.replicate@\lstinline{String.replicate}}
+\end{description}
 
 \section{Lists}
-\idx[list]{Lists} are unions of immutable values of the same type and have a more flexible structure than tuples. Its grammar follows \idx{computation expressions}, which is very rich and shared with arrays and sequences, and we will delay a discussion on most computation expressions to Section~\ref{sec:sequences}, and here just consider a subset of the grammar:
-\begin{verbatimwrite}{tmp.ebnf}
-expr = ... 
-  | "[" (exprSeq | rangeExpr) "]" (*list*)
-
-exprSeq =  expr | expr ";" exprSeq;
-rangeExpr = expr ".." expr [".." expr];
+\idx[list]{Lists} are unions of immutable values of the same type and have a more flexible structure than tuples. Lists can be expressed as a \idx{sequence expression},
+%
+\begin{verbatimwrite}{\ebnf/lists.ebnf}
+[[*<*expr*>{*; <*expr*>*}*]]
 \end{verbatimwrite}
-\ebnf{tmp.ebnf}{}
-E.g., an explicit list \mbox{\lstinline!let lst = [1; 2; 3; 4; 5]!}, which may be written shortly as \idx{range expression} as \mbox{\lstinline!let lst = [1 .. 5]!}, and ranges may include a step size \mbox{\lstinline!let lst = [1 .. 2 .. 5]!}, which is the same as \mbox{\lstinline!let lst = [1; 3; 5]!}.
+\syntax{\ebnf/lists.ebnf}{Lists with a sequence expression.}
+%
+Examples are \mbox{\lstinline![1; 2; 3; 4; 5]!}, which represents a list of integers, \mbox{\lstinline!["This"; "is"; "a"; "list"]!}, which represents a list of strings, \mbox{\lstinline![(fun x -> x); (fun x -> x*x)]!}, which represents a list of anonymous functions, and \lstinline![]!, which is an empty list. Lists may also be given as ranges,
+%
+\begin{verbatimwrite}{\ebnf/listsRange.ebnf}
+[<*expr*> .. <*expr*> [*.. <*expr*>*]]
+\end{verbatimwrite}
+\syntax{\ebnf/listsRange.ebnf}{Lists with a range expressions.}
+%
+where \lstinline[language=syntax]{<*expr*>} in \idx{range expressions} must be of integers, floats, or characters. Examples are \mbox{\lstinline![1 .. 5]!}, \mbox{\lstinline![-3.0 .. 2.0]!}, and \mbox{\lstinline!['a' .. 'z']!}. Range expressions may include a step size, thus, \mbox{\lstinline![1 .. 2 .. 10]!} evaluates to \mbox{\lstinline![1; 3; 5; 7; 9]!}.
 
-Lists may be indexed and concatenated much like strings, e.g.,
+A list type is identified with the \idx[list@\keyword{list}]{\keyword{list}} keyword, such that a list of integers has the type \lstinline!int list!. Like strings, lists may be indexed using the \idx[{.[]}@\lstinline{.[]}]{\lexeme{.[]}} notation, the lengths of lists is retrieved using the \idx[Length@\lstinline{Length}]{\lstinline{Length}} property, and we may test whether a list is empty using the \idx[isEmpty@\lstinline{isEmpty}]{\lstinline{isEmpty}} property. These features are demonstrated in \Cref{listIndexing}.
 %
-\fs{listIndexing}{Examples of list concatenation, indexing.}
+\fs{listIndexing}{Lists are indexed as strings and has a \lstinline{Length} property.}
 %
-A list type is identified with the \keyword{list} keyword, as here a list of integers is \lstinline!int list!. Above, we used the \idx{\lexeme{@}} and \idx{\lexeme{::}} concatenation operators, the \idx{\lexeme{.[]}} index method, and the \idx{\lexeme{Length}} property. There also exists a family of functions including \lstinline!List.length!, \lstinline!List.isEmpty!, \lstinline!List.item!, \lstinline!List.head!, \lstinline!List.tail! for working with list. Notice, as strings, list elements are counted from 0, and thus the last element has \lstinline!lst.Length - 1!. In \lstinline!printList! the \keyword{for}-\keyword{in} is used, which runs loops through each element of the list and assigns it to the identifier \lstinline!elm!. This is in contrast to \lstinline!printListAlt!, which uses uses the \keyword{for}-\keyword{to} keyword and explicitly represents the index \lstinline!i!. Explicit representation of the index makes more complicated programs, and thus increases the chances of programming errors. Hence, \advice{\keyword{for}-\keyword{in} is to be preferred over \keyword{for}-\keyword{to}.} Lists support slicing identically to strings, e.g.,
-%
-\fs{listSlicing}{Examples of list slicing. Compare with Listing~\ref{stringIndexing}.}
-%
-
-The basic properties and members of lists are summarized in Table~\ref{tab:list}-~\ref{tab:listCont}.\idxss{Length}\idxss{List.Empty}\idxss{IsEmpty}\idxss{Item}\idxss{Head}\idxss{Tail}\idxss{Cons}
-\begin{table}
+F\# implements lists as linked lists, see \Cref{fig:linkedList}, which is why indexing element $i$ has computational complexity $\mathcal{O}(i)$, since the list has to be traversed from the beginning until element $i$ is located.
+\begin{figure}
   \centering
-  \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize}X|>{\hsize=1.75\hsize}X|>{\hsize=.75\hsize}X|}
-    \hline
-    \rowcolor{headerRowColor} Function name & Example & Description\\
-    \hline
-    \lstinline!Length! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listLength}{} & The number of elements in a list\\
-    \hline
-    \lstinline!List.Length! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listLengthAlt}{} & The number of elements in a list\\
-    \hline
-    \lstinline!List.Empty! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listEmpty}{} & An empty list of specified type\\
-    \hline
-    \lstinline!IsEmpty! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listIsEmpty}{} & Compare with the empty list\\
-    \hline
-    \lstinline!List.isEmpty! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listIsEmptyAlt}{} & Compare with the empty list\\
-    \hline
-    \lstinline!Item! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listItem}{} & Indexing\\
-    \hline
-    \lstinline!List.item! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listItemAlt}{} & Indexing\\
-    \hline
-  \end{tabularx}
-  \caption{Basic properties and members of lists. The syntax used in \lstinline{List<int>.Empty} ensures that the empty list is of type \lstinline{int}.}
-  \label{tab:list}
-\end{table}
-\begin{table}
-  \centering
-  \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabularx}{\linewidth}{|>{\hsize=.5\hsize}X|>{\hsize=1.75\hsize}X|>{\hsize=.75\hsize}X|}
-    \hline
-    \rowcolor{headerRowColor} Function name & Example & Description\\
-    \hline
-    \lstinline!Head! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listHead}{} & The first element in the list. Exception if empty.\\
-    \hline
-    \lstinline!List.head! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listHeadAlt}{} & The first element in the list. Exception if empty.\\
-    \hline
-    \lstinline!List.tail! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listTailAlt}{} & The list except its first element. Exception if empty.\\
-    \hline
-    \lstinline!Cons! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listCons}{} & Append an element to the front of the list\\
-    \hline
-    \lstinline!@! & \fsOutput[aboveskip=0pt,belowskip=0pt,emptylines=0]{listConcatenate}{} & Concatenate two lists\\
-    \hline
-  \end{tabularx}
-  \caption{Basic properties and members of lists continued from Table~\ref{tab:list}.}
-  \label{tab:listCont}
-\end{table}
-In addition, lists have many other built-in functions, such as functions for converting lists to arrays,\idxss{List.toList}\idxss{List.toArray}
-%
-\fs{listConversion}{The \lstinline!List! module contains functions for conversion to arrays.}
-%
-These and more will be discussed in Chapter~\ref{chap:collection} and Part~\ref{part:declarative}.\jon{Add description of prepend and concatenation operator for lists.}
+  \includegraphics[width=0.75\textwidth]{linkedList}
+  \caption{A list is a linked list: Here is illustrated the linked list of \mbox{\lstinline!["This"; "is"; "a"; "list"]!}.}
+  \label{fig:linkedList}
+\end{figure}
+Thus, \advice{indexing lists is slow and should be avoided.}
 
-It is possible to make multidimensional lists as lists of lists, e.g., 
+Notice especially that lists are zero-indexed, and thus, the last element in a list \lstinline{lst} is \lstinline{lst.Length -1}. This is a very common source of error! Therefore, indexing in lists using \idx{for}-loops is supported using a special notation with the \idx[in@\lstinline{in}]{\keyword{in}} keyword,
+\begin{verbatimwrite}{\ebnf/forLoopIn.ebnf}
+for <*ident*> in <*list*> do <*bodyExpr*> [*done*]
+\end{verbatimwrite}
+\syntax{\ebnf/forLoopIn.ebnf}{For-in loop with in expression.}
+In \keyword{for}-\keyword{in} loops, the loop runs through each element of the \lstinline[language=syntax]{<*list*>}, and assigns it to the identifier \lstinline[language=syntax]{<*ident*>}. This is demonstrated in \Cref{listFor}.
+%
+\fs{listFor}{The \keyword{for}-\keyword{in} loops are preferred over \keyword{for}-\keyword{to}.}
+%
+Using \keyword{for}-\keyword{in}-expressions remove the risk of off-by-one indexing errors, and thus, \advice{\keyword{for}-\keyword{in} is to be preferred over \keyword{for}-\keyword{to}.}
+
+Lists support slicing identically to strings as demonstrated in \Cref{listSlicing}.
+%
+\fs{listSlicing}{Examples of list slicing. Compare with \Cref{stringIndexing}.}
+%
+
+Lists may be concatenated using either the \idx[{@}@{\lstinline{@}}]{\lexeme{@}}\jon{why does the at-symbol not appear in the index?} \idx[list concatenation]{concatenation} operator or the \idx[::@\lstinline{::}]{\lexeme{::}} \idx[list cons]{cons} operators. The differences is that \lexeme{@} concatenates two lists of identical types, while \lexeme{::} concatenates an element and a list of identical types.  This is demonstrated in \Cref{listCon}.
+%
+\fs{listCon}{Examples of list concatenation.}
+%
+Since lists are represented as linked lists, then the cons operator is very efficient and has computational complexity $\mathcal{O}(1)$, while concatenation has computational complexity $\mathcal{O}(n)$, where $n$ is the length of the first list.
+
+
+It is possible to make multidimensional lists as lists of lists as shown in \Cref{listMultidimensional}. 
 %
 \fs{listMultidimensional}{A ragged multidimensional list, built as lists of lists, and its indexing.}
 %
-The example shows a \idx{ragged multidimensional list}, since each row has different number of elements. The indexing of a particular element is not elegant, which is why arrays are often preferred in F\#.
+The example shows a \idx{ragged multidimensional list} since each row has a different number of elements. This is also illustrated in \Cref{fig:raggedLinkedList}.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.75\textwidth]{raggedLinkedList}
+  \caption{A list is a ragged linked list: Here is illustrated the linked list of \mbox{\lstinline![[1;2];[3;4;5]]!}.}
+  \label{fig:raggedLinkedList}
+\end{figure}
+
+ The indexing of a particular element is slow due to the linked list implementation of lists, which is why arrays are often preferred for two- and higher-dimensional data structures, see \Cref{sec:arrays}.
+
+\subsection{List properties}
+Lists support a number of properties, i.e., values that are attached to each list and access using the \lexeme{.} notation, some of which are:
+\begin{description}
+\item[\texttt{Head}:] Returns the first element of a list.
+  \fsOutput{listHeadProp}{\lstinline{Head}}\idxss{Head@\lstinline{Head}}
+\item[\texttt{IsEmpty}:] Returns true if the list is empty.
+  \fsOutput{listIsEmptyProp}{\lstinline{Head}}\idxss{IsEmpty@\lstinline{IsEmpty}}
+\item[\texttt{Length}:] Returns the number of elements in the list.
+  \fsOutput{listLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
+\item[\texttt{Tail}:] Returns the list except its first element.
+  \fsOutput{listTailProp}{\lstinline{Tail}}\idxss{Head@\lstinline{Tail}}
+\end{description}
+
+\subsection{List module}
+The built-in \lstinline{List} module contains a wealth of functions for lists, some of which are
+%including \lstinline!List.length!, \lstinline!List.isEmpty!, \lstinline!List.item!, \lstinline!List.head!, \lstinline!List.tail! for working with list. 
+%The basic properties and members of lists are 
+briefly summarized below:
+%\Cref{tab:list,tab:listCont}.\idxss{Length}\idxss{List.Empty}\idxss{IsEmpty}\idxss{Item}\idxss{Head}\idxss{Tail}\idxss{Cons}
+\begin{description}
+\item[\texttt{List.collect}:] \lstinline{('T -> 'U list) -> 'T list -> 'U list}. Apply the supplied function to each element in a list and return a concatenated list of the results.
+  \fsOutput{listCollect}{\lstinline{List.collect}}\idxss{List.collect@\lstinline{List.collect}}
+\item[\texttt{List.contains}:] \lstinline{'T -> 'T list -> bool}. Returns true or false depending on whether an element is contained in the list.
+  \fsOutput{listContains}{\lstinline{List.contains}}\idxss{List.contains@\lstinline{List.contains}}
+\item[\texttt{List.empty}:]  \lstinline{'T list}. An empty list of inferred type.
+  \fsOutput{listEmpty}{\lstinline{List.empty}}\idxss{List.empty@\lstinline{List.empty}}
+\item[\texttt{List.exists}:] \lstinline{('T -> bool) -> 'T list -> bool}. Returns true or false depending on whether any element is true for a given function.
+  \fsOutput{listExists}{\lstinline{List.exists}}\idxss{List.exists@\lstinline{List.exists}}
+\item[\texttt{List.filter}:] \lstinline{('T -> bool) -> 'T list -> 'T list}. Returns a new list, of all the elements of the original list for which the supplied function evaluates to true.
+  \fsOutput{listFilter}{\lstinline{List.filter}}\idxss{List.filter@\lstinline{List.filter}}
+\item[\texttt{List.find}:] \lstinline{('T -> bool) -> 'T list -> 'T}. Return the first element for which the given function is true.
+  \fsOutput{listFind}{\lstinline{List.find}}\idxss{List.find@\lstinline{List.find}}
+\item[\texttt{List.findIndex}:] \lstinline{('T -> bool) -> 'T list -> int}. Return the index of the first element for which the given function is true.
+  \fsOutput{listFindIndex}{\lstinline{List.findIndex}}\idxss{List.findIndex@\lstinline{List.findIndex}}
+\item[\texttt{List.fold}:] \lstinline{('State -> 'T -> 'State) -> 'State -> 'T list -> 'State}. Update an accumulator iteratively by applying the supplied function to each element in a list, e.g. for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, calculate $f(\ldots f(f(f(s, x_0), x_1), x_2), \dots, x_n)$.
+  \fsOutput{listFold}{\lstinline{List.fold}}\idxss{List.fold@\lstinline{List.fold}}
+\item[\texttt{List.foldBack}:] \lstinline{('T -> 'State -> 'State) -> 'T list -> 'State -> 'State}. Update an accumulator iteratively by applying function to each element in a list, e.g. for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, calculate $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
+  \fsOutput{listFoldBack}{\lstinline{List.foldBack}}\idxss{List.foldBack@\lstinline{List.foldBack}}
+\item[\texttt{List.forall}:] \lstinline{('T -> bool) -> 'T list -> bool}. Apply a function to all element and logically and the result.
+  \fsOutput{listForall}{\lstinline{List.forall}}\idxss{List.forall@\lstinline{List.forall}}
+\item[\texttt{List.head}:] \lstinline{'T list -> int}. The first element in the list. Exception if empty.
+  \fsOutput{listHeadAlt}{\lstinline{List.head}}\idxss{List.head@\lstinline{List.head}}
+\item[\texttt{List.isEmpty}:]  \lstinline{'T list -> int}. Compare with the empty list
+  \fsOutput{listIsEmptyAlt}{\lstinline{List.isEmpty}}\idxss{List.isEmpty@\lstinline{List.isEmpty}}
+\item[\texttt{List.item}:]  \lstinline{'T list -> int}. Retrieve an element of a list by its index.
+  \fsOutput{listItemAlt}{\lstinline{List.item}}\idxss{List.item@\lstinline{List.item}}
+\item[\texttt{List.iter}:] \lstinline{('T -> unit) -> 'T list -> unit}. Apply a procedure to every element in the list.
+  \fsOutput{listIter}{\lstinline{List.iter}}\idxss{List.iter@\lstinline{List.iter}}
+\item[\texttt{List.Length}:]  \lstinline{'T list -> int}. The number of elements in a list
+  \fsOutput{listLengthAlt}{\lstinline{List.Length}}\idxss{List.Length@\lstinline{List.Length}}
+\item[\texttt{List.map}:] \lstinline{('T -> 'U) -> 'T list -> 'U list}. Return a list, where the supplied function has been applied to every element.
+  \fsOutput{listMap}{\lstinline{List.map}}\idxss{List.map@\lstinline{List.map}}
+\item[\texttt{List.ofArray}:] \lstinline{'T list -> int}. Return a list whose elements are the same as the supplied array.
+  \fsOutput{listOfArray}{\lstinline{List.ofArray}}\idxss{List.ofArray@\lstinline{List.ofArray}}
+\item[\texttt{List.rev}:] \lstinline{'T list -> 'T list}. Return a list whose elements have been reversed.
+  \fsOutput{listRev}{\lstinline{List.rev}}\idxss{List.rev@\lstinline{List.rev}}
+\item[\texttt{List.sort}:] \lstinline{'T list -> 'T list}. Return a list whos elements have been sorted.
+  \fsOutput{listSort}{\lstinline{List.sort}}\idxss{List.sort@\lstinline{List.sort}}
+\item[\texttt{List.tail}:]  \lstinline{'T list -> 'T list}. The list except its first element. Exception if empty.
+  \fsOutput{listTailAlt}{\lstinline{List.tail}}\idxss{List.tail@\lstinline{List.tail}}
+\item[\texttt{List.toArray}:] \lstinline{'T list -> 'T []}. Return an array whos elements are the same as the supplied list.
+  \fsOutput{listToArray}{\lstinline{List.toArray}}\idxss{List.toArray@\lstinline{List.toArray}}
+\item[\texttt{List.unzip}:] \lstinline{('T1 * 'T2) list -> 'T1 list * 'T2 list}. Return a pair of lists, whos elements are take from pairs of a list.
+  \fsOutput{listUnzip}{\lstinline{List.unzip}}\idxss{List.unzip@\lstinline{List.unzip}}
+\item[\texttt{List.zip}:] \lstinline{'T1 list -> 'T2 list -> ('T1 * 'T2) list}. Return a list of pairs, whos elements are take iteratively from two lists.
+  \fsOutput{listZip}{\lstinline{List.zip}}\idxss{List.zip@\lstinline{List.zip}}
+\end{description}
 
 \section{Arrays}
 \label{sec:arrays}
-%\subsection{1 dimensional arrays}
-One dimensional arrays or just arrays for short are mutable lists of the same type and follow a similar syntax as lists. Its grammar follows \idx{computation expressions}, which will be discussed in Section~\ref{sec:sequences}. Here we consider a subset of the grammar:
+One dimensional \idx{arrays} or just arrays for short are mutable lists of the same type and follow a similar syntax as lists. Arrays can be stated as \idx{sequence expressions},
 %
-\begin{verbatimwrite}{tmp.ebnf}
-expr = ... 
-  | "[|" (exprSeq | rangeExpr) "|]" (*array*)
-
-exprSeq =  expr | expr ";" exprSeq;
-rangeExpr = expr ".." expr [".." expr];
+\begin{verbatimwrite}{\ebnf/arrays.ebnf}
+[|[*<*expr*>{*; <*expr*>*}*]|]
 \end{verbatimwrite}
-\ebnf{tmp.ebnf}{}
+\syntax{\ebnf/arrays.ebnf}{Arrays with a sequence expression.}
 %
-Thus the creation of arrays is identical to lists, but there is no explicit operator support for appending and concatenation, e.g.,
+and examples are \mbox{\lstinline![|1; 2; 3; 4; 5|]!}, which is an array of integers, \mbox{\lstinline![|"This"; "is"; "an"; "array"|]!}, which is an array of strings, \mbox{\lstinline![|(fun x -> x); (fun x -> x*x)|]!}, which is an array of anonymous functions, and \lstinline![||]!, which is an empty array.  Arrays may also be given as ranges,
 %
-\fs{arrayCreation}{Creating arrays with a syntax similarly to lists.}
+\begin{verbatimwrite}{\ebnf/arrayRange.ebnf}
+[|<*expr*> .. <*expr*> [*.. <*expr*>*]|]
+\end{verbatimwrite}
+\syntax{\ebnf/arrayRange.ebnf}{Arrays with a range expressions.}
 %
-The array type is defined using the \keyword{array} keyword or alternatively the \keyword{[]} lexeme. Arrays cannot be resized, but are mutable,
+but arrays of \idx{range expressions} must be of \lstinline[language=syntax]{<*expr*>} integers, floats, or characters. Examples are \mbox{\lstinline![|1 .. 5|]!}, \mbox{\lstinline![|-3.0 .. 2.0|]!}, and \mbox{\lstinline![|'a' .. 'z'|]!}. Range expressions may include a step size, thus, \mbox{\lstinline![|1 .. 2 .. 10|]!} evaluates to \mbox{\lstinline![|1; 3; 5; 7; 9|]!}.
+
+The array type is defined using the \keyword{array} keyword or alternatively the \lexeme{[]} lexeme.  Like strings and lists, arrays may be indexed using the \idx[{.[]}@\lstinline{.[]}]{\lexeme{.[]}} notation. Arrays cannot be resized, but are mutable as shown in \Cref{arrayReassign}.
 %
 \fs{arrayReassign}{Arrays are mutable in spite the missing \keyword{mutable} keyword.}
 %
-Notice that in spite the missing \keyword{mutable} keyword, the function \lstinline{square} still had the \idx{side-effect} of squaring alle entries in \lstinline{A}.  
+Notice that in spite the missing \keyword{mutable} keyword, the function \lstinline{square} still had the \idx{side-effect} of squaring all entries in \lstinline{A}.  F\# implements arrays as chunks of memory and indexes arrays via address arithmetic. I.e., element $i$ in an array, whose first element is in memory address $\alpha$ and whose elements fill $\beta$ addresses each is found at address $\alpha+i\beta$.\jon{Add a figure illustrating address indexing.} Hence, indexing has computational complexity of $\mathcal{O}(1)$, but appending and prepending values to arrays and array concatenation requires copying the new and existing values to a fresh area in memory and thus has computational complexity $\mathcal{O}(n)$, where $n$ is the total number of elements. Thus, \advice{indexing arrays is fast, but cons and concatenation is slow and should be avoided.}
 
-Arrays support \idx{slicing}, that is, indexing an array with a range results in a copy of array with values corresponding to the range, e.g.,
+Arrays support \idx{slicing}, that is, indexing an array with a range results in a copy of the array with values corresponding to the range. This is demonstrated in \Cref{arraySlicing}.
 %
-\fs{arraySlicing}{Examples of array slicing. Compare with Listing~\ref{listSlicing} and Listing~\ref{stringIndexing}.}
+\fs{arraySlicing}{Examples of array slicing. Compare with \Cref{listSlicing} and \Cref{stringIndexing}.}
 %
 As illustrated, the missing start or end index implies from the first or to the last element.
 
-Arrays can be converted to lists by,\idxss{Array.toList}
+Arrays have explicit operator support for appending and concatenation, instead the \lstinline{Array} namespace includes an \lstinline{Array.append} function, as shown in \Cref{arrayAppend}.
 %
-\fs{arrayConversion}{The \lstinline!Array! module contains functions for conversion to lists.}
+\fs{arrayAppend}{Two arrays are appended with \lstinline{Array.append}.}
 %
-There are quite a number of built-in procedures for all arrays many which will be discussed in Chapter~\ref{chap:collection}.
 
-%\subsection{Multidimensional Arrays}
-Higher dimensional arrays can be created as arrays of arrays (of arrays \dots). These are known as \idx{jagged arrays}, since there is no inherent control of that all sub-arrays are of similar size. E.g., the following is a jagged array of increasing width,
+Arrays are \idx{reference types}, meaning that identifiers are references and thus suffers from aliasing, as illustrated in \Cref{arrayAliasing}.
+%
+\fs{arrayAliasing}{Arrays are reference types and suffer from aliasing.}
+%
+
+\subsection{Array properties and methods}
+\label{sec:arrayMethods}
+Arrays support a number of properties and methods, i.e., values and functions that are attached to each array and access using the \lexeme{.} notation, some of which are:
+\begin{description}
+\item[\texttt{Clone()}:] Returns a copy of the array.
+  \fsOutput{arrayCloneProp}{\lstinline{Clone}}\idxss{Clone@\lstinline{Clone}}
+\item[\texttt{Length}:] Returns the number of elements in the array.
+  \fsOutput{arrayLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
+\end{description}
+
+\subsection{Array module}
+There are quite a number of built-in procedures for arrays in the \lstinline{Array} module, some of which are summarized below.\jon{rewrite description}
+\begin{description}
+\item[\texttt{Array.append}:] \lstinline{'T [] -> 'T [] -> 'T []}. Creates an array that contains the elements of one array followed by the elements of another array.
+  \fsOutput{arrayAppendAlt}{\lstinline{Array.append}}\idxss{Array.append@\lstinline{Array.append}}
+\item[\texttt{Array.compareWith}:] \lstinline{('T -> 'T -> int) -> 'T [] -> 'T [] -> int}. Compares two arrays using the given comparison function, element by element.
+  \fsOutput{arrayComparewith}{\lstinline{Array.compareWith}}\idxss{Array.compareWith@\lstinline{Array.compareWith}}
+\item[\texttt{Array.concat}:] \lstinline{seq<'T []> -> 'T []}. Creates an array that contains the elements of each of the supplied sequence of arrays.
+  \fsOutput{arrayConcat}{\lstinline{Array.concat}}\idxss{Array.concat@\lstinline{Array.concat}}
+\item[\texttt{Array.contains}:] \lstinline{}. Evaluates to true if the given element is in the input array.
+  \fsOutput{arrayContains}{\lstinline{Array.contains}}\idxss{Array.contains@\lstinline{Array.contains}}
+\item[\texttt{Array.copy}:] \lstinline{'T [] -> 'T []}. Creates an array that contains the elements of the supplied array.
+  \fsOutput{arrayCopy}{\lstinline{Array.copy}}\idxss{Array.copy@\lstinline{Array.copy}}
+\item[\texttt{Array.create}:] \lstinline{int -> 'T -> 'T []}. Creates an array whose elements are initiallized the supplied value.
+  \fsOutput{arrayCreate}{\lstinline{Array.create}}\idxss{Array.create@\lstinline{Array.create}}
+\item[\texttt{Array.empty}:] \lstinline{'T []}. Returns an empty array of the given type.
+  \fsOutput{arrayEmpty}{\lstinline{Array.empty}}\idxss{Array.empty@\lstinline{Array.empty}}
+\item[\texttt{Array.exists}:] \lstinline{('T -> bool) -> 'T [] -> bool}. Tests whether any element of an array satisfies the supplied predicate.
+  \fsOutput{arrayExists}{\lstinline{Array.exists}}\idxss{Array.exists@\lstinline{Array.exists}}
+\item[\texttt{Array.fill}:] \lstinline{'T [] -> int -> int -> 'T -> unit}. Fills a range of elements of an array with the supplied value.
+  \fsOutput{arrayFill}{\lstinline{Array.fill}}\idxss{Array.fill@\lstinline{Array.fill}}
+\item[\texttt{Array.filter}:] \lstinline{('T -> bool) -> 'T [] -> 'T []}. Returns a collection that contains only the elements of the supplied array for which the supplied condition returns true.
+  \fsOutput{arrayFilter}{\lstinline{Array.filter}}\idxss{Array.filter@\lstinline{Array.filter}}
+\item[\texttt{Array.find}:] \lstinline{('T -> bool) -> 'T [] -> 'T}. Returns the first element for which the supplied function returns true. Raises \lstinline{System.Collections.Generic.KeyNotFoundException}  \idxss{Array.find@\lstinline{Array.find}}
+  \fsOutput{arrayFind}{\lstinline{Array.find}}
+\item[\texttt{Array.findIndex}:] \lstinline{('T -> bool) -> 'T [] -> int}. Returns the index of the first element in an array that satisfies the supplied condition. Raises \lstinline{System.Collections.Generic.KeyNotFoundException} if none of the elements satisfy the condition.
+  \fsOutput{arrayFindindex}{\lstinline{Array.findIndex}}\idxss{Array.findIndex@\lstinline{Array.findIndex}}
+\item[\texttt{Array.fold}:] \lstinline{('State -> 'T -> 'State) -> 'State -> 'T [] -> 'State}. Applies a function to each element of an array, threading an accumulator argument through the computation. If the input function is f and the array elements are i0...iN, this function computes f (...(f s i0)...) iN.
+  \fsOutput{arrayFold}{\lstinline{Array.fold}}\idxss{Array.fold@\lstinline{Array.fold}}
+\item[\texttt{Array.foldBack}:] \lstinline{('T -> 'State -> 'State) -> 'T [] -> 'State -> 'State}. Applies a function to each element of an array, threading an accumulator argument through the computation. If the input function is f and the array elements are i0...iN, this function computes f i0 (...(f iN s)).
+  \fsOutput{arrayFoldback}{\lstinline{Array.foldBack}}\idxss{Array.foldBack@\lstinline{Array.foldBack}}
+\item[\texttt{Array.forall}:] \lstinline{('T -> bool) -> 'T [] -> bool}. Tests whether all elements of an array satisfy the supplied condition.
+  \fsOutput{arrayForall}{\lstinline{Array.forall}}\idxss{Array.forall@\lstinline{Array.forall}}
+\item[\texttt{Array.get}:] \lstinline{'T [] -> int -> 'T}. Gets an element from an array.
+  \fsOutput{arrayGet}{\lstinline{Array.get}}\idxss{Array.get@\lstinline{Array.get}}
+\item[\texttt{Array.init}:] \lstinline{int -> (int -> 'T) -> 'T []}. Uses a supplied function to create an array of the supplied dimension.
+  \fsOutput{arrayInit}{\lstinline{Array.init}}\idxss{Array.init@\lstinline{Array.init}}
+\item[\texttt{Array.isEmpty}:] \lstinline{'T [] -> bool}. Tests whether an array has any elements.
+  \fsOutput{arrayIsempty}{\lstinline{Array.isEmpty}}\idxss{Array.isEmpty@\lstinline{Array.isEmpty}}
+\item[\texttt{Array.iter}:] \lstinline{('T -> unit) -> 'T [] -> unit}. Applies the supplied function to each element of an array.
+  \fsOutput{arrayIter}{\lstinline{Array.iter}}\idxss{Array.iter@\lstinline{Array.iter}}
+\item[\texttt{Array.length}:] \lstinline{'T [] -> int}. Returns the length of an array. The \lstinline{System.Array.Length} property does the same thing.
+  \fsOutput{arrayLength}{\lstinline{Array.length}}\idxss{Array.length@\lstinline{Array.length}}
+\item[\texttt{Array.map}:] \lstinline{('T -> 'U) -> 'T [] -> 'U []}. Creates an array whose elements are the results of applying the supplied function to each of the elements of a supplied array.
+  \fsOutput{arrayMap}{\lstinline{Array.map}}\idxss{Array.map@\lstinline{Array.map}}
+\item[\texttt{Array.ofList}:] \lstinline{'T list -> 'T []}. Creates an array from the supplied list.
+  \fsOutput{arrayOflist}{\lstinline{Array.ofList}}\idxss{Array.ofList@\lstinline{Array.ofList}}
+\item[\texttt{Array.rev}:] \lstinline{'T [] -> 'T []}. Reverses the order of the elements in a supplied array.
+  \fsOutput{arrayRev}{\lstinline{Array.rev}}\idxss{Array.rev@\lstinline{Array.rev}}
+\item[\texttt{Array.set}:] \lstinline{'T [] -> int -> 'T -> unit}. Sets an element of an array.
+  \fsOutput{arraySet}{\lstinline{Array.set}}\idxss{Array.set@\lstinline{Array.set}}
+\item[\texttt{Array.sort}:] \lstinline{'T[] -> 'T []}. Sorts the elements of an array and returns a new array. \lstinline{Operators.compare} is used to compare the elements.
+  \fsOutput{arraySort}{\lstinline{Array.sort}}\idxss{Array.sort@\lstinline{Array.sort}}
+\item[\texttt{Array.sub}:] \lstinline{'T [] -> int -> int -> 'T []}. Creates an array that contains the supplied subrange, which is specified by starting index and length.
+  \fsOutput{arraySub}{\lstinline{Array.sub}}\idxss{Array.sub@\lstinline{Array.sub}}
+\item[\texttt{Array.toList}:] \lstinline{'T [] -> 'T list}. Converts the supplied array to a list.
+  \fsOutput{arrayTolist}{\lstinline{Array.toList}}\idxss{Array.toList@\lstinline{Array.toList}}
+\item[\texttt{Array.unzip}:] \lstinline{('T1 * 'T2) [] -> 'T1 [] * 'T2 []}. Splits an array of tuple pairs into a tuple of two arrays.
+  \fsOutput{arrayUnzip}{\lstinline{Array.unzip}}\idxss{Array.unzip@\lstinline{Array.unzip}}
+%\item[\texttt{Array.zeroCreate}:] \lstinline{int -> 'T []}. Creates an array whose elements are initially set to the default value \lstinline{Unchecked.defaultof<'T>}.
+%  \fsOutput{arrayZerocreate}{\lstinline{Array.zeroCreate}}\idxss{Array.zeroCreate@\lstinline{Array.zeroCreate}}
+\item[\texttt{Array.zip}:] \lstinline{'T1 [] -> 'T2 [] -> ('T1 * 'T2) []}. Combines three arrays into an array of tuples that have three elements. The three arrays must have equal lengths; otherwise, \lstinline{System.ArgumentException} is raised.
+  \fsOutput{arrayZip}{\lstinline{Array.zip}}\idxss{Array.zip@\lstinline{Array.zip}}
+\end{description}
+
+\section{Multidimensional arrays}
+\idx[multidimensional arrays]{Multidimensional arrays} can be created as arrays of arrays (of arrays \dots). These are known as \idx{jagged arrays} since there is no inherent guarantee that all sub-arrays are of the same size. E.g., the example in \Cref{arrayJagged} is a jagged array of increasing width.
 %
 \fs{arrayJagged}{An array of arrays. When row lengths are of non-equal elements, then it is a Jagged array.}
 %
-Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \lstinline|a.Length|,  \lstinline|a.[i]| is the i'th array, the length of the i'th array is \lstinline|a.[i].Length|, and the j'th element of the i'th array is thus \lstinline|a.[i].[j]|. Often 2 dimensional rectangular arrays are used, which can be implemented as a jagged array as,
+Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \lstinline|a.Length|,  \lstinline|a.[i]| is the i'th array, the length of the i'th array is \lstinline|a.[i].Length|, and the j'th element of the i'th array is thus \lstinline|a.[i].[j]|. Often 2-dimensional rectangular arrays are used, which can be implemented as a jagged array as shown in \Cref{arrayJaggedSquare}.
 %
 \fs{arrayJaggedSquare}{A rectangular array.} 
 %
-Notice, the \keyword{for}-\keyword{in} cannot be used in \lstinline!pownArray!, e.g., \lstinline{for row in arr do for elm in row do elm <- pown elm p done done} since the iterator value \lstinline!elm! is not mutable even though \lstinline!arr! is an array.
+Notice, the \keyword{for}-\keyword{in} cannot be used in \lstinline!pownArray!, e.g., 
+\begin{quote} 
+  \mbox{\lstinline{for row in arr do for elm in row do elm <- pown elm p done done}},
+ \end{quote}
+since the iterator value \lstinline!elm! is not mutable even though \lstinline!arr! is an array.
 %
-In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following, we describe Array2D. The workings of Array3D and Array4D are very similar. An example of creating the same 2 dimensional array as above but as an \lstinline{Array2D} is,
+In fact, square arrays of dimensions 2 to 4 are so common that F\# has built-in modules for their support. In the following, we describe \idx[Array2D@\lstinline{Array2D}]{\lstinline{Array2D}}. The workings of \idx[Array3D@\lstinline{Array3D}]{\lstinline{Array3D}} and \idx[Array4D@\lstinline{Array4D}]{\lstinline{Array4D}} are very similar. An example of creating the same 2-dimensional array as above but as an \lstinline{Array2D} is shown in \Cref{array2D}.
 %
 \fs{array2D}{Creating a 3 by 4 rectangular arrays of intigers.}
 %
-Notice that the indexing uses a slightly different notation \lstinline|[,]| and the length functions are also slightly different. The statement \lstinline|A.Length| would return the total number of elements in the array, in this case 12. As can be seen, the \lstinline!printf! supports direct printing of the 2 dimensional array. Higher dimensional arrays support slicing, e.g.,
+Notice that the indexing uses a slightly different notation \lstinline|[,]| and the length functions are also slightly different. The statement \lstinline|A.Length| would return the total number of elements in the array, in this case, 12. As can be seen, the \lstinline!printf! supports direct printing of the 2-dimensional array. Higher dimensional arrays support slicing as shown in \Cref{array2DSlicing}.
 %
-\fs{array2DSlicing}{Examples of Array2D slicing. Compare with Listing~\ref{array2D}.}
+\fs{array2DSlicing}{Examples of Array2D slicing. Compare with \Cref{array2D}.}
 %
 Note that in almost all cases, slicing produces a sub rectangular 2 dimensional array except for \lstinline{arr.[1,*]}, which is an array, as can be seen by the single \lexeme{[}. In contrast, \lstinline{A.[1..1,*]} is an Array2D. Note also, that \lstinline!printfn! typesets 2 dimensional arrays as \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion with lists of lists.
 \jon{Array2D.ToString produces \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion.}
 
-Array2D and higher have a number of built-in functions that will be discussed in Chapter~\ref{chap:collection}.
+Multidimensional arrays have the same properties and methods as arrays, see \Cref{sec:arrayMethods}.
 
+\subsection{Array2D module}
+There are quite a number of built-in procedures for arrays in the \lstinline{Array2D} namespace, some of which are summarized below.\jon{rewrite description}
+\begin{description}
+\item[\texttt{copy}:] \lstinline{'T [,] -> 'T [,]}. Creates a new array whose elements are the same as the input array.
+  \fsOutput{array2DCopy}{\lstinline{Array2D.copy}}\idxss{Array2D.copy@\lstinline{Array2D.copy}}
+\item[\texttt{create}:] \lstinline{int -> int -> 'T -> 'T [,]}. Creates an array whose elements are all initially the given value.
+  \fsOutput{array2DCreate}{\lstinline{Array2D.create}}\idxss{Array2D.create@\lstinline{Array2D.create}}
+\item[\texttt{get}:] \lstinline{'T [,] -> int -> int -> 'T}. Fetches an element from a 2D array. You can also use the syntax \lstinline{array.[index1,index2]}.
+  \fsOutput{array2DGet}{\lstinline{Array2D.get}}\idxss{Array2D.get@\lstinline{Array2D.get}}
+\item[\texttt{init}:] \lstinline{int -> int -> (int -> int -> 'T) -> 'T [,]}. Creates an array given the dimensions and a generator function to compute the elements.
+  \fsOutput{array2DInit}{\lstinline{Array2D.init}}\idxss{Array2D.init@\lstinline{Array2D.init}}
+\item[\texttt{iter}:] \lstinline{('T -> unit) -> 'T [,] -> unit}. Applies the given function to each element of the array.
+  \fsOutput{array2DIter}{\lstinline{Array2D.iter}}\idxss{Array2D.iter@\lstinline{Array2D.iter}}
+\item[\texttt{length1}:] \lstinline{'T [,] -> int}. Returns the length of an array in the first dimension.
+  \fsOutput{array2DLength1}{\lstinline{Array2D.length1}}\idxss{Array2D.length1@\lstinline{Array2D.length1}}
+\item[\texttt{length2}:] \lstinline{'T [,] -> int}. Returns the length of an array in the second dimension.
+  \fsOutput{array2DLength2}{\lstinline{Array2D.forall length2}}\idxss{Array2D.length2@\lstinline{Array2D.length2}}
+\item[\texttt{map}:] \lstinline{('T -> 'U) -> 'T [,] -> 'U [,]}. Creates a new array whose elements are the results of applying the given function to each of the elements of the array.
+  \fsOutput{array2DMap}{\lstinline{Array2D.map}}\idxss{Array2D.map@\lstinline{Array2D.map}}
+\item[\texttt{set}:] \lstinline{'T [,] -> int -> int -> 'T -> unit}. Sets the value of an element in an array. You can also use the syntax \lstinline{array.[index1,index2] <- value}.
+  \fsOutput{array2DSet}{\lstinline{Array2D.set}}\idxss{Array2D.set@\lstinline{Array2D.set}}
+\end{description}
 
+\begin{comment}
+\section{Comparison}
+% \begin{table}
+%   \centering
+%\afterpage{%
+%  \clearpage% Flush earlier floats (otherwise order might not be correct)
+%  \thispagestyle{empty}% empty page style (?)
+  \begin{landscape}% Landscape page
+    \centering % Center table
+    \rowcolors{2}{oddRowColor}{evenRowColor}
+    \begin{longtable}{|l|l|l|l|l|l|l|l|}
+      \hline
+      \rowcolor{headerRowColor} & Strings & Lists & Array & Array2D & Map & Set & Seq\\
+      \hline
+      {\lstinline!add : 'Key -> 'T -> Map<'Key,'T> -> Map<'Key,'T>!} & & & & & \cmark & \cmark &\\
+      {\lstinline!append : 'T [] -> 'T [] -> 'T []!} & & \cmark&\cmark & & & &\cmark\\
+      {\lstinline!average : 'T [] -> ^T!} & & \cmark & \cmark & & & &\cmark\\
+      {\lstinline!averageBy : ('T -> ^U) -> 'T [] -> ^U!} & & \cmark & \cmark & & & &\cmark\\
+      {\lstinline!base1 : 'T [,] -> int!} & & & & \cmark & & &\\
+      {\lstinline!base2 : 'T [,] -> int!} & & & & \cmark & & &\\
+      {\lstinline!blit : 'T [] -> int -> 'T [] -> int -> int -> unit!} & & & \cmark & \cmark & & &\\
+      {\lstinline!cache : seq<'T> -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!cast : seq<'T> -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!choose : ('T -> 'U option) -> 'T [] -> 'U []!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!chunkBySize : int -> 'T [] -> 'T [] []!} & & \cmark & & & & &\\
+      {\lstinline!collect : ('T -> 'U []) -> 'T [] -> 'U []!} & \cmark & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!comparewith : ('T -> 'T -> int) -> 'T [] -> 'T [] -> int!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!concat : seq<'T []> -> 'T []!} & \cmark & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!contains : 'T -> 'T [] -> bool!} & & \cmark & \cmark & & & \cmark & \cmark\\
+      {\lstinline!containsKey : 'Key -> Map<'Key,'T> -> bool!} & & & & & \cmark & &\\
+      {\lstinline!copy : 'T [,] -> 'T [,]!} & & & \cmark & \cmark & & &\\
+      {\lstinline!count : Set<'T> -> int!} & & & & & & \cmark &\\
+      {\lstinline!countBy : ('T -> 'Key) -> 'T [] -> ('Key * int) []!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!create : int -> 'T -> 'T []!} & & & \cmark & \cmark & & &\\
+      {\lstinline!createBased : int -> int -> int -> int -> 'T -> 'T [,]!} & & &  & \cmark & & &\\
+      {\lstinline!delay : (unit -> seq<'T>) -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!difference : Set<'T> -> Set<'T> -> Set<'T>!} & & & & & & \cmark &\\
+      {\lstinline!distinct : 'T -> 'T []!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!distinctBy : ('T -> 'Key) -> seq<'T> -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!empty : 'T []!} & & \cmark & \cmark & & \cmark & \cmark & \cmark\\
+      {\lstinline!exactlyOne : seq<'T> -> 'T!} & & & & & & & \cmark\\
+      {\lstinline!exists : ('T -> bool) -> 'T [] -> bool!} & \cmark & \cmark & \cmark & & \cmark & \cmark & \cmark\\
+      {\lstinline!exists2 : ('T1 -> 'T2 -> bool) -> 'T1 [] -> 'T2 [] -> bool!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!fill : 'T [] -> int -> int -> 'T -> unit!} & & & \cmark & & & &\\
+      {\lstinline!filter : ('T -> bool) -> 'T [] -> 'T []!} & & \cmark & \cmark & & \cmark & \cmark & \cmark\\
+      {\lstinline!find : ('T -> bool) -> 'T [] -> 'T!} & & \cmark & \cmark & & \cmark & & \cmark\\
+      {\lstinline!findKey : ('Key -> 'T -> bool) -> Map<'Key,'T> -> 'Key!} & & & & & \cmark & &\\
+      {\lstinline!findIndex : ('T -> bool) -> 'T [] -> int!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!fold : ('S -> 'T -> 'S) -> 'S -> 'T [] -> 'S!} & & \cmark & \cmark & & \cmark & \cmark & \cmark\\
+      {\lstinline!fold2 : ('S -> 'T1 -> 'T2 -> 'S) -> 'S -> 'T1 [] -> 'T2 [] -> 'S!} & & \cmark & \cmark & & & &\\
+      {\lstinline!foldBack : ('T -> 'S -> 'S) -> 'T [] -> 'S -> 'S!} & & \cmark & \cmark & & \cmark & \cmark &\\
+      {\lstinline!foldBack2 : ('T1 -> 'T2 -> 'S -> 'S) -> 'T1 [] -> 'T2 [] -> 'S -> 'S!} & & \cmark & \cmark & & & &\\
+      {\lstinline!forall : ('T -> bool) -> 'T [] -> bool!} & \cmark & \cmark & \cmark & & \cmark & \cmark & \cmark\\
+      {\lstinline!forall2 : ('T1 -> 'T2 -> bool) -> 'T1 [] -> 'T2 [] -> bool!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!get : 'T [] -> int -> 'T!} & & & \cmark & \cmark & & &\\
+      {\lstinline!groupBy : ('T -> 'Key) -> seq<'T> -> seq<'Key * seq<'T>>!} & & & & & & & \cmark\\
+      {\lstinline!head : 'T [] -> 'T!} & & \cmark &  & & & &\\
+      {\lstinline!init : int -> (int -> 'T) -> 'T []!} & \cmark & \cmark & \cmark & \cmark & & & \cmark\\
+      {\lstinline!initBased : int -> int -> int -> int -> (int -> int -> 'T) -> 'T [,]!} &  &  &  & \cmark & & &\\
+      {\lstinline!initInfinite : (int -> 'T) -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!intersect : Set<'T> -> Set<'T> -> Set<'T>!} & & & & & & \cmark &\\
+      {\lstinline!intersectMany : seq<Set<'T>> -> Set<'T>!} & & & & & & \cmark &\\
+      {\lstinline!isEmpty : 'T [] -> bool!} & & \cmark & \cmark & & \cmark & \cmark & \cmark\\
+      {\lstinline!isProperSubset : Set<'T> -> Set<'T> -> bool!} & & & & & & \cmark &\\
+      {\lstinline!isProperSuperset : Set<'T> -> Set<'T> -> bool!} & & & & & & \cmark &\\
+      {\lstinline!isSubset : Set<'T> -> Set<'T> -> bool!} & & & & & & \cmark &\\
+      {\lstinline!isSuperset : Set<'T> -> Set<'T> -> bool!} & & & & & & \cmark &\\
+      {\lstinline!iter : ('T -> unit) -> 'T [] -> unit!} & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark\\
+      {\lstinline!iter2 : ('T1 -> 'T2 -> unit) -> 'T1 [] -> 'T2 [] -> unit!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!iteri : (int -> 'T -> unit) -> 'T [] -> unit!} & \cmark & \cmark & \cmark & \cmark & & & \cmark\\
+      {\lstinline!iteri2 : (int -> 'T1 -> 'T2 -> unit) -> 'T1 [] -> 'T2 [] -> unit!} & & \cmark & \cmark & & & & \\
+      {\lstinline!last : seq<'T> -> 'T!} & & &  & & & & \cmark\\
+      {\lstinline!length : 'T [] -> int!} & \cmark & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!length1 : 'T [,] -> int!} & & &  & \cmark & & &\\
+      {\lstinline!length2 : 'T [,] -> int!} & & &  & \cmark & & &\\
+      {\lstinline!map : ('T -> 'U) -> 'T [] -> 'U []!} & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark\\
+      {\lstinline!map2 : ('T1 -> 'T2 -> 'U) -> 'T1 [] -> 'T2 [] -> 'U []!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!map3 : ('T1 -> 'T2 -> 'T3 -> 'U) -> 'T1 [] -> 'T2 [] -> 'T3 [] -> 'U []!} & & \cmark & \cmark & & & &\\
+      {\lstinline!mapi : (int -> 'T -> 'U) -> 'T [] -> 'U []!} & \cmark & \cmark & \cmark & \cmark & & & \cmark\\
+      {\lstinline!mapi2 : (int -> 'T1 -> 'T2 -> 'U) -> 'T1 [] -> 'T2 [] -> 'U []!} & & \cmark & \cmark & & & &\\
+      {\lstinline!max : 'T [] -> 'T!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!maxBy : ('T -> 'U) -> 'T [] -> 'T!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!maxElement : Set<'T> -> 'T!} & & & & & & \cmark &\\
+      {\lstinline!min : 'T [] -> 'T!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!minBy : ('T -> 'U) -> 'T [] -> 'T!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!minElement : Set<'T> -> 'T!} & & & & & & \cmark &\\
+      {\lstinline!nth :  'T list -> int -> 'T!} & & & & \cmark & & & \cmark\\
+      {\lstinline!rebase : 'T [,] -> 'T [,]!} & & & & \cmark & & &\\
+      {\lstinline!ofArray : 'T [] -> 'T []!} & & \cmark & & & \cmark & \cmark & \cmark\\
+      {\lstinline!ofList : 'T list -> 'T []!} & & & \cmark & & \cmark & \cmark & \cmark\\
+      {\lstinline!ofSeq : seq<'T> -> 'T []!} & & \cmark & \cmark & \cmark & \cmark & &\\
+      {\lstinline!partition : ('T -> bool) -> 'T [] * 'T []!} & & \cmark & \cmark & & \cmark & \cmark &\\
+      {\lstinline!parwise : seq<'T> -> seq<'T * 'T>!} & & & & & & & \cmark\\
+      {\lstinline!permute : (int -> int) -> 'T [] -> 'T []!} & & \cmark & \cmark & & & &\\
+      {\lstinline!pick : ('T -> 'U option) -> 'T [] -> 'U!} & & \cmark & \cmark & & \cmark & & \cmark\\
+      {\lstinline!readonly : seq<'T> -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!reduce : ('T -> 'T -> 'T) -> 'T [] -> 'T!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!reduceBack : ('T -> 'T -> 'T) -> 'T [] -> 'T!} & & \cmark & \cmark & & & &\\
+      {\lstinline!remove : 'Key -> Map<'Key,'T> -> Map<'Key,'T>!} & & & & & \cmark & \cmark &\\
+      {\lstinline!replicate : (int -> 'T -> 'T [])!} & \cmark & \cmark & \cmark & & & &\\
+      {\lstinline!rev : 'T [] -> 'T []!} & & \cmark & \cmark & & & &\\
+      {\lstinline!scan : ('S -> 'T -> 'S) -> 'S -> 'T [] -> 'S []!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!scanBack : ('T -> 'S -> 'S) -> 'T [] -> 'S -> 'S []!} & & \cmark & \cmark & & & &\\
+      {\lstinline!set : 'T [] -> int -> 'T -> unit!} & & & \cmark & \cmark & & &\\
+      {\lstinline!singleton : 'T -> seq<'T>!} & & & & & & \cmark & \cmark\\
+      {\lstinline!skip : int -> seq<'T> -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!skipWhile : ('T -> bool) -> seq<'T> -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!sort : 'T [] -> 'T []!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!sortBy : ('T -> 'Key) -> 'T [] -> 'T []!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!sortInPlace : ('T -> 'Key) -> 'T [] -> unit!} & & & \cmark & & & &\\
+      {\lstinline!sortInPlaceWith : ('T -> 'T -> int) -> 'T [] -> unit!} & & & \cmark & & & &\\
+      {\lstinline!sortWith : ('T -> 'T -> int) -> 'T [] -> 'T []!} & & \cmark & \cmark & & & &\\
+      {\lstinline!sub : 'T [] -> int -> int -> 'T []!} & & & \cmark & & & &\\
+      {\lstinline!sum : ^T [] -> ^T!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!sumBy : ('T -> ^U) -> 'T [] -> ^U!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!tail : 'T [] -> 'T []!} & & \cmark & & & & & \cmark\\
+      {\lstinline!take : int -> seq<'T> -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!takeWhile : ('T -> bool) -> seq<'T> -> seq<'T>'!} & & & & & & & \cmark\\
+      {\lstinline!toArray : 'T list -> 'T []!} & & \cmark & & & \cmark & \cmark & \cmark\\
+      {\lstinline!toList[] : 'T [] -> 'T []!} & & & \cmark & & \cmark & \cmark & \cmark\\
+      {\lstinline!toSeq : 'T [] -> seq<'T>!} & & \cmark & \cmark & & \cmark & \cmark &\\
+      {\lstinline!truncate : int -> seq<'T> -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!tryFind : ('T -> bool) -> 'T [] -> 'T option!} & & \cmark & \cmark & & \cmark & & \cmark\\
+      {\lstinline!tryFindIndex : ('T -> bool) -> 'T [] -> int option!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!tryFindKey : ('Key -> 'T -> bool) -> Map<'Key,'T> -> 'Key option!} & & & & & \cmark & &\\
+      {\lstinline!tryPick : ('T -> 'U option) -> 'T [] -> 'U option!} & & \cmark & \cmark & & \cmark & & \cmark\\
+      {\lstinline!unfold : ('State -> 'T * 'State option) -> 'State -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!where : ('T -> bool) -> seq<'T> -> seq<'T>!} & & & & & & & \cmark\\
+      {\lstinline!windowed : int -> seq<'T> -> seq<'T []>!} & & & & & & & \cmark\\
+      {\lstinline!union : Set<'T> -> Set<'T> -> Set<'T>!} & & & & & & \cmark &\\
+      {\lstinline!unionMany : seq<Set<'T>> -> Set<'T>!} & & & & & & \cmark &\\
+      {\lstinline!unzip : ('T1 * 'T2) [] -> 'T1 [] * 'T2 []!} & & \cmark & \cmark & & & &\\
+      {\lstinline!unzip3 : ('T1 * 'T2 * 'T3) [] -> 'T1 [] * 'T2 [] * 'T3 []!} & & \cmark & \cmark & & & &\\
+      {\lstinline!zeroCreate : int -> 'T []!} & & & \cmark & \cmark & & &\\
+      {\lstinline!zeroCreateBased : int -> int -> int -> int-> 'T [,]!} & & & & \cmark & & &\\
+      {\lstinline!zip : 'T1 [] -> 'T2 [] -> ('T1 * 'T2) []!} & & \cmark & \cmark & & & & \cmark\\
+      {\lstinline!zip3 : 'T1 [] -> 'T2 [] -> 'T3 [] -> ('T1 * 'T2 * 'T3) []!} & & \cmark & \cmark & & & & \cmark\\
+      \hline
+    \end{longtable}
+    \captionof{table}{Comparing Core.String, Collections.List, Collections.Array and Collections.Array2D, Collections.Set, Collections.Map, and Collections.Seq Modules}% Add 'table' caption
+    \label{tab:listableComparision}
+  \end{landscape}
+%  \clearpage% Flush page
+%}
+%  \caption{Comparing listable stuff}
+%  \label{tab:listableComparision}
+%\end{table}
+\end{comment}    
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
+

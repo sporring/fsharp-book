@@ -1,1 +1,3 @@
+$ fsharpc --nologo letFunctionLightWeight.fsx
+$ mono letFunctionLightWeight.exe
 1221.0

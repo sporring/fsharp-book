@@ -1,14 +1,10 @@
 let fib n =
-  let mutable prev = 1
-  let mutable current = 1
-  let mutable next = 0
-  for i = 3 to n do
-    next <- current + prev
-    prev <- current
-    current <- next
-  next
+  let mutable pair = (0, 1)
+  for i = 2 to n do
+    pair <- (snd pair, (fst pair) + (snd pair))
+  snd pair
 
-printfn "fib(1) = 1"
-printfn "fib(2) = 1"
-for i = 3 to 10 do
-  printfn "fib(%d) = %d" i (fib i)
+printfn "fib(1) = %d" (fib 1)
+printfn "fib(2) = %d" (fib 2)
+printfn "fib(3) = %d" (fib 3)
+printfn "fib(10) = %d" (fib 10)

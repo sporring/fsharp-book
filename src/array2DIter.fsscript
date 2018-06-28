@@ -1,0 +1,3 @@
+let arr = Array2D.init 3 4 (fun i j -> i + 10 * j)
+Array2D.iter (fun elm -> printf "%A " elm) arr
+printfn "";;

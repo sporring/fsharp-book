@@ -1,3 +1,4 @@
+$ fsharpc --nologo fibRecursive.fsx && mono fibRecursive.exe
 fib(0) = 0
 fib(1) = 1
 fib(2) = 1

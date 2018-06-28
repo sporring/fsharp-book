@@ -1,3 +1,4 @@
+$ fsharpc --nologo listSlicing.fsx && mono listSlicing.exe
 'a'
 'd'
 ['d'; 'e'; 'f'; 'g']

@@ -1,1 +1,2 @@
+$ fsharpc --nologo flowIfThen.fsx && mono flowIfThen.exe
 3

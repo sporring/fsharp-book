@@ -1,15 +1,27 @@
-System.IO.FileNotFoundException: Could not find file "/Users/sporring/repositories/fsharpNotes/src/histogram0.fsx".
-File name: '/Users/sporring/repositories/fsharpNotes/src/histogram0.fsx'
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean anonymous, FileOptions options) <0x1a28f10 + 0x006e4> in <filename unknown>:0 
-  at System.IO.FileStream..ctor (System.String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, System.String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost) <0x1a28e40 + 0x0004f> in <filename unknown>:0 
+$ fsharpc --nologo histogram.fsx && mono histogram.exe
+
+Unhandled Exception:
+System.IO.FileNotFoundException: Could not find file "histogram0.fsx".
+File name: 'histogram0.fsx'
+  at System.IO.FileStream..ctor (System.String path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, System.Int32 bufferSize, System.Boolean anonymous, System.IO.FileOptions options) [0x0019c] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at System.IO.FileStream..ctor (System.String path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, System.Int32 bufferSize, System.IO.FileOptions options, System.String msgPath, System.Boolean bFromProxy, System.Boolean useLongPath, System.Boolean checkHost) [0x00000] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
   at (wrapper remoting-invoke-with-check) System.IO.FileStream:.ctor (string,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,int,System.IO.FileOptions,string,bool,bool,bool)
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean checkHost) <0x186bfe0 + 0x000df> in <filename unknown>:0 
-  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize) <0x186bf90 + 0x00042> in <filename unknown>:0 
-  at System.IO.StreamReader..ctor (System.String path, Boolean detectEncodingFromByteOrderMarks) <0x186bea0 + 0x00046> in <filename unknown>:0 
-  at System.IO.StreamReader..ctor (System.String path) <0x186be60 + 0x0002c> in <filename unknown>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00067] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
   at (wrapper remoting-invoke-with-check) System.IO.StreamReader:.ctor (string)
-  at System.IO.File.OpenText (System.String path) <0x1a26000 + 0x00034> in <filename unknown>:0 
-  at <StartupCode$FSI_0002>.$FSI_0002.main@ () <0x6dd3768 + 0x00013> in <filename unknown>:0 
-  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&)
-  at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) <0x1a7c270 + 0x000a1> in <filename unknown>:0 
-Stopped due to error
+  at System.IO.File.OpenText (System.String path) [0x00000] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at <StartupCode$histogram>.$Histogram$fsx.main@ () [0x00000] in <5995755b8d36b197a74503835b759559>:0 
+[ERROR] FATAL UNHANDLED EXCEPTION: System.IO.FileNotFoundException: Could not find file "histogram0.fsx".
+File name: 'histogram0.fsx'
+  at System.IO.FileStream..ctor (System.String path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, System.Int32 bufferSize, System.Boolean anonymous, System.IO.FileOptions options) [0x0019c] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at System.IO.FileStream..ctor (System.String path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, System.Int32 bufferSize, System.IO.FileOptions options, System.String msgPath, System.Boolean bFromProxy, System.Boolean useLongPath, System.Boolean checkHost) [0x00000] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.FileStream:.ctor (string,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,int,System.IO.FileOptions,string,bool,bool,bool)
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize, System.Boolean checkHost) [0x00067] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00000] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Boolean detectEncodingFromByteOrderMarks) [0x0000d] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at System.IO.StreamReader..ctor (System.String path) [0x00000] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader:.ctor (string)
+  at System.IO.File.OpenText (System.String path) [0x00000] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at <StartupCode$histogram>.$Histogram$fsx.main@ () [0x00000] in <5995755b8d36b197a74503835b759559>:0 

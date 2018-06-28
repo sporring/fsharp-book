@@ -1,2 +1,1 @@
-[1; 2; 3].Head;;
-let a = [1; 2; 3] in a.Head;;
+let a = [1; -3; 0] in a.Head;;

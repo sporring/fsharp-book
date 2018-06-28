@@ -1,1 +1,2 @@
+$ fsharpc --nologo quickStartSum.fsx && mono quickStartSum.exe
 1221

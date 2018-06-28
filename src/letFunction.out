@@ -1,8 +1,7 @@
 > let sum (x : float) (y : float) : float = x + y in
 - let c = sum 357.6 863.4 in
-- printfn "%A" c;;
+- do printfn "%A" c;;
 1221.0
-
 val sum : x:float -> y:float -> float
 val c : float = 1221.0
 val it : unit = ()

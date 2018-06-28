@@ -1,3 +1,4 @@
+$ fsharpc --nologo avgGradesRec.fsx && mono avgGradesRec.exe
 Course and grades:
 [("Introduction to programming", 95); ("Linear algebra", 80);
  ("User Interaction", 85)]

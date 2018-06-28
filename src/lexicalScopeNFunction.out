@@ -1,1 +1,3 @@
+$ fsharpc --nologo lexicalScopeNFunction.fsx
+$ mono lexicalScopeNFunction.exe
 6.0

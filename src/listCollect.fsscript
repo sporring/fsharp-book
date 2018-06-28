@@ -1,0 +1,1 @@
+List.collect (fun elm -> [elm; elm; elm]) [1; 2; 3];;

@@ -1,0 +1,1 @@
+String.exists (fun c -> c = 'd') "abc";;

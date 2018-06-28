@@ -1,0 +1,5 @@
+let compArr elm1 elm2 =  
+   if elm1 > elm2 then 1
+   elif elm1 < elm2 then -1
+   else 0
+Array.compareWith compArr [|1; 2; 4|] [|1; 2; 3|];;

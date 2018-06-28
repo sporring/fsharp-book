@@ -1,2 +1,3 @@
- 4
- 3
+$ fsharpc --nologo letValueScopeBlock.fsx && mono letValueScopeBlock.exe
+4
+3

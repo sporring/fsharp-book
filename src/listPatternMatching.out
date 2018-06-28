@@ -1,1 +1,3 @@
+$ fsharpc --nologo listPatternMatching.fsx
+$ mono listPatternMatching.exe
 1 2 3 4 5 

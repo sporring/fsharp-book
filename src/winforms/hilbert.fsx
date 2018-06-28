@@ -1,89 +1,74 @@
 open System.Windows.Forms
 open System.Drawing
 
-type coordinates = (float * float) list
-type pen = Color * float
-type polygon = coordinates * pen
+///////////// WinForm specifics /////////////
+/// Setup a window form and return function to activate
+let view (sz : Size) (shapes : (Pen * (Point [])) list) : (unit -> unit) =
+  let win = new System.Windows.Forms.Form ()
+  win.ClientSize <- sz
+  let paint (e : PaintEventArgs) ((p, pts) : (Pen * (Point []))) : unit = 
+    e.Graphics.DrawLines (p, pts)
+  win.Paint.Add (fun e -> List.iter (paint e) shapes)
+  fun () -> Application.Run win // function as return value
 
-/// Create a form and add a paint function
-let createForm backgroundColor (width, height) title draw =
-  let win = new Form ()
-  win.Text <- title
-  win.BackColor <- backgroundColor
-  win.ClientSize <- Size (width, height)
-  win.Paint.Add draw
-  win
+///////////// Model /////////////
+// Turtle commands, type definitions must be in outer most scope
+type Command = F | L | R
+type Turtle = {x : float; y : float; d : float}
 
-/// Draw a polygon with a specific color
-let drawPoints (polygLst : polygon list) (e : PaintEventArgs) =
-  let pairToPoint (x : float, y : float) =
-    Point (int (round x), int (round y))
+// A black Hilbert curve using winform primitives for brevity
+let model () : Size * ((Pen * (Point [])) list) = 
+  /// Hilbert recursion production rules
+  let rec A n : Command list =
+    if n > 0 then
+      [L]@B (n-1)@[F; R]@A (n-1)@[F]@A (n-1)@[R; F]@B (n-1)@[L]
+    else
+      []
+  and B n : Command list = 
+    if n > 0 then
+      [R]@A (n-1)@[F; L]@B (n-1)@[F]@B (n-1)@[L; F]@A (n-1)@[R]
+    else
+      []
 
-  for polyg in polygLst do
-    let coords, (color, width) = polyg
-    let pen = new Pen (color, single width)
-    let Points = Array.map pairToPoint (List.toArray coords)
-    e.Graphics.DrawLines (pen, Points)
-    
-/// Translate a point
-let translatePoint (dx, dy) (x, y) =
-  (x + dx, y + dy)
+  /// Convert a command to a turtle record and prepend to a list
+  let addRev (lst : Turtle list) (cmd : Command) (len : float) : Turtle list =
+    let toInt = int << round
+    match lst with
+      | t::rest ->
+        match cmd with
+          | L -> {t with d = t.d + 3.141592/2.0}::rest // turn left
+          | R -> {t with d = t.d - 3.141592/2.0}::rest // turn right
+          | F -> {t with x = t.x + len * cos t.d;
+                         y = t.y + len * sin t.d}::lst // forward
+      | _ -> failwith "Turtle list must be non-empty."
 
-/// Translate point array
-let translatePoints (dx, dy) arr =
-  List.map (translatePoint (dx, dy)) arr
+  let maxPoint (p1 : Point) (p2 : Point) : Point =
+    Point (max p1.X p2.X, max p1.Y p2.Y)
 
-/// Rotate a point
-let rotatePoint theta (x, y) =
-  (x * cos theta - y * sin theta, x * sin theta + y * cos theta)
+  // Calculate commands for a specific order
+  let curve = A 5
+  // Convert commands to point array
+  let initTrtl = {x = 0.0; y = 0.0; d = 0.0}
+  let len = 20.0
+  let line =
+    // Convert command list to reverse turtle list
+    List.fold (fun acc elm -> addRev acc elm len) [initTrtl] curve
+    // Reverse list
+    |> List.rev
+    // Convert turtle list to point list
+    |> List.map (fun t -> Point (int (round t.x), int (round t.y)))
+    // Convert point list to point array
+    |> List.toArray
+  let black = new Pen (Color.FromArgb (0, 0, 0))
+  // Set size to as large as shape
+  let minVal = System.Int32.MinValue
+  let maxPoint = Array.fold maxPoint (Point (minVal, minVal)) line
+  let size = Size (maxPoint.X + 1, maxPoint.Y + 1)
+  // return shapes as singleton list
+  (size, [(black, line)])
 
-/// Rotate point array
-let rotatePoints theta arr =
-  List.map (rotatePoint theta) arr
-
-type curve = float * float * coordinates
-
-/// Turn 90 degrees left
-let left (l, dir, c) : curve = (l, dir + 3.141592/2.0, c)
-
-/// Turn 90 degrees right
-let right (l, dir, c) : curve = (l, dir - 3.141592/2.0, c)
-
-/// Add a line to the curve of present direction
-let forward (l, dir, c) : curve =
-  let nextPoint = rotatePoint dir (l, 0.0)
-  (l, dir, c @ [translatePoint c.[c.Length-1] nextPoint])
-
-/// Find the maximum value of each coordinate element in a list
-let maximum (c : coordinates) =
-  let maxPoint p1 p2 =
-    (max (fst p1) (fst p2), max (snd p1) (snd p2))
-  List.fold maxPoint (-infinity, -infinity) c
-
-/// Hilbert recursion production rules
-let rec ruleA n C : curve =
-  if n > 0 then
-    (C |> left |> ruleB (n-1) |> forward |> right |> ruleA (n-1) |> forward |> ruleA (n-1) |> right |> forward |> ruleB (n-1) |> left)
-  else
-    C
-and ruleB n C : curve = 
-  if n > 0 then
-    (C |> right |> ruleA (n-1) |> forward |> left |> ruleB (n-1) |> forward |> ruleB (n-1) |> left |> forward |> ruleA (n-1) |> right)
-  else
-    C
-
-// Calculate curve
-let order = 5
-let l = 20.0
-let (_, dir, c) = ruleA order (l, 0.0, [(0.0, 0.0)])
-
-// Setup drawing details
-let title = "Hilbert's curve"
-let backgroundColor = Color.White
-let cMax = maximum c
-let size = (int (fst cMax)+1, int (snd cMax)+1)
-let polygLst = [(c, (Color.Black, 3.0))]
-
-// Create form and start the event-loop.
-let win = createForm backgroundColor size title (drawPoints polygLst) 
-Application.Run win
+///////////// Connection //////////////
+// Tie view and model together and enter main event loop
+let (size, shapes) = model ()
+let run = view size shapes
+run ()

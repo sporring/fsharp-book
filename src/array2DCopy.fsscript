@@ -1,0 +1,2 @@
+let a = Array2D.init 3 4 (fun i j -> i + 10 * j)
+let b = Array2D.copy a;;

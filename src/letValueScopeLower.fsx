@@ -1,1 +1,1 @@
-let p = 3 in let p = 4 in printfn " %A" p;
+let p = 3 in let p = 4 in do printfn " %A" p;

@@ -1,1 +1,3 @@
+$ fsharpc --nologo letValueScopeBlockAlternative2.fsx
+$ mono letValueScopeBlockAlternative2.exe
 4

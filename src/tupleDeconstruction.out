@@ -6,7 +6,6 @@
 - deconstructNPrint (3.14, "Pi", 'p');;
 tp = (2, true, "hello")
 tp = (3.14, "Pi", 'p')
-
 val deconstructNPrint : 'a * 'b * 'c -> unit
 val it : unit = ()
 

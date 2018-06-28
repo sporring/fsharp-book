@@ -1,3 +1,4 @@
+$ fsharpc --nologo arrayJagged.fsx && mono arrayJagged.exe
 1 
 1 2 
 1 2 3 

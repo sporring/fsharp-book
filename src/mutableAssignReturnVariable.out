@@ -3,7 +3,6 @@
 -   y
 - printfn "%d" (g ());;
 0
-
 val g : unit -> int
 val it : unit = ()
 

@@ -1,4 +1,4 @@
-let a = 357
-let b = 864
-let c = a + b
-printfn "%A" c
+let a = 357(*//§\label{quickStartSumA}§*)
+let b = 864(*//§\label{quickStartSumB}§*)
+let c = a + b(*//§\label{quickStartSumC}§*)
+do printfn "%A" c(*//§\label{quickStartSumPrintfn}§*)

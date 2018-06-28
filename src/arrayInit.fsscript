@@ -1,0 +1,2 @@
+let squareIndex ind = ind*ind
+Array.init 10 squareIndex;;

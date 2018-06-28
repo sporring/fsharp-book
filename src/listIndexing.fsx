@@ -1,17 +1,9 @@
-let printList (lst : int list) =
-  for elm in lst do
-    printf "%A " elm
-  printfn ""
-
-let printListAlt (lst : int list) =
+let printList (lst : int list) : unit =
   for i = 0 to lst.Length - 1 do
     printf "%A " lst.[i]
   printfn ""
 
-let a = [1; 2;]
-let b = [3; 4; 5]
-let c = a @ b
-let d = 0 :: c
-printfn "%A, %A, %A, %A" a b c d
-printList d
-printListAlt d
+let lst = [3; 4; 5]
+printfn "lst = %A, lst.[1] = %A" lst lst.[1]
+printfn "lst.Length = %A, lst.isEmpty = %A" lst.Length lst.IsEmpty
+printList lst

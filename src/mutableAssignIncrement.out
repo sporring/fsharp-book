@@ -1,2 +1,4 @@
+$ fsharpc --nologo mutableAssignIncrement.fsx
+$ mono mutableAssignIncrement.exe
 5
 6

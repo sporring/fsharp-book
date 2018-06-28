@@ -3,4 +3,4 @@ let testScope x =
   let f z = a * z
   let a = 4.0
   f x
-printfn "%A" (testScope 2.0)
+do printfn "%A" (testScope 2.0)

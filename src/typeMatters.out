@@ -1,8 +1,12 @@
 > 3;;
 val it : int = 3
+
 > 3.0;;
 val it : float = 3.0
+
 > '3';;
 val it : char = '3'
+
 > "3";;
 val it : string = "3"
+

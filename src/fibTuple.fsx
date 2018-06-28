@@ -1,11 +1,10 @@
 let fib n =
-  if n < 1 then
-    0
-  else
-    let mutable prev = (0, 1)
-    for i = 2 to n do
-      prev <- (snd prev, (fst prev) + (snd prev))
-    snd prev
+  let mutable prev = (0, 1)
+  for i = 2 to n do
+    prev <- (snd prev, (fst prev) + (snd prev))
+  snd prev
 
-for i = 0 to 10 do
-  printfn "fib(%d) = %d" i (fib i)
+printfn "fib(1) = %d" (fib 1)
+printfn "fib(2) = %d" (fib 2)
+printfn "fib(3) = %d" (fib 3)
+printfn "fib(10) = %d" (fib 10)

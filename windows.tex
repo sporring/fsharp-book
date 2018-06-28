@@ -1,52 +1,56 @@
 \chapter{Graphical User Interfaces}
 \label{chap:windows}
 
-A \idx{command-line interface} (\idx{CLI}) is a method for communicating with the user through text. In contrast, a \idx{graphical user interface} (\idx{GUI}) also includes graphical elements such as  windows, icons, and sound, and a typical way to activate these elements are through a pointing device such as the mouse or by touch. Some of these elements may themselves be textual, and thus most operating systems offers access to a command-line interface in a window alongside other interface types.
+A \idx{graphical user interface} (\idx{GUI}) uses graphical elements such as windows, icons, and sound to communicate with the user, and a typical way to activate these elements is through a pointing device such as the mouse or by touch. Some of these elements may themselves be textual, and thus most operating systems offer access to a \idx{command-line interface} (\idx{CLI}) in a window alongside other interface types.
 
-Fsharp includes a number of implementations of graphical user interfaces, but at time of writing only \idx{WinForms} is supported on both the Microsoft .Net and the Mono platform, and hence, WinForms will be the subject of the following chapter.
-
-WinForms is designed for \idx{event driven programming}, meaning that at run-time, most time is spend on waiting for the user to perform an action, called an \idx{event}, and each possible event has a predefined response to be performed. 
-
-An example of a graphical user interface is a web-browser, as shown in Figure~\ref{fig:safariGui}.
+An example of a graphical user interface is a web-browser, as shown in \Cref{fig:safariGui}.
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{safariWinForms}
   \caption{A web-browser is a graphical user interface for accessing a web-server and interacting with its services. Here the browser is showing the page \url{https://en.wikipedia.org/wiki/Windows_Forms} at time of writing.}
   \label{fig:safariGui}
 \end{figure}
-The program present information to the user in terms of text and images and has active areas that may be activated by clicking and which allows the user to go to other web-pages by type URL, to follow hyperlinks, and to generate new pages by entering search queries. Designing easy to use graphical user interfaces is a challenging task. This chapter will focus on examples of basic graphical elements and how to program these in WinForms.
+The program presents information to the user in terms of text and images and has active areas that may be activated by clicking and which allows the user to go to other web-pages by typing a URL, to follow hyperlinks, and to generate new pages by entering search queries.
 
-\section{Drawing primitives in Windows}
-The main workhorse of WinForms are the functions and classes defined in the namespaces: \idx{\lstinline{System.Windows.Forms}}  and \idx{\lstinline{System.Drawing}}. These give access to the \idx{Windows Graphics Device Interface} (\idx{GDI+}), which allows you to create and manipulate graphics objects targeting several platforms such as screens and paper. 
+F\# includes a number of implementations of graphical user interfaces, and at time of writing both \idx{GTK+} and \idx{WinForms 2.0} are supported on both the Microsoft .Net and the Mono platform. WinForms can be used without extra libraries during compilation, and therefore will be the subject of the following chapter.
 
-To display a graphical user interface on the screen, the first thing to do is open a window, which acts as a reserved screen-space for our output. In WinForms windows are called \idx{forms}. Code for opening a window is shown in Listing~\ref{winforms/openWindow}, and the result is shown in Figure~\ref{fig:openWindow}.
+WinForms is a set of libraries that simplify many common tasks for applications, and in this chapter, we will focus on the graphical user interface part of WinForms. A \idx{form} is a visual interface used to communicate information with the user, typically a window. Communication is done through \idx[control]{controls}, which are elements that displays information or accepts input. Examples of controls are a box with text, a button, and a menu. When the user gives input to a control element, this generates an \idx{event}, which you can write code to react to. Winforms is designed for \idx{event-driven programming}, meaning that at runtime, most time is spent on waiting for the user to give input. See \Cref{chap:eventDriven} for more on event-driven programming.
+
+Designing easy to use graphical user interfaces is a challenging task. This chapter will focus on examples of basic graphical elements and how to program these in WinForms.
+
+\section{Opening a window}
+Programming graphical user interface with WinForms uses the namespaces: \idx[System.Windows.Forms@\lstinline{System.Windows.Forms}]{\lstinline{System.Windows.Forms}} and \idx[System.Drawing@\lstinline{System.Drawing}]{\lstinline{System.Drawing}}. \lstinline{System.Windows.Forms} includes code for generating forms, controls, and handling events. \lstinline{System.Drawing} is used for low-level drawing, and it gives access to the \idx{Windows Graphics Device Interface} (\idx{GDI+}), which allows you to create and manipulate graphics objects targeting several platforms such as screens and paper. All controls in \lstinline{System.Windows.Forms} in Mono are drawn using \lstinline{System.Drawing}. 
+
+To display a graphical user interface on the screen, the first thing to do is open a window, which acts as a reserved screen-space for our output. In WinForms, windows are called forms. Code for opening a window is shown in \Cref{winforms/openWindow}, and the result is shown in \Cref{fig:openWindow}. Note, the present version of WinForms on MacOs only works with the 32-bit implementation of mono, \idx[mono32@\filename{mono32}]{\filename{mono32}}, as demonstrated in the example.
 %
-\fsCode{winforms/openWindow}{winforms/openWindow}{Create the window and turn over control to the operating system.}{}
+\fs{winforms/openWindow}{Create the window and turn over control to the operating system. See \Cref{fig:openWindow}.}
 %
 %
 %\codeFromFile{winforms/openWindow}{openWindow}{Create the window and turn over control to the operating system.}
 %
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{openWindow}
-  \caption{A window opened by Listing~\ref{winforms/openWindow}.}
+  \includegraphics[scale=0.3]{openWindow}
+  \caption{A window opened by \Cref{winforms/openWindow}.}
   \label{fig:openWindow}
 \end{figure}
-The \lstinline!new System.Windows.Forms.Form ()! creates an object (See Chapter~\ref{chap:oop}), but does not display the window on the screen. When the function \lstinline!System.Windows.Forms.Application.Run! is applied to the object, then the control is handed over to the WinForms' \idx{event-loop}, which continues until the window is closed by, e.g., pressing the icon designated by the operating system. On the mac OSX that is the red button in the top left corner of the window frame, and on Window it is the cross on the top right corner of the window frame.
+The \lstinline!new System.Windows.Forms.Form ()! creates an object (See \Cref{chap:oop}), but does not display the window on the screen. We use the optional \keyword{new} keyword since the form is an \lstinline{IDisposable} object and may be implicitly disposed of. I.e., it is recommended to \advice{instantiate \lstinline{IDisposable} objects using \keyword{new} to contrast them with other object types.} Executing \lstinline!System.Windows.Forms.Application.Run! is applied to the object, then the control is handed over to the WinForms' \idx{event-loop}, which continues until the window is closed by, e.g., pressing the icon designated by the operating system. On the Mac OSX that is the red button in the top left corner of the window frame, and on Window it is the cross on the top right corner of the window frame.
 
-The window has a long list of \idx{methods} and \idx{properties}. E.g., the background color may be set by \lstinline!BackColor!, the title of the window may be set by \lstinline!Text!, and you may get and set the size of the window with the \lstinline!Size!. This is demonstrated in Listing~\ref{winforms/windowAttributes}.
+The window form has a long list of \idx{methods} and \idx{properties}. E.g., the background color may be set by \lstinline!BackColor!, the title of the window may be set by \lstinline!Text!, and you may get and set the size of the window with the \lstinline!Size!. This is demonstrated in \Cref{winforms/windowProperty}.
 %
-\fsCode{winforms/windowAttributes}{winforms/windowAttributes}{Create the window and changing its properties.}{}
+\fsCode{winforms/windowProperty}{winforms/windowProperty}{Create the window and changing its properties. See \Cref{fig:windowProperty}}{}
 %
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{windowAttributes}
-  \caption{A window with user-specified size and background color, see Listing~\ref{winforms/windowAttributes}.}
-  \label{fig:windowAttributes}
+  \includegraphics[scale=0.3]{windowProperty}
+  \caption{A window with user-specified size and background color, see \Cref{winforms/windowProperty}.}
+  \label{fig:windowProperty}
 \end{figure}
-These properties have been programmed as \idx{accessors} implying that they may used as mutable variables. 
+%
+These properties are \idx{accessors} implying that they act as mutable variables. 
 
-The \idx{\lstinline{System.Drawing.Color}} is a general structure for specifying colors as 4 channels: alpha, red, green, blue. Some methods and properties for the Color structure is shown in Table~\ref{tab:color}.
+\section{Drawing geometric primitives}
+The \idx[Color@\lstinline{Color}]{\lstinline{System.Drawing.Color}} is a structure for specifying colors as 4 channels: alpha, red, green, and blue. Some methods and properties for the Color structure is shown in \Cref{tab:color}.
 \begin{table}
   \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -66,17 +70,30 @@ The \idx{\lstinline{System.Drawing.Color}} is a general structure for specifying
       \lstinline{Blue}
       &Get a predefined color with ARGB value of \lstinline{0xFF0000FF}.\\
       \hline
+      \lstinline{Brown}
+      &Get a predefined color with ARGB value of \lstinline{0xFFA52A2A}.\\
+      \hline
       \begin{minipage}{0.45\linewidth}
         \lstinline{FromArgb : int -> Color}\\
+        \lstinline{FromArgb : int*int*int -> Color}
         \lstinline{FromArgb : int*int*int*int -> Color}
       \end{minipage}
-      &Create a color structure..\\
+      &Create a color structure.\\
       \hline
       \lstinline{G}
       &Get the value of the green channel of a color.\\
       \hline
+      \lstinline{Gray}
+      &Get a predefined color with ARGB value of \lstinline{0xFF808080}.\\
+      \hline
       \lstinline{Green}
       &Get a predefined color with ARGB value of \lstinline{0xFF00FF00}.\\
+      \hline
+      \lstinline{Orange}
+      &Get a predefined color with ARGB value of \lstinline{0xFFFFA500}.\\
+      \hline
+      \lstinline{Purple}
+      &Get a predefined color with ARGB value of \lstinline{0xFF800080}.\\
       \hline
       \lstinline{R}
       &Get the value of the red channel of a color.\\
@@ -85,386 +102,586 @@ The \idx{\lstinline{System.Drawing.Color}} is a general structure for specifying
       &Get a predefined color with ARGB value of \lstinline{0xFFFF0000}.\\
       \hline
       \lstinline{ToArgb : Color -> int}
-      &Get the 32 bit integer representation of a color.\\
+      &Get the 32-bit integer representation of a color.\\
       \hline
       \lstinline{White}
       &Get a predefined color with ARGB value of \lstinline{0xFFFFFFFF}.\\
+      \hline
+      \lstinline{Yellow}
+      &Get a predefined color with ARGB value of \lstinline{0xFFFFFF00}.\\
       \hline
     \end{tabularx}
   \end{center}
   \caption{Some methods and properties of the \lstinline{System.Drawing.Color}  structure.}
   \label{tab:color}
 \end{table}
-Each channel is an 8 bit unsigned integer, but often referred as the 32 bit unsigned integer by concatenating the channels. The alpha channel specifies the transparency of a color, where values 0--255 denotes the range of fully transparent to fully opaque, and the remaining channels denote the amount of red, green, and blue, where 0 is none and 255 is full intensity. Any color may be created using the \lstinline!FromArgb! method, e.g., an opaque red is given by \lstinline!System.Drawing.Color.FromArgb (255, 255, 0, 0)!. There are also many build-in colors, e.g., the same red color is also a known color and may be obtained as \lstinline!System.Drawing.Color.Red!. For a given color, then the 4 alpha, red, green, and blue channel's values may be obtained as the \lstinline!A!, \lstinline!R!, \lstinline!G!, \lstinline!B!, see Listing~\ref{drawingColors}
+Each channel is an 8-bit unsigned integer, but often referred as the 32 bit unsigned integer by concatenating the channels. The alpha channel specifies the transparency of a color, where values 0--255 denotes the range of fully transparent to fully opaque, and the remaining channels denote the amount of red, green, and blue, where 0 is none and 255 is full intensity. Any color may be created using the \lstinline!FromArgb! method, e.g., an opaque red is given by \lstinline!System.Drawing.Color.FromArgb (255, 255, 0, 0)!. There are also many build-in colors, e.g., the same red color is also a known color and may be obtained as \lstinline!System.Drawing.Color.Red!. For a given color, then the 4 alpha, red, green, and blue channel's values may be obtained as the \lstinline!A!, \lstinline!R!, \lstinline!G!, and \lstinline!B! members, see \Cref{drawingColors}
 %
 \fs{drawingColors}{Defining colors and accessing their values.}
 %
-The \lstinline!System.Drawing.Size! is a general structure for specifying sizes as height and width pair of integers. WinForms uses a number of types for specifying various objects some of which are shown in Table~\ref{tab:basicStructures}.
+
+\lstinline{System.Drawing} contains many often used structures. \Cref{winforms/windowProperty} used \lstinline!System.Drawing.Size! to specify a size by a pair of integers. Other important structures in WinForms are  \idx[Point@\lstinline{Point}]{\lstinline{System.Drawing.Point}}, which specifies a coordinate as a pair of points; \idx[Pen@\lstinline{Pen}]{\lstinline{System.Drawing.Pen}}, which specifies how to draw lines and curves; \idx[Font@\lstinline{Font}]{\lstinline{System.Drawing.Font}}, which specifies the font of a string; \idx[SolidBrush@\lstinline{SolidBrush}]{\lstinline{System.Drawing.SolidBrush}} and \idx[TextureBrush@\lstinline{TextureBrush}]{\lstinline{System.Drawing.TextureBrush}}, used for filling geometric primitives, and \idx[Bitmap@\lstinline{Bitmap}]{\lstinline{System.Drawing.Bitmap}}, which is a type of \idx[Image@\lstinline{Image}]{\lstinline{System.Drawing.Image}}. These are summarized in \Cref{tab:basicStructures}.
 \begin{table}
   \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
-    \begin{tabularx}{\linewidth}{|l|X|}
+    \begin{tabularx}{\linewidth}{|p{0.5\linewidth}|X|}
       \hline
       \rowcolor{headerRowColor}  Constructor & Description\\
       \hline
-      \begin{minipage}{0.4\linewidth}
-        \lstinline{Point(int, int)}\\
-        \lstinline{Point(Size)}
-      \end{minipage}
-      &An ordered pair of integers specifying x- and y-coordinates in the plane.\\
-      \hline
-      \begin{minipage}{0.4\linewidth}
-        \lstinline{Size(int, int)}\\
-        \lstinline{Size(Point)}
-      \end{minipage}
-      &An ordered pair of integers specifying height and width in the plane.\\
-      \hline
-     \begin{minipage}{0.4\linewidth}
-       \lstinline{Rectangle(int, int, int, int)}\\
-       \lstinline{Rectangle(Point, Size)}
-     \end{minipage}
-     &A structure specifying a rectangular region by its upper left corner and its size.\\
-      \hline
+      \makecell[cl]{\lstinline{Bitmap(int, int)}}
+       &Create a new empty \lstinline{Image} of specified size.\\
+       \hline
+      \makecell[cl]{\lstinline{Bitmap(Stream)}\\\lstinline{Bitmap(string)}}
+      &Create a \lstinline{Image} from a \lstinline{System.IO.Stream} or from a file specified by a filename.\\
+       \hline
+      \makecell[cl]{\lstinline{Font(string, single)}}
+       &Create a new font from the font's name and em-size.\\
+       \hline
+      \makecell[cl]{\lstinline{Pen(Brush)}\\\lstinline{Pen(Brush), single)}\\\lstinline{Pen(Color)}\\\lstinline{Pen(Color, single)}}
+       &Create a pen to paint either with a brush or solid color and possibly with specified width.\\
+       \hline
+       \makecell[cl]{\lstinline{Point(int, int)}\\\lstinline{Point(Size)}\\\lstinline{PointF(single, single)}}
+       &Create an ordered pair of integers or singles specifying x- and y-coordinates in the plane.\\
+       \hline
+      %  \makecell[cl]{\lstinline{Rectangle(int, int, int, int)}\\\lstinline{Rectangle(Point, Size)}\\\lstinline{RectangleF(single, single, single, single)}\\\lstinline{RectangleF(PointF, SizeF)}}
+      % &Create a structure specifying a rectangular region by its upper left corner and its size.\\
+      %  \hline
+       \makecell[cl]{\lstinline{Size(int, int)}\\\lstinline{Size(Point)}\\\lstinline{SizeF(single, single)}\\\lstinline{SizeF(PointF)}}
+       &Create an ordered pair of integers or singles specifying height and width in the plane.\\
+       \hline
+       \makecell[cl]{\lstinline{SolidBrush(Color)}\\\lstinline{TextureBrush(Image)}}
+       &Create a \lstinline{Brush} as a solid color or from an image to fill the interior of a geometric shapes.\\
+       \hline
+       % \makecell[cl]{\lstinline{TextureBrush(Image)}}
+       % &Create a \lstinline{Brush} from an image to fill the interior of a shape such as rectangles and ellipses.\\
+       % \hline
     \end{tabularx}
   \end{center}
-  \caption{Basic geometrical structures in WinForms.}
+  \caption{Basic geometrical structures in WinForms. \lstinline{Brush} and \lstinline{Image} are abstract classes.}
   \label{tab:basicStructures}
 \end{table}
-\jon{Note on difference between Size and ClientSize.}\jon{Do something about the vertical alignment of minpage.}
+\jon{Do something about the vertical alignment of minpage.}
 
-WinForms supports drawing of geometric primitives such as lines, rectangles, and ellipses, but not points. To draw an element similar to a point, you must draw a small rectangle or ellipse. The location and shape of geometrical primitives are specified in a coordinate system, and WinForms operates with 2 coordinate systems: \idx{screen coordinates} and \idx{client coordinates}. Screen coordinate $(x,y)$ have their origin in the top-left corner of the screen, and $x$ increases to the right, while $y$ increases down. Client coordinates refers to the drawable area of a form or a control, i.e., for a window this will be the area without the window borders, scroll and title bars. A control is a graphical object such as a clickable button, which will be discussed later. Conversion between client and screen coordinates is done with \idx{\lstinline{System.Drawing.PointToClient}} and \idx{\lstinline{System.Drawing.PointToScreen}}. To draw geometric primitives, we must also specify the pen using
-for line like primitives and the brush for filled regions.
-
-Displaying graphics in WinForms is performed as the reaction to an event. E.g., windows are created by the program, moved, minimized, occluded by other windows, resized, etc., by the user or the program, and each action may require that the content of the window is refreshed. Thus, we must create a function that WinForms can call any time. This is known as a \idx{call-back function}, and it is added to an existing form using the \idx{\lstinline{Paint.Add}} method. Due to the event-driven nature of WinForms, functions for drawing graphics primitives are only available when responding to an event, e.g., \idx{\lstinline{System.Drawing.Graphics.DrawLines}} draws a line in a window, and it is only possible to call this function, as part of an event handling.
-
-As an example, consider the problem of drawing a triangle in a window. For this we need to make a function that can draw a triangle not once, but any time. An example of such a program is shown in Listing~\ref{winforms/triangle}.
-%
-\fsCode{winforms/triangle}{winforms/triangle}{Adding line graphics to a window.}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.6\textwidth]{triangle}
-  \caption{Drawing a triangle using Listing~\ref{winforms/triangle}.}
-  \label{fig:triangle}
-\end{figure}
-A walk-through of the code is as follows: First we create an array of points and a pen color, then we create a pen and a window. The method for drawing the triangle is added as an anonymous function using the created window's \lstinline!Paint.Add! method. This function is to be called as a response to a paint event and takes a \lstinline!System.Windows.Forms.PaintEventArgs! object, which includes the System.Drawing.Graphics object. Since this object will be related to a specific device, when the window's \lstinline!Paint! method is called, then we may call the \lstinline!System.Drawing.Graphics.DrawLines! function to sequentially draw lines between our array of points. Finally, we hand the form to the event-loop, which as one of the earliest events will open the window and call the \lstinline!Paint! function we have associated with the form.
-
-Considering the program in Listing~\ref{winforms/triangle}, we may identify a part that concerns the specification of the triangle, or more generally the graphical model, some parts which handling events, and some which concerns system specific details on initialization of the interface. For future maintenance, it is often a good idea to \advice{separate the model from the implementation}. E.g., it may be that at some point, you decide that you would rather use a different library than WinForms. In this case, the general graphical model will be the same but the specific details on initialization and event handling will be different. While it is not easy to completely separate the general from the specific, it is often a good idea to strive some degree of separation. E.g., in Listing~\ref{winforms/triangle}, the program has been redesigned to make use of an initialization function (\lstinline{createForm}) and a paint function (\lstinline{drawPoints}).
-%
-\fsCode{winforms/triangleOrganized}{winforms/triangleOrganized}{Improved organization of code for drawing a triangle. Compare with Listing~\ref{winforms/triangle}.}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.6\textwidth]{triangleOrganized}
-  \caption{Better organization of the code for drawing a triangle, see Listing~\ref{winforms/triangleOrganized}.}
-  \label{fig:triangleOrganized}
-\end{figure}
-While this program is longer, to this author there is a much better separation of {\em what} is to be displayed from the {\em how} it is to be done, since the {\em how} is not contained in the functions \lstinline!createForm! and \lstinline!drawPoints!. The user-defined types \lstinline!coordinates! and \lstinline!pen! further emphasizes the semantic content of the data structures in use and makes use of Fsharp's type checker to reduce run-time errors.
-\jon{requires the introduction of type declarations.}\jon{Remember to talk about pen width.}
-
-Organizing code into functions that operate on data structures as Listing~\ref{winforms/triangleOrganized} is the first step in \idx{Structured programming} to be discussed in Part~\ref{part:structured}. Consider the case, where we are to draw two new triangles, that are a translation and a rotations of the original. A simple extension of Listing~\ref{winforms/triangleOrganized} is to make a list of lists of Points and to extend \lstinline!drawPoints! with a loop for drawing all shapes in the list. This structure should include the ability to draw shapes in different styles, hence we arrive at a structure of type \lstinline!(coordinates * pen) list!. Furthermore, since the problem is to draw the same shape at different locations and orientations, instead of calculating the new coordinates by hand, it is useful to add functions to translate and rotation a given shape. Thus we arrive at the program shown in Listing~\ref{winforms/transformWindows}, and which results in the output shown in
-Figure~ \ref{fig:transformWindow}.
-%
-\fsCode{winforms/transformWindows}{winforms/transformWindowsTop}{Reusable  code for drawing in windows.}{lastline=42}
-\fsCode{winforms/transformWindows}{winforms/transformWindows}{Code for drawing triangles. Continued from Listing~\ref{winforms/transformWindowsTop}.}{firstnumber=44,firstline=44}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.6\textwidth]{transformWindows}
-  \caption{Transformed versions of the same triangle resulting from running the code in Listing~\ref{winforms/transformWindows}.}
-  \label{fig:transformWindow}
-\end{figure}
-We now have a basis for solving the following problem:
-\begin{problem}
-  Given a triangle produce a Mandela drawing, where $n$ rotated versions of the triangle is drawn around its center of mass.
-\end{problem}
-Reusing the top part of Listing~\ref{winforms/transformWindows} and replacing the bottom part with the code shown in Listing~\ref{winforms/rotationalSymmetry}, we arrive a the solution illustrated in Figure~\ref{fig:rotationalSymmetry}.
-%
-\fsCode{winforms/rotationalSymmetry}{winforms/rotationalSymmetry}{Create the window and changing its properties. Continued from Listing~\ref{winforms/transformWindowsTop}.}{firstnumber=44,firstline=44}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{rotationalSymmetry}
-  \caption{A symmetric figure resulting from Listing~\ref{winforms/rotationalSymmetry}.}
-  \label{fig:rotationalSymmetry}
-\end{figure}
-\jon{Remember to add something on piping.}
-
-The \lstinline!System.Drawing.Graphics! class contains many other algorithms for drawing graphics primitives, some of which are listing in Table~\ref{tab:graphicsMethods}
+The \idx[Graphics@\lstinline{Graphics}]{\lstinline{System.Drawing.Graphics}} is a class for drawing geometric primitives to a display device, and some of its methods are summarized in \Cref{tab:geometricPrimitives}.
 \begin{table}
   \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
-    \begin{tabularx}{\linewidth}{|l|X|}
+    \begin{tabularx}{\linewidth}{|p{0.53\linewidth}|X|}
       \hline
-      \rowcolor{headerRowColor}  Function & Description\\
+      \rowcolor{headerRowColor}  Constructor & Description\\
       \hline
-      \lstinline{DrawArc : Pen * Rectangle * Single * Single}
-      &Draws an arc representing a portion of an ellipse specified by a Rectangle structure.\\
+      % \makecell[cl]{\lstinline{DrawEllipse : Pen * Rectangle -> unit}\\\lstinline{DrawEllipse : Pen * RectangleF -> unit}}
+      % &Draw an ellipse bounded by a rectangle.\\
+      % \hline
+      \makecell[cl]{\lstinline{DrawImage : Image * (Point []) -> unit}\\\lstinline{DrawImage : Image * (PointF []) -> unit}}
+      &Draw an image at a specific point and size.\\
       \hline
-      \lstinline{DrawBezier : Pen * Point * Point * Point * Point}	
-      &Draws a Bézier spline defined by four Point structures.\\
+      \makecell[cl]{\lstinline{DrawImage : Image * Point -> unit}\\\lstinline{DrawImage : Image * PointF -> unit}}
+      &Draw an image at a specific point.\\
       \hline
-      \lstinline{DrawCurve : Pen * Point[]}	
-      &Draws a cardinal spline through a specified array of Point structures.\\
+      \makecell[cl]{\lstinline{DrawLines : Pen * (Point []) -> unit}\\\lstinline{DrawLines : Pen * (PointF []) -> unit}}
+      &Draw a series of lines between the $n$'th and the $n+1$'th points.\\
       \hline
-      \lstinline{DrawEllipse : Pen * Rectangle}	
-      &Draws an ellipse specified by a bounding Rectangle structure.\\
+      % \makecell[cl]{\lstinline{DrawPolygon : Pen * (Point []) -> unit}\\\lstinline{DrawPolygon : Pen * (PointF []) -> unit}}
+      % &Draw a set of lines indicated by the array of points including a line from the last to the first point.\\
+      % \hline
+      % \makecell[cl]{\lstinline{DrawRectangles : Pen * Rectangle -> unit}\\\lstinline{DrawRectangles : Pen * RectangleF -> unit}}
+      % &Draw a rectangle.\\
+      % \hline
+      \makecell[cl]{\lstinline{DrawString :}\\\hspace*{5mm}\lstinline{string * Font * Brush * PointF -> unit}}
+      &Draw a string at the specified point.\\
       \hline
-      \lstinline{DrawImage : Image * Point[]}	
-      &Draws the specified Image at the specified location and with the specified shape and size.\\
-      \hline
-      \lstinline{DrawLine : Pen * Point * Point}	
-      &Draws a series of line segments that connect an array of Point structures.\\
-      \hline
-      \lstinline{DrawLines : Pen * Point[]}	
-      &Draws a series of line segments that connect an array of Point structures.\\
-      \hline
-      \lstinline{DrawPie : Pen * Rectangle * Single * Single}	
-      &Draws a pie shape defined by an ellipse specified by a Rectangle structure and two radial lines.\\
-      \hline
-      \lstinline{DrawPolygon : Pen * Point[]}	
-      &Draws a polygon defined by an array of Point structures.\\
-      \hline
-      \lstinline{DrawRectangles : Pen * Rectangle[]}	
-      &Draws a series of rectangles specified by Rectangle structures.\\
-      \hline
-      \lstinline{DrawString : String * Font * Brush * PointF}	
-      &Draws the specified text string at the specified location with the specified Brush and Font objects.\\
-      \hline
-      \lstinline{FillClosedCurve : Brush * Point[]}	
-      &Fills the interior of a closed cardinal spline curve defined by an array of Point structures.\\
-      \hline
-      \lstinline{FillEllipse : Brush * Rectangle}	
-      &Fills the interior of an ellipse defined by a bounding rectangle specified by a Rectangle structure.\\
-      \hline
-      \lstinline{FillPie : Brush * Rectangle * Single * Single}	
-      &Fills the interior of a pie section defined by an ellipse specified by a RectangleF structure and two radial lines.\\
-      \hline
-      \lstinline{FillPolygon : Brush * Point[]}	
-      &Fills the interior of a polygon defined by an array of points specified by Point structures.\\
-      \hline
-      \lstinline{FillRectangle : Brush * Rectangle}	
-      &Fills the interior of a rectangle specified by a Rectangle structure.\\
-      \hline
+      % \makecell[cl]{\lstinline{DrawString :}\\\hspace*{5mm}\lstinline{ string * Font * Brush * RectangleF -> unit}}
+      % &Draw a string in the specified rectangle.\\
+      % \hline
     \end{tabularx}
   \end{center}
-  \caption{Some methods of the \lstinline!System.Drawing.Graphics! class.}
-  \label{tab:graphicsMethods}
+  \caption{Basic geometrical structures in WinForms.}
+  \label{tab:geometricPrimitives}
 \end{table}
-\jon{Give examples of more methods}
 
-\section{Programming intermezzo}
-Reusing the top part of Listing~\ref{winforms/transformWindows} we are now able to tackle complicated problems such as space-filling curves. A curve in 2 dimensions has a length but no width, and we can only visualize it by giving it a width. Thus, it came as a surprise to many when Giuseppe Peano in 1890 demonstrated that there exists curves, which fill every point in a square. The method he used to achieve this was recursion.
+The location and shape of geometrical primitives are specified in a coordinate system, and WinForms operates with 2 coordinate systems: \idx{screen coordinates} and \idx{client coordinates}. Both coordinate systems have their origin in the top-left corner, with the first coordinate, $x$, increases to the right, and the second, $y$, increases down as illustrated in \Cref{fig:coordinateSystem}.
+%
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.3]{coordinateSystem}
+  \caption{Coordinate systems in Winforms have the $y$ axis pointing down.}
+  \label{fig:coordinateSystem}
+\end{figure}
+%
+The Screen coordinate system has its origin in the top-left corner of the screen, while the client coordinate system has its origin in the top-left corner of the drawable area of a form or a control, i.e., for a window, this will be the area without the window borders, scroll and title bars. A control is a graphical object such as a clickable button, which will be discussed later. Conversion between client and screen coordinates is done with \idx[PointToClient@\lstinline{PointToClient}]{\lstinline{System.Drawing.PointToClient}} and \idx[PointToScreen@\lstinline{PointToScreen}]{\lstinline{System.Drawing.PointToScreen}}. To draw geometric primitives, we must also specify the pen using for a line like primitives and the brush for filled regions.
+
+Displaying graphics in WinForms is performed as the reaction to an event. E.g., windows are created by the program, moved, minimized, occluded by other windows, resized, etc., by the user or the program, and each action may require that the content of the window is refreshed. Thus, we must create a function that WinForms can call any time. This is known as a \idx{call-back function}, and it is added to an existing form using the form's \idx[Paint.Add@\lstinline{Paint.Add}]{\lstinline{Paint.Add}} method. Due to the event-driven nature of WinForms, functions for drawing graphics primitives are only available when responding to an event, e.g., \idx[Graphics.DrawLines@\lstinline{Graphics.DrawLines}]{\lstinline{System.Drawing.Graphics.DrawLines}} draws a line in a window, and \emph{it is only possible to call this function, as part of an event handling.}
+
+As an example, consider the problem of drawing a triangle in a window. For this we need to make a function that can draw a triangle not once, but any time. An example of such a program is shown in \Cref{winforms/triangle}.
+%
+\fsCode{winforms/triangle}{winforms/triangle}{Adding line graphics to a window. See \Cref{fig:triangle}}{}
+%
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.3]{triangle}
+  \caption{Drawing a triangle using \Cref{winforms/triangle}.}
+  \label{fig:triangle}
+\end{figure}
+%
+A walk-through of the code is as follows: First, we open the two libraries that we will use heavily. This will save us some typing but also pollute our namespace. E.g., now \lstinline{Point} and \lstinline{Color} are existing types, and we cannot define our own identifier with these names. Then we create the form with size $320\times 170$, we add a paint call-back function and we start the event-loop. The event-loop will call the paint function, whenever the system determines that the window's content needs to be refreshed. This function is to be called as a response to a paint event and takes a \lstinline!System.Windows.Forms.PaintEventArgs! object, which includes the System.Drawing.Graphics object. The function \lstinline{paint} chooses a pen and a set of points and draws a set of lines connecting the points.
+
+The code in \Cref{winforms/triangle} is not optimal. In spite that the triangle spans the rectangle $(0,0)$ to $(320,170)$ and the window's size is set to $(320,170)$, then our window is too small and the triangle is clipped at the window border. The error is that we set the window's \lstinline{Size} property which determines the size of the window including top bar and borders. Alternatively we may set the \lstinline{ClientSize}, which determines the size of the drawable area, and this is demonstrated in \Cref{winforms/triangleClientSize} and \Cref{fig:triangleClientSize}.
+%
+\fsCode{winforms/triangleClientSize}{winforms/triangleClientSize}{Adding line graphics to a window. See \Cref{fig:triangleClientSize}.}{}
+%
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.3]{triangleClientSize}
+  \caption{Setting the ClientSize property gives a predictable drawing area, see \Cref{winforms/triangleClientSize} for code.}
+  \label{fig:triangleClientSize}
+\end{figure}
+%
+Thus, \advice{prefer the \lstinline{ClientSize} over the \lstinline{Size} property for internal consistency.}
+
+Considering the program in \Cref{winforms/triangle}, we may identify a part that concerns the specification of the triangle, or more generally the graphical model, and some which concerns system specific details. For future maintenance, it is often a good idea to \advice{separate the model from how it is viewed on a specific system}. E.g., it may be that at some point, you decide that you would rather use a different library than WinForms. In this case, the general graphical model will be the same but the specific details on initialization and event handling will be different. We think of the model and the viewing part of the code as top and bottom layers, and these are often connected with a connection layer. This \idx{Model-View paradigm} is shown in \Cref{fig:modelView}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[node distance=5mm,
+    terminal/.style={
+      % The shape:
+      rectangle,minimum size=6mm,minimum width=30mm,rounded corners=3mm,
+      % The rest
+      very thick,draw=black!50,
+      top color=white,bottom color=black!20,
+      font=\ttfamily}]
+    \node (model)  [terminal] {Model};
+    \node (connection) [terminal,below=of model] {Connection};
+    \node (winform) [terminal,below=of connection] {View};
+    \draw[-stealth,very thick,bend left]  (model) edge (connection);
+    \draw[-stealth,very thick,bend left]  (connection) edge (model);
+    \draw[-stealth,very thick,bend left]  (winform) edge (connection);
+    \draw[-stealth,very thick,bend left]  (connection) edge (winform);
+  \end{tikzpicture}
+  \caption{Separating model from view gives flexibility later.}
+  \label{fig:modelView}
+\end{figure}
+While it is not easy to completely separate the general from the specific, it is often a good idea to strive some degree of separation.
+
+In \Cref{winforms/triangleOrganized}, the program has been redesigned to follow the Model-View paradigm, to make use of a Winforms and a model specific function called \lstinline{view} and \lstinline{model}.
+%
+\fsCode{winforms/triangleOrganized}{winforms/triangleOrganized}{Improved organization of code for drawing a triangle. See \Cref{fig:triangleOrganized}.}{}
+%
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.3]{triangleOrganized}
+  \caption{Better organization of the code for drawing a triangle, see \Cref{winforms/triangleOrganized}.}
+  \label{fig:triangleOrganized}
+\end{figure}
+This program is longer, but there is a much better separation of {\em what} is to be displayed (model) from the {\em how} it is to be done (view).
+
+To further our development of a general program for displaying graphics, consider the case, where we are to draw another two triangles, that are a translation and a rotations of the original, and where we would like to specify the color of each triangle individually. A simple extension of \lstinline{model} in \Cref{winforms/triangleOrganized} for generating many shapes of different colors is \lstinline{model : unit -> Size * ((Point []) * Pen) list}, i.e., semantically augment each point array with a pen and return a list of such pairs. For this example we also program translation and rotation transformations. See \Cref{winforms/transformWindowsModel} for the result.
+%
+\fsCode{winforms/transformWindows}{winforms/transformWindowsModel}{Model of a triangle and simple transformations of it. See also \Cref{winforms/transformWindowsView,winforms/transformWindowsConnect}, and \Cref{fig:transformWindow}.}{firstline=15,firstnumber=15,lastline=43}
+%
+We update \lstinline{view} accordingly to iterate through this list as shown in \Cref{winforms/transformWindowsView}.
+%
+\fsCode{winforms/transformWindows}{winforms/transformWindowsView}{View of lists of pairs of pen and point arrays. See also \Cref{winforms/transformWindowsModel,winforms/transformWindowsConnect}, and \Cref{fig:transformWindow}.}{lastline=13}
+%
+Since we are using Winforms primitives in the model, then the connection layer is trivial as shown in \Cref{winforms/transformWindowsConnect}.
+%
+\fsCode{winforms/transformWindows}{winforms/transformWindowsConnect}{Model of a triangle and simple transformations of it. See also \Cref{winforms/transformWindowsModel,winforms/transformWindowsView}, and \Cref{fig:transformWindow}.}{firstline=45,firstnumber=45}
+%
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.3]{transformWindows}
+  \caption{Transformed versions of the same triangle resulting from running the code in \Crefrange{winforms/transformWindowsModel}{winforms/transformWindowsConnect}.}
+  \label{fig:transformWindow}
+\end{figure}
+
+% We now have a basis for solving the following problem:
+% \begin{problem}
+%   Given a triangle produce a Mandela drawing, where $n$ rotated versions of the triangle is drawn around its center of mass.
+% \end{problem}
+% Reusing the top part of \filename{transformWindows.fsx} (\Cref{winforms/transformWindowsModel}) and replacing the bottom part with the code shown in \Cref{winforms/rotationalSymmetry}, we arrive a the solution illustrated in \Cref{fig:rotationalSymmetry}.
+% %
+% \fsCode{winforms/rotationalSymmetry}{winforms/rotationalSymmetry}{Create the window and changing its properties. Last part is ommitted, since it is identical to \Cref{winforms/transformWindowsBottom}.}{lastline=51}
+% %
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{rotationalSymmetry}
+%   \caption{A symmetric figure resulting from \Cref{winforms/rotationalSymmetry}.}
+%   \label{fig:rotationalSymmetry}
+% \end{figure}
+
+% The \lstinline!System.Drawing.Graphics! class contains many other algorithms for drawing graphics primitives, some of which are listing in \Cref{tab:graphicsMethods}
+% \begin{table}
+%   \begin{center}
+%   \rowcolors{2}{oddRowColor}{evenRowColor}
+%     \begin{tabularx}{\linewidth}{|l|X|}
+%       \hline
+%       \rowcolor{headerRowColor}  Function & Description\\
+%       \hline
+%       \lstinline{DrawArc : Pen * Rectangle * Single * Single}
+%       &Draws an arc representing a portion of an ellipse specified by a Rectangle structure.\\
+%       \hline
+%       \lstinline{DrawBezier : Pen * Point * Point * Point * Point}    
+%       &Draws a Bézier spline defined by four Point structures.\\
+%       \hline
+%       \lstinline{DrawCurve : Pen * Point[]}    
+%       &Draws a cardinal spline through a specified array of Point structures.\\
+%       \hline
+%       \lstinline{DrawEllipse : Pen * Rectangle}    
+%       &Draws an ellipse specified by a bounding Rectangle structure.\\
+%       \hline
+%       \lstinline{DrawImage : Image * Point[]}    
+%       &Draws the specified Image at the specified location and with the specified shape and size.\\
+%       \hline
+%       \lstinline{DrawLine : Pen * Point * Point}    
+%       &Draws a series of line segments that connect an array of Point structures.\\
+%       \hline
+%       \lstinline{DrawLines : Pen * Point[]}    
+%       &Draws a series of line segments that connect an array of Point structures.\\
+%       \hline
+%       \lstinline{DrawPie : Pen * Rectangle * Single * Single}    
+%       &Draws a pie shape defined by an ellipse specified by a Rectangle structure and two radial lines.\\
+%       \hline
+%       \lstinline{DrawPolygon : Pen * Point[]}    
+%       &Draws a polygon defined by an array of Point structures.\\
+%       \hline
+%       \lstinline{DrawRectangles : Pen * Rectangle[]}    
+%       &Draws a series of rectangles specified by Rectangle structures.\\
+%       \hline
+%       \lstinline{DrawString : string * Font * Brush * PointF}    
+%       &Draws the specified text string at the specified location with the specified Brush and Font objects.\\
+%       \hline
+%       \lstinline{FillClosedCurve : Brush * Point[]}    
+%       &Fills the interior of a closed cardinal spline curve defined by an array of Point structures.\\
+%       \hline
+%       \lstinline{FillEllipse : Brush * Rectangle}    
+%       &Fills the interior of an ellipse defined by a bounding rectangle specified by a Rectangle structure.\\
+%       \hline
+%       \lstinline{FillPie : Brush * Rectangle * Single * Single}    
+%       &Fills the interior of a pie section defined by an ellipse specified by a RectangleF structure and two radial lines.\\
+%       \hline
+%       \lstinline{FillPolygon : Brush * Point[]}    
+%       &Fills the interior of a polygon defined by an array of points specified by Point structures.\\
+%       \hline
+%       \lstinline{FillRectangle : Brush * Rectangle}    
+%       &Fills the interior of a rectangle specified by a Rectangle structure.\\
+%       \hline
+%     \end{tabularx}
+%   \end{center}
+%   \caption{Some methods of the \lstinline!System.Drawing.Graphics! class.}
+%   \label{tab:graphicsMethods}
+% \end{table}
+% \jon{Give examples of more methods}
+
+\section{Programming intermezzo: Hilbert Curve}
+A curve in 2 dimensions has a length but no width, and we can only visualize it by giving it a width. Thus, it came as a surprise to many when Giuseppe Peano in 1890 demonstrated that there exist curves, which fill every point in a square. The method he used to achieve this was recursion:
 \begin{problem}
-  Consider a curve consisting of piecewise straight lines all with the same length but with varying angles $0^{\circ}$, $90^{\circ}$, $180^{\circ}$, or $270^{\circ}$ w.r.t.\ the horisontal axis. To draw this curve we need 3 basic operations: Move forward ($F$), turn right ($+$), and turn left ($-$). The turning is w.r.t.\ the present direction. A Hilbert Curve is a space-filling curve, which can be expressed recursively as:
+  Consider a curve consisting of piecewise straight lines all with the same length but with varying angles $0^{\circ}$, $90^{\circ}$, $180^{\circ}$, or $270^{\circ}$ w.r.t.\ the horizontal axis. To draw this curve we need 3 basic operations: Move forward ($F$), turn right (R), and turn left (L). The turning is w.r.t.\ the present direction. A Hilbert Curve is a space-filling curve, which can be expressed recursively as:
 \begin{align}
-  A &\rightarrow -BF+AFA+FB-\label{eq:hilbertA}\\
-  B &\rightarrow +AF-BFB-FA+\label{eq:hilbertB}
+  A &\rightarrow LBFRAFARFBL\label{eq:hilbertA}\\
+  B &\rightarrow RAFLBFBLFAR\label{eq:hilbertB}
 \end{align}
-starting with $A$. For practical illustrations, we typically only draw space filling curves to a specified depth of recursion, which is called the order of the curve. Hence, to draw a first order curve, we don't recurse at all, i.e., ignore all occurrences of the symbols $A$ and $B$ on the right-hand-side of \eqref{eq:hilbertA}, and get 
+starting with $A$. For practical illustrations, we typically only draw space-filling curves to a specified depth of recursion, which is called the order of the curve. Hence, to draw a first order curve, we don't recurse at all, i.e., ignore all occurrences of the symbols $A$ and $B$ on the right-hand-side of \eqref{eq:hilbertA}, and get 
 \begin{align*}
-  A \rightarrow -F+F+F-. 
+  A \rightarrow LFRFRFL. 
 \end{align*}
 For the second order curve, we recurse once, i.e., 
 \begin{align*}
   A 
-  \rightarrow &-BF+AFA+FB- \\
-  \rightarrow &-(+AF-BFB-FA+)F\\
-               &\quad+(-BF+AFA+FB-)F(-BF+AFA+FB-)\\
-               &\qquad +F(+AF-BFB-FA+)-\\
-  \rightarrow &AF-BFB-FA+FBF+AFA+FB-F-BF+AFA+FBF+AF-BFB-FA\\
-  \rightarrow &F-F-F+FF+F+F-F-F+F+FF+F-F-F.
+  \rightarrow &LBFRAFARFBL \\
+  \rightarrow &L(RAFLBFBLFAR)F\\
+              &\quad R(LBFRAFARFBL)F(LBFRAFARFBL)\\
+              &\qquad RF(RAFLBFBLFAR)L\\
+  \rightarrow &LRFLFLFRFRLFRFRFLFLFRFRFLRFRFLFLFRL.
 \end{align*}
+Since $LR = RL = \emptyset$ then the above simplifies to $FLFLFRFFRFRFLFLFRFRFFRFLFLF$.
+
 Make a program, that given an order produces an image of the Hilbert curve.
 \end{problem}
-Our strategy will be to draw the curve sequentially from the origin to the end point. For this we will make a data structure \lstinline!type curve = float * float * coordinates)! with length and the orientation of the next forward move and a partial list straight line pieces. The initial point would thus be \lstinline(1.0, 0.0, [(0.0, 0.0)]). We will also make 2 mutually recursive functions \lstinline!ruleA : float curve -> curve! and \lstinline!ruleB : float curve -> curve!, which takes n order and our data structure as input and for positive orders adds its rule to the end of the curve. We also need the three basic operations. To move forward, we will use the \lstinline!rotatePoint! and \lstinline!translatePoint! functions from Listing~\ref{winforms/transformWindows}, that is, we may take a line piece of specified length starting in the origin, rotate it according to the present orientation of the curve, and translate it to the present end-point of the curve. The two turn right and left only need to add or subtract $90^{\circ}$ to the present orientation. Thus, reusing the top part of Listing~\ref{winforms/transformWindows} we arrive at the solutions shown in Listing~\ref{winforms/hilbert}. In Figure~\ref{fig:hilbert} are shown the result of using the program to draw Hilbert curves of orders 1, 2, 3, and 5.
+Our strategy to solve this problem will be first to define the curves in terms of movement commands $LRFL\ldots$. For this, we will define a discriminated union
+\lstinline{type Command = F | L | R}. The movement commands can then be defined as a \lstinline{Command list} type. The list for a specific order is a simple set of recursive functions in F\#, which we will call \lstinline{A} and \lstinline{B}.
+
+To produce a graphical drawing of a command list, we must transform it into coordinates, and during the conversion, we need to keep track of both the present position and the present heading, since not all commands draw. This is a concept similar to Turtle Graphics, which is often associated with the Logo programming language from the 1960's. In Turtle graphics, we command a little robot - a turtle - which moves in 2 dimensions and can turn on the spot or move forward, and its track is the line being drawn. Thus we introduce a \lstinline!type Turtle = {x : float; y : float; d : float}! record. Conversion of command lists to turtle lists is a fold programming structure, where the command list is read from left-to-right, building up an accumulator by adding each new element. For efficiency, we choose to prepend the new element to the accumulator. This we have implemented as the \lstinline{addRev} function. Once the full list of turtles has been produced, then it is reversed.
+
+Finally, the turtle list is converted to Winforms \lstinline{Point} array, and a window of appropriate size is chosen. The resulting model part is shown in \Cref{hilbertModel}. The view and connection parts are identical to \Cref{winforms/transformWindowsView,winforms/transformWindowsConnect}, and \Cref{fig:hilbert} shows the result of using the program to draw Hilbert curves of orders 1, 2, 3, and 5.
 %
-\fsCode{winforms/hilbert}{winforms/hilbert}{Create the window and changing its properties.  Continued from Listing~\ref{winforms/transformWindowsTop}.}{firstnumber=44,firstline=44}
+\fsCode{winforms/hilbert}{hilbertModel}{Using simple turtle graphics to produce a list of points on a polygon. The view and connection parts are identical to \Cref{winforms/transformWindowsView,winforms/transformWindowsConnect}.}{firstline=15,firstnumber=15,lastline=68}
 %
 \begin{figure}
   \centering
-  \subfigure[Order 1]{\includegraphics[scale=0.25]{hilbert1}}
-  \subfigure[Order 2]{\includegraphics[scale=0.25]{hilbert2}}
-  \subfigure[Order 3]{\includegraphics[scale=0.25]{hilbert3}}
-  \subfigure[Order 5]{\includegraphics[scale=0.25]{hilbert5}}
-  \caption{Hilbert curves of order 1, 2, 3, and 5 by code in Listing~\ref{winforms/hilbert}.}
+  \subfigure[Order 1]{\includegraphics[scale=0.3]{hilbert1}}
+  \subfigure[Order 2]{\includegraphics[scale=0.3]{hilbert2}}
+  \subfigure[Order 3]{\includegraphics[scale=0.3]{hilbert3}}
+  \subfigure[Order 5]{\includegraphics[scale=0.3]{hilbert5}}
+  \caption{Hilbert curves of order 1, 2, 3, and 5 by code in \Cref{hilbertModel}.}
   \label{fig:hilbert}
 \end{figure}
+\clearpage % The figures are having trouble interacting with listings
 
-\section{Events, Controls, and Panels}
-In the previous section, we have looked at how to draw graphics using the \lstinline!Paint! method of an existing form object. Forms have many other event listeners, that we may use to interact with the user. Listing~\ref{winforms/windowEventsCode} demonstrates event handlers for moving and resizing a window, for clicking in a window, and for typing on the keyboard.
+\section{Handling events}
+In the previous section, we have looked at how to draw graphics using the \lstinline!Paint! method of an existing form object. Forms have many other event handlers, that we may use to interact with the user. \Cref{winforms/windowEventsCode} demonstrates event handlers for moving and resizing a window, for clicking in a window, and for typing on the keyboard. 
 %
 \fsCode{winforms/windowEvents}{winforms/windowEventsCode}{Catching window, mouse, and keyboard events.}{}
 %
-\fsOutput{winforms/windowEvents}{winforms/windowEvents}{Output from an interaction with the program in Listing~\ref{winforms/windowEventsCode}.}
+\fsOutput{winforms/windowEvents}{Output from an interaction with the program in \Cref{winforms/windowEventsCode}.}
 %
-In Listing~\ref{winforms/windowEventsCode} is shown the output from an interaction with the program which is the result of the following actions: moving the window, resizing the window, clicking the left mouse key, pressing and holding the down the left mouse key while moving the mouse, and releasing the left mouse key, and type ``fsharp''. As demonstrated, some actions like moving the mouse results in a lot of events, and some like the initial window moves results are surprising. Thus, event drivent programming should take care to interpret the events robustly and carefully.
+In \Cref{winforms/windowEventsCode} is shown the output from an interaction with the program which is the result of the following actions: moving the window, resizing the window, clicking the left mouse key, pressing and holding the down the left mouse key while moving the mouse, and releasing the left mouse key, and type ``abc''. As demonstrated, some actions like moving the mouse results in a lot of events, and some like the initial window moves results are surprising. Thus, event-driven programming should take care to interpret the events robustly and carefully.
 
-In WinForms buttons, menus and other interactive elements are called \idx{Controls}. A form is a type of control, and thus, programming controls are very similar to programming windows. In Listing~\ref{winforms/buttonControl} is shown a small program that displays a button in a window, and when the button is pressed, then a dialogue is opened in another window. Figure~\ref{fig:buttonControl} shows an example dialogue.
+Common for all event-handlers is that they listen for an event, and when the event occurs, then the functions that have been added using the \lstinline{Add} method are called. This is also known as sending a message. Thus, a single event can give rise to calling zero or more functions.
+
+Graphical user interfaces and other systems often need to perform actions that depends on specific lengths of time or at a certain point in time. To time events, F\# has the \lstinline{System.Timer} class, which has been optimized for graphical user interfaces as \idx[Timer@\lstinline{Timer}]{\lstinline{System.Windows.Forms.Timer}}, and which can be set to create an event after a specified duration of time. F\# also has the \idx[DateTime@\lstinline{DateTime}]{\lstinline{System.DateTime}} class to specify points in time. An often used property is \lstinline{System.DateTime.Now}, which returns a \lstinline{DateTime} object for the date and time, when the property is accessed. The use of these two classes is demonstrated in \Cref{winforms/clock} and \Cref{fig:clock}.
 %
-\fsCode{winforms/buttonControl}{winforms/buttonControl}{Create the button and an event.}{}
+\fsCode{winforms/clock}{winforms/clock}{Using \lstinline{System.Windows.Forms.Timer} and \lstinline{System.DateTime.Now} to update the display of the present date and time. See \Cref{fig:clock} for the result.}{}
 %
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{buttonControl}
-  \caption{A button is pressed and the event handler calls the \lstinline!MessageBox.Show! dialogue window by the code in Listing~\ref{winforms/buttonControl}.}
+  \includegraphics[scale=0.3]{clock}
+  \caption{See \Cref{winforms/clock}.}
+  \label{fig:clock}
+\end{figure}
+In the code, a label has been created to show the present date and time. The label is a type of control, and it is displayed using the default font, which is rather small. How to change this and other details on controls will be discussed in the next section.
+
+% %
+% \fsCode{winforms/refresh}{winforms/refresh}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.3\textwidth]{analogueClock}
+%   \caption{See \Cref{winforms/refresh}.}
+%   \label{fig:refresh}
+% \end{figure}
+
+\section{Labels, buttons, and pop-up windows}
+In WinForms buttons, menus and other interactive elements are called \idx[control]{Controls}. A form is a type of control, and thus, programming controls are very similar to programming windows. In \Cref{winforms/buttonControl} is shown a small program that displays a label and a button in a window, and when the button is pressed, then the label is updated.
+%a dialogue is opened in another window. \Cref{fig:buttonControl} shows an example dialogue.
+%
+\fsCode{winforms/buttonControl}{winforms/buttonControl}{Create the button and an event, see also \Cref{fig:buttonControl}.}{}
+%
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.3]{buttonControl}
+  \caption{After pressing the button 3 times. See \Cref{winforms/buttonControl}.}
   \label{fig:buttonControl}
 \end{figure}
 %
-As the listing demonstrates, the button is created using the \idx{\lstinline{System.Windows.Forms.Button}} constructor, and it is added to the form's control list. It is possible to have many controls on each form, but at times it is useful to organize the controls in groups. Such groups are called \idx{Panels} in WinForms, and an example of creating a \idx{\lstinline{System.Windows.Forms.Panel}} that includes a \idx{\lstinline{System.Windows.Forms.TextBox}} and \idx{\lstinline{System.Windows.Forms.Label}} for getting user input is shown in Listing~\ref{winforms/panel} and Figure~\ref{fig:panel}. 
+As the listing demonstrates, the button is created using the \idx[Button@\lstinline{Button}]{\lstinline{System.Windows.Forms.Button}} constructor, and it is added to the window's form's control list. The \lstinline{Location} property controls its position w.r.t.\ the enclosing form. Other accessors are \lstinline{Width}, \lstinline{Text}, and \lstinline{Size}.
+
+\lstinline{System.Windows.Forms} includes a long list of controls, some of which are summarized in \Cref{tab:controls}.\idxs{CheckBox@\lstinline{CheckBox}}\idxs{DateTimePicker@\lstinline{DateTimePicker}}\idxs{Label@\lstinline{Label}}\idxs{ProgressBar@\lstinline{ProgressBar}}\idxs{RadioButton@\lstinline{RadioButton}}\idxs{TextBox@\lstinline{TextBox}}
+\begin{table}
+  \begin{center}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+    \begin{tabularx}{\linewidth}{|l|X|}
+      \hline
+      \rowcolor{headerRowColor}  Method/Property & Description\\
+      \hline
+      \lstinline{Button}
+      &A clickable button.\\
+      \hline
+      \lstinline{CheckBox}
+      &A clickable check box.\\
+      \hline
+      \lstinline{DateTimePicker}
+      &A box showing a date with a drop-down menu for choosing another.\\
+      \hline
+      \lstinline{Label}
+      &A displayable text.\\
+      \hline
+      \lstinline{ProgressBar}
+      &A box showing a progress bar.\\
+      \hline
+      \lstinline{RadioButton}
+      &A single clickable radio button. Can be paired with other radio buttons.\\
+      \hline
+      \lstinline{TextBox}
+      &A text area, which can accept input from the user.\\
+      \hline
+    \end{tabularx}
+  \end{center}
+  \caption{Some types of \lstinline{System.Windows.Forms.Control}.}
+  \label{tab:controls}
+\end{table}
+Examples are given in \lstinline{controls} is shown in \Cref{winforms/controls} and \Cref{fig:controls}.
+%
+\fsCode{winforms/controls}{winforms/controls}{Examples of control elements added to a window form, see also \Cref{fig:controls}.}{}
+%
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.3]{controls}
+  \caption{Examples of control elements. See \Cref{winforms/controls}.}
+  \label{fig:controls}
+\end{figure}
+
+Some controls opens separate windows for more involved dialogue with the user. Some examples are \lstinline{MessageBox}, \lstinline{OpenFileDialog}, and \lstinline{SaveFileDialog}.
+
+\idx[MessageBox@\lstinline{MessageBox}]{\lstinline{System.Windows.Forms.MessageBox}} is used to have a simple but restrictive dialogue with the user is needed, which is demonstrated in \Cref{winforms/messageBox} and \Cref{fig:MessageBox}.
+%
+\fsCode{winforms/messageBox}{winforms/messageBox}{Create the \lstinline{MessageBox}, see also \Cref{fig:MessageBox}.}{}
+%
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.5]{MessageBox}
+  \caption{After pressing the button 3 times. See \Cref{winforms/messageBox}.}
+  \label{fig:MessageBox}
+\end{figure}
+%
+As alternative to \lstinline{YesNo} response button, message box also offers \lstinline{AbortRetryIgnore}, \lstinline{OK}, \lstinline{OKCancel}, \lstinline{RetryCancel}, and \lstinline{YesNoCancel}. Opens a new window for a simple dialogue with the user. All other windows of the process are blocked until the user closes the dialogue window
+
+With \idx[OpenFileDialog@\lstinline{OpenFileDialog}]{\lstinline{System.Windows.Forms.OpenFileDialog}} you can ask the user to select and existing filename as demonstrated in \Cref{winforms/openFileDialog} and \Cref{fig:openFileDialog}.
+%
+\fsCode{winforms/openFileDialog}{winforms/openFileDialog}{Create the \lstinline{OpenFileDialog}, see also \Cref{fig:openFileDialog}.}{}
+%
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.5]{openFileDialog}
+  \caption{Ask the user for a filename to read from. See \Cref{winforms/openFileDialog}.}
+  \label{fig:openFileDialog}
+\end{figure}
+%
+Similarly to \lstinline{OpenFileDialog}, \idx[SaveFileDialog@\lstinline{SaveFileDialog}]{\lstinline{System.Windows.Forms.SaveFileDialog}} asks for a file name, but if an existing file is selected, then the user will be asked to confirm the choice.
+
+\section{Organising controls}
+It is often useful to organise the controls in groups, and such groups are called \idx{Panels} in WinForms. An example of creating a \lstinline{System.Windows.Forms.Panel} that includes a \lstinline{System.Windows.Forms.TextBox} and \lstinline{System.Windows.Forms.Label} for getting user input is shown in \Cref{winforms/panel} and \Cref{fig:panel}. 
 %
 \fsCode{winforms/panel}{winforms/panel}{Create a panel, label, text input controls.}{}
 %
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{panel}
-  \caption{A panel including a label and a text input field, see Listing~\ref{winforms/panel}.}
+  \includegraphics[scale=0.3]{panel}
+  \caption{A panel including a label and a text input field, see \Cref{winforms/panel}.}
   \label{fig:panel}
 \end{figure}
 The label and textbox are children of the panel, and the main advantage of using panels is that the coordinates of the children are relative to the top left corner of the panel. I.e., moving the panel will move the label and the textbox at the same time.
 
-Several types of panels exists in WinForms. A very flexible panel is the \idx{\lstinline{System.Windows.Forms.FlowLayoutPanel}}, which arranges its objects according to the space available. This is useful for graphical user interfaces targeting varying device sizes, such as a computer monitor and a tablet, and it also allows the program to gracefully adapt, when the user changes window size. A demonstration of \lstinline{System.Windows.Forms.FlowLayoutPanel} together with \lstinline{System.Windows.Forms.CheckBox} and \lstinline{System.Windows.Forms.RadioButton} is given in Listing~\ref{winforms/flowLayoutPanel} and in Figure~\ref{fig:flowLayoutPanel}. The program illustrates how the button elements flow under four possible \lstinline{System.Windows.FlowDirection}s, and how \lstinline{System.Windows.WrapContents} influences, what happens to content that flows outside the panels region. 
+A very flexible panel is the \idx[FlowLayoutPanel@\lstinline{FlowLayoutPanel}]{\lstinline{System.Windows.Forms.FlowLayoutPanel}}, which arranges its objects according to the space available. This is useful for graphical user interfaces targeting varying device sizes, such as a computer monitor and a tablet, and it also allows the program to gracefully adapt, when the user changes window size. A demonstration of \lstinline{System.Windows.Forms.FlowLayoutPanel} together with \lstinline{System.Windows.Forms.CheckBox} and \lstinline{System.Windows.Forms.RadioButton} is given in \Cref{winforms/flowLayoutPanel} and in \Cref{fig:flowLayoutPanel}. The program illustrates how the button elements flow under four possible \lstinline{System.Windows.FlowDirection}s, and how \lstinline{System.Windows.WrapContents} influences, what happens to content that flows outside the panels region. 
 %
 \fsCode{winforms/flowLayoutPanel}{winforms/flowLayoutPanelTop}{Create a FlowLayoutPanel, with checkbox and radiobuttons.}{lastline=34}
 %
-%
-\fsCode{winforms/flowLayoutPanel}{winforms/flowLayoutPanel}{Create a FlowLayoutPanel, with checkbox and radiobuttons. Continued from Listing~\ref{winforms/flowLayoutPanelTop}.}{firstline=36,firstnumber=36}
+\fsCode{winforms/flowLayoutPanel}{winforms/flowLayoutPanel}{Create a FlowLayoutPanel, with checkbox and radiobuttons. Continued from \Cref{winforms/flowLayoutPanelTop}.}{firstline=36,firstnumber=36}
 %
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{flowLayoutPanel}
-  \caption{Demonstration of the \lstinline!FlowLayoutPanel! panel, \lstinline!CheckBox!, and \lstinline!RadioButton! controls, see Listing~\ref{winforms/flowLayoutPanel}.}
+  \includegraphics[scale=0.3]{flowLayoutPanel}
+  \caption{Demonstration of the \lstinline!FlowLayoutPanel! panel, \lstinline!CheckBox!, and \lstinline!RadioButton! controls, see \Cref{winforms/flowLayoutPanel}.}
   \label{fig:flowLayoutPanel}
 \end{figure}
-A walkthrough of the program is as follows. The goal is to make 2 areas, one giving the user control over display parameters, and another displaying the result of the user's choices. These are \lstinline{FlowLayoutPanel} and \lstinline{Panel}. In the \lstinline{FloatLayoutPanel} there are four \lstinline{Button}s, to be displayed in a region, that is not tall enough for the buttons to be shown in vertical sequence and not wide enough to be shown in horizontal sequence. Thus the \lstinline{FlowDirection} rules come into play, i.e., the buttons are added in sequence as they are named, and the default \lstinline{FlowDirection.LeftToRight} arranges places the \lstinline{buttonLst.[0]} in the top left corner, and \lstinline{buttonLst.[1]} to its right. Other flow directions does it differently, and the reader is encourage to experiment with the program.
+A walkthrough of the program is as follows. The goal is to make 2 areas, one giving the user control over display parameters, and another displaying the result of the user's choices. These are \lstinline{FlowLayoutPanel} and \lstinline{Panel}. In the \lstinline{FloatLayoutPanel} there are four \lstinline{Button}s, to be displayed in a region, that is not tall enough for the buttons to be shown in vertical sequence and not wide enough to be shown in horizontal sequence. Thus the \lstinline{FlowDirection} rules come into play, i.e., the buttons are added in sequence as they are named, and the default \lstinline{FlowDirection.LeftToRight} arranges places the \lstinline{buttonLst.[0]} in the top left corner, and \lstinline{buttonLst.[1]} to its right. Other flow directions do it differently, and the reader is encouraged to experiment with the program.
 
-The program in Listing~\ref{winforms/flowLayoutPanel} has not completely separated the semantic blocks of the interface and relies on explicitly setting of coordinates of controls. This can be avoided by using nested panels. E.g., in Listing~\ref{winforms/flowLayoutPanelAdvanced}, the program has been rewritten as a nested set of \lstinline{FloatLayoutPanel} in three groups: The button panel, the checkbox, and the radio button panel. Adding a \lstinline{Resize} event handler for the window to resize the outermost panel according to the outer window, allows for the three groups to change position relative to each other, which results in three different views all shown in Figure~\ref{fig:flowLayoutPanelAdvanced}.
+The program in \Cref{winforms/flowLayoutPanel} has not completely separated the semantic blocks of the interface and relies on explicitly setting of coordinates of controls. This can be avoided by using nested panels. E.g., in \Cref{winforms/flowLayoutPanelAdvanced}, the program has been rewritten as a nested set of \lstinline{FloatLayoutPanel} in three groups: The button panel, the checkbox, and the radio button panel. Adding a \lstinline{Resize} event handler for the window to resize the outermost panel according to the outer window, allows for the three groups to change position relative to each other, which results in three different views all shown in \Cref{fig:flowLayoutPanelAdvanced}.
 %
 \fsCode{winforms/flowLayoutPanelAdvanced}{winforms/flowLayoutPanelAdvancedTop}{Create nested FlowLayoutPanel.}{lastline=42}
 %
-\fsCode{winforms/flowLayoutPanelAdvanced}{winforms/flowLayoutPanelAdvanced}{Create nested FlowLayoutPanel. Continued from Listing~\ref{winforms/flowLayoutPanelAdvancedTop}.}{firstline=44,firstnumber=44}
+\fsCode{winforms/flowLayoutPanelAdvanced}{winforms/flowLayoutPanelAdvanced}{Create nested FlowLayoutPanel. Continued from \Cref{winforms/flowLayoutPanelAdvancedTop}.}{firstline=44,firstnumber=44}
 %
 \begin{figure}
   \centering
-  \subfigure[]{\includegraphics[width=0.3\textwidth]{flowLayoutPanelAdvanced}}
-  \subfigure[]{\includegraphics[width=0.6\textwidth]{flowLayoutPanelAdvanced2}}
-  \subfigure[]{\includegraphics[width=0.9\textwidth]{flowLayoutPanelAdvanced3}}
-  \caption{Nested \lstinline!FlowLayoutPanel!, see Listing~\ref{winforms/flowLayoutPanelAdvanced}, allows for dynamic arrangement of content. Content flows, when the window is resized.}
+  \subfigure[]{\includegraphics[scale=0.3]{flowLayoutPanelAdvanced}}
+  \subfigure[]{\includegraphics[scale=0.3]{flowLayoutPanelAdvanced2}}
+  \subfigure[]{\includegraphics[scale=0.3]{flowLayoutPanelAdvanced3}}
+  \caption{Nested \lstinline!FlowLayoutPanel!, see \Cref{winforms/flowLayoutPanelAdvanced}, allows for dynamic arrangement of content. Content flows, when the window is resized.}
   \label{fig:flowLayoutPanelAdvanced}
 \end{figure}
-\jon{Add simple panel code \lstinline!simpleFlowLayoutPanel.fsx! and \lstinline!simpleTableLayoutPanel.fsx!.}  
-\jon{Add \lstinline{Dock}, \lstinline{Padding} structure, \lstinline{Margin}, \lstinline{Padding}, \lstinline{Controls.AddRange} , and \lstinline{AutoSize} properties. Add figure, e.g., \lstinline!IC138411.jpeg.gif!.}
-\jon{Add \lstinline{GroupBox} and discuss difference to \lstinline{Panel}.}
+%\jon{Add simple panel code \lstinline!simpleFlowLayoutPanel.fsx! and \lstinline!simpleTableLayoutPanel.fsx!.}  
+%\jon{Add \lstinline{Dock}, \lstinline{Padding} structure, \lstinline{Margin}, \lstinline{Padding}, \lstinline{Controls.AddRange} , and \lstinline{AutoSize} properties. Add figure, e.g., \lstinline!IC138411.jpeg.gif!.}
+%\jon{Add \lstinline{GroupBox} and discuss difference to \lstinline{Panel}.}
 
-%
-\fsCode{winforms/simpleFlowLayoutPanel}{winforms/simpleFlowLayoutPanel}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \subfigure[]{\includegraphics[width=0.45\textwidth]{simpleFlowLayoutPanel1}}
-  \subfigure[]{\includegraphics[width=0.9\textwidth]{simpleFlowLayoutPanel2}}
-  \subfigure[]{\includegraphics[width=0.225\textwidth]{simpleFlowLayoutPanel3}}
-  \caption{See Listing~\ref{winforms/simpleFlowLayoutPanel}.}
-  \label{fig: simpleFlowLayoutPanel}
-\end{figure}
+% %
+% \fsCode{winforms/simpleFlowLayoutPanel}{winforms/simpleFlowLayoutPanel}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \subfigure[]{\includegraphics[width=0.45\textwidth]{simpleFlowLayoutPanel1}}
+%   \subfigure[]{\includegraphics[width=0.9\textwidth]{simpleFlowLayoutPanel2}}
+%   \subfigure[]{\includegraphics[width=0.225\textwidth]{simpleFlowLayoutPanel3}}
+%   \caption{See \Cref{winforms/simpleFlowLayoutPanel}.}
+%   \label{fig: simpleFlowLayoutPanel}
+% \end{figure}
 
-%
-\fsCode{winforms/simpleTableLayoutPanel}{winforms/simpleTableLayoutPanel}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.4\textwidth]{simpleTableLayoutPanel}
-  \caption{See Listing~\ref{winforms/simpleTableLayoutPanel}.}
-  \label{fig: simpleTableLayoutPanel}
-\end{figure}
+% %
+% \fsCode{winforms/simpleTableLayoutPanel}{winforms/simpleTableLayoutPanel}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.4\textwidth]{simpleTableLayoutPanel}
+%   \caption{See \Cref{winforms/simpleTableLayoutPanel}.}
+%   \label{fig: simpleTableLayoutPanel}
+% \end{figure}
 
-%
-\fsCode{winforms/bounds}{winforms/bounds}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.3\textwidth]{bounds}
-  \caption{See Listing~\ref{winforms/bounds}.}
-  \label{fig:bounds}
-\end{figure}
+% %
+% \fsCode{winforms/bounds}{winforms/bounds}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.3\textwidth]{bounds}
+%   \caption{See \Cref{winforms/bounds}.}
+%   \label{fig:bounds}
+% \end{figure}
 
-%
-\fsCode{winforms/tabControl}{winforms/tabControl}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.3\textwidth]{tabControl}
-  \caption{See Listing~\ref{winforms/tabControl}.}
-  \label{fig: tabControl}
-\end{figure}
+% %
+% \fsCode{winforms/tabControl}{winforms/tabControl}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.3\textwidth]{tabControl}
+%   \caption{See \Cref{winforms/tabControl}.}
+%   \label{fig: tabControl}
+% \end{figure}
 
-%
-\fsCode{winforms/trackBar}{winforms/trackBar}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.3\textwidth]{trackBar}
-  \caption{See Listing~\ref{winforms/trackBar}.}
-  \label{fig: trackBar}
-\end{figure}
+% %
+% \fsCode{winforms/trackBar}{winforms/trackBar}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.3\textwidth]{trackBar}
+%   \caption{See \Cref{winforms/trackBar}.}
+%   \label{fig: trackBar}
+% \end{figure}
 
-%
-\fsCode{winforms/progressBar}{winforms/progressBar}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.3\textwidth]{progressBar}
-  \caption{See Listing~\ref{winforms/progressBar}.}
-  \label{fig:progressBar}
-\end{figure}
+% %
+% \fsCode{winforms/progressBar}{winforms/progressBar}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.3\textwidth]{progressBar}
+%   \caption{See \Cref{winforms/progressBar}.}
+%   \label{fig:progressBar}
+% \end{figure}
 
-%
-\fsCode{winforms/pixels}{winforms/pixels}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.3\textwidth]{pixels}
-  \caption{See Listing~\ref{winforms/pixels}.}
-  \label{fig:pixels}
-\end{figure}
+% %
+% \fsCode{winforms/pixels}{winforms/pixels}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.3\textwidth]{pixels}
+%   \caption{See \Cref{winforms/pixels}.}
+%   \label{fig:pixels}
+% \end{figure}
 
-%
-\fsCode{winforms/imageProcessing}{winforms/imageProcessing}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.3\textwidth]{imageProcessing}
-  \caption{See Listing~\ref{winforms/imageProcessing}.}
-  \label{fig:imageProcessing}
-\end{figure}
-%
-\fsCode{winforms/imageProcessing2}{winforms/imageProcessing2}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_1}}
-  \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_2}}
-  \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_3}}
-  \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_4}}
-  \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_5}}
-  \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_6}}
-  \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_7}}
-  \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_8}}
-  \caption{See Listing~\ref{winforms/imageProcessing2}.}
-  \label{fig:imageProcessing2}
-\end{figure}
+% %
+% \fsCode{winforms/imageProcessing}{winforms/imageProcessing}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.3\textwidth]{imageProcessing}
+%   \caption{See \Cref{winforms/imageProcessing}.}
+%   \label{fig:imageProcessing}
+% \end{figure}
+% %
+% \fsCode{winforms/imageProcessing2}{winforms/imageProcessing2}{\dots}{}
+% %
+% \begin{figure}
+%   \centering
+%   \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_1}}
+%   \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_2}}
+%   \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_3}}
+%   \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_4}}
+%   \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_5}}
+%   \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_6}}
+%   \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_7}}
+%   \subfigure[]{\includegraphics[width=0.3\textwidth]{imageProcessing2_8}}
+%   \caption{See \Cref{winforms/imageProcessing2}.}
+%   \label{fig:imageProcessing2}
+% \end{figure}
 
-%
-\fsCode{winforms/clock}{winforms/clock}{\dots}{}
-%
-\begin{figure}
-  \centering
-  \includegraphics[width=0.3\textwidth]{clock}
-  \caption{See Listing~\ref{winforms/clock}.}
-  \label{fig:clock}
-\end{figure}
-
-\jon{Husk repaint, og hvordan sletter man?}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
+

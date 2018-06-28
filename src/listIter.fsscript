@@ -1,0 +1,1 @@
+let prt x = printfn "%A " x in List.iter prt [0; 1; 2];;
