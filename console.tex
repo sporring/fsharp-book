@@ -1,11 +1,11 @@
-\chapter{The console in Windows, MacOS~X, and Linux}
+\chapter{The Console in Windows,\\MacOS~X, and Linux}
 \label{chap:console}
 Almost all popular operating systems are accessed through a
 user-friendly \idx{graphical user interface} (\idx{GUI}) that is designed to make typical tasks easy to learn to solve. As a computer programmer, you often need to access some of the functionalities of the computer, which, unfortunately, are sometimes complicated by this particular graphical user interface. The \idx{console}, also called the \idx{terminal} and the \idx{Windows command line}, is the right hand of a programmer. The console is a simple program that allows you to complete text commands. Almost all the tasks that can be done with the graphical user interface can be done in the console and vice versa. Using the console, you will benefit from its direct control of the programs we write, and in your education, you will benefit from the fast and raw information you get through the console.
 
 
-\section{The basics}
-When you open a \idx{directory} or \idx{folder} in your preferred operating system, the directory will have a location in the file system, whether from the console or through the operating system's graphical user interface. The console will almost always be associated with a particular directory or folder in the file system, and it is said that it is the directory that the console is in. The exact structure of file systems varies between Linux, MaxOS X, and Windows, but common is that it is a hierarchical structure. This is illustrated in \Cref{fig:filhierakier}.
+\section{The Basics}
+When you open a \idx{directory} or \idx{folder} in your preferred operating system, the directory will have a location in the file system, whether from the console or through the operating system's graphical user interface. The console will almost always be associated with a particular directory or folder in the file system, and it is said that it is the directory that the console is in. The exact structure of file systems varies between Linux, MacOS X, and Windows, but common is that it is a hierarchical structure. This is illustrated in \Cref{fig:filhierakier}.
 \begin{figure}
   \begin{center}
   \subfigure[Linux]{\Tree [.\framebox{/} [.\framebox{home} [. {\framebox{Username}} ] ] {\framebox{usr}} {\framebox{bin}} {\framebox{dev}} {\framebox{...}} ]}
@@ -18,7 +18,7 @@ When you open a \idx{directory} or \idx{folder} in your preferred operating syst
   \label{fig:filhierakier}
 \end{figure}
 
-There are many predefined console commands, available in the console, and you can make your own. In the following, we will review the most important commands in the three different operating systems. These are summarized in \Cref{tab:Kommandoer}.
+There are many predefined console commands, available in the console, and you can also make your own. In the following sections, we will review the most important commands in the three different operating systems. These are summarized in \Cref{tab:Kommandoer}.
 \begin{table}
   \centering
   \begin{tabular}{|l|l||p{0.3\linewidth}|}
@@ -38,16 +38,16 @@ There are many predefined console commands, available in the console, and you ca
     %         & Åben {\lstinline[language=syntax]|<*fil*>|} i emacs hvis den findes i den nuværende mappe. Findes den ikke oprettes den her automatisk.   \\ \hline
     {\lstinline[language=syntax]|mkdir <*dir*>|}
             & {\lstinline[language=syntax]|mkdir <*dir*>|}
-                          & create directory {\lstinline[language=syntax]|<*dir*>|}. \\ \hline
+                          & Create directory {\lstinline[language=syntax]|<*dir*>|}. \\ \hline
     {\lstinline[language=syntax]|rmdir <*dir*>|}
             & {\lstinline[language=syntax]|rmdir <*dir*>|}
-                          & delete {\lstinline[language=syntax]|<*dir*>|} (Warning: cannot be reverted). \\ \hline
+                          & Delete {\lstinline[language=syntax]|<*dir*>|} (Warning: cannot be reverted). \\ \hline
     {\lstinline[language=syntax, keywords={}]|move <*file*> <*file or dir*>|\hspace*{5mm}}% The gobling of <**> causes spacing problems...
             &{\lstinline[language=syntax, keywords={}]|mv <*file*> <*file or dir*>|}
                           & Move {\lstinline[language=syntax]|<*fil*>|} to {\lstinline[language=syntax, keywords={}]|<*file or dir*>|}. \\ \hline
-    {\lstinline[language=syntax]|copy <*file*> <*file*>|}
-            &{\lstinline[language=syntax]|cp <*file*> <*file*>|}
-             & Create a new file called {\lstinline[language=syntax]|<*file*>|} as a copy of {\lstinline[language=syntax]|<*file*>|}. \\ \hline
+    {\lstinline[language=syntax]|copy <*file1*> <*file2*>|}
+            &{\lstinline[language=syntax]|cp <*file1*> <*file2*>|}
+             & Create a new file called {\lstinline[language=syntax]|<*file2*>|} as a copy of {\lstinline[language=syntax]|<*file1*>|}. \\ \hline
     {\lstinline[language=syntax]|del <*file*>|}
             & {\lstinline[language=syntax]|rm <*file*>|}
                           & delete {\lstinline[language=syntax]|<*file*>|} (Warning: cannot be reverted). \\ \hline
@@ -61,7 +61,7 @@ There are many predefined console commands, available in the console, and you ca
 
 
 \section{Windows}
-In this section we will discuss the commands summarized in \Cref{tab:Kommandoer}. Windows 7 and earlier versions: To open the console, press \lstinline[language=console]{Start->Run} in the lower left corner, and then type \lstinline[language=console]{cmd} In the box. In Windows 8 and 10, you right-click on the windows icon, choose \lstinline[language=console]{Run} or equivalent in your local language, and type \lstinline[language=console]{cmd}. Alternatively you can type \lstinline[language=console]{Windows-key + R}. Now you should open a console window with a prompt showing something like \Cref{windowsConsole}.
+In this section we will discuss the commands summarized in \Cref{tab:Kommandoer}. Windows 7 and earlier versions: To open the console, press \lstinline[language=console]{Start->Run} in the lower left corner, and then type \lstinline[language=console]{cmd} in the box. In Windows 8 and 10, you right-click on the windows icon, choose \lstinline[language=console]{Run} or equivalent in your local language, and type \lstinline[language=console]{cmd}. Alternatively, you can type \lstinline[language=console]{Windows-key + R}. Now you should open a console window with a prompt showing something like \Cref{windowsConsole}.
 \begin{codeNOutput}[label=windowsConsole]{: The Windows console.}
   \begin{lstlisting}[language=console,escapechar=§]
 Microsoft Windows [Version 6.1.7601]
@@ -70,7 +70,7 @@ Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 C:\Users\sporring>
 \end{lstlisting}
 \end{codeNOutput}
-To see which files are in the directory, use \idx[dir@{\lstinline[language=console]{dir}}]{\lstinline[language=console]{dir}} as shown in \Cref{windowsDir}.
+To see which files are in the directory, use \idx[dir@{\lstinline[language=console]{dir}}]{\lstinline[language=console]{dir}}, as shown in \Cref{windowsDir}.
 \begin{codeNOutput}[label=windowsDir]{: Directory listing with \lstinline[language=console]{dir}.}
   \begin{lstlisting}[language=console,escapechar=§]
 C:\Users\sporring>dir
@@ -98,9 +98,9 @@ C:\Users\sporring>dir
 C:\Users\sporring>
 \end{lstlisting}
 \end{codeNOutput}
-We see that there are no files and thirteen directories (DIR). The columns tell from left to right, the date and time of their creation, the file size or if it is a folder, and the name file or directory name. The first two folders ``\lstinline[language=console]{.}'' and ``\lstinline[language=console]{..}'' are found in each folder and refers to this folder as well as the one above in the hierarchy. In this case, the folder ``\lstinline[language=console]{.}'' is an alias for \lstinline[language=console]{C:\Users\tracking} and ``\lstinline[language=console]{..}'' for \lstinline[language=console]{C:\Users}.
+We see that there are no files and thirteen directories (DIR). The columns tell from left to right: the date and time of their creation, the file size or if it is a folder, and the name file or directory name. The first two folders ``\lstinline[language=console]{.}'' and ``\lstinline[language=console]{..}'' are found in each folder and refer to this folder as well as the one above in the hierarchy. In this case, the folder ``\lstinline[language=console]{.}'' is an alias for \lstinline[language=console]{C:\Users\sporring} and ``\lstinline[language=console]{..}'' for \lstinline[language=console]{C:\Users}.
 
-Use \idx[cd@{\lstinline[language=console]{cd}}]{\lstinline[language=console]{cd}} to change directory, e.g.,  to \lstinline[language=console]{Documents} as in \Cref{windowsCD}.
+Use \idx[cd@{\lstinline[language=console]{cd}}]{\lstinline[language=console]{cd}} to change directory, e.g.,  to \lstinline[language=console]{Documents}, as in \Cref{windowsCD}.
 \begin{codeNOutput}[label=windowsCD]{: Change directory with \lstinline[language=console]{cd}.}
   \begin{lstlisting}[language=console,escapechar=§]
 C:\Users\sporring>cd Documents
@@ -108,7 +108,7 @@ C:\Users\sporring>cd Documents
 C:\Users\sporring\Documents>
 \end{lstlisting}
 \end{codeNOutput}
-The directory \lstinline[language=console]{Documents} is that Windows Explorer selects, when you press the \lstinline[language=console]{Documents} short-cut in Explorer.  Note that some systems translate default filenames so their names may be given different names in different languages in the graphical user interface as compared to the console. 
+Note that some systems translate default filenames, so their names may be given different names in different languages in the graphical user interface as compared to the console. 
 
 % On a new computer is the \lstinline[language=console]{Documents} folder is typically empty, as shown in \Cref{windowsDirEmpty}.
 % \begin{codeNOutput}[label=windowsDirEmpty]{: A new directory is always empty.}
@@ -127,7 +127,7 @@ The directory \lstinline[language=console]{Documents} is that Windows Explorer s
 % C:\Users\sporring\Documents>
 % \end{lstlisting}
 % \end{codeNOutput}
-You can use \idx[mkdir@{\lstinline[language=console]{mkdir}}]{\lstinline[language=console]{mkdir}} to create a new directory called, e.g., \lstinline[language=console]{myFolder} as illustrated in \Cref{windowsMkdir}.
+You can use \idx[mkdir@{\lstinline[language=console]{mkdir}}]{\lstinline[language=console]{mkdir}} to create a new directory called, e.g., \lstinline[language=console]{myFolder}, as illustrated in \Cref{windowsMkdir}.
 \begin{codeNOutput}[label=windowsMkdir]{: Creating a directory with \lstinline[language=console]{mkdir}.}
   \begin{lstlisting}[language=console,escapechar=§]
 C:\Users\sporring\Documents>mkdir myFolder
@@ -149,7 +149,7 @@ C:\Users\sporring\Documents>
 \end{codeNOutput}
 By using \lstinline[language=console]{dir} we inspect the result.
 
-Files can be created by, e.g., \idx[echo@{\lstinline[language=console]{echo}}]{\lstinline[language=console]{echo}} and \idx{redirection} as demonstrated in \Cref{windowsEcho}.
+Files can be created by, e.g., \idx[echo@{\lstinline[language=console]{echo}}]{\lstinline[language=console]{echo}} and \idx{redirection}, as demonstrated in \Cref{windowsEcho}.
 \begin{codeNOutput}[label=windowsEcho]{: Creating a file with \lstinline[language=console]{echo} and redirection.}
   \begin{lstlisting}[language=console,escapechar=§]
 C:\Users\sporring\Documents>echo "Hi" > hi.txt
@@ -170,7 +170,7 @@ C:\Users\sporring\Documents>dir
 C:\Users\sporring\Documents>
 \end{lstlisting}
 \end{codeNOutput}
-To move the file \lstinline[language=console]{hi.txt} to the directory \lstinline[language=console]{myFolder} use \idx[move@{\lstinline[language=console]{move}}]{\lstinline[language=console]{move}} as shown in \Cref{windowsMove}.
+To move the file \lstinline[language=console]{hi.txt} to the directory \lstinline[language=console]{myFolder}, use \idx[move@{\lstinline[language=console]{move}}]{\lstinline[language=console]{move}}, as shown in \Cref{windowsMove}.
 \begin{codeNOutput}[label=windowsMove]{: Move a file with \lstinline[language=console]{move}.}
   \begin{lstlisting}[language=console,escapechar=§]
 C:\Users\sporring\Documents>move hi.txt myFolder
@@ -179,7 +179,7 @@ C:\Users\sporring\Documents>move hi.txt myFolder
 C:\Users\sporring\Documents>
 \end{lstlisting}
 \end{codeNOutput}
-Finally, use \idx[del@{\lstinline[language=console]{del}}]{\lstinline[language=console]{del}} to delete a file and \idx[rmdir@{\lstinline[language=console]{rmdir}}]{\lstinline[language=console]{rmdir}} to delete a directory as shown in \Cref{windowsDel}.
+Finally, use \idx[del@{\lstinline[language=console]{del}}]{\lstinline[language=console]{del}} to delete a file and \idx[rmdir@{\lstinline[language=console]{rmdir}}]{\lstinline[language=console]{rmdir}} to delete a directory, as shown in \Cref{windowsDel}.
 \begin{codeNOutput}[label=windowsDel]{: Delete files and directories with \lstinline[language=console]{del} and \lstinline[language=console]{rmdir}.}
   \begin{lstlisting}[language=console,escapechar=§]
 C:\Users\sporring\Documents>cd myFolder
@@ -204,7 +204,7 @@ C:\Users\sporring\Documents>dir
 C:\Users\sporring\Documents>
 \end{lstlisting}
 \end{codeNOutput}
-The commands available from the console must be in its \idx{search path}. The search path can be seen using \lstinline[language=console]{echo} as shown in \Cref{windowsPath}.
+The commands available from the console must be in its \idx{search path}. The search path can be seen using \lstinline[language=console]{echo}, as shown in \Cref{windowsPath}.
 \begin{codeNOutput}[label=windowsPath]{: Displaying the search path.}
   \begin{lstlisting}[language=console,escapechar=§]
 C:\Users\sporring\Documents>echo %Path%
@@ -213,15 +213,15 @@ C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem; C:\Windows\System32\Win
 C:\Users\sporring\Documents>
 \end{lstlisting}
 \end{codeNOutput}
-The path can be changed using the Control panel in the graphical user interface. In Windows 7, choose the Control panel, choose \lstinline[language=console]{System and Security} $\rightarrow$ \lstinline[language=console]{System} $\rightarrow$ \lstinline[language=console]{Advanced system settings} $\rightarrow$ \lstinline[language=console]{Environment Variables}. In Windows 10 you can find this window by searching for ``Environment'' in the Control panel. In the window's\lstinline[language=console]{System variables} box, double-click on \lstinline[language=console]{Path} and add or remove a path from the list. The search path is a list of paths separated by ``;''. Beware, Windows uses the search path for many different tasks, so remove only paths that you are certain are not used for anything.
+The path can be changed using the Control panel in the graphical user interface. In Windows 7, choose the Control panel, choose \lstinline[language=console]{System and Security} $\rightarrow$ \lstinline[language=console]{System} $\rightarrow$ \lstinline[language=console]{Advanced system settings} $\rightarrow$ \lstinline[language=console]{Environment Variables}. In Windows 10, you can find this window by searching for ``Environment'' in the Control panel. In the window's \lstinline[language=console]{System variables} box, double-click on \lstinline[language=console]{Path} and add or remove a path from the list. The search path is a list of paths separated by ``;''. Beware, Windows uses the search path for many different tasks, so remove only paths that you are certain are not used for anything.
 
-A useful feature of the console is that you can use the \lstinline[language=console]{tab}-key to cycle through filenames.  E.g., if you write \lstinline[language=console]{cd} followed by a space and \lstinline[language=console]{tab} a couple of times, then the console will suggest you the available directories.
+A useful feature of the console is that you can use the \lstinline[language=console]{tab}-key to cycle through filenames.  E.g., if you write \lstinline[language=console]{cd} followed by a space and \lstinline[language=console]{tab} a couple of times, then the console will suggest to you the available directories.
 
 \section{MacOS X and Linux}
-MacOS X (OSX) and Linux are very similar, and both have the option of using \idx[bash@{\lstinline[language=console]{bash}}]{\lstinline[language=console]{bash}} as console. It is in the standard console on MacOS X and on many Linux distributions. A summary of the most important \lstinline[language=console]{bash} commands are shown in \Cref{tab:Kommandoer}. In MacOS X, you find the console by opening \lstinline[language=console]{Finder} and navigating to \lstinline[language=console]{Applications} $\rightarrow$ \lstinline[language=console]{Utilities} -> \lstinline[language=console]{Terminal}.  In Linux, the console can be started by typing \lstinline[language=console]{Ctrl + Alt + T}. Some Linux distributions have other key-combinations such as \lstinline[language=console]{Super + T}. 
+MacOS X (OSX) and Linux are very similar, and both have the option of using \idx[bash@{\lstinline[language=console]{bash}}]{\lstinline[language=console]{bash}} as console. It is in the standard console on MacOS X and on many Linux distributions. A summary of the most important \lstinline[language=console]{bash} commands is shown in \Cref{tab:Kommandoer}. In MacOS X, you find the console by opening \lstinline[language=console]{Finder} and navigating to \lstinline[language=console]{Applications} $\rightarrow$ \lstinline[language=console]{Utilities} -> \lstinline[language=console]{Terminal}.  In Linux, the console can be started by typing \lstinline[language=console]{Ctrl + Alt + T}. Some Linux distributions have other key-combinations such as \lstinline[language=console]{Super + T}. 
 
-Once opened, the console is shown in a window with content as shown in \Cref{LinuxConsole}.
-\begin{codeNOutput}[label=LinuxConsole]{: The Windows console.}
+Once opened, the console is shown in a window with content, as shown in \Cref{LinuxConsole}.
+\begin{codeNOutput}[label=LinuxConsole]{: The MacOS console.}
   \begin{lstlisting}[language=console,escapechar=§]
 Last login: Thu Jul 30 11:52:07 on ttys000
 FN11194:~ sporring$ 
@@ -252,9 +252,9 @@ drwxr-xr-x+  5 sporring  staff   170 Jun 29 21:48 Public
 FN11194:~ sporring$ 
 \end{lstlisting}
 \end{codeNOutput}
-The flag \lstinline[language=console]{-l} means long, and many other flags can be found by querying the built-in manual with \lstinline[language=console]{man ls}. The output is divided into columns, where the left column shows a number of codes:  ``d'' means they are directory followed by three sets of optional ``rwx'' denoting whether the owner, the associated group of users and anyone can ``r'' - read, ``w'' - write, or ``x'' - execute the files. In this case, only the owner can do any of the three. For directories, ``x'' means permission to enter. The second column can often be ignored, but shows how many links there are to the file or directory. Then follows the username of the owner, which in this case is \lstinline[language=console]{sporring}. The files are also associated with a group of users, and in this case, they all are associated with the group called \lstinline[language=console]{staff}. Then follows the file or directory size, the date of last change, and the file or directory name. There are always two hidden directories: ``\lstinline[language=console]{.}'' and ``\lstinline[language=console]{..}'', where ``\lstinline[language=console]{.}'' is an alias for the present directory, and ``\lstinline[language=console]{..}'' for the directory above. Hidden files will be shown with the \lstinline[language=console]{-a} flag.
+The flag \lstinline[language=console]{-l} means long, and many other flags can be found by querying the built-in manual with \lstinline[language=console]{man ls}. The output is divided into columns, where the left column shows a number of codes:  ``d'' stands for directory, and the set of three of optional ``rwx'' denote whether respectively the owner, the associated group of users, and anyone can respectively ``r'' - read, ``w'' - write, and ``x'' - execute the file. In all directories but the \lstinline[language=console]{Public} directory, only the owner can do any of the three. For directories, ``x'' means permission to enter. The second column can often be ignored, but shows how many links there are to the file or directory. Then follows the username of the owner, which in this case is \lstinline[language=console]{sporring}. The files are also associated with a group of users, and in this case, they all are associated with the group called \lstinline[language=console]{staff}. Then follows the file or directory size, the date of last change, and the file or directory name. There are always two hidden directories: ``\lstinline[language=console]{.}'' and ``\lstinline[language=console]{..}'', where ``\lstinline[language=console]{.}'' is an alias for the present directory, and ``\lstinline[language=console]{..}'' for the directory above. Hidden files will be shown with the \lstinline[language=console]{-a} flag.
 
-Use \idx[cd@{\lstinline[language=console]{cd}}]{\lstinline[language=console]{cd}} to change to the directory \lstinline[language=console]{Documents} as shown in \Cref{LinuxCd}.
+Use \idx[cd@{\lstinline[language=console]{cd}}]{\lstinline[language=console]{cd}} to change to the directory, for example to \lstinline[language=console]{Documents} as shown in \Cref{LinuxCd}.
 \begin{codeNOutput}[label=LinuxCd]{: Change directory with \lstinline[language=console]{cd}.}
   \begin{lstlisting}[language=console,escapechar=§]
 FN11194:~ sporring$ cd Documents/
@@ -271,7 +271,7 @@ Note that some graphical user interfaces translate standard filenames and direct
 % FN11194:Documents sporring$  
 % \end{lstlisting}
 % \end{codeNOutput}
-You can yourself create a new directory using \idx[mkdir@{\lstinline[language=console]{mkdir}}]{\lstinline[language=console]{mkdir}} as demonstrated in \Cref{LinuxMkdir}.
+You can create a new directory using \idx[mkdir@{\lstinline[language=console]{mkdir}}]{\lstinline[language=console]{mkdir}}, as demonstrated in \Cref{LinuxMkdir}.
 \begin{codeNOutput}[label=LinuxMkdir]{: Creating a directory using \lstinline[language=console]{mkdir}.}
   \begin{lstlisting}[language=console,escapechar=§]
 FN11194:Documents sporring$  mkdir myFolder
@@ -280,7 +280,7 @@ myFolder
 FN11194:tmp sporring$  
 \end{lstlisting}%$
 \end{codeNOutput}
-A file can be created using \idx[echo@{\lstinline[language=console]{echo}}]{\lstinline[language=console]{echo}} and with \idx{redirection} as shown in \Cref{LinuxEcho}.
+A file can be created using \idx[echo@{\lstinline[language=console]{echo}}]{\lstinline[language=console]{echo}} and with \idx{redirection}, as shown in \Cref{LinuxEcho}.
 \begin{codeNOutput}[label=LinuxEcho]{: Creating a file with \lstinline[language=console]{echo} and redirection.}
   \begin{lstlisting}[language=console,escapechar=§]
 FN11194:Documents sporring$ echo "hi" > hi.txt
@@ -295,8 +295,8 @@ FN11194:Documents sporring$ echo mv hi.txt myFolder/
 FN11194:Documents sporring$ 
 \end{lstlisting}
 \end{codeNOutput}
-To delete the file and the directory, use \idx[rm@{\lstinline[language=console]{rm}}]{\lstinline[language=console]{rm}}  and \idx[rmdir@{\lstinline[language=console]{rmdir}}]{\lstinline[language=console]{rmdir}} as shown in \Cref{LinuxRm}.
-\begin{codeNOutput}[label=LinuxRm]{: The Windows console.}
+To delete the file and the directory, use \idx[rm@{\lstinline[language=console]{rm}}]{\lstinline[language=console]{rm}}  and \idx[rmdir@{\lstinline[language=console]{rmdir}}]{\lstinline[language=console]{rmdir}}, as shown in \Cref{LinuxRm}.
+\begin{codeNOutput}[label=LinuxRm]{: Deleting files and directories.}
   \begin{lstlisting}[language=console,escapechar=§]
 FN11194:Documents sporring$ cd myFolder/
 FN11194:myFolder sporring$ rm hi.txt 
@@ -306,17 +306,17 @@ FN11194:Documents sporring$ ls
 FN11194:Documents sporring$ 
 \end{lstlisting}
 \end{codeNOutput}
-Only commands found on the \idx{search-path} are available in the console. The content of the search-path is seen using the \lstinline[language=console]{echo} command as demonstrated in \Cref{LinuxSearchPath}.
+Only commands found on the \idx{search-path} are available in the console. The content of the search-path is seen using the \lstinline[language=console]{echo} command, as demonstrated in \Cref{LinuxSearchPath}.
 \begin{codeNOutput}[label=LinuxSearchPath]{: The content of the search-path.}
   \begin{lstlisting}[language=console,escapechar=§]
 FN11194:Documents sporring$ echo $PATH
-/Applications/Maple 17/:/Applications/PackageMaker.app/Contents/MacOS/: /Applications/MATLAB_R2014b.app/bin/:/opt/local/bin:/opt/local/sbin: /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin: /Library/TeX/texbin
+/Applications/Maple 17/:/Applications/PackageMaker.app/Contents/MacOS/: /Applications/MATLAB_R2014b.app/bin/:/opt/local/bin: /opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin: /sbin:/opt/X11/bin:/Library/TeX/texbin
 FN11194:Documents sporring$ 
 \end{lstlisting}%$
 \end{codeNOutput}
 The search-path can be changed by editing the setup file for Bash. On MacOS X it is called \lstinline[language=console]{~/.profile}, and on Linux it is either \lstinline[language=console]{~/.bash_profile} or \lstinline[language=console]{~/.bashrc}. Here new paths can be added by adding the following line: \lstinline[language=console]{export PATH="<new path>:<another new path>:$PATH"}. %$
 
-A useful feature of Bash is that the console can help you write commands. E.g., if you write \lstinline[language=console]{fs} followed by pressing the \lstinline[language=console]{tab}-key, and if Mono is in the search-path, then Bash will typically respond by completing the line as \lstinline[language=console]{fsharp}, and by further pressing the \lstinline[language=console]{tab}-key some times, Bash will show the list of options, typically \lstinline[language=console]{fshpari} and \lstinline[language=console]{fsharpc}. Also, most commands have an extensive manual, which can be accessed using the \lstinline[language=console]{man} command. E.g., the manual for \lstinline[language=console]{rm} is retrieved by \lstinline[language=console]{man rm}.
+A useful feature of Bash is that the console can help you write commands. E.g., if you write \lstinline[language=console]{fs} followed by pressing the \lstinline[language=console]{tab}-key, and if Mono is in the search-path, then Bash will typically respond by completing the line as \lstinline[language=console]{fsharp}, and by further pressing the \lstinline[language=console]{tab}-key some times, Bash will show the list of options, typically \lstinline[language=console]{fshpari} and \lstinline[language=console]{fsharpc}. Also, most commands have an extensive manual which can be accessed using the \lstinline[language=console]{man} command. E.g., the manual for \lstinline[language=console]{rm} is retrieved by \lstinline[language=console]{man rm}.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
