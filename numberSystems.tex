@@ -1,18 +1,18 @@
-\chapter{Number systems on the computer}
+\chapter{Number Systems on the Computer}
 \label{app:numbers}
-\section{Binary numbers}
+\section{Binary Numbers}
 \label{sec:binary}
-Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base} 10 means that for a number consisting of a sequence of digits separated by a \idx{decimal point}, where each \idx{digit} can have values $d \in \{0,1,2,\ldots,9\}$ and the weight of each digit is proportional to its place in the sequence of digits with respect to the decimal point, i.e., the number $357.6=3\cdot 10^2+5\cdot 10^1+7\cdot 10^0+6\cdot 10^{-1}$ or in general:
+Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base} 10 meaning that a decimal number consists of a sequence of digits separated by a \idx{decimal point}, where each \idx{digit} can have values $d \in \{0,1,2,\ldots,9\}$ and the weight of each digit is proportional to its place in the sequence of digits with respect to the decimal point, i.e., the number $357.6=3\cdot 10^2+5\cdot 10^1+7\cdot 10^0+6\cdot 10^{-1}$, or in general, for a number consisting of digits $d_i$ with $n+1$ and $m$ digits to the left and right of the decimal point, the value $v$ is calculated as:
 \begin{align}
-  v = \sum_{i=-m}^nd_i10^i
+  v = \sum_{i=-m}^nd_i10^i.
 \end{align}
-The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. The general equation is,
+The basic unit of information in almost all computers is the binary digit, or \idx{bit} for short. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. The general equation is,
 \begin{align}
-  v = \sum_{i=-m}^nb_i2^i
+  v = \sum_{i=-m}^nb_i2^i,
 \end{align}
 and examples are $1011.1_2 = 1\cdot 2^3+0\cdot 2^2+1\cdot 2^1+1\cdot 2^0+1\cdot 2^{-1} = 11.5$. Notice that we use subscript 2 to denote a binary number, while no subscript is used for decimal numbers. The left-most bit is called the \idx{most significant bit}, and the right-most bit is called the \idx{least significant bit}. Due to typical organisation of computer memory, 8 binary digits is called a \idx{byte}, and 32 digits a \idx{word}.
 
-Other number systems are often used, e.g., \idx[octal number]{octal numbers}, which are base 8 numbers, where each digit is $o\in\{0,1,\ldots,7\}$. Octals are useful short-hand for binary, since 3 binary digits maps to the set of octal digits. Likewise, \idx[hexadecimal number]{hexadecimal numbers} are base 16 with digits $h\in\{0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f\}$, such that $a_{16}=10$, $b_{16}=11$ and so on. Hexadecimals are convenient since 4 binary digits map directly to the set of octal digits. Thus $367 = 101101111_2 = 557_8 = 16f_{16}$. A list of the integers 0--63 is various bases is given in \Cref{tab:binaryTable}.
+Other number systems are often used, e.g., \idx[octal number]{octal numbers}, which are base 8 numbers and have digits $o\in\{0,1,\ldots,7\}$. Octals are useful short-hand for binary, since 3 binary digits map to the set of octal digits. Likewise, \idx[hexadecimal number]{hexadecimal numbers} are base 16 with digits $h\in\{0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f\}$, such that $a_{16}=10$, $b_{16}=11$ and so on. Hexadecimals are convenient, since 4 binary digits map directly to the set of hexadecimal digits. Thus $367 = 101101111_2 = 557_8 = 16f_{16}$. A list of the integers 0--63 in various bases is given in \Cref{tab:binaryTable}.
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -96,9 +96,9 @@ Other number systems are often used, e.g., \idx[octal number]{octal numbers}, wh
   \caption{A list of the integers 0--63 in decimal, binary, octal, and hexadecimal.}
   \label{tab:binaryTable}
 \end{table}
-\section{IEEE 754 floating point standard}
+\section{IEEE 754 Floating Point Standard}
 \label{sec:floatingPoint}
-The set of real numbers also called \idx{reals} includes all fractions and irrational numbers. It is infinite in size both in the sense that there is no largest nor smallest number, and between any 2 given numbers there are infinitely many numbers. Reals are widely used for calculation, but since any computer only has finite memory, it is impossible to represent all possible reals on one. Hence, any computation performed on a computer with reals must rely on approximations. \idx{IEEE 754 double precision floating-point format} (\idx{binary64}), known as a \idx{double}, is a standard for representing an approximation of reals using 64 bits. These bits are divided into 3 parts: sign, exponent and fraction, 
+The set of real numbers, also called \idx{reals}, includes all fractions and irrational numbers. It is infinite in size both in the sense that there is no largest nor smallest number, and that between any 2 given numbers there are infinitely many numbers. Reals are widely used for calculation, but since any computer only has finite memory, there are infinitely many numbers which cannot be represent on a computer. Hence, any computation performed on a computer with reals must rely on approximations. \idx{IEEE 754 double precision floating-point format} (\idx{binary64}), known as a \idx{double}, is a standard for representing an approximation of reals using 64 bits. These bits are divided into 3 parts: sign, exponent and fraction, 
 \begin{displaymath}
   s\, e_1 e_2 \ldots e_{11}\, m_1 m_2 \ldots m_{52},
 \end{displaymath}
@@ -107,11 +107,11 @@ where $s$, $e_i$, and $m_j$ are binary digits. The bits are converted to a numbe
   e &= \sum _{i=1}^{11}e_i2^{11-i},\\
   m & = \sum _{j=1}^{52}m_j2^{-j}.
 \end{align}
-I.e., the exponent is an integer, where $0 \leq e < 2^{11}$, and the mantissa is a rational, where $0 \leq m < 1$. For most combinations of $e$ and $m$ the real number $v$ is calculated as,
+I.e., the exponent is an integer, where $0 \leq e < 2^{11}$, and the mantissa is a rational, where $0 \leq m < 1$. For most combinations of $e$ and $m$, the real number $v$ is calculated as,
 \begin{equation}
   v = \left(-1\right)^{s} \left(1+m\right) 2^{e-1023}
 \end{equation}
- with the exception that
+ with the exceptions that
 \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|l|}
@@ -127,31 +127,31 @@ I.e., the exponent is an integer, where $0 \leq e < 2^{11}$, and the mantissa is
 \end{center}
 where $e=2^{11}-1=11111111111_2=2047$. The largest and smallest number that is not infinity is thus
 \begin{align}
-  e &= 2^{11}-2 = 2046\\
-  m &= \sum _{j=1}^{52}2^{-j} = 1 - 2^{-52} \simeq 1.\\
-  v_\text{max} &= \pm \left(2-2^{-52}\right) 2^{1023} \simeq \pm 2^{1024} \simeq \pm 10^{308}
+  e &= 2^{11}-2 = 2046,\\
+  m &= \sum _{j=1}^{52}2^{-j} = 1 - 2^{-52} \simeq 1,\\
+  v_\text{max} &= \pm \left(2-2^{-52}\right) 2^{1023} \simeq \pm 2^{1024} \simeq \pm 10^{308}.
 \end{align}
 The density of numbers varies in such a way that when $e-1023 = 52$, then
 \begin{align}
   v &= \left(-1\right)^{s} \left(1+\sum _{j=1}^{52}m_j2^{-j}\right) 2^{52} 
   \\&= \pm \left(2^{52}+\sum _{j=1}^{52}m_j2^{-j}2^{52}\right) 
   \\&= \pm \left(2^{52}+\sum _{j=1}^{52}m_j2^{52-j}\right) 
-  \\&\overset{k=52-j}{=} \pm \left(2^{52}+\sum _{k=51}^{0}m_{52-k}2^k\right) 
+  \\&\overset{k=52-j}{=} \pm \left(2^{52}+\sum _{k=51}^{0}m_{52-k}2^k\right),
 \end{align}
 which are all integers in the range $2^{52}\leq |v| < 2^{53}$. When $e-1023 = 53$, then the same calculation gives
 \begin{align}
-  v &\overset{k=53-j}{=} \pm \left(2^{53}+\sum _{k=52}^{1}m_{53-k}2^k\right) 
+  v &\overset{k=53-j}{=} \pm \left(2^{53}+\sum _{k=52}^{1}m_{53-k}2^k\right),
 \end{align}
 which are every second integer in the range $2^{53}\leq |v| < 2^{54}$, and so on for larger values of $e$. When $e-1023 = 51$, the same calculation gives,
 \begin{align}
-  v &\overset{k=51-j}{=} \pm \left(2^{51}+\sum _{k=50}^{-1}m_{51-k}2^k\right) 
+  v &\overset{k=51-j}{=} \pm \left(2^{51}+\sum _{k=50}^{-1}m_{51-k}2^k\right),
 \end{align}
-which is a distance between numbers of $1/2$ in the range $2^{51}\leq |v| < 2^{52}$, and so on for smaller values of $e$. Thus we may conclude that the distance between numbers in the interval $2^n\leq |v| < 2^{n+1}$ is $2^{n-52}$, for $-1022 = 1-1023\leq n<2046-1023=1023$.  For subnormals, the distance between numbers are
+which is a distance between numbers of $1/2$ in the range $2^{51}\leq |v| < 2^{52}$, and so on for smaller values of $e$. Thus we may conclude that the distance between numbers in the interval $2^n\leq |v| < 2^{n+1}$ is $2^{n-52}$, for $-1022 = 1-1023\leq n<2046-1023=1023$.  For subnormals, the distance between numbers is
 \begin{align}
   v &= \left(-1\right)^{s} \left(\sum _{j=1}^{52}m_j2^{-j}\right) 2^{-1022} 
   \\&= \pm \left(\sum _{j=1}^{52}m_j2^{-j}2^{-1022}\right) 
   \\&= \pm \left(\sum _{j=1}^{52}m_j2^{-j -1022}\right) 
-  \\&\overset{k=-j-1022}{=} \pm \left(\sum _{j=-1023}^{-1074}m_{-k-1022}2^k\right) 
+  \\&\overset{k=-j-1022}{=} \pm \left(\sum _{j=-1023}^{-1074}m_{-k-1022}2^k\right),
 \end{align}
 which gives a distance between numbers of $2^{-1074} \simeq 10^{-323}$ in the range $0<|v|<2^{-1022}\simeq10^{-308}$.
 

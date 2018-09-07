@@ -1,15 +1,13 @@
-\chapter{Commonly used character sets}
+\chapter{Commonly Used Character Sets}
 \label{sec:characterSets}
-Letters, digits, symbols, and space are the core of how we store data, write programs, and communicate with computers and each other. These symbols are in short called characters and represent a mapping between numbers, also known as codes, and a pictorial representation of the character. E.g., the ASCII code for the letter 'A' is 65. These mappings are for short called character sets, and due to differences in natural languages and symbols used across the globe, many different character sets are in use. E.g., the English alphabet contains the letters 'a' to 'z', which is shared by many other European languages, but which have other symbols and accents. For example, Danish has further the letters 'æ', 'ø', and 'å'. Many non-European languages have completely different symbols, where the Chinese character set is probably the most extreme, and some definitions contain 106,230 different characters albeit only 2,600 are included in the official Chinese language test at the highest level.
+Letters, digits, symbols, and space are the core of how we store data, write programs, and communicate with computers and each other. These symbols are in short called characters and represent a mapping between numbers, also known as codes, and a pictorial representation of the character. E.g., the ASCII code for the letter 'A' is 65. These mappings are for short called character sets, and due to differences in natural languages and symbols used across the globe, many different character sets are in use. E.g., the English alphabet contains the letters 'a' to 'z'. These letters are common to many other European languages which in addition use even more symbols and accents. For example, Danish has further the letters 'æ', 'ø', and 'å'. Many non-European languages have completely different symbols, where the Chinese character set is probably the most extreme, and some definitions contain 106,230 different characters, albeit only 2,600 are included in the official Chinese language test at the highest level.
 
 Presently, the most common character set used is Unicode Transformation Format (UTF), whose most popular encoding schemes are 8-bit (UTF-8) and 16-bit (UTF-16). Many other character sets exist, and many of the later build on the American Standard Code for Information Interchange (ASCII). The ISO-8859 codes were an intermediate set of character sets that are still in use, but which is greatly inferior to UTF. Here we will briefly give an overview of ASCII, ISO-8859-1 (Latin1), and UTF.
 
 \section{ASCII}
 \label{sec:ascii}
-The \idx{American Standard Code for Information Interchange} (\idx{ASCII})~\cite{ascii63}, is a 7 bit code tuned for the letters of the English language, numbers, punctuation symbols, control codes and space, see Tables~\ref{tab:ascii} and~\ref{tab:asciiSpecialSymbols}. The first 32 codes are reserved for non-printable control characters to control printers and similar devices or to provide meta-information. The meaning of each control character is not universally agreed upon.
-
-The code order is known as \idx{ASCIIbetical order}, and it is sometimes used to perform arithmetic on codes, e.g., an uppercase letter with code $c$ may be converted to lower case by adding 32 to its code. The ASCIIbetical order also has a consequence for sorting, i.e., when sorting characters according to their ASCII code, 'A' comes before 'a', which comes before the symbol '$\{$'.
-\begin{table}[h]
+The \idx{American Standard Code for Information Interchange} (\idx{ASCII})~\cite{ascii63}, is a 7 bit code tuned for the letters of the English language, numbers, punctuation symbols, control codes and space, see \Cref{tab:ascii,tab:asciiSpecialSymbols}.
+\begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{0.75\textwidth}{|*{17}{>{\centering\arraybackslash}X|}}
@@ -52,7 +50,7 @@ The code order is known as \idx{ASCIIbetical order}, and it is sometimes used to
   \caption{ASCII}
   \label{tab:ascii}
 \end{table}
-\begin{table}[h]
+\begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|}
@@ -98,10 +96,13 @@ The code order is known as \idx{ASCIIbetical order}, and it is sometimes used to
   \caption{ASCII symbols.}
   \label{tab:asciiSpecialSymbols}
 \end{table}
+The first 32 codes are reserved for non-printable control characters to control printers and similar devices or to provide meta-information. The meaning of each control character is not universally agreed upon.
+
+The code order is known as \idx{ASCIIbetical order}, and it is sometimes used to perform arithmetic on codes, e.g., an uppercase letter with code $c$ may be converted to lower case by adding 32 to its code. The ASCIIbetical order also has a consequence for sorting, i.e., when sorting characters according to their ASCII code, 'A' comes before 'a', which comes before the symbol '$\{$'.
 
 \section{ISO/IEC 8859}
-The ISO/IEC 8859 report \url{http://www.iso.org/iso/catalogue_detail?csnumber=28245} defines 10 sets of codes specifying up to 191 codes and graphics characters using 8 bits. Set 1, also known as ISO/IEC 8859-1, Latin alphabet No.\ 1 or \idx{Latin1}, covers many European languages and is designed to be compatible with ASCII, such that code for the printable characters in ASCII is the same in ISO 8859-1. \Cref{tab:latin1} shows the characters above 7e. Codes 00-1f and 7f-9f are undefined in ISO 8859-1. 
-\begin{table}[h]
+The ISO/IEC 8859 report \url{http://www.iso.org/iso/catalogue_detail?csnumber=28245} defines 10 sets of codes specifying up to 191 codes and graphics characters using 8 bits. Set 1, also known as ISO/IEC 8859-1, Latin alphabet No.\ 1, or \idx{Latin1}, covers many European languages and is designed to be compatible with ASCII, such that code for the printable characters in ASCII is the same in ISO 8859-1. \Cref{tab:latin1} shows the characters above 7e. Codes 00-1f and 7f-9f are undefined in ISO 8859-1. 
+\begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{0.75\textwidth}{|*{17}{>{\centering\arraybackslash}X|}}
@@ -144,7 +145,7 @@ The ISO/IEC 8859 report \url{http://www.iso.org/iso/catalogue_detail?csnumber=28
   \caption{ISO-8859-1 (latin1) non-ASCII part. Note that the codes 7f -- 9f are undefined.}
   \label{tab:latin1}
 \end{table}
-\begin{table}[h]
+\begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|}
@@ -161,19 +162,19 @@ The ISO/IEC 8859 report \url{http://www.iso.org/iso/catalogue_detail?csnumber=28
 
 \section{Unicode}
 \label{sec:unicode}
-Unicode is a character standard defined by the Unicode Consortium, \url{http://unicode.org} as the \idx{Unicode Standard}. Unicode allows for 1,114,112 different codes. Each code is called a \idx{code point}, which represents an abstract character. However, not all abstract characters require a unit of several code points to be specified. Code points are divided into 17 planes each with $2^{16}=65,536$ code points. Planes are further subdivided into named \idx{blocks}. The first plane is called the \idx{Basic Multilingual plane} and its block of the first 128 code points is called the \idx{Basic Latin block} and are identical to ASCII, see \Cref{tab:ascii}, and code points 128-255 is called the \idx{Latin-1 Supplement block}, and are identical to the upper range of ISO 8859-1, see \Cref{tab:latin1}.  Each code-point has a number of attributes such as the \idx{Unicode general category}. Presently more than 128,000 code points are defined as covering 135 modern and historical writing systems, and obtained at \url{http://www.unicode.org/Public/UNIDATA/UnicodeData.txt}, which includes the code point, name, and general category.
+Unicode is a character standard defined by the Unicode Consortium, \url{http://unicode.org}, as the \idx{Unicode Standard}. Unicode allows for 1,114,112 different codes. Each code is called a \idx{code point} which represents an abstract character. However, not all abstract characters require a unit of several code points to be specified. Code points are divided into 17 planes, each with $2^{16}=65,536$ code points. Planes are further subdivided into named \idx{blocks}. The first plane is called the \idx{Basic Multilingual plane} and its block of the first 128 code points is called the \idx{Basic Latin block} and is identical to ASCII, see \Cref{tab:ascii}, and code points 128-255 are called the \idx{Latin-1 Supplement block}, and are identical to the upper range of ISO 8859-1, see \Cref{tab:latin1}.  Each code-point has a number of attributes such as the \idx{Unicode general category}. Presently more than 128,000 code points are defined as covering 135 modern and historical writing systems, and obtained at \url{http://www.unicode.org/Public/UNIDATA/UnicodeData.txt}, which includes the code point, name, and general category.
 
-A Unicode code point is an abstraction from the encoding and the graphical representation of a character. A code point is written as ``U+'' followed by its hexadecimal number, and for the Basic Multilingual plane 4 digits are used, e.g., the code point with the unique name LATIN CAPITAL LETTER A has the Unicode code point ``U+0041'', and is in this text it is visualized as 'A'. More digits are used for code points of the remaining planes.
+A Unicode code point is an abstraction from the encoding and the graphical representation of a character. A code point is written as ``U+'' followed by its hexadecimal number, and for the Basic Multilingual plane, 4 digits are used, e.g., the code point with the unique name LATIN CAPITAL LETTER A has the Unicode code point ``U+0041'', and is in this text visualized as 'A'. More digits are used for code points of the remaining planes.
 
-The general category is used to specify valid characters that not necessarily have a visual representation but possibly transforms text. Some categories and their letters in the first 256 code points are shown in \Cref{tab:generalCategories}.
-\begin{table}[h]
+The general category is used to specify valid characters that do not necessarily have a visual representation but possibly transform text. Some categories and their letters in the first 256 code points are shown in \Cref{tab:generalCategories}.
+\begin{table}
   \centering
 %  \begin{tabularx}{0.75\linewidth}{|>{\hsize=1\hsize}X|\hsize=1\hsize}X|\hsize=1\hsize}X|}
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|>{\hsize=.3\hsize}X*{2}{|>{\hsize=1.35\hsize\raggedright\arraybackslash}X}|}    \hline
     \rowcolor{headerRowColor} General category & Code points & Name \\
     \hline
-    Lu& U+0041--U+005A, U+00C0--U+00D6,  U+00D8--U+00DE & Upper case letters\\
+    Lu& U+0041--U+005A, U+00C0--U+00D6,  U+00D8--U+00DE & Upper case letter\\
     Ll& U+0061--U+007A, U+00B5, U+00DF--U+00F6, U+00F8--U+00FF & Lower case letter\\
     Lt& None & Digraphic letter, with first part uppercase \\
     Lm& None & Modifier letter \\
