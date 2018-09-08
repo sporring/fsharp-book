@@ -1,14 +1,14 @@
-\chapter{Using F\# as a calculator}
+\chapter{Using F\# as a Calculator}
 \label{chap:calculator}
 %Talking about programs and programming languages we make a distinction between the language's \idx{syntax}, which describes what are legal expressions and statements, and the \idx{semantics} of an expression and a statement, which describes what is meant. This is analog to human languages, where how nouns, verbs, etc. may be placed in relation to each describes the syntax of a sentence, while the meaning of a sentence is its semantics. Basic elements of F\#'s syntax are literals, which is a fixed value like the number 3.
 In this chapter, we will exclusively use the interactive mode to illustrate basic types and operations in F\#.
 
-\section{Literals and basic types}
+\section{Literals and Basic Types}
 All programs rely on processing of data, and an essential property of data is its \idx{type}. A \idx{literal} is a fixed value like the number 3, and if we type the number \lstinline!3! in an interactive session at the input prompt, then F\# responds as shown in \Cref{firstType}.
 %
 \fsOutput{firstType}{Typing the number 3.}
 %
-What this means is that F\# has inferred the type to be \idx[int@\lstinline{int}]{\lstinline{int}} and bound it to the identifier \idx[it@\lstinline{it}]{\lstinline{it}}. For more on binding and identifiers see \Cref{chap:let}. Types matter, since the operations that can be performed on integers, are quite different from those that can be performed on, e.g., strings. E.g., the number 3 has many different representations as shown in \Cref{typeMatters}.
+What this means is that F\# has inferred the type to be \idx[int@\lstinline{int}]{\lstinline{int}} and bound it to the identifier \idx[it@\lstinline{it}]{\lstinline{it}}. For more on binding and identifiers see \Cref{chap:let}. Types matter, since the operations that can be performed on integers, are quite different from those that can be performed on, e.g., strings. Therefore, the number 3 has many different representations as shown in \Cref{typeMatters}.
 %
 \fsOutput{typeMatters}{Many representations of the number 3 but using different types.}
 %
@@ -56,22 +56,22 @@ Each literal represents the number 3, but their types are different, and hence t
   \caption{List of some of the basic types. The most commonly used types are underlined. For a description of integer see Appendix~\ref{sec:binary}, for floating point numbers see Appendix~\ref{sec:floatingPoint}, for ASCII and Unicode characters see Appendix~\ref{sec:characterSets}, for objects see \Cref{chap:oop}, and for exceptions see \Cref{chap:errors}.}
   \label{tab:primitiveTypes}
 \end{table}
-Besides these built-in types, F\# is designed such that it is easy to define new types. 
+In addition to these built-in types, F\# is designed such that it is easy to define new types. 
 
-Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base}~10, which means that a value is represented as two sequences of decimal digits separated by a \idx{decimal point}, where each \idx{digit} $d$ has a position and a value $d \in \{0,1,2,\ldots,9\}$. The part before the decimal point is called the \idx{whole part} and the part after is called the \idx{fractional part} of the number. The whole part with neither a decimal point nor a fractional part is called an \idx{integer}. As an example \lstinline!35.7! is a decimal number, whose value is $3\cdot 10^1+5\cdot 10^0+7\cdot 10^{-1}$, and \lstinline!128! is an integer, whose value is $1\cdot 10^2+2\cdot 10^1+8\cdot 10^{0}$. In F\# a decimal number is called a \idx{floating point number}.  Floating point numbers may alternatively be given using \idx{scientific notation}, such as \lstinline!3.5e-4! and \lstinline!4e2!, where the \lstinline!e!-notation is translated to a value as \lstinline!3.5e-4!~$=3.5\cdot 10^{-4} = 0.00035$, and \lstinline!4e2!~$=4\cdot 10^2=400$.
+Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base}~10, which means that a value is represented as two sequences of decimal digits separated by a \idx{decimal point}, where each \idx{digit} $d$ has a position and a value $d \in \{0,1,2,\ldots,9\}$. The part before the decimal point is called the \idx{whole part} and the part after is called the \idx{fractional part} of the number. An \idx{integer} is a number with only a whole part and neither a decimal point nor a fractional part. As an example \lstinline!35.7! is a decimal number, whose value is $3\cdot 10^1+5\cdot 10^0+7\cdot 10^{-1}$, and \lstinline!128! is an integer, whose value is $1\cdot 10^2+2\cdot 10^1+8\cdot 10^{0}$. In F\#, a decimal number is called a \idx{floating point number}.  Floating point numbers may alternatively be given using \idx{scientific notation}, such as \lstinline!3.5e-4! and \lstinline!4e2!, where the \lstinline!e!-notation is translated to a value as \lstinline!3.5e-4!~$=3.5\cdot 10^{-4} = 0.00035$, and \lstinline!4e2!~$=4\cdot 10^2=400$.
 
 The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. Internally, programs and data are all represented as bits, hence F\# has a strong support for binary numbers. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^{-2}=5.25$. Subscripts are often used to indicate the base of a number, e.g., $101.01_2$ and $101.01_{10}$ are different numbers. Since base 10 is so common, the subscript for base 10 numbers is often omitted. 
 
-Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}, where octals uses 8 as basis, and where each octal digit can be represented by exactly 3 bits, while hexadecimal numbers use 16 as basis, and where each hexadecimal digit can be written in binary using exactly 4 bits. The hexadecimal digits use \lstinline!0!--\lstinline!9! to represent the values 0--9 and \lstinline!a!--\lstinline!f! in lower or alternatively upper case to represent the values 10-15.  Thus, Octals and hexadecimals conveniently serve as shorthand for the much longer binary representation. As examples, the octal number $37_8$ is $3\cdot 8^1+7\cdot 8^0=31$, and the hexadecimal number $f3_{16}$ is $15\cdot 16^1+3\cdot 16^0=243$. 
+Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}. Octals uses 8 as basis and hexadecimals use 16 as basis. Each octal digit can be represented by exactly three bits, and each hexadecimal digit can represented by exactly four bits. The hexadecimal digits use \lstinline!0!--\lstinline!9! to represent the values 0--9 and \lstinline!a!--\lstinline!f! in lower or alternatively upper case to represent the values 10-15.  Thus, Octals and hexadecimals conveniently serve as shorthand for the much longer binary representation. As examples, the octal number \lstinline!37!$_8$ is $3\cdot 8^1+7\cdot 8^0=31$, and the hexadecimal number \lstinline!f3!$_{16}$ is $15\cdot 16^1+3\cdot 16^0=243$. 
 
-To denote integers on bases different than 10, F\# uses the prefix '0b' for binary, '0o' for octal, and '0x' for hexadecimal numbers.  For example, the value $367_{10}$ may be written as an integer \lstinline[language=ebnf]!367!, as a binary number \lstinline!0b101101111!, as a octal number \lstinline!0o557!, and as a hexadecimal number \lstinline!0x16f!. The character sequences \lstinline!0b12! and \lstinline!ff! are not numbers.
+To denote integers in bases different than 10, F\# uses the prefix '0b' for binary, '0o' for octal, and '0x' for hexadecimal numbers.  For example, the value $367_{10}$ may be written as an integer \lstinline!367!, as a binary number \lstinline!0b101101111!, as a octal number \lstinline!0o557!, and as a hexadecimal number \lstinline!0x16f!. In F\#, the character sequences \lstinline!0b12! and \lstinline!ff! are not recognized as numbers.
 
-A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks. Appendix~\ref{sec:unicode} contains more details on code points.\spec{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The character type in F\# is denoted \idx[char@\lstinline{char}]{\keyword{char}}.  Examples of characters are 'a', 'D', '3'. However '23' and 'abc' are not characters. Some characters do not have a visual representation such as the tabulation character. These can still be represented as a character using \idx{escape sequences}. A character escape sequence starts with \lexeme{\\} followed by either a letter for simple escapes such as \lstinline{\t} for tabulation and \lstinline{\n} for newline. Escape sequences can also be a numerical representation of a code point, and three versions exist: The trigraph \lstinline|\DDD|, where \lstinline{D} is a decimal digit, is used to specify the first 256 code points, the hexadecimal escape codes \lstinline|\uXXXX|, where \lstinline{X} is a hexadecimal digit, is used to specify the first 65536 code points, and \lstinline|\UXXXXXXXX| is used to specify any of the approximately $4.3\cdot 10^9$ possible code points. All escape sequences are shown in \Cref{tab:escapeChar}.
+A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks. Appendix~\ref{sec:unicode} contains more details on code points.\spec{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The character type in F\# is denoted \idx[char@\lstinline{char}]{\keyword{char}}.  Examples of characters are 'a', 'D', '3', and examples of non-characters are '23' and 'abc'. Some characters, such as the tabulation character, do not have a visual representation. These can still be represented as a character using \idx{escape sequences}. A character escape sequence starts with \lexeme{\\} followed by letter for simple escapes such as \lstinline{\t} for tabulation and \lstinline{\n} for newline. Escape sequences can also be a numerical representation of a code point, and three versions exist: The trigraph \lstinline|\DDD|, where \lstinline{D} is a decimal digit, is used to specify the first 256 code points, the hexadecimal escape codes \lstinline|\uXXXX|, where \lstinline{X} is a hexadecimal digit, is used to specify the first 65536 code points, and \lstinline|\UXXXXXXXX| is used to specify any of the approximately $4.3\cdot 10^9$ possible code points. All escape sequences are shown in \Cref{tab:escapeChar}.
 %
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabular}{|c|l|l|}
+  \begin{tabular}{|c|p{0.15\textwidth}|p{0.6\textwidth}|}
     \hline
     \rowcolor{headerRowColor} Character& Escape sequence & Description\\
     \hline
@@ -85,22 +85,22 @@ A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals ar
     BEL&\lstinline|\a|& Bell\\
     FF&\lstinline|\f|&Form feed\\
     VT &\lstinline|\v|&Vertical tabulation\\
-    &\lstinline|\uXXXX|, \lstinline|\UXXXXXXXX|, \lstinline|\DDD|&Unicode character\\
+    &\lstinline|\uXXXX|, \lstinline|\UXXXXXXXX|, \lstinline|\DDD|&Unicode character ('X' is any hexadecimal digit, and 'D' is any decimal digit)\\
     \hline
   \end{tabular}
-  \caption{Escape characters. For the unicode characters 'X' are hexadecimal digits, while for tricode characters 'D' is a decimal character.}
+  \caption{Escape characters. The escapecode \inlinecode{\textbackslash DDD} is sometimes called a tricode.}
   \label{tab:escapeChar}
 \end{table}
 %
 Examples of \keyword{char} representations of the letter 'a' are: \lstinline{'a'}, \lstinline{'\097'}, \lstinline{'\u0061'}, \lstinline{'\U00000061'}.
 
-A \idx{string} is a sequence of characters enclosed in double quotation marks.  Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. Note that the string \lstinline{"a"} and the character \lstinline{'a'} are not the same. Some strings are so common that they are given special names: One or more spaces, \lstinline{" "} is called \idx{whitespace}, and both \lstinline{"\n"} and \lstinline{"\r\n"} are called \idx{newline}.  The escape-character \lexeme{\\} may be used to break a line in two. This and other examples are shown in \Cref{stringLiterals}.
+A \idx{string} is a sequence of characters enclosed in double quotation marks.  Examples are \lstinline{"a"}, \lstinline{"this is a string"}, and \lstinline{"-&#\@"}. Note that the string \lstinline{"a"} and the character \lstinline{'a'} are not the same. Some strings are so common that they are given special names: One or more spaces \lstinline{" "} is called \idx{whitespace}, and both \lstinline{"\n"} and \lstinline{"\r\n"} are called \idx{newline}.  The escape-character \lexeme{\\} may be used to break a line in two. This and other examples are shown in \Cref{stringLiterals}.
 %
 \fsOutput{stringLiterals}{Examples of string literals.}
 %
 Note that the response from \lstinline[language=console]{fsharpi} is shown in double quotation marks, but this is not part of the string. 
 
-F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix or suffix as shown in the \Cref{tab:literalTypes}.\idxss{int32@\lstinline{int32}}\idxss{uint32@\lstinline{uint32}}\idxss{byte@\lstinline{byte}}\idxss{uint8@\lstinline{uint8}}\idxss{byte@\lstinline{byte[]}}\idxss{sbyte@\lstinline{sbyte}}\idxss{int8@\lstinline{int8}}\idxss{int16@\lstinline{int16}}\idxss{uint16@\lstinline{uint16}}\idxss{int64@\lstinline{int64}}\idxss{uint64@\lstinline{uint64}}\idxss{double@\lstinline{double}}\idxss{single@\lstinline{single}}\idxss{float32@\lstinline{float32}}\idxss{decimal@\lstinline{decimal}}
+F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix or suffix as shown in \Cref{tab:literalTypes}.\idxss{int32@\lstinline{int32}}\idxss{uint32@\lstinline{uint32}}\idxss{byte@\lstinline{byte}}\idxss{uint8@\lstinline{uint8}}\idxss{byte@\lstinline{byte[]}}\idxss{sbyte@\lstinline{sbyte}}\idxss{int8@\lstinline{int8}}\idxss{int16@\lstinline{int16}}\idxss{uint16@\lstinline{uint16}}\idxss{int64@\lstinline{int64}}\idxss{uint64@\lstinline{uint64}}\idxss{double@\lstinline{double}}\idxss{single@\lstinline{single}}\idxss{float32@\lstinline{float32}}\idxss{decimal@\lstinline{decimal}}
 \begin{table}
   \centering
   %\begin{tabularx}{\linewidth}{|>{\hsize=.6\hsize}X|>{\hsize=1.4\hsize}X|>{\hsize=1\hsize}X|}
@@ -195,14 +195,14 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
     \hline
   \end{tabular}
   % \end{tabularx}
-  \caption{List of literal type. Syntax notation is used such that, e.g., {\lstinline[language=syntax, keywords={}]!<**>!} means that the programmer replaces the brackets and content with a value on appropriate form. The \lstinline{[||]} notation means that the value is an array, see \Cref{sec:arrays} for details.
+  \caption{List of literal types. Syntax notation is used such that, e.g., {\lstinline[language=syntax, keywords={}]!<**>!} means that the programmer replaces the brackets and content with a value of the appropriate form. The \lstinline{[||]} notation means that the value is an array, see \Cref{sec:arrays} for details.
     % The \lstinline![]! notation is for lists, see \Cref{chap:lists}. $^*$\lstinline[language=ebnf]!bignum! is not a basic type and does not yet have an implementation for \lstinline[language=ebnf]!dInt ("Q"|"R"|"Z"|"N"|"G")! in Mono.
   }
   \label{tab:literalTypes}
 \end{table}
-The table uses a simple syntax notation such that {\lstinline[language=syntax, keywords={}]!<*integer or hexadecimal*>UL!} means that the user supplies an integer or a hexadecimal number followed by the characters 'UL'.
+%The table uses a simple syntax notation such that {\lstinline[language=syntax, keywords={}]!<*integer or hexadecimal*>UL!} means that the user supplies an integer or a hexadecimal number followed by the characters 'UL'.
 
-The literal type is closely connected to how the values are represented internally. E.g., a value of type \keyword{int32} use 32 bits and can be both positive and negative, while a \keyword{uint32} value also use 32 bits, but is unsigned. A \keyword{byte} is an 8-bit number, and \keyword{sbyte} is a signed 8-bit number. Values of type \keyword{float} uses 64 bits, while \keyword{float32} only uses 32 bits. The number of bits used to represent numbers directly relates to the range and precession these types can represent. This is summarized in \Cref{tab:primitiveTypes} and discussed in more detail in \Cref{app:numbers}. String literals may be \idx{verbatim} by the @-notation or triple double quotation marks, meaning that the escape sequences are not converted to their code point. The two types of string verbatim treat quotation marks differently as illustrated in the table. Further examples are shown in \Cref{namedLiterals}.
+The literal type is closely connected to how the values are represented internally. For example, a value of type \keyword{int32} use 32 bits and can be both positive and negative, while a \keyword{uint32} value also use 32 bits, but is unsigned. A \keyword{byte} is an 8-bit number, and \keyword{sbyte} is a signed 8-bit number. Values of type \keyword{float} use 64 bits, while \keyword{float32} only uses 32 bits. The number of bits used to represent numbers directly relates to the range and precession these types can represent. This is summarized in \Cref{tab:primitiveTypes} and discussed in more detail in \Cref{app:numbers}. String literals may be \idx{verbatim} by the @-notation or triple double quotation marks, meaning that the escape sequences are not converted to their code point. The two types of string verbatim treat quotation marks differently, as illustrated in the table. Further examples are shown in \Cref{namedLiterals}.
 %
 \fsOutput{namedLiterals}{Named and implied literals.}
 %
@@ -225,23 +225,27 @@ Typecasting is often a destructive operation, e.g., typecasting a \lstinline!flo
 %
 \fsOutput{downcasting}{Fractional part is removed by downcasting.}
 %
-Here we typecasted to a lesser type, in the sense that the set of integers is a subset of floating point numbers, and this is called \idx{downcasting}. The opposite is called \idx{upcasting} and is often non-destructive, as \Cref{upcastingInt} showed, where an integer was cast to a float while retaining its value. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$ and $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting as shown in \Cref{rounding}.
+Here we typecasted to a lesser type, in the sense that the set of integers is a subset of floating point numbers, and this is called \idx{downcasting}. The opposite is called \idx{upcasting} and is often non-destructive, as \Cref{upcastingInt} showed. Since floating point numbers are a superset of integers, the value is retained. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$, and those in $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting, as shown in \Cref{rounding}.
 %
-\fsOutput{rounding}{Fractional part is removed by downcasting.}
+\fsOutput{rounding}{Rounding by modified downcasting.}
 %
-As the example shows, for floating points whose fractional part is equal to or larger than $y.5$ adding $0.5$ will make them above $(y+1).0$, and downcasting will thus downcase to $(y+1).0$. Conversely, fractional pars below will downcast to $y.0$. Thus, rounding is achieved by downcasting.
+I.e., $357.6+0.5=358.1$ and removing the fractional part by downcasting results in $358$, which is the correct answer.
 
-\section{Operators on basic types}
-\Cref{rounding} is an example of an arithmetic \idx{expression} using an \idx{binary operator} written using \idx{infix notation}, since the operator appears in between the \idx{operands}. The \lexeme{+} operator is binary since it takes two arguments, and since it is written between its arguments, then it uses infix notation. Expressions are the basic building block of all F\# programs and this section will discuss operator expressions on basic types. 
+\section{Operators on Basic Types}
+Expressions are the basic building block of all F\# programs, and this section will discuss operator expressions on basic types. 
+A typical calculation, such used in \Cref{rounding}, is \begin{equation}
+  \underbrace{357.6}_{\text{operand}}\quad\underbrace{+}_{\text{operator}}\quad\underbrace{0.5}_{\text{operand}}
+\end{equation}
+is an example of an arithmetic \idx{expression}, and the above expression consists of two \idx[operand]{operands} and an \idx{operator}. Since this operator takes two operands, it is called a \idx{binary operator}. The expression is written using \idx{infix notation}, since the operands appear on each side of the operator.
 
-The syntax of basic binary operators is shown in the following:
+In order to discuss general programming structures, we will use a simplified language to describe valid syntactical structures. In this simplified language, the syntax of basic binary operators is shown in the following.
 %
 \begin{verbatimwrite}{\ebnf/binaryOperator.ebnf}
 <*expr*><*op*><*expr*>
 \end{verbatimwrite}
 \syntax{\ebnf/binaryOperator.ebnf}{Syntax for a binary expression.}
 %
-Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the programmer, and \lstinline[language=syntax]{<*op*>} is a binary, infix operator. F\# supports a range of arithmetic binary infix operators on its built-in types such as addition, subtraction, multiplication, division, and exponentiation using the \lexeme{+}, \lexeme{-}, \lexeme{*}, \lexeme{/}, \lexeme{**} lexemes. Not all operators are defined for all types, e.g., addition is defined for integer and float types as well as for characters and strings, but multiplication is only defined for integer and floating-point types. A complete list of built-in operators on basic types is shown in \Cref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators} and a range of mathematical functions shown in \Cref{tab:arithmeticFunctions}. An example is \lstinline!3+4!. Note that expressions can themselves be arguments to expressions, and thus, \lstinline!4+5+6! is also a legal statement. This is called \idx{recursion}, which means that a rule or a function is used by the rule or function itself in its definition. See \Cref{sec:recursion} for more on recursive functions.
+Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the programmer, and \lstinline[language=syntax]{<*op*>} is a binary infix operator. F\# supports a range of arithmetic binary infix operators on its built-in types, such as addition, subtraction, multiplication, division, and exponentiation, using the \lexeme{+}, \lexeme{-}, \lexeme{*}, \lexeme{/}, \lexeme{**} lexemes, respectively. Not all operators are defined for all types, e.g., addition is defined for integer and float types as well as for characters and strings, but multiplication is only defined for integer and floating-point types. A complete list of built-in operators on basic types is shown in \Cref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators}, and a range of mathematical functions is shown in \Cref{tab:arithmeticFunctions}. Note that expressions can themselves be arguments to expressions, and thus, \lstinline!4+5+6! is also a legal statement. This is called \idx{recursion}, which means that a rule or a function is used by the rule or function itself in its definition. See \Cref{sec:recursion} for more on recursive functions.
 
 Unary operators take only one argument and have the syntax:
 %
@@ -250,31 +254,31 @@ Unary operators take only one argument and have the syntax:
 \end{verbatimwrite}
 \syntax{\ebnf/unaryOperator.ebnf}{A unary expressions.}
 %
-An example of a unary operator is \lstinline!-3!, where \lstinline!-! here is used to negate a positive integer. Since the operator appears before the operand it is a \idx{prefix operator}. 
+An example of a unary operator is \lstinline!-3!, where \lstinline!-! here is used to negate a positive integer. Since the operator appears before the operand, it is a \idx{prefix operator}. 
 
-The concept of \idx{precedence} is an important concept in arithmetic expressions.\jon{minor comment on indexing and slice-ranges.} If parentheses are omitted in \Cref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6)  + 0.5|, which is erroneous since the addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition meaning that it is performed before addition. Consider the arithmetic expression,
+The concept of \idx{precedence} is an important concept in arithmetic expressions.\jon{minor comment on indexing and slice-ranges.} If parentheses are omitted in \Cref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6)  + 0.5|, which is erroneous since the addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition which means that function evaluation is performed first and addition second. Consider the arithmetic expression shown in \Cref{simpleArithmetic}.
 %
 \fsOutput{simpleArithmetic}{A simple arithmetic expression.}
 %
-Here, the addition and multiplication functions are shown in infix notation with the \idx{operator} lexemes \lexeme{+} and \lexeme{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| or \lstinline|(3 + 4) * 5|, which gives different results. For integer arithmetic, the correct order is, of course, to multiply before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedence, and for some common built-in operators shown in \Cref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.
-\begin{table}[ht]
+Here, the addition and multiplication functions are shown in infix notation with the \idx{operator} lexemes \lexeme{+} and \lexeme{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| and \lstinline|(3 + 4) * 5| that gives different results. For integer arithmetic, the correct order is, of course, multiplication before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedence, and for some common built-in operators shown in \Cref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.
+\begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|>{\hsize=.8\hsize\raggedright\arraybackslash}X|>{\hsize=.4\hsize}X|>{\hsize=1.8\hsize}X|}
     \hline
     \rowcolor{headerRowColor}     Operator & Associativity & Description\\
     \hline
-    \mbox{\lstinline[language=syntax]|+<*expr*>|\hspace*{3.5mm},} \mbox{\lstinline[language=syntax]|-<*expr*>|\hspace*{3.5mm},} \mbox{\lstinline[language=syntax]|\~\~\~<*expr*>|\hspace*{3.5mm}} & Left & Unary identity, negation, and bitwise negation operator\\
+    \mbox{\lstinline[language=syntax]|+<*expr*>|\hspace*{3.5mm},} \mbox{\lstinline[language=syntax]|-<*expr*>|\hspace*{3.5mm},} \mbox{\lstinline[language=syntax]|\~\~\~<*expr*>|\hspace*{3.5mm}} & Left & Unary identity, negation, and bitwise negation operators\\
     \hline
     \mbox{\lstinline[language=syntax]|f <*expr*>|\hspace*{3.5mm}} & Left & Function application\\
     \hline
-    \mbox{\lstinline[language=syntax]|<*expr*> ** <*expr*>|\hspace*{3.5mm}} & Right & Exponent\\ 
+    \mbox{\lstinline[language=syntax]|<*expr*> ** <*expr*>|\hspace*{3.5mm}} & Right & Exponentiation\\ 
     \hline
     \mbox{\lstinline[language=syntax]|<*expr*> * <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> / <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> \% <*expr*>|\hspace*{7mm}} & Left & Multiplication, division and remainder\\
     \hline
     \mbox{\lstinline[language=syntax]|<*expr*> + <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> - <*expr*>|\hspace*{7mm}} & Left & Addition and subtraction binary operators\\
     \hline
-    \mbox{\lstinline[language=syntax]|<*expr*> \^\^\^ <*expr*>|\hspace*{7mm}} & Right & bitwise exclusive or\\
+    \mbox{\lstinline[language=syntax]|<*expr*> \^\^\^ <*expr*>|\hspace*{7mm}} & Right & Bitwise exclusive or\\
     \hline
     \mbox{\lstinline[language=syntax]|<*expr*> < <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> <= <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> > <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> >= <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> = <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> <> <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> \<\<\< <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> >>> <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> \&\&\& <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]!<*expr*> ||| <*expr*>! \hspace*{7mm},}
              & Left & Comparison operators, bitwise shift, and bitwise 'and' and 'or'.\\
@@ -288,13 +292,13 @@ Here, the addition and multiplication functions are shown in infix notation with
   \label{tab:someOperatorPrecedences}
 \end{table}
 
-Associativity implies the order in which calculations are performed for operators of the same precedence. For some operators and type combinations association matters little, e.g., multiplication associates to the left and exponentiation associates to the right, as demonstrated in \Cref{precedence}.\spec{Spec-4.0, Table 18.2.1 appears to be missing Boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
+Associativity describes the order in which calculations are performed for binary operators of the same precedence. Some operator's associativity are given in \Cref{tab:someOperatorPrecedences}. In the table we see that \lexeme{*} is left associative, which means that \lstinline{3.0 * 4.0 * 5.0} is evaluated as \lstinline{(3.0 * 4.0) * 5.0}. Conversely, \lstinline{**} is right associative, so \lstinline{4.0**3.0**2.0} is evaluated as \lstinline{4.0**(3.0**2.0)}. For some operators, like multiplication, association matters little, e.g., $4*3*2=4*(3*2)=(4*3)*2$, and for other operators, like exponentiation, association makes a huge difference, e.g., $4^{(3^2)}\neq (4^3)^2$. Examples of this is shown in \Cref{precedence}.\spec{Spec-4.0, Table 18.2.1 appears to be missing Boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
 %
 \fsOutput{precedence}{Precedence rules define implicit parentheses.}
 %
-The expression for \lstinline|3.0 * 4.0 * 5.0| associates to the left, and thus is interpreted as \mbox{\lstinline|(3.0 * 4.0) * 5.0|,} but gives the same results as \lstinline|3.0 * (4.0 * 5.0)|, since association does not matter for multiplication of numbers. However, the expression for \lstinline|4.0 ** 3.0 ** 2.0| associates to the right, and thus is interpreted as \lstinline|4.0 ** (3.0 ** 2.0)|, which is quite different from \lstinline|(4.0 ** 3.0) ** 2.0|. \advice{Whenever in doubt of association or any other basic semantic rules, it is a good idea to use parentheses as here. It is also a good idea to test your understanding of the syntax and semantic rules by making a simple script.}
+\advice{Whenever in doubt of association or any other basic semantic rules, it is a good idea to use parentheses. It is also a good idea to test your understanding of the syntax and semantic rules by making a simple script.}
 
-\section{Boolean arithmetic}
+\section{Boolean Arithmetic}
 Boolean arithmetic is the basis of almost all computers and particularly important for controlling program flow, which will be discussed in \Cref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Basic operations on Boolean values are '\idx{and}', '\idx{or}', and '\idx{not}', which in F\# are written respectively as the binary operators \lstinline!&&!, \lstinline!||!, and the function \lstinline!not!. Since the domain of Boolean values is so small, all possible combination of input on these values can be written on the tabular form, known as a \idx{truth table}, and the truth tables for the basic Boolean operators and functions are shown in \Cref{tab:truthTable}.
 \begin{table}
   \centering
@@ -312,22 +316,22 @@ Boolean arithmetic is the basis of almost all computers and particularly importa
   \caption{Truth table for boolean 'and', 'or', and 'not' operators. Value 0 is false and 1 is true.}
   \label{tab:truthTable}
 \end{table}
-A good mnemonic for remembering the result of the 'and' and 'or' operators is to use 1 for true, 0 for false, multiplication for the Boolean 'and' operator, and addition for Boolean 'or' operator, e.g., true and false in this mnemonic translates to $1\cdot 0 = 0$, and the result translates back to the Boolean value false. In F\# the truth table for the basic Boolean operators can be produced by a program as shown in \Cref{truthTable}.
+A good mnemonic for remembering the result of the 'and' and 'or' operators is to use 1 for true, 0 for false, multiplication for the Boolean 'and' operator, and addition for the Boolean 'or' operator, e.g., true and false in this mnemonic translates to $1\cdot 0 = 0$, and the result translates back to the Boolean value false. In F\#, the truth table for the basic Boolean operators can be produced by a program, as shown in \Cref{truthTable}.
 %
 \fsOutput{truthTable}{Boolean operators and truth tables.}
 %
-Here, we used the \lstinline|printfn| function, to present the results of many expressions on something that resembles a tabular form. The spacing produced using the \lstinline|printfn| function is not elegant, and in \Cref{sec:printf} we will discuss better options for producing more beautiful output. Notice that the arguments for \lstinline|printfn| was given on the next line with indentation. The indentation is an important part of telling F\# which part of what you write belongs together. This is an example of the so-called lightweight syntax. Generally, F\# ignores newlines and whitespaces except when using the lightweight syntax. The difference between verbose and lightweight syntax is discussed in \Cref{chap:let}.
+Here, we used the \lstinline|printfn| function to present the results of many expressions on something that resembles a tabular form. The spacing produced using the \lstinline|printfn| function is not elegant, and in \Cref{sec:printf} we will discuss better options for producing more beautiful output. Notice that the arguments for \lstinline|printfn| was given on the next line with indentation. The indentation is an important part of telling F\# which part of what you write belong together. This is an example of the so-called lightweight syntax. Generally, F\# ignores newlines and whitespaces except when using the lightweight syntax. The difference between verbose and lightweight syntax is discussed in \Cref{chap:let}.
 
-\section{Integer arithmetic}
+\section{Integer Arithmetic}
 The set of integers is infinitely large, but since all computers have limited resources, it is not possible to represent it in its entirety. The various integer types listed in \Cref{tab:primitiveTypes} are finite subsets reduced by limiting their ranges. 
 %Although \lstinline!bignum! is theoretically unlimited, the biggest number representable is still limited by computer memory. 
 An in-depth description of integer implementation can be found in \Cref{app:numbers}. The type \keyword{int} is the most common type. 
 
-\Cref{tab:preNInfixOperators}, \ref{tab:comparisonOperators}, and~\ref{tab:arithmeticFunctions} give examples operators and functions pre-defined for integer types. Notice that fewer functions are available for integers than for floating point numbers. For most addition, subtraction, multiplication, and negation, the result is straightforward. However, performing arithmetic operations on integers requires extra care, since the result may cause \idx{overflow} and \idx{underflow}. E.g., the range of the integer type \lstinline|sbyte| is $[-128\ldots 127]$, which causes problems in the example in \Cref{overflow}.
+\Cref{tab:preNInfixOperators,tab:comparisonOperators,tab:arithmeticFunctions} give examples of operators and functions pre-defined for integer types. Notice that fewer functions are available for integers than for floating point numbers. For most addition, subtraction, multiplication, and negation, the result is straightforward. However, performing arithmetic operations on integers requires extra care, since the result may cause \idx{overflow} and \idx{underflow}. For example, an \lstinline|sbyte| is specified using the \lexeme{y}-literal and can hold values $[-128\ldots 127]$. This causes problems in the example in \Cref{overflow}.
 %
 \fsOutput{overflow}{Adding integers may cause overflow.}
 %
-Here $100+30=130$, which is larger than the biggest \lstinline|sbyte|, and the result is an overflow. Similarly, we get an underflow, when the arithmetic result falls below the smallest value storable in an \lstinline|sbyte| as demonstrated in \Cref{underflow}.
+Here $100+30=130$, which is larger than the biggest \lstinline|sbyte|, and the result is an overflow. Similarly, we get an underflow, when the arithmetic result falls below the smallest value storable in an \lstinline|sbyte|, as demonstrated in \Cref{underflow}.
 %
 \fsOutput{underflow}{Subtracting integers may cause underflow.}
 %
@@ -337,26 +341,26 @@ The overflow error in \Cref{overflow} can be understood in terms of the binary r
 %
 \fsOutput{overflowBits}{The leftmost bit is interpreted differently for signed and unsigned integers, which gives rise to potential overflow errors.}
 %
-That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$ causes the left-most bit to be used, then this is wrongly interpreted as a negative number when stored in an \lstinline{sbyte}. Similar arguments can be made explaining underflows.
+That is, for signed bytes, the left-most bit is used to represent the sign, and since the addition of $100=01100100_2$ and $30=00011110_b$ is $130=10000010_2$, which causes the left-most bit to be used, this is wrongly interpreted as a negative number when stored in an \lstinline{sbyte}. Similar arguments can be made explaining underflows.
 
-The division and remainder operators\idxs{integer division}, which discards the fractional part after division, and the \idx{remainder} operator calculates the remainder after integer division, as demonstrated in \Cref{integerDivisionRemainder}.
+The \idxs{integer division} operator discards the fractional part after division, and the \idx{integer remainder} operator calculates the remainder after integer division, as demonstrated in \Cref{integerDivisionRemainder}.
 %
 \fsOutput{integerDivisionRemainder}{Integer division and remainder operators.}
 %
-Together, integer division and the remainder is a lossless representation of the original number, see \Cref{integerDivisionRemainderLossless}.
+Together, the integer division and remainder can form a lossless representation of the original number, see \Cref{integerDivisionRemainderLossless}.
 %
 \fsOutput{integerDivisionRemainderLossless}{Integer division and remainder is a lossless representation of an integer, compare with \Cref{integerDivisionRemainder}.}
 %
-And we see that integer division of 7 by 3 followed by multiplication by 3 is less than 7, and the difference is \lstinline!7 % 3!.
+Here we see that integer division of 7 by 3 followed by multiplication by 3 is less than 7, and that the difference is \lstinline!7 % 3!.
 
 Notice that neither overflow nor underflow error gave rise to an error message, which is why such bugs are difficult to find. 
- Dividing any non-zero number with 0 is infinite, which is also outside the domain of any of the integer types, but in this case, F\# casts an \idx{exception} as shown in \Cref{integerDivisionByZeroError}.
+ Dividing any non-zero number by 0 is infinite, which is also outside the domain of any of the integer types, but in this case, F\# casts an \idx{exception}, as shown in \Cref{integerDivisionByZeroError}.
 %
 \fsOutput{integerDivisionByZeroError}{Integer division by zero causes an exception runtime error.}
 %
-The output looks daunting at first sight, but the first and last lines of the error message are the most important parts, which tells us what exception was cast and why the program stopped. The middle is technical details concerning which part of the program caused this and can be ignored for the time being. Exceptions are a type of \idx{runtime error}, and are treated in \Cref{chap:errors}
+The output looks daunting at first sight, but the first and last lines of the error message are the most important parts, which tell us what exception was cast and why the program stopped. The middle contains technical details concerning which part of the program caused the error and can be ignored for the time being. Exceptions are a type of \idx{runtime error}, and are discussed in \Cref{chap:errors}
 
-Integer exponentiation is not defined as an operator, but this is available as the built-in function \lstinline|pown|. This function is demonstrated in \Cref{integerPown} for calculating $2^5$.
+Integer exponentiation is not defined as an operator but is available as the built-in function \lstinline|pown|. This function is demonstrated in \Cref{integerPown} for calculating $2^5$.
 %
 \fsOutput{integerPown}{Integer exponent function.}
 %
@@ -400,36 +404,36 @@ For binary arithmetic on integers, the following operators are available:
 %\ebnf{tmp.ebnf}{to do.}
 % we must consider the 8-bit binary form of the unsigned integers: $195 = 11000011_2$, $134 = 10000110_2$, $97 = 01100001_2$, and $60 = 00111100_2$, which agrees with the definitions. 
 
-\section{Floating point arithmetic}
+\section{Floating Point Arithmetic}
 Like integers, the set of reals is also infinitely large, hence, floating point types are finite subsets reduced by sampling the space of reals. An in-depth description of floating point implementations can be found in Appendix~\ref{app:numbers}. The type \keyword{float} is the most common type. 
 
-\Cref{tab:preNInfixOperators}, \ref{tab:comparisonOperators}, and~\ref{tab:arithmeticFunctions} give examples operators and functions pre-defined for floating point types. Note that the remainder operator for floats calculates the remainder after division and discarding the fractional part, see \Cref{floatDivisionRemainder}.
+\Cref{tab:preNInfixOperators,tab:comparisonOperators,tab:arithmeticFunctions} give examples of operators and functions pre-defined for floating point types. Note that the remainder operator for floats calculates the remainder after division and discards the fractional part, see \Cref{floatDivisionRemainder}.
 %
 \fsOutput{floatDivisionRemainder}{Floating point division and remainder operators.}
 %
-The remainder for floating point numbers can be fractional, but division, discarding fractional part, and the remainder is still a lossless representation of the original number as demonstrated in \Cref{floatDivisionRemainderLossless}.
+The remainder for floating point numbers can be fractional, but division, discarding fractional part, and the remainder is still a lossless representation of the original number, as demonstrated in \Cref{floatDivisionRemainderLossless}.
 % 
-\fsOutput{floatDivisionRemainderLossless}{Floating point division, truncation, and remainder is a lossless representation of a number.}
+\fsOutput{floatDivisionRemainderLossless}{Floating point division, downcasting, and remainder is a lossless representation of a number.}
 %
 
 Arithmetic using \lstinline|float| will not cause over- and underflow problems, since the IEEE 754 standard includes the special numbers $\pm\infty$ and NaN. As shown in \Cref{floatDivisionByZero}, no exception is thrown.
 %
 \fsOutput{floatDivisionByZero}{Floating point numbers include infinity and Not-a-Number.}
 %
-However, the \lstinline|float| type has limited precision, since there is only a finite number of numbers that can be stored in a float. E.g., addition and subtraction can give surprising results as demonstrated in \Cref{floatImprecission}.
+However, the \lstinline|float| type has limited precision, since there is only a finite number of numbers that can be stored in a float. E.g., addition and subtraction can give surprising results, as demonstrated in \Cref{floatImprecission}.
 %
 \fsOutput{floatImprecission}{Floating point arithmetic has finite precision.}
 %
-That is, addition and subtraction associates to the left, hence the expression is interpreted as \lstinline!(357.8 + 0.1)  - 357.9! and we see that we do not get the expected 0. The reason is that the calculation is done stepwise, and in the process, the numbers are represented using the imprecise floating point standard. Thus,\lstinline!357.8 + 0.1!  is represented as a number close to but not identical to what \lstinline!357.9! is represented as, and thus, when subtracting these two representations, we get a very small number but not 0. Such errors tend to accumulate and comparing the result of expressions of floating point values should, therefore, be treated with care. Thus, \advice{equivalence of two floating point expressions should only be considered up to sufficient precision, e.g., comparing \lstinline!357.8 + 0.1! and \lstinline!357.9! up to \lstinline!1e-10! precision should be tested as, \lstinline!abs ((357.8 + 0.1) - 357.9)  < 1e-10!.}
+That is, addition and subtraction associates to the left, hence the expression is interpreted as \lstinline!(357.8 + 0.1)  - 357.9! and we see that we do not get the expected 0. The reason is that the calculation is done stepwise, and in the process, the numbers are represented using the imprecise floating point standard. Thus,\lstinline!357.8 + 0.1!  is represented as a number close to but not identical to what \lstinline!357.9! is represented as, and thus, when subtracting these two representations, we get a very small nonzero number. Such errors tend to accumulate, and comparing the result of expressions of floating point values should, therefore, be treated with care. Thus, \advice{equivalence of two floating point expressions should only be considered up to sufficient precision, e.g., comparing \lstinline!357.8 + 0.1! and \lstinline!357.9! up to \lstinline!1e-10! precision should be tested as, \lstinline!abs ((357.8 + 0.1) - 357.9)  < 1e-10!.}
 
-\section{Char and string arithmetic}
-Addition is the only operator defined for characters. Nevertheless, character arithmetic is often done by casting to an integer. A typical example is the conversion of character case, e.g., to convert the lowercase character 'z' to uppercase, we use the \idx{ASCIIbetical order} and add the difference between any Basic Latin Block letters in upper- and lowercase as \lstinline{integers} and cast back to \lstinline{char}, see \Cref{upcaseChar}.
+\section{Char and String Arithmetic}
+Addition is the only operator defined for characters. Nevertheless, character arithmetic is often done by casting to an integer. A typical example is the conversion of character case, e.g., to convert the lowercase character 'z' to uppercase. Here, we use the \idx{ASCIIbetical order}, add the difference between any Basic Latin Block letters in upper- and lowercase as \lstinline{integers}, and cast back to \lstinline{char}, see \Cref{upcaseChar}.
 %
 \fsOutput{upcaseChar}{Converting case by casting and integer arithmetic.}
 %
 I.e., the code point difference between upper and lower case for any alphabetical character 'a' to 'z' is constant, hence we can change case by adding or subtracting the difference between any corresponding character. Unfortunately, this does not generalize to characters from other languages.
 
-A large collection of operators and functions exist for \lstinline{string}. The simplest is concatenation using the \lexeme{+} operator as demonstrated in \Cref{stringConcatenation}.
+A large collection of operators and functions exist for \lstinline{string}. The simplest is concatenation using the \lexeme{+} operator, as demonstrated in \Cref{stringConcatenation}.
 %
 \fsOutput{stringConcatenation}{Example of string concatenation.}
 %
@@ -441,20 +445,20 @@ Notice that the first character has index 0, and to get the last character in a 
 %
 \fsOutput{stringIndexingLength}{String length attribute and string indexing.}
 %
-Since index counting starts at 0, and the string length is 7, then the index of the last character is 6. 
+Since index counting starts at 0, and since the string length is 7, the index of the last character is 6. 
 %An alternative notation for indexing is to use the property \lstinline|Char|, and in the example \lstinline|''abcdefg''.[3]| is the same as \lstinline|a.Char 3|. 
-The is a long list of built-in functions in \lstinline|System.String| for working with strings, some of which will be discussed in \Cref{sec:strings}.
+There is a long list of built-in functions in \lstinline|System.String| for working with strings, some of which will be discussed in \Cref{sec:strings}.
  
-The \idx{dot notation} is an example of Structured programming, where technically speaking, the string \mbox{\lstinline|"abcdefg"|} is an immutable \idx{object} of \idx{class} \lstinline|string|, \lstinline|[]| is an object \idx{method}, and \lstinline|Length| is a property. For more on object, classes, and methods see \Cref{chap:oop}.  
+The \idx{dot notation} is an example of Structured programming, where technically speaking, the string \mbox{\lstinline|"abcdefg"|} is an immutable \idx{object} of \idx{class} \lstinline|string|, \lstinline|[]| is an object \idx{method}, and \lstinline|Length| is a property. For more on objects, classes, and methods, see \Cref{chap:oop}.  
 
-Strings are compared letter by letter. For two strings to be equal, they must have the same length and all the letters must be identical. E.g., \mbox{\lstinline!"abs" = "absalon"!} is false, while \lstinline!"abs" = "abs"! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator, e.g., \lstinline!"abs" <> "absalon"! is true, while \lstinline!"abs" <> "abs"! is false. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered alphabetically, such that \lstinline!"abs" < "absalon" && "absalon" < "milk"! is true, that is, the \lexeme{<} operator on two strings is true, if the left operand should come before the right, when sorting alphabetically. The algorithm for deciding the boolean value of \lstinline!leftOp < rightOp! is as follows: we start by examining the first character, and if \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are different, then the \lstinline!leftOp < rightOp! is equal to \lstinline!leftOp.[0] < rightOp.[0]!. E.g., \lstinline!"milk" < "abs"! is the same as \lstinline!'m' < 'a'!, which is false, since the letter 'm' does not come before the letter 'a' in the alphabet, or more precisely, the codepoint of 'm' is not less than the codepoint of 'a'. If \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are equal, then we move onto the next letter and repeat the investigation, e.g., \lstinline!"abe" < "abs"! is true, since \lstinline!"ab" = "ab"! is true and \lstinline!'e' < 's'! is true. If we reach the end of either of the two strings, then the short is smaller than the larger, e.g., \lstinline!"abs" < "absalon"! is true, while \lstinline!"abs" < "abs"! is false. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined similarly.
+Strings are compared letter by letter. For two strings to be equal, they must have the same length and all the letters must be identical. E.g., \mbox{\lstinline!"abs" = "absalon"!} is false, while \lstinline!"abs" = "abs"! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator, e.g., \lstinline!"abs" <> "absalon"! is true, while \lstinline!"abs" <> "abs"! is false. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered alphabetically, such that \lstinline!"abs" < "absalon" && "absalon" < "milk"! is true, that is, the \lexeme{<} operator on two strings is true if the left operand should come before the right when sorting alphabetically. The algorithm for deciding the boolean value of \lstinline!leftOp < rightOp! is as follows: we start by examining the first character, and if \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are different, then \lstinline!leftOp < rightOp! is equal to \lstinline!leftOp.[0] < rightOp.[0]!. E.g., \lstinline!"milk" < "abs"! is the same as \lstinline!'m' < 'a'!, which is false, since the letter 'm' does not come before the letter 'a' in the alphabet, or more precisely, the codepoint of 'm' is not less than the codepoint of 'a'. If \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are equal, then we move on to the next letter and repeat the investigation, e.g., \lstinline!"abe" < "abs"! is true, since \lstinline!"ab" = "ab"! is true and \lstinline!'e' < 's'! is true. If we reach the end of either of the two strings, then the shorter word is smaller than the longer word, e.g., \lstinline!"abs" < "absalon"! is true, while \lstinline!"abs" < "abs"! is false. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined in a similar manner.
 
-\section{Programming intermezzo: Hand conversion between decimal and binary numbers}
-Conversion of integers between decimal and binary form is a key concept in order to understand some of the basic properties of calculations on the computer. From binary to decimal is straightforward using the power-of-two algorithm, i.e., given a sequence of $n+1$ bits that represent an integer $b_n b_{n-1}\dots b_0$, where $b_n$ and $b_0$ are the most and least significant bits, then the decimal value is calculated as,
+\section{Programming Intermezzo: Hand Conversion Between Decimal and Binary Numbers}
+Conversion of integers between decimal and binary form is a key concept one must grasp in order to understand some of the basic properties of calculations on the computer. Converting from binary to decimal is straightforward if using the power-of-two algorithm, i.e., given a sequence of $n+1$ binary digits $b_i$ written as $b_n b_{n-1}\dots b_0$, and where $b_n$ and $b_0$ are the most and least significant bits respectively, then the decimal value is calculated as,
 \begin{align}
   v = \sum_{i=0}^nb_i2^i
 \end{align}
-For example, $10011_2 = 1+2+16 = 19$. From decimal to binary is a little more complex, but a simple divide-by-two algorithm exists. The key to understanding the divide-by-two algorithm is to realize that when you divide a number by two, then that is equivalent to shifting its binary representation 1 to the right. E.g., $10 = 1010_2$ and $10/2 = 5 = 101_2$. Odd numbers have $b_0=1$, e.g., $11_{10} = 1011_2$ and $11_{10}/2 = 5.5 = 101.1_2$. Hence, if we divide any number by two and get a non-integer number, then its least significant bit was $1$. Another way to express this is that the least significant bit is the remainder after integer division by two. Sequential application of this idea leads directly to the divide-by-two algorithm. E.g., if we were to convert the number $11_{10}$ on decimal form to binary form we would perform the following steps:
+For example, $10011_2 = 1+2+16 = 19$. Converting from decimal to binary is a little more complex, but a simple divide-by-two algorithm exists. The key to understanding the divide-by-two algorithm is to realize that dividing a number by two is equivalent to shifting its binary representation one position to the right. E.g., $10 = 1010_2$ and $10/2 = 5 = 101_2$. Odd numbers have $b_0=1$, e.g., $11_{10} = 1011_2$ and $11_{10}/2 = 5.5 = 101.1_2$. Hence, if we divide any number by two and get a non-integer number, then its least significant bit was $1$. Another way to express this is to say that the least significant bit is the remainder after integer division by two. Sequential application of this idea leads directly to the divide-by-two algorithm. E.g., if we were to convert the number $11_{10}$ in decimal form to binary form, we would perform the following steps:
 \begin{align*}
   11\tikzmark{a1} \text{ div } 2 = \tikzmark{a2}5\tikzmark{a3},\;   \tikzmark{a4}11  \text{ rem }  2 & =\tikzmark{a5}1\tikzmark{a6}\\
   \nonumber \\
@@ -471,7 +475,7 @@ For example, $10011_2 = 1+2+16 = 19$. From decimal to binary is a little more co
 \DrawArrow[]{c2}{d1}%
 \DrawArrow[]{c3}{d4}%
 \FrameArea{a5}{d6}%
-\hspace*{-0.6mm}Here we used div and rem to signify the integer division and remainder operators. The algorithm stops when the result of integer division is zero. Reading off the remainder from below and up we find the sequence $1011_2$, which is the binary form of the decimal number $11_{10}$. Using interactive mode, we can calculate the same as shown in \Cref{conversionByHand}.
+\hspace*{-0.6mm}Here we used div and rem to signify the integer division and remainder operators. The algorithm stops when the result of integer division is zero. Reading off the remainder from below and up, we find the sequence $1011_2$, which is the binary form of the decimal number $11_{10}$. Using the interactive mode, we can perform the same calculation, as shown in \Cref{conversionByHand}.
 \begin{codeNOutput}[label=conversionByHand]{: Converting the number $11_{10}$ to binary form.}
 \begin{lstlisting}[language=console]
 > printfn "(%d, %d)" (11 / 2) (11 % 2);;
@@ -488,7 +492,7 @@ val it : unit = ()
 val it : unit = ()
 \end{lstlisting}
 \end{codeNOutput}
-Thus, by reading the second integer-response from \lstinline!printfn! from below and up, we again obtain the binary form of $11_{10}$ to be $1011_2$. For integers with a fractional part, the divide-by-two may be used on the whole part, while multiply may be used in a similar manner on the fractional part.
+Thus, by reading the second integer-response from \lstinline!printfn! from below and up, we again obtain the binary form of $11_{10}$ to be $1011_2$. For integers with a fractional part, the divide-by-two algorithm may be used on the whole part, while multiply-by-two may be used in a similar manner on the fractional part.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

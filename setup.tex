@@ -373,7 +373,7 @@
   listing only,
   colframe=black!50!white,
   listing options={language=syntax,escapechar=§,#1},
-  title=\textbf{Listing \thetcbcounter} {#3},
+  title=\textbf{Listing \thetcbcounter:} { #3},
   label={#2}
 }
 
@@ -417,6 +417,13 @@
   title=\textbf{Listing \thetcbcounter}: {#3},
   label={#2},
 }
+
+% fsharp code in captions. Double curly brackets needed to return to
+% regular font after inlinecode, don't know why.
+\makeatletter
+\newcommand\inlinecode[1]
+  {{\lst@basicstyle #1}}
+\makeatother
 
 \newcommand{\filename}[1]{\lstinline[language=console]{#1}}
 
