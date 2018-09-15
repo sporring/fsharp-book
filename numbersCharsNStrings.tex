@@ -367,16 +367,17 @@ Integer exponentiation is not defined as an operator but is available as the bui
 
 For binary arithmetic on integers, the following operators are available:
 \lstinline[language=syntax]{<*leftExpr*> <<< <*rightExpr*>}, which shifts the bit pattern of \lstinline[language=syntax]|<*leftExpr*>| \lstinline[language=syntax]|<*rightExpr*>| positions to the left while inserting 0's to right;
-\lstinline[language=syntax]{<*leftExpr*> >>> <*rightExpr*>}, which shifts the bit pattern of \lstinline[language=syntax]|<*leftExpr*>| \lstinline[language=syntax]|<*rightExpr*>| positions to the right while inserting 0's to left;
-\lstinline[language=syntax]{<*expr*> &&& <*expr*>}, bitwise 'and', returns the result of taking the Boolean 'and' operator position-wise;
-\lstinline[language=syntax]{<*expr*> ||| <*expr*>}, bitwise 'or', as 'and' but using the Boolean 'or' operator; and
-\lstinline[language=syntax]{<*expr*> ~~~ <*expr*>}, bitwise xor, which is returns the result of the Boolean 'xor' operator defined by the truth table in \Cref{tab:xor}.\idxs{xor}\idxs{exclusive or}
+\lstinline[language=syntax]{<*leftExpr*> >>> <*rightExpr*>}, which shifts the bit pattern of \lstinline[language=syntax]|<*leftExpr*>| \lstinline[language=syntax]|<*rightExpr*>| positions to the right while inserting 0's to left; 
+\lstinline[language=syntax]{~~~ <*expr*>} returns a new integer, where all 0 bits are changed to 1 bits and vice-versa;
+\lstinline[language=syntax]{<*expr*> &&& <*expr*>} returns the result of taking the Boolean 'and' operator position-wise;
+\lstinline[language=syntax]{<*expr*> ||| <*expr*>}  returns the result of taking the Boolean 'or' operator position-wise; and
+\lstinline[language=syntax]{<*expr*> ^^^ <*expr*>} returns the result of the Boolean 'xor' operator defined by the truth table in \Cref{tab:xor}.\idxs{xor}\idxs{exclusive or}
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|c|c|c|}
     \hline
-    \rowcolor{headerRowColor} \lstinline!a! & \lstinline!b! & \lstinline!a ~~~ b!\\
+    \rowcolor{headerRowColor} \lstinline!a! & \lstinline!b! & \lstinline!a ^^^ b!\\
     \hline
     \lstinline!false! & \lstinline!false! & \lstinline!false!\\
     \lstinline!false! & \lstinline!true! & \lstinline!true!\\

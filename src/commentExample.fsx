@@ -2,7 +2,7 @@
 let discriminant a b c = b ** 2.0 - 4.0 * a * c
 
 /// <summary>Find x when 0 = ax^2+bx+c.</summary>
-/// <remarks>Negative discriminant are not checked.</remarks>
+/// <remarks>Negative discriminants are not checked.</remarks>
 /// <example>
 ///   The following code:
 ///   <code>

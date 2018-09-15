@@ -4,7 +4,7 @@
 <members>
 <member name="M:CommentExample.solution(System.Double,System.Double,System.Double,System.Double)">
  <summary>Find x when 0 = ax^2+bx+c.</summary>
- <remarks>Negative discriminant are not checked.</remarks>
+ <remarks>Negative discriminants are not checked.</remarks>
  <example>
    The following code:
    <code>
