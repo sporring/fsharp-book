@@ -47,6 +47,9 @@
 \newcommand{\cmark}{{\color{green}\ding{51}}}%
 \newcommand{\xmark}{{\color{red}\ding{55}}}%
 
+% Add better time and date support
+\usepackage{datetime2}
+
 % Extra math stuff
 \usepackage{amsmath,amssymb}
 
@@ -126,7 +129,7 @@
 \makeatother
 %\newcommand{\idx}[1]{\emph{#1}\idxs{#1}}
 \newcommand{\keyword}[1]{{\lstinline[language=fsharp]|#1|}}
-\newcommand{\lexeme}[1]{\mbox{``\lstinline[language=fsharp]|#1|''}}
+\newcommand{\lexeme}[1]{\mbox{``\lstinline[language=fsharp]{#1}''}}
 \makeindex
 
 % display tree like structures
