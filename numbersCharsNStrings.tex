@@ -67,11 +67,11 @@ Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadec
 To denote integers in bases different than 10, F\# uses the prefix '0b' for binary, '0o' for octal, and '0x' for hexadecimal numbers.  For example, the value $367_{10}$ may be written as an integer \lstinline!367!, as a binary number \lstinline!0b101101111!, as a octal number \lstinline!0o557!, and as a hexadecimal number \lstinline!0x16f!. In F\#, the character sequences \lstinline!0b12! and \lstinline!ff! are not recognized as numbers.
 
 A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks. Appendix~\ref{sec:unicode} contains more details on code points.\spec{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The character type in F\# is denoted \idx[char@\lstinline{char}]{\keyword{char}}.  Examples of characters are 'a', 'D', '3', and examples of non-characters are '23' and 'abc'. Some characters, such as the tabulation character, do not have a visual representation. These can still be represented as a character using \idx{escape sequences}. A character escape sequence starts with \lexeme{\\} followed by letter for simple escapes such as \lstinline{\t} for tabulation and \lstinline{\n} for newline. Escape sequences can also be a numerical representation of a code point, and three versions exist: The trigraph \lstinline|\DDD|, where \lstinline{D} is a decimal digit, is used to specify the first 256 code points, the hexadecimal escape codes \lstinline|\uXXXX|, where \lstinline{X} is a hexadecimal digit, is used to specify the first 65536 code points, and \lstinline|\UXXXXXXXX| is used to specify any of the approximately $4.3\cdot 10^9$ possible code points. All escape sequences are shown in \Cref{tab:escapeChar}.
-%\jon{Escape sequence deler sjovt!}
+%
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabular}{|c|p{0.15\textwidth}|p{0.6\textwidth}|}
+  \begin{tabular}{|c|p{0.2\textwidth}|p{0.6\textwidth}|}
     \hline
     \rowcolor{headerRowColor} Character& Escape sequence & Description\\
     \hline
@@ -105,7 +105,7 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
   \centering
   %\begin{tabularx}{\linewidth}{|>{\hsize=.6\hsize}X|>{\hsize=1.4\hsize}X|>{\hsize=1\hsize}X|}
   \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabular}{|p{3.2cm}|p{3cm}|p{3.5cm}|p{3.5cm}|}
+  \begin{tabular}{|p{3cm}|p{3cm}|p{3.7cm}|p{3.6cm}|}
     \hline
     \rowcolor{headerRowColor} Type & syntax & Examples & Value \\
     \hline
@@ -163,7 +163,7 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
                                    & {\lstinline[language=syntax, keywords={}]!<*float*>!}\newline
                                      {\lstinline[language=syntax, keywords={}]!<*hex*>LF!}
                                             & {\lstinline!3.0!}\newline
-                                              {\lstinline! 0x013fLF!} 
+                                              {\lstinline!0x013fLF!} 
                                                        & 3.0\newline
                                                          9.387247271e-323 \\
     {\keyword{single}}, {\keyword{float32}} 
@@ -185,7 +185,7 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
     {\keyword{string}} 
                                    & {\lstinline[language=syntax, keywords={}]!"<*string*>"!}\newline
                                      {\lstinline[language=syntax, keywords={}]!@"<*string*>"!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!""<*string*>""!}
+                                     {\lstinline[language=syntax, keywords={}]!"""<*string*>"""!}
                                             & {\lstinline!"a \"quote\".\n"!}\newline
                                               {\lstinline!@"a ""quote"".\n"!}\newline
                                               {\lstinline!"""a "quote".\n"""!}
@@ -195,7 +195,7 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
     \hline
   \end{tabular}
   % \end{tabularx}
-  \caption{List of literal types. Syntax notation is used such that, e.g., {\lstinline[language=syntax, keywords={}]!<**>!} means that the programmer replaces the brackets and content with a value of the appropriate form. The \lstinline{[||]} notation means that the value is an array, see \Cref{sec:arrays} for details.
+  \caption{List of literal types. The syntax notation {\lstinline[language=syntax, keywords={}]!<**>!} means that the programmer replaces the brackets and content with a value of the appropriate form. The \lstinline{[||]} notation means that the value is an array, see \Cref{sec:arrays} for details.
     % The \lstinline![]! notation is for lists, see \Cref{chap:lists}. $^*$\lstinline[language=ebnf]!bignum! is not a basic type and does not yet have an implementation for \lstinline[language=ebnf]!dInt ("Q"|"R"|"Z"|"N"|"G")! in Mono.
   }
   \label{tab:literalTypes}
