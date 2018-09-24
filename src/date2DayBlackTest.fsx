@@ -39,7 +39,7 @@ let testCases = [
     (1, 1, 2015, "Thursday");
     (30, 9, 2017, "Saturday");
     (1, 10, 2017, "Sunday")]);
-  ("Across feburary boundary",
+  ("Across Feburary boundary",
    [(28, 2, 2016, "Sunday");
     (29, 2, 2016, "Monday");
     (1, 3, 2016, "Tuesday");
