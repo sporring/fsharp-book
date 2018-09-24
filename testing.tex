@@ -66,15 +66,16 @@ Many solutions to the problem have been discovered, and here we will base our pr
        \lstinline{januaryFirstDay} & 0 & -& \lstinline{2016} & \lstinline{5}\\
      \hline
      \lstinline{sum} 
-       & 1 & \lstinline{0 <= j} \lstinline{\&\&}\newline\hspace*{2mm}\lstinline{j < lst.Length} &&\\
+       & 1 & \lstinline{0 <= j} \lstinline{\&\&}\newline\hspace*{0.5em}\lstinline{j < lst.Length} &&\\
        & 1a & \lstinline{t \&\& t} & \lstinline{[1; 2; 3] 1} & \lstinline{3}\\
        & 1b & \lstinline{f \&\& t} & \lstinline{[1; 2; 3] -1} & \lstinline{0}\\
        & 1c & \lstinline{t \&\& f} & \lstinline{[1; 2; 3] 10} & \lstinline{0}\\
        & 1d & \lstinline{f \&\& f} & - & -\\
        \hline
        \lstinline{date2Day} & 1 & \lstinline{(y \% 4 = 0)} \lstinline{\&\&}\newline
-       \hspace*{2mm}\lstinline{((y \% 100 <> 0)} \lstinline{||}\newline
-       \hspace*{4mm}\lstinline{(y \% 400 = 0))} &  & \\
+       \hspace*{0.5em}\lstinline{((y \% 100 <> 0)}\newline
+       \hspace*{1em}\lstinline{||}\newline
+       \hspace*{1.5em}\lstinline{(y \% 400 = 0))} &  & \\
         & - & \lstinline{t \&\& (t || t)} & - & -\\
         & 1a & \lstinline{t \&\& (t || f)} & \lstinline{8 9 2016} & \lstinline{Thursday}\\
         & 1b & \lstinline{t \&\& (f || t)} & \lstinline{8 9 2000} & \lstinline{Friday}\\
