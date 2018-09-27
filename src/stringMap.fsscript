@@ -1,2 +1,2 @@
-let dc = int 'A' - int 'a'
-String.map (fun c -> c + char dc) "abcd";;
+let toUpper c = c + char (int 'A' - int 'a')
+String.map toUpper "abcd";;

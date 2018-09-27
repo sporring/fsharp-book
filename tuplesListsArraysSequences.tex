@@ -1,76 +1,93 @@
-\chapter{Collections of data}
+\chapter{Collections of Data}
 \label{chap:lists}
 F\# is tuned to work with collections of data, and there are several built-in types of collections with various properties making them useful for different tasks. Examples include strings, lists, arrays, and sequences. Strings were discussed in \Cref{chap:calculator} and will be revisited here in more details. Sequences will not be discussed,\jon{Should we discuss sequences?} and we will concentrate on lists and one- and two-dimensional arrays.
+
+The data structures discussed below all have operators, properties, methods, and modules to help you write elegant programs using them.
+
+Properties and methods are common object-oriented terms used in conjunction with the discussed functionality. They are synonymous with values and functions and will be discussed in \Cref{chap:oop}. Properties and methods for a value or variable are called using the \idx{dot notation}, i.e., with the \lexeme{.}-lexeme. For example, \lstinline{"abcdefg".Length} is a property and is equal to the length of the string, and \lstinline|"abcdefg".ToUpper()| is a method and creates a new string where all characters have been converted to upper case.
+
+The data structures also have accompanying modules with a wealth of functions and where some are mentioned here. Further, the data structures are all implemented as classes offering even further functionality. The modules are optimized for functional programming, see \Crefrange{sec:recursion}{chap:functional}, while classes are designed to support object oriented programming, see \Crefrange{chap:oop}{chap:oopp}.
 
 \section{Strings}
 \label{sec:strings}
 Strings have been discussed in \Cref{chap:calculator}, the content of which will be briefly revisited here followed by a description of some of the many supporting built-in functions in F\# on strings.
 
-A \idx{string} is a sequence of characters. Each character is represented using UTF-16, see \Cref{sec:characterSets} for further details on the unicode standard. The type \lstinline{string} is an alias for \idx[System.string@\lstinline{System.string}]{\lstinline{System.string}}. String literals are delimited by quotation marks \lexeme{"} and inside the delimiters, character escape sequences are allowed (see \Cref{tab:escapeChar}), which are replaced by the corresponding character code. Examples are \lstinline{"This is a string"}, \lstinline{"\tTabulated string"}, \lstinline{"A \"quoted\" string"}, and \lstinline{""}. Strings may span several lines, and new lines inside strings are part of the string unless the line is ended with a backslash. Strings may be \idx[verbatim string]{verbatim} by preceding the string with \lexeme{@}, in which case escape sequences are not replaced, but a double quotation marks is an escape sequence which is replaced by a single, e.g., \lstinline{@"This is a string"}, \lstinline{@"\tNon-tabulated string"}, \lstinline{@"A ""quoted"" string"}, and \lstinline{@""}. Alternatively, a verbatim string may be delimited by tripple quotes, e.g.,  \lstinline{"""This is a string"""}, \lstinline{"""\tNon-tabulated string"""}, \lstinline{"""A "quoted" string"""}, and \lstinline{""""""}. Strings may be indexed using the \lstinline{.[]} notation, as demonstrated in \Cref{stringIndexing}.
+A \idx{string} is a sequence of characters. Each character is represented using UTF-16, see \Cref{sec:characterSets} for further details on the unicode standard. The type \lstinline{string} is an alias for \idx[System.string@\lstinline{System.string}]{\lstinline{System.string}}. String literals are delimited by double quotation marks \lexeme{"} and inside the delimiters, character escape sequences are allowed (see \Cref{tab:escapeChar}), which are replaced by the corresponding character code. Examples are \lstinline{"This is a string"}, \lstinline{"\tTabulated string"}, \lstinline{"A \"quoted\" string"}, and \lstinline{""}. Strings may span several lines, and new lines inside strings are part of the string unless the line is ended with a backslash. Strings may be \idx[verbatim string]{verbatim} by preceding the string with \lexeme{@}, in which case escape sequences are not replaced, but two double quotation marks are an escape sequence which is replaced by a one double quotation mark. Examples of \lexeme{@}-verbatim strings are: \lstinline{@"This is a string"}, \lstinline{@"\tNon-tabulated string"}, \lstinline{@"A ""quoted"" string"}, and \lstinline{@""}. Alternatively, a verbatim string may be delimited by three double quotation marks. Examples of \lexeme{"""}-verbatim strings are: \lstinline{"""This is a string"""}, \lstinline{"""\tNon-tabulated string"""}, \lstinline{"""A "quoted" string"""}, and \lstinline{""""""}. Strings may be indexed using the \lstinline{.[]} notation, as demonstrated in \Cref{stringIndexing}.
 
-\subsection{String properties}
-Strings have a few properties, which are values attached to each string and access using the \lexeme{.} notation. The only to be mentioned here is:
+\subsection{String Properties and Methods}
+Strings have a few properties which are values attached to each string and accessed using the \lexeme{.} notation. The only to be mentioned here is:
 \begin{description}
-\item[\texttt{Length}:] Returns the length of the string. Compare with \lstinline{String.length} method.
+\item[\texttt{IndexOf()}:] \lstinline{string -> int}. Returns the index of the first occurence of the argument or $-1$, if the argument does not appear in the string.
+  \fsOutput{stringIndexOfMethod}{\lstinline{IndexOf()}}\idxss{IndexOf@\lstinline{IndexOf}}
+\item[\texttt{Length}:] \lstinline{int}. Returns the length of the string.
   \fsOutput{stringLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
+\item[\texttt{ToLower()}:] \lstinline{unit -> string}. Returns a copy of the string where each letter has been converted to lower case.
+  \fsOutput{stringToLowerMethod}{\lstinline{ToLower()}}\idxss{ToLower@\lstinline{ToLower}}
+\item[\texttt{ToUpper()}:] \lstinline{unit -> string}. Returns a copy of the string where each letter has been converted to upper case.
+  \fsOutput{stringToUpperMethod}{\lstinline{ToUpper()}}\idxss{ToUpper@\lstinline{ToUpper}}
+\item[\texttt{Trim()}:] \lstinline{unit -> string}. Returns a copy of the string where leading and trailing whitespaces have been removed.
+  \fsOutput{stringTrimMethod}{\lstinline{Trim()}}\idxss{Trim@\lstinline{Trim}}
+\item[\texttt{Split()}:] \lstinline{unit -> string []}. Splits a string of words separated by spaces into an array of words. See \Cref{sec:arrays} for more information about arrays.
+  \fsOutput{stringSplitMethod}{\lstinline{Split()}}\idxss{Split@\lstinline{Split}}
 \end{description}
 
-\subsection{String module}
-In the \lstinline{String} module the following functions are available.
+\subsection{String Module}
+The \lstinline{String} module offers many functions for working with strings. Some of the most powerful ones are listed below, and they are all higher order functions.
 \begin{description}
 \item[\texttt{String.collect}:] \lstinline{(char -> string) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each of the characters of the input string and concatenating the resulting strings.
-  \fsOutput{stringCollect}{\lstinline{String.collect}}\idxss{String.collect@\lstinline{String.collect}}
-\item[\texttt{String.concat}:] \lstinline{string -> seq<string> -> string}. Returns a new string made by concatenating the given strings with a separator. Here \lstinline{seq<string>} is a sequence but can also be a list or an array. 
-\fsOutput{stringConcat}{\lstinline{String.concat}}\idxss{String.concat@\lstinline{String.concat}}
-\item[\texttt{String.exists}:] \lstinline{(char -> bool) -> string -> bool}. Tests if any character of the string satisfies the given predicate.
-\fsOutput{stringExists}{\lstinline{String.exists}}\idxss{String.exists@\lstinline{String.exists}}
-\item[\texttt{String.forall}:] \lstinline{(char -> bool) -> string -> bool}. Tests if all characters in the string satisfy the given predicate.
-\fsOutput{stringForall}{\lstinline{String.forall}}\idxss{String.forall@\lstinline{String.forall}}
-\item[\texttt{String.init}:] \lstinline{int -> (int -> string) -> string}. Creates a new string whose characters are the results of applying a specified function to each index and concatenating the resulting strings.
+   \fsOutput{stringCollect}{\lstinline{String.collect}}\idxss{String.collect@\lstinline{String.collect}}
+% \item[\texttt{String.concat}:] \lstinline{string -> seq<string> -> string}. Returns a new string made by concatenating the given strings with a separator. Here \lstinline{seq<string>} is a sequence but can also be a list or an array. 
+% \fsOutput{stringConcat}{\lstinline{String.concat}}\idxss{String.concat@\lstinline{String.concat}}
+ \item[\texttt{String.exists}:] \lstinline{(char -> bool) -> string -> bool}. Tests if any character of the string satisfies the given predicate.
+  \fsOutput{stringExists}{\lstinline{String.exists}}\idxss{String.exists@\lstinline{String.exists}}
+ \item[\texttt{String.forall}:] \lstinline{(char -> bool) -> string -> bool}. Tests if all characters in the string satisfy the given predicate.
+ \fsOutput{stringForall}{\lstinline{String.forall}}\idxss{String.forall@\lstinline{String.forall}}
+\item[\texttt{String.init}:] \lstinline{int -> (int -> string) -> string}. Creates a new string whose characters are the result of applying a specified function to each index and concatenating the resulting strings.
 \fsOutput{stringInit}{\lstinline{String.init}}\idxss{String.init@\lstinline{String.init}}
 \item[\texttt{String.iter}:] \lstinline{(char -> unit) -> string -> unit}. Applies a specified function to each character in the string.
 \fsOutput{stringIter}{\lstinline{String.iter}}\idxss{String.iter@\lstinline{String.iter}}
-\item[\texttt{String.iteri}:] \lstinline{(int -> char -> unit) -> string -> unit}. Applies a specified function to the index of each character in the string and the character itself.
-\fsOutput{stringIterI}{\lstinline{String.iteri}}\idxss{String.iteri@\lstinline{String.iteri}}
-\item[\texttt{String.length}:] \lstinline{string -> int}. Returns the length of the string.
-\fsOutput{stringLength}{\lstinline{String.length}}\idxss{String.length@\lstinline{String.length}}
-\item[\texttt{String.map}:] \lstinline{(char -> char) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each of the characters of the input string.
-\fsOutput{stringMap}{\lstinline{String.map}}\idxss{String.map@\lstinline{String.map}}
-\item[\texttt{String.mapi}:] \lstinline{(int -> char -> char) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each character and index of the input string.
-\fsOutput{stringMapI}{\lstinline{String.mapi}}\idxss{String.mapi@\lstinline{String.mapi}}
-\item[\texttt{String.replicate}:] \lstinline{int -> string -> string}. Returns a string by concatenating a specified number of instances of a string.
-\fsOutput{stringReplicate}{\lstinline{String.replicate}}\idxss{String.replicate@\lstinline{String.replicate}}
+% \item[\texttt{String.iteri}:] \lstinline{(int -> char -> unit) -> string -> unit}. Applies a specified function to the index of each character in the string and the character itself.
+% \fsOutput{stringIterI}{\lstinline{String.iteri}}\idxss{String.iteri@\lstinline{String.iteri}}
+% \item[\texttt{String.length}:] \lstinline{string -> int}. Returns the length of the string.
+% \fsOutput{stringLength}{\lstinline{String.length}}\idxss{String.length@\lstinline{String.length}}
+ \item[\texttt{String.map}:] \lstinline{(char -> char) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each of the characters of the input string.
+ \fsOutput{stringMap}{\lstinline{String.map}}\idxss{String.map@\lstinline{String.map}}
+% \item[\texttt{String.mapi}:] \lstinline{(int -> char -> char) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each character and index of the input string.
+% \fsOutput{stringMapI}{\lstinline{String.mapi}}\idxss{String.mapi@\lstinline{String.mapi}}
+% \item[\texttt{String.replicate}:] \lstinline{int -> string -> string}. Returns a string by concatenating a specified number of instances of a string.
+% \fsOutput{stringReplicate}{\lstinline{String.replicate}}\idxss{String.replicate@\lstinline{String.replicate}}
 \end{description}
 
 \section{Lists}
-\idx[list]{Lists} are unions of immutable values of the same type and have a more flexible structure than tuples. Lists can be expressed as a \idx{sequence expression},
+\idx[list]{Lists} are unions of immutable values of the same type. A list can be expressed as a \idx{sequence expression},
 %
 \begin{verbatimwrite}{\ebnf/lists.ebnf}
 [[*<*expr*>{*; <*expr*>*}*]]
 \end{verbatimwrite}
-\syntax{\ebnf/lists.ebnf}{Lists with a sequence expression.}
+\syntax{\ebnf/lists.ebnf}{The syntax for a a list using the sequence expression.}
 %
-Examples are \mbox{\lstinline![1; 2; 3; 4; 5]!}, which represents a list of integers, \mbox{\lstinline!["This"; "is"; "a"; "list"]!}, which represents a list of strings, \mbox{\lstinline![(fun x -> x); (fun x -> x*x)]!}, which represents a list of anonymous functions, and \lstinline![]!, which is an empty list. Lists may also be given as ranges,
+Examples are a list of integers \mbox{\lstinline![1; 2; 3]!}, a list of strings \mbox{\lstinline!["This"; "is"; "a"; "list"]!}, a list of anonymous functions \mbox{\lstinline![(fun x -> x); (fun x -> x*x)]!}, and an empty list \lstinline![]!. Lists may also be given as ranges,
 %
 \begin{verbatimwrite}{\ebnf/listsRange.ebnf}
 [<*expr*> .. <*expr*> [*.. <*expr*>*]]
 \end{verbatimwrite}
-\syntax{\ebnf/listsRange.ebnf}{Lists with a range expressions.}
+\syntax{\ebnf/listsRange.ebnf}{The syntax for a list using the range expressions.}
 %
 where \lstinline[language=syntax]{<*expr*>} in \idx{range expressions} must be of integers, floats, or characters. Examples are \mbox{\lstinline![1 .. 5]!}, \mbox{\lstinline![-3.0 .. 2.0]!}, and \mbox{\lstinline!['a' .. 'z']!}. Range expressions may include a step size, thus, \mbox{\lstinline![1 .. 2 .. 10]!} evaluates to \mbox{\lstinline![1; 3; 5; 7; 9]!}.
 
-A list type is identified with the \idx[list@\keyword{list}]{\keyword{list}} keyword, such that a list of integers has the type \lstinline!int list!. Like strings, lists may be indexed using the \idx[{.[]}@\lstinline{.[]}]{\lexeme{.[]}} notation, the lengths of lists is retrieved using the \idx[Length@\lstinline{Length}]{\lstinline{Length}} property, and we may test whether a list is empty using the \idx[isEmpty@\lstinline{isEmpty}]{\lstinline{isEmpty}} property. These features are demonstrated in \Cref{listIndexing}.
+A list type is identified with the \idx[list@\keyword{list}]{\keyword{list}} keyword, such that a list of integers has the type \lstinline!int list!. Like strings, lists may be indexed using the \idx[{.[]}@\lstinline{.[]}]{\lexeme{.[]}} notation, the lengths of lists is retrieved using the \idx[Length@\lstinline{Length}]{\lstinline{Length}} property, and we may test whether a list is empty by using the \idx[isEmpty@\lstinline{isEmpty}]{\lstinline{isEmpty}} property. These features are demonstrated in \Cref{listIndexing}.
 %
 \fs{listIndexing}{Lists are indexed as strings and has a \lstinline{Length} property.}
 %
-F\# implements lists as linked lists, see \Cref{fig:linkedList}, which is why indexing element $i$ has computational complexity $\mathcal{O}(i)$, since the list has to be traversed from the beginning until element $i$ is located.
+F\# implements lists as linked lists, as illustrated in \Cref{fig:linkedList}.
 \begin{figure}
   \centering
   \includegraphics[width=0.75\textwidth]{linkedList}
   \caption{A list is a linked list: Here is illustrated the linked list of \mbox{\lstinline!["This"; "is"; "a"; "list"]!}.}
   \label{fig:linkedList}
 \end{figure}
-Thus, \advice{indexing lists is slow and should be avoided.}
+As a consequence, indexing element $i$ has \idx{computational complexity} $\mathcal{O}(i)$. The computational complexity of an operation is a description of how long a computation will take without considering the hardware it is performed on. The notation is sometimes called \idx{Big-O} notation. In the present case, the complexity is $\mathcal{O}(i)$, which means that the complexity is linear in $i$ and indexing element $i+1$ takes $1$ unit longer than indexing element $i$ when $i$ is very large. The size of the unit is on purpose unspecified and depends on implementation and hardware details. Nevertheless, Big-O notation is a useful tool for reasoning about the efficiency of an operation. F\# has access to the list's elements only by traversing the list from its beginning. I.e., to obtain the value of element $i$, F\# starts with element 0, follows the link to element 1 and so on, until element $i$ is reached. To reach element $i+1$ instead, we would need to follow 1 more link, and assuming that following a single link takes some constant amount of time we find that the computational complexity is $\mathcal{O}(i)$.
+Compared to arrays, to be discussed below, this is slow, which is why \advice{indexing lists should be avoided.}
 
 Notice especially that lists are zero-indexed, and thus, the last element in a list \lstinline{lst} is \lstinline{lst.Length -1}. This is a very common source of error! Therefore, indexing in lists using \idx{for}-loops is supported using a special notation with the \idx[in@\lstinline{in}]{\keyword{in}} keyword,
 \begin{verbatimwrite}{\ebnf/forLoopIn.ebnf}
@@ -79,27 +96,27 @@ for <*ident*> in <*list*> do <*bodyExpr*> [*done*]
 \syntax{\ebnf/forLoopIn.ebnf}{For-in loop with in expression.}
 In \keyword{for}-\keyword{in} loops, the loop runs through each element of the \lstinline[language=syntax]{<*list*>}, and assigns it to the identifier \lstinline[language=syntax]{<*ident*>}. This is demonstrated in \Cref{listFor}.
 %
-\fs{listFor}{The \keyword{for}-\keyword{in} loops are preferred over \keyword{for}-\keyword{to}.}
+\fs{listFor}{The \keyword{for}-\keyword{in} loops are preferred over \keyword{for}-\keyword{to} loops.}
 %
 Using \keyword{for}-\keyword{in}-expressions remove the risk of off-by-one indexing errors, and thus, \advice{\keyword{for}-\keyword{in} is to be preferred over \keyword{for}-\keyword{to}.}
 
-Lists support slicing identically to strings as demonstrated in \Cref{listSlicing}.
+Lists support slicing identically to strings, as demonstrated in \Cref{listSlicing}.
 %
 \fs{listSlicing}{Examples of list slicing. Compare with \Cref{stringIndexing}.}
 %
 
-Lists may be concatenated using either the \idx[{@}@{\lstinline{@}}]{\lexeme{@}}\jon{why does the at-symbol not appear in the index?} \idx[list concatenation]{concatenation} operator or the \idx[::@\lstinline{::}]{\lexeme{::}} \idx[list cons]{cons} operators. The differences is that \lexeme{@} concatenates two lists of identical types, while \lexeme{::} concatenates an element and a list of identical types.  This is demonstrated in \Cref{listCon}.
+Lists may be concatenated using either the \idx[{@}@{\lstinline{@}}]{\lexeme{@}}\jon{why does the at-symbol not appear in the index?} \idx[list concatenation]{concatenation} operator or the \idx[::@\lstinline{::}]{\lexeme{::}} \idx[list cons]{cons} operators. The difference is that \lexeme{@} concatenates two lists of identical types, while \lexeme{::} concatenates an element and a list of identical types.  This is demonstrated in \Cref{listCon}.
 %
 \fs{listCon}{Examples of list concatenation.}
 %
-Since lists are represented as linked lists, then the cons operator is very efficient and has computational complexity $\mathcal{O}(1)$, while concatenation has computational complexity $\mathcal{O}(n)$, where $n$ is the length of the first list.
+Since lists are represented as linked lists, the cons operator is very efficient and has computational complexity $\mathcal{O}(1)$, while concatenation has computational complexity $\mathcal{O}(n)$, where $n$ is the length of the first list.
 
 
-It is possible to make multidimensional lists as lists of lists as shown in \Cref{listMultidimensional}. 
+It is possible to make multidimensional lists as lists of lists, as shown in \Cref{listMultidimensional}. 
 %
 \fs{listMultidimensional}{A ragged multidimensional list, built as lists of lists, and its indexing.}
 %
-The example shows a \idx{ragged multidimensional list} since each row has a different number of elements. This is also illustrated in \Cref{fig:raggedLinkedList}.
+The example shows a \idx{ragged multidimensional list}, since each row has a different number of elements. This is also illustrated in \Cref{fig:raggedLinkedList}.
 \begin{figure}
   \centering
   \includegraphics[width=0.75\textwidth]{raggedLinkedList}
@@ -109,8 +126,8 @@ The example shows a \idx{ragged multidimensional list} since each row has a diff
 
  The indexing of a particular element is slow due to the linked list implementation of lists, which is why arrays are often preferred for two- and higher-dimensional data structures, see \Cref{sec:arrays}.
 
-\subsection{List properties}
-Lists support a number of properties, i.e., values that are attached to each list and access using the \lexeme{.} notation, some of which are:
+\subsection{List Properties}
+Lists support a number of properties, some of which are listed below.
 \begin{description}
 \item[\texttt{Head}:] Returns the first element of a list.
   \fsOutput{listHeadProp}{\lstinline{Head}}\idxss{Head@\lstinline{Head}}
@@ -118,62 +135,62 @@ Lists support a number of properties, i.e., values that are attached to each lis
   \fsOutput{listIsEmptyProp}{\lstinline{Head}}\idxss{IsEmpty@\lstinline{IsEmpty}}
 \item[\texttt{Length}:] Returns the number of elements in the list.
   \fsOutput{listLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
-\item[\texttt{Tail}:] Returns the list except its first element.
+\item[\texttt{Tail}:] Returns the list, except for its first element.
   \fsOutput{listTailProp}{\lstinline{Tail}}\idxss{Head@\lstinline{Tail}}
 \end{description}
 
-\subsection{List module}
+\subsection{List Module}
 The built-in \lstinline{List} module contains a wealth of functions for lists, some of which are
 %including \lstinline!List.length!, \lstinline!List.isEmpty!, \lstinline!List.item!, \lstinline!List.head!, \lstinline!List.tail! for working with list. 
 %The basic properties and members of lists are 
 briefly summarized below:
 %\Cref{tab:list,tab:listCont}.\idxss{Length}\idxss{List.Empty}\idxss{IsEmpty}\idxss{Item}\idxss{Head}\idxss{Tail}\idxss{Cons}
 \begin{description}
-\item[\texttt{List.collect}:] \lstinline{('T -> 'U list) -> 'T list -> 'U list}. Apply the supplied function to each element in a list and return a concatenated list of the results.
+\item[\texttt{List.collect}:] \lstinline{('T -> 'U list) -> 'T list -> 'U list}. Applies the supplied function to each element in a list and return a concatenated list of the results.
   \fsOutput{listCollect}{\lstinline{List.collect}}\idxss{List.collect@\lstinline{List.collect}}
-\item[\texttt{List.contains}:] \lstinline{'T -> 'T list -> bool}. Returns true or false depending on whether an element is contained in the list.
+\item[\texttt{List.contains}:] \lstinline{'T -> 'T list -> bool}. Returns true or false depending on whether or not an element is contained in the list.
   \fsOutput{listContains}{\lstinline{List.contains}}\idxss{List.contains@\lstinline{List.contains}}
 \item[\texttt{List.empty}:]  \lstinline{'T list}. An empty list of inferred type.
   \fsOutput{listEmpty}{\lstinline{List.empty}}\idxss{List.empty@\lstinline{List.empty}}
-\item[\texttt{List.exists}:] \lstinline{('T -> bool) -> 'T list -> bool}. Returns true or false depending on whether any element is true for a given function.
-  \fsOutput{listExists}{\lstinline{List.exists}}\idxss{List.exists@\lstinline{List.exists}}
-\item[\texttt{List.filter}:] \lstinline{('T -> bool) -> 'T list -> 'T list}. Returns a new list, of all the elements of the original list for which the supplied function evaluates to true.
+% \item[\texttt{List.exists}:] \lstinline{('T -> bool) -> 'T list -> bool}. Returns true or false depending on whether any element is true for a given function.
+%   \fsOutput{listExists}{\lstinline{List.exists}}\idxss{List.exists@\lstinline{List.exists}}
+\item[\texttt{List.filter}:] \lstinline{('T -> bool) -> 'T list -> 'T list}. Returns a new list with all the elements of the original list for which the supplied function evaluates to true.
   \fsOutput{listFilter}{\lstinline{List.filter}}\idxss{List.filter@\lstinline{List.filter}}
-\item[\texttt{List.find}:] \lstinline{('T -> bool) -> 'T list -> 'T}. Return the first element for which the given function is true.
+\item[\texttt{List.find}:] \lstinline{('T -> bool) -> 'T list -> 'T}. Returns the first element for which the given function is true.
   \fsOutput{listFind}{\lstinline{List.find}}\idxss{List.find@\lstinline{List.find}}
-\item[\texttt{List.findIndex}:] \lstinline{('T -> bool) -> 'T list -> int}. Return the index of the first element for which the given function is true.
+\item[\texttt{List.findIndex}:] \lstinline{('T -> bool) -> 'T list -> int}. Returns the index of the first element for which the given function is true.
   \fsOutput{listFindIndex}{\lstinline{List.findIndex}}\idxss{List.findIndex@\lstinline{List.findIndex}}
-\item[\texttt{List.fold}:] \lstinline{('State -> 'T -> 'State) -> 'State -> 'T list -> 'State}. Update an accumulator iteratively by applying the supplied function to each element in a list, e.g. for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, calculate $f(\ldots f(f(f(s, x_0), x_1), x_2), \dots, x_n)$.
+\item[\texttt{List.fold}:] \lstinline{('State -> 'T -> 'State) -> 'State -> 'T list -> 'State}. Updates an accumulator iteratively by applying the supplied function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{List.fold} calculates $f(\ldots f(f(f(s, x_0), x_1), x_2), \dots, x_n)$.
   \fsOutput{listFold}{\lstinline{List.fold}}\idxss{List.fold@\lstinline{List.fold}}
-\item[\texttt{List.foldBack}:] \lstinline{('T -> 'State -> 'State) -> 'T list -> 'State -> 'State}. Update an accumulator iteratively by applying function to each element in a list, e.g. for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, calculate $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
+\item[\texttt{List.foldBack}:] \lstinline{('T -> 'State -> 'State) -> 'T list -> 'State -> 'State}. Updates an accumulator iteratively by applying function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{List.foldBack} calculates $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
   \fsOutput{listFoldBack}{\lstinline{List.foldBack}}\idxss{List.foldBack@\lstinline{List.foldBack}}
-\item[\texttt{List.forall}:] \lstinline{('T -> bool) -> 'T list -> bool}. Apply a function to all element and logically and the result.
+\item[\texttt{List.forall}:] \lstinline{('T -> bool) -> 'T list -> bool}. Tests if all elements in a list satisfy the given predicate.
   \fsOutput{listForall}{\lstinline{List.forall}}\idxss{List.forall@\lstinline{List.forall}}
 \item[\texttt{List.head}:] \lstinline{'T list -> int}. The first element in the list. Exception if empty.
   \fsOutput{listHeadAlt}{\lstinline{List.head}}\idxss{List.head@\lstinline{List.head}}
 \item[\texttt{List.isEmpty}:]  \lstinline{'T list -> int}. Compare with the empty list
   \fsOutput{listIsEmptyAlt}{\lstinline{List.isEmpty}}\idxss{List.isEmpty@\lstinline{List.isEmpty}}
-\item[\texttt{List.item}:]  \lstinline{'T list -> int}. Retrieve an element of a list by its index.
-  \fsOutput{listItemAlt}{\lstinline{List.item}}\idxss{List.item@\lstinline{List.item}}
-\item[\texttt{List.iter}:] \lstinline{('T -> unit) -> 'T list -> unit}. Apply a procedure to every element in the list.
+% \item[\texttt{List.item}:]  \lstinline{'T list -> int}. Retrieves an element of a list by its index.
+%   \fsOutput{listItemAlt}{\lstinline{List.item}}\idxss{List.item@\lstinline{List.item}}
+\item[\texttt{List.iter}:] \lstinline{('T -> unit) -> 'T list -> unit}. Applies a procedure to every element in the list.
   \fsOutput{listIter}{\lstinline{List.iter}}\idxss{List.iter@\lstinline{List.iter}}
-\item[\texttt{List.Length}:]  \lstinline{'T list -> int}. The number of elements in a list
-  \fsOutput{listLengthAlt}{\lstinline{List.Length}}\idxss{List.Length@\lstinline{List.Length}}
-\item[\texttt{List.map}:] \lstinline{('T -> 'U) -> 'T list -> 'U list}. Return a list, where the supplied function has been applied to every element.
+% \item[\texttt{List.Length}:]  \lstinline{'T list -> int}. Returns the number of elements in a list.
+%   \fsOutput{listLengthAlt}{\lstinline{List.Length}}\idxss{List.Length@\lstinline{List.Length}}
+\item[\texttt{List.map}:] \lstinline{('T -> 'U) -> 'T list -> 'U list}. Returns a list where the supplied function has been applied to every element.
   \fsOutput{listMap}{\lstinline{List.map}}\idxss{List.map@\lstinline{List.map}}
-\item[\texttt{List.ofArray}:] \lstinline{'T list -> int}. Return a list whose elements are the same as the supplied array.
+\item[\texttt{List.ofArray}:] \lstinline{'T list -> int}. Returns a list whose elements are the same as the supplied array.
   \fsOutput{listOfArray}{\lstinline{List.ofArray}}\idxss{List.ofArray@\lstinline{List.ofArray}}
-\item[\texttt{List.rev}:] \lstinline{'T list -> 'T list}. Return a list whose elements have been reversed.
+\item[\texttt{List.rev}:] \lstinline{'T list -> 'T list}. Returns a list whose elements have been reversed.
   \fsOutput{listRev}{\lstinline{List.rev}}\idxss{List.rev@\lstinline{List.rev}}
-\item[\texttt{List.sort}:] \lstinline{'T list -> 'T list}. Return a list whos elements have been sorted.
+\item[\texttt{List.sort}:] \lstinline{'T list -> 'T list}. Returns a list whose elements have been sorted.
   \fsOutput{listSort}{\lstinline{List.sort}}\idxss{List.sort@\lstinline{List.sort}}
-\item[\texttt{List.tail}:]  \lstinline{'T list -> 'T list}. The list except its first element. Exception if empty.
+\item[\texttt{List.tail}:]  \lstinline{'T list -> 'T list}. The list except for its first element. Exception if empty.
   \fsOutput{listTailAlt}{\lstinline{List.tail}}\idxss{List.tail@\lstinline{List.tail}}
-\item[\texttt{List.toArray}:] \lstinline{'T list -> 'T []}. Return an array whos elements are the same as the supplied list.
+\item[\texttt{List.toArray}:] \lstinline{'T list -> 'T []}. Returns an array whose elements are the same as the supplied list.
   \fsOutput{listToArray}{\lstinline{List.toArray}}\idxss{List.toArray@\lstinline{List.toArray}}
-\item[\texttt{List.unzip}:] \lstinline{('T1 * 'T2) list -> 'T1 list * 'T2 list}. Return a pair of lists, whos elements are take from pairs of a list.
+\item[\texttt{List.unzip}:] \lstinline{('T1 * 'T2) list -> 'T1 list * 'T2 list}. Returns a pair of lists, whose elements are taken from pairs of a list.
   \fsOutput{listUnzip}{\lstinline{List.unzip}}\idxss{List.unzip@\lstinline{List.unzip}}
-\item[\texttt{List.zip}:] \lstinline{'T1 list -> 'T2 list -> ('T1 * 'T2) list}. Return a list of pairs, whos elements are take iteratively from two lists.
+\item[\texttt{List.zip}:] \lstinline{'T1 list -> 'T2 list -> ('T1 * 'T2) list}. Returns a list of pairs, whose elements are taken iteratively from two lists.
   \fsOutput{listZip}{\lstinline{List.zip}}\idxss{List.zip@\lstinline{List.zip}}
 \end{description}
 
@@ -186,7 +203,7 @@ One dimensional \idx{arrays} or just arrays for short are mutable lists of the s
 \end{verbatimwrite}
 \syntax{\ebnf/arrays.ebnf}{Arrays with a sequence expression.}
 %
-and examples are \mbox{\lstinline![|1; 2; 3; 4; 5|]!}, which is an array of integers, \mbox{\lstinline![|"This"; "is"; "an"; "array"|]!}, which is an array of strings, \mbox{\lstinline![|(fun x -> x); (fun x -> x*x)|]!}, which is an array of anonymous functions, and \lstinline![||]!, which is an empty array.  Arrays may also be given as ranges,
+Examples are arrays of integers \mbox{\lstinline![|1; 2; 3|]!}, of strings \mbox{\lstinline![|"This"; "is"; "an"; "array"|]!}, of functions \mbox{\lstinline![|(fun x -> x); (fun x -> x*x)|]!}, and an empty array \lstinline![||]!.  Arrays may also be given as ranges,
 %
 \begin{verbatimwrite}{\ebnf/arrayRange.ebnf}
 [|<*expr*> .. <*expr*> [*.. <*expr*>*]|]

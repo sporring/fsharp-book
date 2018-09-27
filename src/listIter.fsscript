@@ -1,1 +1,1 @@
-let prt x = printfn "%A " x in List.iter prt [0; 1; 2];;
+List.iter (fun x -> printfn "%A " x) [0; 1; 2];;

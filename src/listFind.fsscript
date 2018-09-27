@@ -1,1 +1,1 @@
-let odd x = (x % 2 = 1) in List.find odd [0 .. 9];;
+List.find (fun x -> x % 2 = 1) [0 .. 9];;

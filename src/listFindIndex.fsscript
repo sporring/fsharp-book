@@ -1,1 +1,1 @@
-let isK x = (x = 'k') in List.findIndex isK ['a' .. 'z'];;
+List.findIndex (fun x -> x = 'k') ['a' .. 'z'];;
