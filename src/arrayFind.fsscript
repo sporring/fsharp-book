@@ -1,1 +1,1 @@
-let odd x = (x % 2 = 1) in Array.find odd [|0 .. 9|];;
+Array.find (fun x -> x % 2 = 1) [|0 .. 9|];;

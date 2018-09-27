@@ -1,0 +1,2 @@
+$ fsharpc --nologo guardPattern.fsx && mono guardPattern.exe
+A person aged 50 is a/an adult

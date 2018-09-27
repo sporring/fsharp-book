@@ -1,0 +1,6 @@
+> let sum (x : float) (y : float) : float = x + y;;
+val sum : x:float -> y:float -> float
+
+> let c = sum 357.6 863.4;;
+val c : float = 1221.0
+

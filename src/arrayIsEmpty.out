@@ -1,0 +1,3 @@
+> Array.isEmpty [||];;
+val it : bool = true
+

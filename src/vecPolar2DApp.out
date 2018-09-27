@@ -1,0 +1,9 @@
+$ fsharpc --nologo vecPolar2D.fs vecCartesian2DApp.fsx && mono vecPolar2DApp.exe
+
+Unhandled Exception:
+System.Exception: Negative length in polar representation.
+  at Geometry.vector..ctor (System.Double dir, System.Double len) [0x00029] in <5995776c32989f7ea74503836c779559>:0 
+  at <StartupCode$fsxvar2out>.$VecCartesian2DApp$fsx.main@ () [0x00030] in <5995776c32989f7ea74503836c779559>:0 
+[ERROR] FATAL UNHANDLED EXCEPTION: System.Exception: Negative length in polar representation.
+  at Geometry.vector..ctor (System.Double dir, System.Double len) [0x00029] in <5995776c32989f7ea74503836c779559>:0 
+  at <StartupCode$fsxvar2out>.$VecCartesian2DApp$fsx.main@ () [0x00030] in <5995776c32989f7ea74503836c779559>:0 

@@ -1,0 +1,3 @@
+$ fsharpc --nologo raiseArgumentException.fsx
+$ mono raiseArgumentException.exe
+3 / 0 = Error: "division by 0"

@@ -1,0 +1,3 @@
+$ fsharpc --nologo --sig:MetaWAdd.fsi MetaWAdd.fs
+
+MetaWAdd.fs(4,48): warning FS0988: Main module of program is empty: nothing will happen when it is run

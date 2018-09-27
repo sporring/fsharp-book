@@ -1,0 +1,3 @@
+$ fsharpc --nologo mutableTuple.fsx && mono mutableTuple.exe
+(1, 2)
+(3, 4)

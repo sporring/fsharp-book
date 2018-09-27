@@ -1,0 +1,3 @@
+$ fsharpc --nologo abstractClass.fsx && mono abstractClass.exe
+hello
+howdy

@@ -1,0 +1,3 @@
+$ fsharpc --nologo dynamicTypePattern.fsx && mono dynamicTypePattern.exe
+Is "hej" a string? true
+Is 3 a string? false

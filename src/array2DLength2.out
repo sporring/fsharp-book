@@ -1,0 +1,3 @@
+> let arr = Array2D.create 2 3 0.0 in Array2D.length2 arr;;
+val it : int = 3
+

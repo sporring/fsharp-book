@@ -1,0 +1,3 @@
+> List.zip [1; 2; 3] ['a'; 'b'; 'c'];;
+val it : (int * char) list = [(1, 'a'); (2, 'b'); (3, 'c')]
+

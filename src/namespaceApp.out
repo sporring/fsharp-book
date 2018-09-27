@@ -1,0 +1,2 @@
+$ fsharpc --nologo namespace.fsx namespaceApp.fsx && mono namespaceApp.exe
+3.0 + 4.0 = 7.0

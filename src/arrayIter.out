@@ -1,0 +1,6 @@
+> Array.iter (fun x -> printfn "%A " x) [|0; 1; 2|];;
+0 
+1 
+2 
+val it : unit = ()
+

@@ -1,0 +1,2 @@
+$ fsharpc --nologo classRecursion.fsx && mono classRecursion.exe
+4 4 6

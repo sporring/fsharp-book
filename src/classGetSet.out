@@ -1,0 +1,3 @@
+$ fsharpc --nologo classGetSet.fsx && mono classGetSet.exe
+0
+2

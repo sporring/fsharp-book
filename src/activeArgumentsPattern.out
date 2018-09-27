@@ -1,0 +1,5 @@
+$ fsharpc --nologo activeArgumentsPattern.fsx
+$ mono activeArgumentsPattern.exe
+{x = 2.0;
+ y = 3.0;}:
+ Cartesian (2.236067977, 1.107148718)

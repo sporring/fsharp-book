@@ -1,0 +1,4 @@
+$ fsharpc --nologo class.fsx && mono class.exe
+A class has been created (2)
+A class has been created (1)
+2 6 1

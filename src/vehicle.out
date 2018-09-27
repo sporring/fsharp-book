@@ -1,0 +1,3 @@
+$ fsharpc --nologo vehicle.fsx && mono vehicle.exe
+The car aCar has 4 wheels
+The bicycle aBike has 2 wheels

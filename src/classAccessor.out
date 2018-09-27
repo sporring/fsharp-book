@@ -1,0 +1,3 @@
+$ fsharpc --nologo classAccessor.fsx && mono classAccessor.exe
+1
+2

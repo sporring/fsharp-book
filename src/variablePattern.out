@@ -1,0 +1,2 @@
+$ fsharpc --nologo variablePattern.fsx && mono variablePattern.exe
+Jon is 50 years old

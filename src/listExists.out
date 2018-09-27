@@ -1,0 +1,3 @@
+> let odd x = (x % 2 = 1) in List.exists odd [0 .. 2 .. 4];;
+val it : bool = false
+

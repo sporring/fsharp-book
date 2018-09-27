@@ -1,0 +1,2 @@
+$ fsharpc --nologo pair.fsx && mono pair.exe
+fst(pair) = first, snd(pair) = second

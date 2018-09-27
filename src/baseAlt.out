@@ -1,0 +1,4 @@
+$ fsharpc --nologo baseAlt.fsx && mono baseAlt.exe
+King at (0, 0)
+Rook not on board
+King moved to (1, 0)

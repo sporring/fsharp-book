@@ -1,0 +1,2 @@
+$ fsharpc --nologo enum.fsx && mono enum.exe
+Gold has value 0

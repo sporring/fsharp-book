@@ -1,0 +1,5 @@
+$ fsharpc --nologo readKey.fsx && mono readKey.exe
+Start typing
+You pressed: A
+You pressed: SHIFT+A
+You pressed: CTRL+A

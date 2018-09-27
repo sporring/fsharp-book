@@ -1,0 +1,9 @@
+$ fsharpc --nologo classDoThen.fsx && mono classDoThen.exe
+Calling additional constructor
+  Additional constructor called
+  Primary constructor called
+  Primary done
+  Additional done
+Calling primary constructor
+  Primary constructor called
+  Primary done

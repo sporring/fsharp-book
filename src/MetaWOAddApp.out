@@ -1,0 +1,3 @@
+$ fsharpc --nologo MetaWOAddApp.fsx && mono MetaWOAddApp.exe
+
+MetaWOAddApp.fsx(1,14): error FS0039: The value, namespace, type or module 'Meta' is not defined.

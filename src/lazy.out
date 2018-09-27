@@ -1,0 +1,5 @@
+$ fsharpc --nologo lazy.fsx && mono lazy.exe
+Before: Value is not created.
+calulating
+After: 4
+After repeat: 4

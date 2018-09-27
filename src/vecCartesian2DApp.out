@@ -1,0 +1,6 @@
+$ fsharpc --nologo vecCartesian2D.fs vecCartesian2DApp.fsx && mono vecCartesian2DApp.exe
+1.5 * [1.0, 2.0] = [1.5, 3.0]
+[1.0, 2.0] * 1.5 = [1.5, 3.0]
+[1.0, 2.0] + [3.2, -1.8] = [4.2, 0.2]
+v.dir = 1.107148718
+v.len = 2.236067977

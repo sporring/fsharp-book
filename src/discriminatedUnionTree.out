@@ -1,0 +1,3 @@
+$ fsharpc --nologo discriminatedUnionTree.fsx
+$ mono discriminatedUnionTree.exe
+Node (Node (Leaf 1,Leaf 2),Leaf 3)

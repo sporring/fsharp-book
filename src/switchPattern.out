@@ -1,0 +1,2 @@
+$ fsharpc --nologo switchPattern.fsx && mono switchPattern.exe
+Silver : You almost won

@@ -1,0 +1,3 @@
+$ fsharpc --nologo higherOrderTuples.fsx && mono higherOrderTuples.exe
+15
+6

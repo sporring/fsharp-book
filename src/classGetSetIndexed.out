@@ -1,0 +1,4 @@
+$ fsharpc --nologo classGetSetIndexed.fsx && mono classGetSetIndexed.exe
+ClassGetSetIndexed+aClass
+0 0 0
+0 3 0

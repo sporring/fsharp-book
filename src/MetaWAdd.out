@@ -1,0 +1,1 @@
+$ fsharpc --nologo -a MetaWAddRemoved.fsi MetaWAdd.fs

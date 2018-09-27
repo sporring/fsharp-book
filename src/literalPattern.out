@@ -1,0 +1,2 @@
+$ fsharpc --nologo literalPattern.fsx && mono literalPattern.exe
+"We will need to build a bigger machine..."

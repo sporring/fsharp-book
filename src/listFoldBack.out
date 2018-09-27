@@ -1,0 +1,5 @@
+> let addSquares elm acc = acc + elm*elm
+- List.foldBack addSquares [0 .. 9] 0;;
+val addSquares : elm:int -> acc:int -> int
+val it : int = 285
+

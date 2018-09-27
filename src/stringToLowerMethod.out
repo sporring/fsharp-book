@@ -1,0 +1,3 @@
+> "aBcD".ToLower();;
+val it : string = "abcd"
+

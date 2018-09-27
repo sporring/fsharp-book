@@ -1,0 +1,5 @@
+$ fsharpc --nologo MetaUse.fsx && mono MetaUse.exe
+
+MetaUse.fsx(1,11): error FS0039: The namespace or module 'Meta' is not defined.
+
+MetaUse.fsx(2,14): error FS0039: The value, namespace, type or module 'Meta' is not defined.

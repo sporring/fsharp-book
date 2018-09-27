@@ -1,0 +1,5 @@
+> let curry f x y = f (x,y)
+- let uncurry f (x,y) = f x y;;
+val curry : f:('a * 'b -> 'c) -> x:'a -> y:'b -> 'c
+val uncurry : f:('a -> 'b -> 'c) -> x:'a * y:'b -> 'c
+

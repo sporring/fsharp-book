@@ -1,0 +1,1 @@
+List.init 10 (fun i -> i * i);;

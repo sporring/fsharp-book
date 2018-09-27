@@ -1,0 +1,6 @@
+$ fsharpc --nologo higherOrderComposition.fsx
+$ mono higherOrderComposition.exe
+9
+9
+5
+5

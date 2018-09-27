@@ -1,0 +1,9 @@
+> let arr = Array2D.init 3 4 (fun i j -> i + 10 * j)
+- Array2D.iter (fun elm -> printf "%A " elm) arr
+- printfn "";;
+0 10 20 30 1 11 21 31 2 12 22 32 
+val arr : int [,] = [[0; 10; 20; 30]
+                     [1; 11; 21; 31]
+                     [2; 12; 22; 32]]
+val it : unit = ()
+

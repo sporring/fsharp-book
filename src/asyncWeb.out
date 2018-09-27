@@ -1,0 +1,7 @@
+$ fsharpc --nologo asyncWeb.fsx && mono asyncWeb.exe
+finished downloading http://www.microsoft.com
+finished downloading http://www.google.com
+finished downloading http://www.bing.com
+finished downloading http://www.yahoo.com
+finished downloading http://www.amazon.com
+1426L msec

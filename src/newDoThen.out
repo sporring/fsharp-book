@@ -1,0 +1,8 @@
+$ fsharpc --nologo newDoThen.fsx && mono newDoThen.exe
+New empty constructor of classExtraConstructor
+New classExtraConstructor with (0.0, 0.0, "(", ", ", ")")
+Construction done <fun:-ctor@11-5>
+New half empty constructor of classExtraConstructor
+New classExtraConstructor with (1.0, 2.0, "(", ", ", ")")
+New classExtraConstructor with (1.0, 2.0, "[", "; ", "]")
+(0.0, 0.0), (1.0, 2.0), [1.0; 2.0]

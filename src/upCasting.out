@@ -1,0 +1,2 @@
+$ fsharpc --nologo upCasting.fsx && mono upCasting.exe
+hello howdy hi hello

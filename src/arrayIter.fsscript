@@ -1,1 +1,1 @@
-let prt x = printfn "%A " x in Array.iter prt [|0; 1; 2|];;
+Array.iter (fun x -> printfn "%A " x) [|0; 1; 2|];;

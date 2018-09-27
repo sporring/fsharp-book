@@ -1,0 +1,3 @@
+$ fsharpc --nologo classInterface.fsx && mono classInterface.exe
+value = 2, fct(80.0) = 11200
+value = 6, fct(80.0) = 24.6914

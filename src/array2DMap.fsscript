@@ -1,2 +1,2 @@
 let arr = Array2D.init 3 4 (fun i j -> i + 10 * j)
-let square x = x*x in Array2D.map square arr;;
+Array2D.map (fun x -> x * x) arr;;

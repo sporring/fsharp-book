@@ -1,2 +1,1 @@
-let idxFct i j = i + 10 * j
-Array2D.init 3 4 idxFct;;
+Array2D.init 3 4 (fun i j -> i + 10 * j);;

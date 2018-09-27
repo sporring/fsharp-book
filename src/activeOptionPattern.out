@@ -1,0 +1,6 @@
+$ fsharpc --nologo activeOptionPattern.fsx
+$ mono activeOptionPattern.exe
+Div (1.0, 1.0) = 1.0
+Div (0.0, 1.0) = 0.0
+Div (1.0, 0.0) = infinity
+Div (0.0, 0.0) = undefined

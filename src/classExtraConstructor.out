@@ -1,0 +1,3 @@
+$ fsharpc --nologo classExtraConstructor.fsx
+$ mono classExtraConstructor.exe
+"Hello F#", "Hi F#"

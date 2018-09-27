@@ -1,0 +1,2 @@
+$ fsharpc --nologo refSideEffect.fsx && mono refSideEffect.exe
+6

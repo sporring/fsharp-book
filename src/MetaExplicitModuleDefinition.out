@@ -1,0 +1,4 @@
+$ fsharpc --nologo MetaExplicitModuleDefinition.fsx
+
+MetaExplicitModuleDefinition.fsx(3,70): warning FS0988: Main module of program is empty: nothing will happen when it is run
+$ mono MetaExplicitModuleDefinition.exe

@@ -1,0 +1,5 @@
+$ fsharpc --nologo userDialoguePrintf.fsx && mono userDialoguePrintf.exe
+To perform the multiplication of a and b
+Enter a: §\tikzmark{userDialoguePrintf_1-tl}§3.5§\tikzmark{userDialoguePrintf_1-br}§
+Enter b: §\tikzmark{userDialoguePrintf_2-tl}§7.4§\tikzmark{userDialoguePrintf_2-br}§
+a * b = 25.9

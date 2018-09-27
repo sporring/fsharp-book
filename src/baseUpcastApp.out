@@ -1,0 +1,7 @@
+$ fsharpc --nologo baseUpcast.fs baseUpcastExtension.fs baseUpcastApp.fsx && mono baseUpcastApp.exe
+White King at (0, 0), moves: [(0, 1); (1, 1); (1, 0)]
+White Rook at (2, 2), moves: [(3, 2); (4, 2); (5, 2); (6, 2); (7, 2); (1, 2); (0, 2); (2, 3); (2, 4); (2, 5);
+ (2, 6); (2, 7); (2, 1); (2, 0)]
+Black King at (6, 4), moves: [(5, 4); (5, 5); (6, 5); (7, 5); (7, 4); (7, 3); (6, 3); (5, 3)]
+White Rook at (6, 2), moves: [(7, 2); (5, 2); (4, 2); (3, 2); (2, 2); (1, 2); (0, 2); (6, 3); (6, 4); (6, 5);
+ (6, 6); (6, 7); (6, 1); (6, 0)]

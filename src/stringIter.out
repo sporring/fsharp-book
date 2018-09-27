@@ -1,0 +1,6 @@
+> String.iter (fun c -> printfn "%c" c) "abc";;
+a
+b
+c
+val it : unit = ()
+

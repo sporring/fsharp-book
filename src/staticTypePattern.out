@@ -1,0 +1,2 @@
+$ fsharpc --nologo staticTypePattern.fsx && mono staticTypePattern.exe
+The sum is 6

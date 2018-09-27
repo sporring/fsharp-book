@@ -1,0 +1,3 @@
+$ fsharpc --nologo forPattern.fsx && mono forPattern.exe
+3
+1

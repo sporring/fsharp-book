@@ -1,0 +1,2 @@
+$ fsharpc --nologo struct.fsx && mono struct.exe
+Struct+position: x = 3.0, y = 4.2

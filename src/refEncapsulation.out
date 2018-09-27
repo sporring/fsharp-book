@@ -1,0 +1,4 @@
+$ fsharpc --nologo refEncapsulation.fsx && mono refEncapsulation.exe
+1
+2
+3

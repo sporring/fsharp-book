@@ -1,0 +1,5 @@
+> let arr = Array.zeroCreate 10;
+- Array.fill arr 2 5 2;;
+val arr : int [] = [|0; 0; 2; 2; 2; 2; 2; 0; 0; 0|]
+val it : unit = ()
+

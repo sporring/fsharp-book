@@ -1,0 +1,2 @@
+$ fsharpc --nologo listPattern.fsx && mono listPattern.exe
+The sum of [1; 2; 3] is 6, 6

@@ -1,0 +1,1 @@
+$ fsharpc --nologo classTuple.fsx && mono classTuple.exe

@@ -1,0 +1,7 @@
+$ fsharpc --nologo MetaExplicitModuleDefinitionUse.fsx
+
+MetaExplicitModuleDefinitionUse.fsx(1,11): error FS0039: The namespace or module 'MetaExplicitModuleDefinition' is not defined.
+
+MetaExplicitModuleDefinitionUse.fsx(2,14): error FS0039: The value, namespace, type or module 'MetaExplicitModuleDefinition' is not defined.
+$ mono MetaExplicitModuleDefinitionUse.exe
+Cannot open assembly 'MetaExplicitModuleDefinitionUse.exe': No such file or directory.

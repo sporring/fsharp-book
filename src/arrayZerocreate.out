@@ -1,0 +1,8 @@
+> Array.zeroCreate 3;;
+  Array.zeroCreate 3;;
+  ^^^^^^^^^^^^^^^^^^
+
+stdin(2,1): error FS0030: Value restriction. The value 'it' has been inferred to have generic type
+    val it : '_a []    
+Either define 'it' as a simple data term, make it a function with explicit arguments or, if you do not intend for it to be generic, add a type annotation.
+

@@ -1,0 +1,3 @@
+$ fsharpc --nologo commandLineArgsFail.fsx
+$ if mono commandLineArgsFail.exe; then echo "success"; else echo "failure"; fi
+failure

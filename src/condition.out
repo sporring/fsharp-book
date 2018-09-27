@@ -1,0 +1,3 @@
+$ fsharpc --nologo condition.fsx && mono condition.exe
+hi
+bye

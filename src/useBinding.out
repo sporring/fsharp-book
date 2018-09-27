@@ -1,0 +1,1 @@
+$ fsharpc --nologo useBinding.fsx && mono useBinding.exe

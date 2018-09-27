@@ -1,0 +1,4 @@
+$ fsharpc --nologo higherOrderCurrying.fsx
+$ mono higherOrderCurrying.exe
+15
+6

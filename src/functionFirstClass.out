@@ -1,0 +1,3 @@
+$ fsharpc --nologo functionFirstClass.fsx && mono functionFirstClass.exe
+15
+6

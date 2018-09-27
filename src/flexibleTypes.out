@@ -1,0 +1,6 @@
+$ fsharpc --nologo flexibleTypes.fsx && mono flexibleTypes.exe
+FlexibleTypes+Base
+FlexibleTypes+Deriv1
+"hej"
+FlexibleTypes+Deriv2
+"good bye"

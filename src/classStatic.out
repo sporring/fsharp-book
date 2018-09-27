@@ -1,0 +1,3 @@
+$ fsharpc --nologo classStatic.fsx && mono classStatic.exe
+Jon: 0,  Hans: 1
+Next id: 2

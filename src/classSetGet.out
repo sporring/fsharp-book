@@ -1,0 +1,2 @@
+$ fsharpc --nologo classSetGet.fsx && mono classSetGet.exe
+"Hello F#", "Hi F#", ""Hello""

@@ -1,0 +1,3 @@
+$ fsharpc --nologo commandLineArgs.fsx
+$ mono commandLineArgs.exe Hello World
+Arguments passed to function : [|"Hello"; "World"|]

@@ -1,2 +1,1 @@
-let squareIndex ind = ind*ind
-Array.init 10 squareIndex;;
+Array.init 10 (fun i -> i * i);;

@@ -1,0 +1,2 @@
+$ fsharpc --nologo variableTypeInline.fsx && mono variableTypeInline.exe
+3 3.0

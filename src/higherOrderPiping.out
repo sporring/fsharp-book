@@ -1,0 +1,2 @@
+$ fsharpc --nologo higherOrderPiping.fsx && mono higherOrderPiping.exe
+2 -> 3

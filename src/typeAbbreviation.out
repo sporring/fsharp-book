@@ -1,0 +1,2 @@
+$ fsharpc --nologo typeAbbreviation.fsx && mono typeAbbreviation.exe
+3, (2.5, -3.2), ("Jon", 50), 2.0

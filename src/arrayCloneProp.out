@@ -1,0 +1,9 @@
+> let a = [|1; 2; 3|];
+- let b = a.Clone()
+- a.[0] <- 0
+- printfn "a = %A, b = %A" a b;;
+a = [|0; 2; 3|], b = [|1; 2; 3|]
+val a : int [] = [|0; 2; 3|]
+val b : obj = [|1; 2; 3|]
+val it : unit = ()
+

@@ -1,0 +1,3 @@
+$ fsharpc --nologo -r MetaWAdd.dll MetaWOAddApp.fsx
+
+MetaWOAddApp.fsx(1,25): error FS0039: The value or constructor 'add' is not defined.

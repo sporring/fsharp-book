@@ -1,0 +1,9 @@
+$ fsharpc --nologo recordCopy.fsx && mono recordCopy.exe
+author : {name = "Jon";
+ age = 51;}
+authorAlias : {name = "Jon";
+ age = 51;}
+authorCopy : {name = "Jon";
+ age = 50;}
+authorCopyAlt : {name = "Noj";
+ age = 50;}
