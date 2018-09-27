@@ -17,7 +17,7 @@ A \idx{string} is a sequence of characters. Each character is represented using 
 \subsection{String Properties and Methods}
 Strings have a few properties which are values attached to each string and accessed using the \lexeme{.} notation. The only to be mentioned here is:
 \begin{description}
-\item[\texttt{IndexOf()}:] \lstinline{string -> int}. Returns the index of the first occurence of the argument or $-1$, if the argument does not appear in the string.
+\item[\texttt{IndexOf()}:] \lstinline{s:string -> int}. Returns the index of the first occurence of \lstinline{s} or $-1$, if \lstinline{s} does not appear in the string.
   \fsOutput{stringIndexOfMethod}{\lstinline{IndexOf()}}\idxss{IndexOf@\lstinline{IndexOf}}
 \item[\texttt{Length}:] \lstinline{int}. Returns the length of the string.
   \fsOutput{stringLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
@@ -34,23 +34,23 @@ Strings have a few properties which are values attached to each string and acces
 \subsection{String Module}
 The \lstinline{String} module offers many functions for working with strings. Some of the most powerful ones are listed below, and they are all higher order functions.
 \begin{description}
-\item[\texttt{String.collect}:] \lstinline{(char -> string) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each of the characters of the input string and concatenating the resulting strings.
+\item[\texttt{String.collect}:] \lstinline{f:(char -> string) -> s:string -> string}. Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{s} and concatenating the resulting strings.
    \fsOutput{stringCollect}{\lstinline{String.collect}}\idxss{String.collect@\lstinline{String.collect}}
 % \item[\texttt{String.concat}:] \lstinline{string -> seq<string> -> string}. Returns a new string made by concatenating the given strings with a separator. Here \lstinline{seq<string>} is a sequence but can also be a list or an array. 
 % \fsOutput{stringConcat}{\lstinline{String.concat}}\idxss{String.concat@\lstinline{String.concat}}
- \item[\texttt{String.exists}:] \lstinline{(char -> bool) -> string -> bool}. Tests if any character of the string satisfies the given predicate.
+ \item[\texttt{String.exists}:] \lstinline{f:(char -> bool) -> s:string -> bool}. Returns true if any character in \lstinline{s} evaluates to true when using \lstinline{f}.
   \fsOutput{stringExists}{\lstinline{String.exists}}\idxss{String.exists@\lstinline{String.exists}}
- \item[\texttt{String.forall}:] \lstinline{(char -> bool) -> string -> bool}. Tests if all characters in the string satisfy the given predicate.
+ \item[\texttt{String.forall}:] \lstinline{f:(char -> bool) -> s:string -> bool}. Returns true if all characters in \lstinline{s} evalutes to true when using \lstinline{f}.
  \fsOutput{stringForall}{\lstinline{String.forall}}\idxss{String.forall@\lstinline{String.forall}}
-\item[\texttt{String.init}:] \lstinline{int -> (int -> string) -> string}. Creates a new string whose characters are the result of applying a specified function to each index and concatenating the resulting strings.
+\item[\texttt{String.init}:] \lstinline{n:int -> f:(int -> string) -> string}. Creates a new string with length \lstinline{n} and whose characters are the result of applying \lstinline{f} to each index of that string.
 \fsOutput{stringInit}{\lstinline{String.init}}\idxss{String.init@\lstinline{String.init}}
-\item[\texttt{String.iter}:] \lstinline{(char -> unit) -> string -> unit}. Applies a specified function to each character in the string.
+\item[\texttt{String.iter}:] \lstinline{f:(char -> unit) -> s:string -> unit}. Applies \lstinline{f} to each character in \lstinline{s}.
 \fsOutput{stringIter}{\lstinline{String.iter}}\idxss{String.iter@\lstinline{String.iter}}
 % \item[\texttt{String.iteri}:] \lstinline{(int -> char -> unit) -> string -> unit}. Applies a specified function to the index of each character in the string and the character itself.
 % \fsOutput{stringIterI}{\lstinline{String.iteri}}\idxss{String.iteri@\lstinline{String.iteri}}
 % \item[\texttt{String.length}:] \lstinline{string -> int}. Returns the length of the string.
 % \fsOutput{stringLength}{\lstinline{String.length}}\idxss{String.length@\lstinline{String.length}}
- \item[\texttt{String.map}:] \lstinline{(char -> char) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each of the characters of the input string.
+ \item[\texttt{String.map}:] \lstinline{f:(char -> char) -> s:string -> string}. Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{s}.
  \fsOutput{stringMap}{\lstinline{String.map}}\idxss{String.map@\lstinline{String.map}}
 % \item[\texttt{String.mapi}:] \lstinline{(int -> char -> char) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each character and index of the input string.
 % \fsOutput{stringMapI}{\lstinline{String.mapi}}\idxss{String.mapi@\lstinline{String.mapi}}
@@ -64,7 +64,7 @@ The \lstinline{String} module offers many functions for working with strings. So
 \begin{verbatimwrite}{\ebnf/lists.ebnf}
 [[*<*expr*>{*; <*expr*>*}*]]
 \end{verbatimwrite}
-\syntax{\ebnf/lists.ebnf}{The syntax for a a list using the sequence expression.}
+\syntax{\ebnf/lists.ebnf}{The syntax for a list using the sequence expression.}
 %
 Examples are a list of integers \mbox{\lstinline![1; 2; 3]!}, a list of strings \mbox{\lstinline!["This"; "is"; "a"; "list"]!}, a list of anonymous functions \mbox{\lstinline![(fun x -> x); (fun x -> x*x)]!}, and an empty list \lstinline![]!. Lists may also be given as ranges,
 %
@@ -196,47 +196,47 @@ briefly summarized below:
 
 \section{Arrays}
 \label{sec:arrays}
-One dimensional \idx{arrays} or just arrays for short are mutable lists of the same type and follow a similar syntax as lists. Arrays can be stated as \idx{sequence expressions},
+One dimensional \idx{arrays}, or just arrays for short, are mutable lists of the same type and follow a similar syntax as lists. Arrays can be stated as \idx{sequence expressions},
 %
 \begin{verbatimwrite}{\ebnf/arrays.ebnf}
 [|[*<*expr*>{*; <*expr*>*}*]|]
 \end{verbatimwrite}
-\syntax{\ebnf/arrays.ebnf}{Arrays with a sequence expression.}
+\syntax{\ebnf/arrays.ebnf}{The syntax for an array using the sequence expression.}
 %
 Examples are arrays of integers \mbox{\lstinline![|1; 2; 3|]!}, of strings \mbox{\lstinline![|"This"; "is"; "an"; "array"|]!}, of functions \mbox{\lstinline![|(fun x -> x); (fun x -> x*x)|]!}, and an empty array \lstinline![||]!.  Arrays may also be given as ranges,
 %
 \begin{verbatimwrite}{\ebnf/arrayRange.ebnf}
 [|<*expr*> .. <*expr*> [*.. <*expr*>*]|]
 \end{verbatimwrite}
-\syntax{\ebnf/arrayRange.ebnf}{Arrays with a range expressions.}
+\syntax{\ebnf/arrayRange.ebnf}{The syntax for an array using the range expression.}
 %
 but arrays of \idx{range expressions} must be of \lstinline[language=syntax]{<*expr*>} integers, floats, or characters. Examples are \mbox{\lstinline![|1 .. 5|]!}, \mbox{\lstinline![|-3.0 .. 2.0|]!}, and \mbox{\lstinline![|'a' .. 'z'|]!}. Range expressions may include a step size, thus, \mbox{\lstinline![|1 .. 2 .. 10|]!} evaluates to \mbox{\lstinline![|1; 3; 5; 7; 9|]!}.
 
-The array type is defined using the \keyword{array} keyword or alternatively the \lexeme{[]} lexeme.  Like strings and lists, arrays may be indexed using the \idx[{.[]}@\lstinline{.[]}]{\lexeme{.[]}} notation. Arrays cannot be resized, but are mutable as shown in \Cref{arrayReassign}.
+The array type is defined using the \keyword{array} keyword or alternatively the \lexeme{[]} lexeme.  Like strings and lists, arrays may be indexed using the \idx[{.[]}@\lstinline{.[]}]{\lexeme{.[]}} notation. Arrays cannot be resized, but are mutable, as shown in \Cref{arrayReassign}.
 %
-\fs{arrayReassign}{Arrays are mutable in spite the missing \keyword{mutable} keyword.}
+\fs{arrayReassign}{Arrays are mutable in spite of the missing \keyword{mutable} keyword.}
 %
-Notice that in spite the missing \keyword{mutable} keyword, the function \lstinline{square} still had the \idx{side-effect} of squaring all entries in \lstinline{A}.  F\# implements arrays as chunks of memory and indexes arrays via address arithmetic. I.e., element $i$ in an array, whose first element is in memory address $\alpha$ and whose elements fill $\beta$ addresses each is found at address $\alpha+i\beta$.\jon{Add a figure illustrating address indexing.} Hence, indexing has computational complexity of $\mathcal{O}(1)$, but appending and prepending values to arrays and array concatenation requires copying the new and existing values to a fresh area in memory and thus has computational complexity $\mathcal{O}(n)$, where $n$ is the total number of elements. Thus, \advice{indexing arrays is fast, but cons and concatenation is slow and should be avoided.}
+Notice that in spite of the missing \keyword{mutable} keyword, the function \lstinline{square} still has the \idx{side-effect} of squaring all entries in \lstinline{A}.  F\# implements arrays as chunks of memory and indexes arrays via address arithmetic. I.e., element $i$ in an array, whose first element is in memory address $\alpha$ and whose elements fill $\beta$ addresses each, is found at address $\alpha+i\beta$.\jon{Add a figure illustrating address indexing.} Hence, indexing has computational complexity of $\mathcal{O}(1)$, but appending and prepending values to arrays and array concatenation requires copying the new and existing values to a fresh area in memory and thus has computational complexity $\mathcal{O}(n)$, where $n$ is the total number of elements. Thus, \advice{indexing arrays is fast, but cons and concatenation is slow and should be avoided.}
 
-Arrays support \idx{slicing}, that is, indexing an array with a range results in a copy of the array with values corresponding to the range. This is demonstrated in \Cref{arraySlicing}.
+Arrays support \idx{slicing}, that is, indexing an array with a range result in a copy of the array with values corresponding to the range. This is demonstrated in \Cref{arraySlicing}.
 %
 \fs{arraySlicing}{Examples of array slicing. Compare with \Cref{listSlicing} and \Cref{stringIndexing}.}
 %
-As illustrated, the missing start or end index implies from the first or to the last element.
+As illustrated, the missing start or end index imply from the first or to the last element, respectively.
 
-Arrays have explicit operator support for appending and concatenation, instead the \lstinline{Array} namespace includes an \lstinline{Array.append} function, as shown in \Cref{arrayAppend}.
+Arrays do not have explicit operator support for appending and concatenation, instead the \lstinline{Array} namespace includes an \lstinline{Array.append} function, as shown in \Cref{arrayAppend}.
 %
 \fs{arrayAppend}{Two arrays are appended with \lstinline{Array.append}.}
 %
 
-Arrays are \idx{reference types}, meaning that identifiers are references and thus suffers from aliasing, as illustrated in \Cref{arrayAliasing}.
+Arrays are \idx{reference types}, meaning that identifiers are references and thus suffer from aliasing, as illustrated in \Cref{arrayAliasing}.
 %
 \fs{arrayAliasing}{Arrays are reference types and suffer from aliasing.}
 %
 
-\subsection{Array properties and methods}
+\subsection{Array Properties and Methods}
 \label{sec:arrayMethods}
-Arrays support a number of properties and methods, i.e., values and functions that are attached to each array and access using the \lexeme{.} notation, some of which are:
+Some important properties and methods for arrays are:
 \begin{description}
 \item[\texttt{Clone()}:] Returns a copy of the array.
   \fsOutput{arrayCloneProp}{\lstinline{Clone}}\idxss{Clone@\lstinline{Clone}}
@@ -244,10 +244,10 @@ Arrays support a number of properties and methods, i.e., values and functions th
   \fsOutput{arrayLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
 \end{description}
 
-\subsection{Array module}
+\subsection{Array Module}
 There are quite a number of built-in procedures for arrays in the \lstinline{Array} module, some of which are summarized below.\jon{rewrite description}
 \begin{description}
-\item[\texttt{Array.append}:] \lstinline{'T [] -> 'T [] -> 'T []}. Creates an array that contains the elements of one array followed by the elements of another array.
+\item[\texttt{Array.append}:] \lstinline{'T [] -> 'T [] -> 'T []}. Creates an array that contains the elements of one array, followed by the elements of another array.
   \fsOutput{arrayAppendAlt}{\lstinline{Array.append}}\idxss{Array.append@\lstinline{Array.append}}
 \item[\texttt{Array.compareWith}:] \lstinline{('T -> 'T -> int) -> 'T [] -> 'T [] -> int}. Compares two arrays using the given comparison function, element by element.
   \fsOutput{arrayComparewith}{\lstinline{Array.compareWith}}\idxss{Array.compareWith@\lstinline{Array.compareWith}}
@@ -257,7 +257,7 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
   \fsOutput{arrayContains}{\lstinline{Array.contains}}\idxss{Array.contains@\lstinline{Array.contains}}
 \item[\texttt{Array.copy}:] \lstinline{'T [] -> 'T []}. Creates an array that contains the elements of the supplied array.
   \fsOutput{arrayCopy}{\lstinline{Array.copy}}\idxss{Array.copy@\lstinline{Array.copy}}
-\item[\texttt{Array.create}:] \lstinline{int -> 'T -> 'T []}. Creates an array whose elements are initiallized the supplied value.
+\item[\texttt{Array.create}:] \lstinline{n:int -> v:'T -> 'T []}. Creates an array of length \lstinline{n} with value \lstinline{v}.
   \fsOutput{arrayCreate}{\lstinline{Array.create}}\idxss{Array.create@\lstinline{Array.create}}
 \item[\texttt{Array.empty}:] \lstinline{'T []}. Returns an empty array of the given type.
   \fsOutput{arrayEmpty}{\lstinline{Array.empty}}\idxss{Array.empty@\lstinline{Array.empty}}
