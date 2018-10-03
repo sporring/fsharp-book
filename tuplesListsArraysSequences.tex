@@ -7,7 +7,7 @@ The data structures discussed below all have operators, properties, methods, and
 
 Properties and methods are common object-oriented terms used in conjunction with the discussed functionality. They are synonymous with values and functions and will be discussed in \Cref{chap:oop}. Properties and methods for a value or variable are called using the \idx{dot notation}, i.e., with the \lexeme{.}-lexeme. For example, \lstinline{"abcdefg".Length} is a property and is equal to the length of the string, and \lstinline|"abcdefg".ToUpper()| is a method and creates a new string where all characters have been converted to upper case.
 
-The data structures also have accompanying modules with a wealth of functions and where some are mentioned here. Further, the data structures are all implemented as classes offering even further functionality. The modules are optimized for functional programming, see \Crefrange{sec:recursion}{chap:functional}, while classes are designed to support object oriented programming, see \Crefrange{chap:oop}{chap:oopp}.
+The data structures also have accompanying modules with a wealth of functions and where some are mentioned here. Further, the data structures are all implemented as classes offering even further functionality. The modules are optimized for functional programming, see \Crefrange{sec:recursion}{chap:functional}, while classes are designed to support object-oriented programming, see \Crefrange{chap:oop}{chap:oopp}.
 
 In the following, a brief overview of many properties, methods, and functions is given by describing their name and type-definition, and by giving a short description and an example of their use. Several definitions are general and works with many different types. To describe this we will use the notation of generic types, see \Cref{sec:functions}. The name of a generic type starts with the \lexeme{'} lexeme, such as \lstinline{'T}. The implication of the appearance of a generic type in, e.g., a function's type-definition, is that the function may be used with any real type such as \lstinline{int} or \lstinline{char}. If the same generic type name is used in several places in the type-definition, then the function must use a real type consistently. For example, The \lstinline{List.fromArray} function has type \lstinline{arr:'T [] -> 'T list}, meaning that it takes an array of some type and returns a list of the same type.
 
@@ -213,7 +213,7 @@ briefly summarized below:
 
 \section{Arrays}
 \label{sec:arrays}
-One dimensional \idx{arrays}, or just arrays for short, are mutable lists of the same type and follow a similar syntax as lists. Arrays can be stated as \idx{sequence expressions},
+One dimensional \idx{arrays}, or just arrays for short, are mutable lists of the same type and follow a similar syntax as lists. Arrays can be stated as a \idx{sequence expression},
 %
 \begin{verbatimwrite}{\ebnf/arrays.ebnf}
 [|[*<*expr*>{*; <*expr*>*}*]|]

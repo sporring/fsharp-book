@@ -66,6 +66,12 @@
 % figures
 \usepackage{subfigure}
 
+% Footnotes below floats
+\usepackage[multiple,bottom]{footmisc}
+
+% Avoid pagebreaks in footnotes
+\interfootnotelinepenalty=10000
+
 %Fancy chapter headings
 %\usepackage[Lenny]{fncychap}
 \usepackage{titlesec}
@@ -316,6 +322,7 @@
   listing file={src/#2.fsx},
   listing and comment,
   listing options={language=fsharp,escapechar=§,#1},
+  % float,
   title=\textbf{Listing \thetcbcounter} {#2.fsx:\\#3},
   label={#2},
   comment={\lstinputlisting[language=console]{\src/#2.out}}
@@ -330,6 +337,7 @@
   listing file={\src/#2},
   listing only,
   listing options={language=fsharp,escapechar=§,#1},
+  % float,
   title=\textbf{Listing \thetcbcounter} {#2:\\#4},
   label={#3},
 }
@@ -343,6 +351,7 @@
   listing file={\src/#2},
   listing only,
   listing options={language=console,escapechar=§,#1},
+  % float,
   title=\textbf{Listing \thetcbcounter} {#2:\\#4},
   label={#3},
 }
@@ -351,7 +360,53 @@
   listing file={src/#1.fsx},
   listing only,
   listing options={language=fsharp,escapechar=§,#4},
+  % float,
   title=\textbf{Listing \thetcbcounter} {#1.fsx:\\#3},
+  label={#2},
+}
+
+\newtcbinputlisting[use counter from=codeNOutput]{\fsSignature}[4]{%
+  listing file={src/#1.fsi},
+  listing only,
+  listing options={language=fsharp,escapechar=§,#4},
+  % float,
+  title=\textbf{Listing \thetcbcounter} {#1.fsi:\\#3},
+  label={#2},
+}
+\newtcbinputlisting[use counter from=codeNOutput]{\fsImplementation}[4]{%
+  listing file={src/#1.fs},
+  listing only,
+  listing options={language=fsharp,escapechar=§,#4},
+  % float,
+  title=\textbf{Listing \thetcbcounter} {#1.fs:\\#3},
+  label={#2},
+}
+
+% dispaly output file .out from \src
+% #1 = optional further arguments for lstinputlisting
+% #2 = filename without suffix, and label
+% #3 = caption
+\newtcbinputlisting[use counter from=codeNOutput]{\fsOutput}[3][]{%
+  listing file={src/#2.out},
+  listing only,
+  listing options={language=console,escapechar=§,#1},
+  % float,
+  title=\textbf{Listing \thetcbcounter}: {#3},
+  label={#2},
+}
+
+% dispaly output file .out from \src as an element in tabularx
+% #1 = optional further arguments for lstinputlisting
+% #2 = filename without suffix, and label
+% #3 = caption
+\newtcbinputlisting[use counter from=codeNOutput]{\fsOutputTabx}[3][]{%
+  listing file={src/#2.out},
+  listing only,
+  width=\hsize,
+  box align=top,
+  listing options={language=console,escapechar=§,aboveskip=0pt,belowskip=0pt,emptylines=0,#1},
+  % float,
+  title=\textbf{Listing \thetcbcounter}: {#3},
   label={#2},
 }
 
@@ -378,47 +433,6 @@
   listing options={language=syntax,escapechar=§,#1},
   title=\textbf{Listing \thetcbcounter:} { #3},
   label={#2}
-}
-
-\newtcbinputlisting[use counter from=codeNOutput]{\fsSignature}[4]{%
-  listing file={src/#1.fsi},
-  listing only,
-  listing options={language=fsharp,escapechar=§,#4},
-  title=\textbf{Listing \thetcbcounter} {#1.fsi:\\#3},
-  label={#2},
-}
-\newtcbinputlisting[use counter from=codeNOutput]{\fsImplementation}[4]{%
-  listing file={src/#1.fs},
-  listing only,
-  listing options={language=fsharp,escapechar=§,#4},
-  title=\textbf{Listing \thetcbcounter} {#1.fs:\\#3},
-  label={#2},
-}
-
-% dispaly output file .out from \src
-% #1 = optional further arguments for lstinputlisting
-% #2 = filename without suffix, and label
-% #3 = caption
-\newtcbinputlisting[use counter from=codeNOutput]{\fsOutput}[3][]{%
-  listing file={src/#2.out},
-  listing only,
-  listing options={language=console,escapechar=§,#1},
-  title=\textbf{Listing \thetcbcounter}: {#3},
-  label={#2},
-}
-
-% dispaly output file .out from \src as an element in tabularx
-% #1 = optional further arguments for lstinputlisting
-% #2 = filename without suffix, and label
-% #3 = caption
-\newtcbinputlisting[use counter from=codeNOutput]{\fsOutputTabx}[3][]{%
-  listing file={src/#2.out},
-  listing only,
-  width=\hsize,
-  box align=top,
-  listing options={language=console,escapechar=§,aboveskip=0pt,belowskip=0pt,emptylines=0,#1},
-  title=\textbf{Listing \thetcbcounter}: {#3},
-  label={#2},
 }
 
 % fsharp code in captions. Double curly brackets needed to return to

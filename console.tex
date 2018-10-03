@@ -306,17 +306,17 @@ FN11194:Documents sporring$ ls
 FN11194:Documents sporring$ 
 \end{lstlisting}
 \end{codeNOutput}
-Only commands found on the \idx{search-path} are available in the console. The content of the search-path is seen using the \lstinline[language=console]{echo} command, as demonstrated in \Cref{LinuxSearchPath}.
-\begin{codeNOutput}[label=LinuxSearchPath]{: The content of the search-path.}
+Only commands found on the \idx{search path} are available in the console. The content of the search path is seen using the \lstinline[language=console]{echo} command, as demonstrated in \Cref{LinuxSearchPath}.
+\begin{codeNOutput}[label=LinuxSearchPath]{: The content of the search path.}
   \begin{lstlisting}[language=console,escapechar=§]
 FN11194:Documents sporring$ echo $PATH
 /Applications/Maple 17/:/Applications/PackageMaker.app/Contents/MacOS/: /Applications/MATLAB_R2014b.app/bin/:/opt/local/bin: /opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin: /sbin:/opt/X11/bin:/Library/TeX/texbin
 FN11194:Documents sporring$ 
 \end{lstlisting}%$
 \end{codeNOutput}
-The search-path can be changed by editing the setup file for Bash. On MacOS X it is called \lstinline[language=console]{~/.profile}, and on Linux it is either \lstinline[language=console]{~/.bash_profile} or \lstinline[language=console]{~/.bashrc}. Here new paths can be added by adding the following line: \lstinline[language=console]{export PATH="<new path>:<another new path>:$PATH"}. %$
+The search path can be changed by editing the setup file for Bash. On MacOS X it is called \lstinline[language=console]{~/.profile}, and on Linux it is either \lstinline[language=console]{~/.bash_profile} or \lstinline[language=console]{~/.bashrc}. Here new paths can be added by adding the following line: \lstinline[language=console]{export PATH="<new path>:<another new path>:$PATH"}. %$
 
-A useful feature of Bash is that the console can help you write commands. E.g., if you write \lstinline[language=console]{fs} followed by pressing the \lstinline[language=console]{tab}-key, and if Mono is in the search-path, then Bash will typically respond by completing the line as \lstinline[language=console]{fsharp}, and by further pressing the \lstinline[language=console]{tab}-key some times, Bash will show the list of options, typically \lstinline[language=console]{fshpari} and \lstinline[language=console]{fsharpc}. Also, most commands have an extensive manual which can be accessed using the \lstinline[language=console]{man} command. E.g., the manual for \lstinline[language=console]{rm} is retrieved by \lstinline[language=console]{man rm}.
+A useful feature of Bash is that the console can help you write commands. E.g., if you write \lstinline[language=console]{fs} followed by pressing the \lstinline[language=console]{tab}-key, and if Mono is in the search path, then Bash will typically respond by completing the line as \lstinline[language=console]{fsharp}, and by further pressing the \lstinline[language=console]{tab}-key some times, Bash will show the list of options, typically \lstinline[language=console]{fshpari} and \lstinline[language=console]{fsharpc}. Also, most commands have an extensive manual which can be accessed using the \lstinline[language=console]{man} command. E.g., the manual for \lstinline[language=console]{rm} is retrieved by \lstinline[language=console]{man rm}.
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

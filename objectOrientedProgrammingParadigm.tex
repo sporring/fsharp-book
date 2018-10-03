@@ -12,7 +12,7 @@ By overriding methods from a base class, derived classes define new data types w
 
 Object-oriented programming has a well-developed methodology for analysis and design. The analysis serves as input to the design phase, where the analysis reveals \idx{what} a program is supposed to do, and the design \idx{how} it is supposed to be doing it. The analysis should be expressed in general terms irrespective of the technologic constraints, while the design should include technological constraints such as defined by the targeted language and hardware.
 
-The primary steps for \idx{object oriented analysis and design} are:
+The primary steps for \idx{object-oriented analysis and design} are:
 \begin{enumerate}
 \item identify objects,\label{item:analysis}\label{item:identifyObjects}
 \item describe object behavior, \label{item:objectBehaviour}
@@ -20,8 +20,9 @@ The primary steps for \idx{object oriented analysis and design} are:
 \item describe some details of the object's inner workings,\label{item:design}\label{item:objectDetails}
 \item write a precise description for classes, properties and methods using, e.g., F\#'s XML documentation standard,
 \item write mockup code,  \label{item:objectMockup}
-\item write unit-tests and test the basic framework using the mockup code,\label{item:implementation}
-\item replace the mockup with real code while testing to keep track of your progress. Extend the unit-test as needed,
+\item write unit tests and test the basic framework using the mockup code,\label{item:implementation}
+\item replace the mockup with real code while testing to keep track of
+  your progress. Extend the unit test as needed,
 \item evaluate code in relation to the desired goal
 \item complete your documentation both in-code and outside.
 \end{enumerate}
@@ -314,7 +315,7 @@ The above nouns and verbs are candidates for objects, their behaviour and intera
   \end{quote}
   seems to fulfill these requirements, while all the rests seems to be features of the former and thus not independent concepts. E.g., \noun{top acceleration} is a feature of a \noun{vehicle}, and \noun{starting line} is a feature of a \noun{track}.
 \item[Object behavior and interactions by verbs (Step~\ref{item:objectBehaviour}  and~\ref{item:objectInteraction}):]~\\
-  To continue our object oriented analysis, we will consider the object candidate identified above, and verbalize how they would act as models of general concepts useful in our game.
+  To continue our object-oriented analysis, we will consider the object candidate identified above, and verbalize how they would act as models of general concepts useful in our game.
 \begin{description}
 \item[\noun{player}] The \noun{player} is associated with the following verbs:
   \begin{itemize}

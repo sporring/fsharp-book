@@ -139,7 +139,7 @@ Scopes are given levels, and scopes may be nested, where the nested scope has a 
 % %
 % It is said that the second binding \idx{overshadows} the first.
 % Alternatively, we may use parentheses to create a block, e.g.,
-However, using parentheses, we create a \idx{block}, i.e., a \idx{nested scope}, and then redefining is allowed, as demonstrated in \Cref{letValueScopeBlockAlternative3}.
+However, using parentheses, we create a \idx{code block}, i.e., a \idx{nested scope}, and then redefining is allowed, as demonstrated in \Cref{letValueScopeBlockAlternative3}.
 %
 \fs{letValueScopeBlockAlternative3}{A block may be created using parentheses.}
 %
@@ -251,7 +251,7 @@ A \idx{procedure} is a generalization of the concept of functions, and in contra
 %
 \fs{procedure}{A procedure is a function that has no return value, and in F\# returns \lexeme{()}.}
 %
-In F\#, this is automatically given the unit type as the return value. Procedural thinking is useful for \idx{encapsulation} of scripts, but is prone to \idx{side-effects}. 
+In F\#, this is automatically given the unit type as the return value. Procedural thinking is useful for \idx{encapsulation} of scripts, but is prone to \idx[side-effect]{side-effects}. 
 %An example, we've already seen is the \lstinline{printfn}, which is used to print text on the console, but does not return a value. Coincidentally, since the console is a state, printing to it is a side-effect. Above we examined 
 %\begin{fse}
 %   let updateFactor factor = 
@@ -443,7 +443,7 @@ Changing the value of an identifier is called \idx{assignment} and is done using
 \end{verbatimwrite}
 \syntax{\ebnf/assignment.ebnf}{Value reassignment for mutable variables.}
 %
-\idx[mutable data]{Mutable data} is synonymous with the term \idx{variable}. A variable is an area in the computer's working memory associated with an identifier and a type, and this area may be read from and written to during program execution, see \Cref{mutableAssignReassingShort} for an example.
+\idx[mutable value]{Mutable values} is synonymous with the term \idx{variable}. A variable is an area in the computer's working memory associated with an identifier and a type, and this area may be read from and written to during program execution, see \Cref{mutableAssignReassingShort} for an example.
 %
 \fs{mutableAssignReassingShort}{A variable is defined and later reassigned a new value.}
 %\fs{mutableAssignReassing}{}
@@ -500,7 +500,7 @@ Reference cells are different from mutable variables, since their content is all
 \end{figure}
 %
 
-Reference cells may cause \idx{side-effects}, where variable changes are performed across independent scopes. Some side-effects are useful, e.g., the \lstinline{printf} family changes the content of the screen, and the screen is outside the scope of the caller.  Another example of a useful side-effect is a counter shown in \Cref{refEncapsulation}.
+Reference cells may cause \idx[side-effect]{side-effects}, where variable changes are performed across independent scopes. Some side-effects are useful, e.g., the \lstinline{printf} family changes the content of the screen, and the screen is outside the scope of the caller.  Another example of a useful side-effect is a counter shown in \Cref{refEncapsulation}.
 %
 \fs{refEncapsulation}{An increment function with a local state using a reference cell.}
 %
