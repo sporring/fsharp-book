@@ -6,7 +6,7 @@ let printCartesian (p : vec) : unit =
       Cartesian (x, y) -> printfn "%A:\n Cartesian (%A, %A)" p x y(*//§\label{activePatternCartesianApp}§*)
 let printPolar (p : vec) : unit =
     match p with
-      Polar (a, d) -> printfn "%A:\n Cartesian (%A, %A)" p a d(*//§\label{activePatternPolarApp}§*)
+      Polar (a, d) -> printfn "%A:\n Polar (%A, %A)" p a d(*//§\label{activePatternPolarApp}§*)
 
 let v = {x = 2.0; y = 3.0}
 printCartesian v

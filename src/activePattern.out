@@ -4,4 +4,4 @@ $ fsharpc --nologo activePattern.fsx && mono activePattern.exe
  Cartesian (2.0, 3.0)
 {x = 2.0;
  y = 3.0;}:
- Cartesian (3.605551275, 0.9827937232)
+ Polar (3.605551275, 0.9827937232)

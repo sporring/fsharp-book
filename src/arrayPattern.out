@@ -1,4 +1,4 @@
 $ fsharpc --nologo arrayPattern.fsx && mono arrayPattern.exe
-3 elements, first of is a one
-3 elements, first is 3Second is one
+3 elements, first of is 1
+3 elements, first is 3 Second 1
 A general array

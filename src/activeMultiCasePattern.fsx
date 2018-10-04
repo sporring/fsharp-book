@@ -5,8 +5,8 @@ let (|Gold|Silver|Bronze|) inp = (*//§\label{activeMultiCasePatternDef}§*)
 
 let intToMedal (i : int) =
     match i with
-      Gold -> printfn "%d: Its gold!" i (*//§\label{activeMultiCasePatternApp}§*)
-      | Silver -> printfn "%d: Its silver." i
-      | Bronze -> printfn "%d: Its no more than bronze." i
+      Gold -> printfn "%d: It's gold!" i (*//§\label{activeMultiCasePatternApp}§*)
+      | Silver -> printfn "%d: It's silver." i
+      | Bronze -> printfn "%d: It's no more than bronze." i
 
 List.iter intToMedal [0..3]

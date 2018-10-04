@@ -1,6 +1,6 @@
 $ fsharpc --nologo activeMultiCasePattern.fsx
 $ mono activeMultiCasePattern.exe
-0: Its gold!
-1: Its silver.
-2: Its no more than bronze.
-3: Its no more than bronze.
+0: It's gold!
+1: It's silver.
+2: It's no more than bronze.
+3: It's no more than bronze.
