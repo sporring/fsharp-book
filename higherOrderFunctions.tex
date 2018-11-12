@@ -1,65 +1,65 @@
-\chapter{Higher order functions}
+\chapter{Higher Order Functions}
 \label{chap:higherOrderFunctions}
-A \idx{higher order function} is a function that takes a function as an argument and/or returns a function. Higher order functions are also sometimes called functionals or functors. F\# is a functions-first programming language with strong support for working with functions as values: Functions evaluate as \idx{closures}, see \Cref{sec:functions}, which can be passed to and from functions as any other value. An example of a higher order function is \lstinline{List.map}, which takes a function and a list and produces a list, demonstrated in \Cref{higherOrderMap}.
+A \idx{higher order function} is a function that takes a function as an argument and/or returns a function. Higher order functions are also sometimes called functionals or functors. F\# is a functions-first programming language with strong support for working with functions as values: Functions evaluate as \idx{closures}, see \Cref{sec:functions}, which can be passed to and from functions as any other value. An example of a higher order function is \lstinline{List.map} which takes a function and a list and produces a list, demonstrated in \Cref{higherOrderMap}.
 %
 \fs{higherOrderMap}{\lstinline{List.map} is a higher order function, since it takes a function as argument.}
 %
-Here \lstinline{List.map} applies the function \lstinline{inc} to every element of the list. \idx[anonymous functions]{Anonymous functions} are expressions that results in a function, which need not be named. A typical example is to use anonymous functions as arguments to higher order functions such as \lstinline{List.map} shown in \Cref{higherOrderAnonymous}.
+Here \lstinline{List.map} applies the function \lstinline{inc} to every element of the list. Higher order functions are often used together with \idx[anonymous functions]{anonymous functions}, where the anonymous functions is given as argument. For example, \Cref{higherOrderMap} may be rewritten using an anonymous function as shown in \Cref{higherOrderAnonymous}.
 %
 \fs{higherOrderAnonymous}{An anonymous function is a higher order function used here as an unnamed argument. Compare with \Cref{higherOrderMap}.}
 %
-A very brief version of \Cref{higherOrderAnonymous} is shown in \Cref{higherOrderAnonymousBrief}.
+The code may be compacted even further, as shown in \Cref{higherOrderAnonymousBrief}.
 %
 \fs{higherOrderAnonymousBrief}{A compact version of \Cref{higherOrderMap}.}
 %
-What was originally three lines in \Cref{higherOrderMap} as been reduced to a single line in \Cref{higherOrderAnonymousBrief}. While the result is exactly the same, the later is more difficult to read: First the reader has to understand what the anonymous function does on a single argument, then how this applies to the list through \lstinline{list.Map}, and finally what \lstinline{printfn} does with the result.
+What was originally three lines in \Cref{higherOrderMap} including bindings to the names \lstinline{inc} and \lstinline{newList} has in \Cref{higherOrderAnonymousBrief} been reduced to a single line with no bindings. All three programs result in the same output and as such are equal. Likewise, running times will be equal. However, they differ in readability for a programmer and ease of bug hunting and future maintenance: Bindings allows us to reuse the code at a later stage, but if there is no reuse, then the additional bindings may result in a cluttered program. Further, for compact programs like \Cref{higherOrderAnonymousBrief}, it is not possible to perform a unit test of the function arguments. Finally, bindings emphasize semantic aspects of the evaluation being performed merely by the names we select, and typically long, meaningful names are to be preferred, within reasonable limits. For example instead of \lstinline{inc} one could have used \lstinline{increment_by_one} or similar which certainly is semantically meaningful, but many programmers will find that the short is to be preferred in order to reduce the amount of typing to be performed.
 
-Anonymous functions are also useful as return values of functions as shown in \Cref{higherOrderReturn}
+Anonymous functions are also useful as return values of functions, as shown in \Cref{higherOrderReturn}
 %
 \fs{higherOrderReturn}{The procedure \lstinline{inc} returns an increment function. Compare with \Cref{higherOrderMap}.}
 %
 Here the \lstinline{inc} function produces a customized incrementation function as argument to \lstinline{List.map}: It adds a prespecified number to an integer argument. Note that the closure of this customized function is only produced once, when the arguments for \lstinline{List.map} is prepared, and not every time \lstinline{List.map} maps the function to the elements of the list. Compare with \Cref{higherOrderMap}.
 
-\idx[piping]{Piping} is another example of a set of higher order function: \lstinline{(<|)}, \lstinline{(|>)}, \lstinline{(<||)}, \lstinline{(||>)}, \lstinline{(<|||)}, \lstinline{(|||>)}.\jon{Make piping operators go into index.} E.g., the functional equivalent of the right-to-left piping operator takes a value and a function and applies the function to the value as demonstrated in \Cref{higherOrderPiping}.
+\idx[piping]{Piping} is another example of a set of higher order function: \lstinline{(<|)}, \lstinline{(|>)}, \lstinline{(<||)}, \lstinline{(||>)}, \lstinline{(<|||)}, \lstinline{(|||>)}.\jon{Make piping operators go into index.} E.g., the functional equivalent of the right-to-left piping operator takes a value and a function and applies the function to the value, as demonstrated in \Cref{higherOrderPiping}.
 %
 \fs{higherOrderPiping}{The functional equivalent of the right-to-left piping operator is a higher order function.}
 %
 Here the piping operator is used to apply the \lstinline{inc} function to \lstinline{aValue}. A more elegant way to write this would be \lstinline{aValue |> inc}, or even just \lstinline{inc aValue}.
 
-\section{Function composition}
-Piping is a useful shorthand for composing functions where the focus is on the transformation of arguments and results. Using higher order functions, we can forgo the arguments and compose functions\idxs{function composition} as functions directly. This is done with the \idx[>>@\lstinline{>>}]{\lexeme{>>}} and \idx[<<@\lstinline{<<}]{\lexeme{<<}} %>> >> >>
+\section{Function Composition}
+Piping is a useful shorthand for composing functions, where the focus is on the transformation of arguments and results. Using higher order functions, we can forgo the arguments and compose functions\idxs{function composition} as functions directly. This is done with the \idx[>>@\lstinline{>>}]{\lexeme{>>}} and \idx[<<@\lstinline{<<}]{\lexeme{<<}} %>> >> >>
 operators. An example is given in \Cref{higherOrderComposition}.
 %
-\fs{higherOrderComposition}{Functions defined as composition of other functions.}
+\fs{higherOrderComposition}{Functions defined as compositions of other functions.}
 %
 In the example we see that \lstinline{(f >> g) x} gives the same result as \lstinline{g (f x)}, while \lstinline{(f << g) x} %>>
  gives the same result as \lstinline{f (g x)}. A memo technique for remembering the order of the application, when using the function composition operators, is that \lstinline{(f >> g) x} is the same as \lstinline{x |> f |> g}, i.e., the result of applying \lstinline{f} to \lstinline{x} is the argument to \lstinline{g}. However, there is a clear distinction between the piping and composition operators. The type of the piping operator is
  \begin{quote}
    \lstinline{(|>) : ('a, 'a -> 'b) -> 'b}
  \end{quote}
-i.e., the piping operator takes a value of type \lstinline{'a} and a function of type \lstinline{'a -> 'b} and applies the function to the value and produces the value \lstinline{'b}. In contrast, the composition operator has type
+i.e., the piping operator takes a value of type \lstinline{'a} and a function of type \lstinline{'a -> 'b}, applies the function to the value, and produces the value \lstinline{'b}. In contrast, the composition operator has type
 \begin{quote}
   \lstinline{(>>) : ('a -> 'b, 'b -> 'c) -> ('a -> 'c)}
 \end{quote}
 i.e., it takes two functions of type \lstinline{'a -> 'b} and \lstinline{'b -> 'c} respectively, and produces a new function of type \lstinline{a' -> 'c}.
 
 \section{Currying}
-Consider a function \lstinline{f} of two generic arguments. It's type in F\# will be \lstinline{f : 'a -> 'b -> 'c}, meaning that \lstinline{f} takes an argument of type \lstinline{'a} and returns a function of type \lstinline{'b -> 'c}. That is, if just one argument is given, then the result is a function, not a value. This is called \idx{partial specification} or \idx{currying} in tribute of Haskell Curry\footnote{Haskell Curry (1900--1982) was an American mathematician and logician, who also has a programming language named after him: Haskell.}. An example is given in \Cref{higherOrderCurrying}.
+Consider a function \lstinline{f} of two generic arguments. Its type in F\# will be \lstinline{f : 'a -> 'b -> 'c}, meaning that \lstinline{f} takes an argument of type \lstinline{'a} and returns a function of type \lstinline{'b -> 'c}. That is, if just one argument is given, then the result is a function, not a value. This is called \idx{partial specification} or \idx{currying} in tribute of Haskell Curry\footnote{Haskell Curry (1900--1982) was an American mathematician and logician who also has a programming language named after him: Haskell.}. An example is given in \Cref{higherOrderCurrying}.
 %
 \fs{higherOrderCurrying}{Currying: defining a function as a partial specification of another.}
 %
-%For functions of more than 1 argument, there exists a short notation, which is called \idx{currying} in tribute of Haskell Curry,
-Here, \lstinline{mul 2.0} is a partial application of the function \lstinline{mul x y}, where the first argument is fixed, and hence, \lstinline{timesTwo} is a function of 1 argument being the second argument of \lstinline{mul}. The same can be achieved using tuple arguments, as shown in \Cref{higherOrderTuples}.
+%For functions of more than 1 argument, there exists a short notation which is called \idx{currying} in tribute of Haskell Curry,
+Here, \lstinline{mul 2.0} is a partial application of the function \lstinline{mul x y}, where the first argument is fixed, and hence \lstinline{timesTwo} is a function of 1 argument being the second argument of \lstinline{mul}. The same can be achieved using tuple arguments, as shown in \Cref{higherOrderTuples}.
 %
 \fs{higherOrderTuples}{Partial specification of functions using tuples is less elegant. Compare with \Cref{higherOrderCurrying}.}
 %
-Conversion between multiple and tuple arguments is easily done with higher order functions as demonstrated in \Cref{curryNUncurry}.
+Conversion between multiple and tuple arguments is easily done with higher order functions, as demonstrated in \Cref{curryNUncurry}.
 %
 \fsOutput{curryNUncurry}{Two functions to convert between two and 2-tuple arguments.}
 %
-Conversion between multiple and tuple arguments are useful, when working with higher order functions such as \lstinline{Lst.map}. E.g., if \lstinline{let mul (x, y) = x * y} as in \Cref{higherOrderTuples}, then \lstinline{curry mul} has the type \lstinline{x:'a -> y:'b -> 'c} as can be seen in \Cref{curryNUncurry}, and thus, is equal to the anonymous function \lstinline{fun x y -> x * y}. Hence, \lstinline{curry mul 2.0} is equal to \lstinline{fun y -> 2.0 * y}, since the precedence of function calls is \lstinline{(curry mul) 2.0}. 
+Conversion between multiple and tuple arguments are useful when working with higher order functions such as \lstinline{Lst.map}. E.g., if \lstinline{let mul (x, y) = x * y} as in \Cref{higherOrderTuples}, then \lstinline{curry mul} has the type \lstinline{x:'a -> y:'b -> 'c} as can be seen in \Cref{curryNUncurry}, and thus is equal to the anonymous function \lstinline{fun x y -> x * y}. Hence, \lstinline{curry mul 2.0} is equal to \lstinline{fun y -> 2.0 * y}, since the precedence of function calls is \lstinline{(curry mul) 2.0}. 
 
-Currying makes elegant programs and is often used in functional programming. Nevertheless, currying may lead to obfuscation, and in generally \advice{currying should be used with care and be well documented for proper readability of code.}
+Currying makes elegant programs and is often used in functional programming. Nevertheless, currying may lead to obfuscation, and in general, \advice{currying should be used with care and be well documented for proper readability of code.}
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

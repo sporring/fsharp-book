@@ -223,7 +223,7 @@ Here, we used the lightweight syntax, where the \lexeme{=} identifies the start 
 %
 Here, the value-binding for \lstinline!a! is redefined after it has been used to define a helper function \lstinline!f!. So which value of \lstinline!a! is used when we later apply \lstinline!f! to an argument? To resolve the confusion, remember that value-binding is lexically defined, i.e., the binding \lstinline!let f z = a * z! uses the value of \lstinline!a! as it is defined by the ordering of the lines in the script, not dynamically by when \lstinline!f! was called. Hence, \advice{think of lexical scope as substitution of an identifier with its value or function immediately at the place of definition.} Since \lstinline!a! and \lstinline!3.0! are synonymous in the first lines of the program, the function \lstinline!f! is really defined as \lstinline!let f z = 3.0 * z!.
 
-Functions do not need a name, but may be declared as an \idx{anonymous function} using the \idx[fun@\lstinline{fun}]{\keyword{fun}} keyword and the \idx[->@\lstinline{->}]{\lexeme{->}} lexeme, as shown in \Cref{functionDeclarationAnonymous}.
+Functions do not need a name, but may be declared as an \idx[anonymous functions]{anonymous function} using the \idx[fun@\lstinline{fun}]{\keyword{fun}} keyword and the \idx[->@\lstinline{->}]{\lexeme{->}} lexeme, as shown in \Cref{functionDeclarationAnonymous}.
 %
 \fs{functionDeclarationAnonymous}{Anonymous functions are functions as values.}
 %
