@@ -135,7 +135,7 @@ type <*ident*> =
 \end{verbatimwrite}
 \syntax{\ebnf/structs.ebnf}{Syntax for type abbreviation.}
 %
-The syntax makes use of the \idx[val@\lstinline{val}]{\keyword{val}} and \idx[new@\lstinline{new}]\idx{\keyword{new}} keywords. Like \keyword{let}, the keyword \keyword{val} binds a name to a value, but unlike \keyword{let}, the value is always the type's default value. The \keyword{new} keyword denotes the function used to fill values into the fields at time of creation. This function is called the \idx{constructor}. No \keyword{let} or \keyword{do} bindings are allowed in structure definitions. Fields are accessed using the \idx[.@\lstinline{.}]{\lexeme{.}} notation. An example is given in \Cref{struct}.
+The syntax makes use of the \idx[val@\lstinline{val}]{\keyword{val}} and \idx[new@\lstinline{new}]\idx{\keyword{new}} keywords. Like \keyword{let}, the keyword \keyword{val} binds a name to a value, but unlike \keyword{let}, the value is always the type's default value. The \keyword{new} keyword denotes the function used to fill values into the fields at time of creation. This function is called the \idx{constructor}. No \keyword{let} or \keyword{do}-bindings are allowed in structure definitions. Fields are accessed using the \idx[.@\lstinline{.}]{\lexeme{.}} notation. An example is given in \Cref{struct}.
 %
 \fs{struct}{Defining a struct type and creating a value of it.}
 %

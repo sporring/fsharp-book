@@ -303,7 +303,7 @@ This information is important in order to restrict the operation that we will pe
 \end{table}
 E.g., we may \lstinline!Seek! a particular position in the file, but only within the range of legal postions from 0 until the length of the file. Most operating systems do not necessarily write information to files immediately after one of the \lstinline!Write! functions, but will often for optimization purposes will often collect information in a buffer that is to be written to a device in batches. However, sometimes is is useful to be able to force the operating system to empty its buffer to the device. This is called \idx{flushing} and can be forced using the \lstinline!Flush! function.
 
-Text is typically streamed through the \lstinline!StreamReader! and \lstinline!StreamWriter!. These may be considered higher order stream processing, since they include an added interpretation of the bits to strings. A \lstinline!StreamReader! has methods similar to a \lstinline!FileStream! object and a few new properties and methods, such as the \lstinline!EndOfStream! property and \lstinline!ReadToEnd! method, see \Cref{tab:streamReaderMethods}.%
+Text is typically streamed through the \lstinline!StreamReader! and \lstinline!StreamWriter!. These may be considered higher-order stream processing, since they include an added interpretation of the bits to strings. A \lstinline!StreamReader! has methods similar to a \lstinline!FileStream! object and a few new properties and methods, such as the \lstinline!EndOfStream! property and \lstinline!ReadToEnd! method, see \Cref{tab:streamReaderMethods}.%
 \idxss{\lstinline{System.IO.StreamReader.EndOfStream}}%
 \idxss{\lstinline{System.IO.StreamReader.Close}}%
 \idxss{\lstinline{System.IO.StreamReader.Flush}}%
@@ -499,7 +499,7 @@ A \lstinline{use} binding provides a binding between the \lstinline[language=syn
 %
 Here, \lstinline{file} is an \lstinline{System.IDisposable} object, and before \lstinline{writeToFile} returns, \lstinline{file.Dispose()} is called automatically, which in this case implies that the file is closed. Had we used \keyword{let} instead, then the file would first be closed, when the program terminates.
 
-The higher order function \idx[using@\lstinline{using}]{\lstinline{using}} takes a disposable object and a function, executes the function on the disposable objects and then calls \lstinline{Dispose()} on the disposable object. This is illustrated in \Cref{using}
+The higher-order function \idx[using@\lstinline{using}]{\lstinline{using}} takes a disposable object and a function, executes the function on the disposable objects and then calls \lstinline{Dispose()} on the disposable object. This is illustrated in \Cref{using}
 %
 \fsCode{using}{using}{The \lstinline{using} function executes a function on an object and releases its disposable resources. Compare with \Cref{useBinding}.}{}
 %

@@ -1,4 +1,4 @@
-\chapter{The functional programming paradigm}
+\chapter{The Functional Programming Paradigm}
 \label{chap:functional}
 Functional programming is a style of programming which performs computations by evaluating functions. Functional programming avoids mutable values and side-effects. It is declarative in nature, e.g., by the use of value- and function-bindings -- \keyword{let}-bindings -- and avoids statements -- \keyword{do}-bindings. Thus, the result of a function in functional programming depends only on its arguments, and therefore functions have no side-effect and are deterministic, such that repeated call to a function with the same arguments always gives the same result. In functional programming, data and functions are clearly separated, and hence data structures are dum as compared to objects in object-oriented programming paradigm, see \Cref{chap:oopp}. Functional programs clearly separate behavior from data and subscribes to the view that \emph{it is better to have 100 functions operate on one data structure than 10 functions on 10 data structures}. Simplifying the data structure has the advantage that it is much easier to communicate data than functions and procedures between programs and environments. The .Net, mono, and java's virtual machine are all examples of an attempt to rectify this, however, the argument still holds.
 
@@ -8,44 +8,44 @@ Functional programming has a number of features:
 \begin{description}
 \item[Pure functions]\idxs{pure function}~\\
 Functional programming is performed with pure functions. A pure function always returns the same value, when given the same arguments, and it has no side-effects. A function in F\# is an example of a pure function. Pure functions can be replaced by their result without changing the meaning of the program. This is known as \idx{referential transparency}.
-\item[Higher order functions]\idxs{higher order function}~\\
-Functional programming makes use of higher order functions, where functions may be given as arguments and returned as results of a function application. Higher order functions and \idx{first-class citizenship} are related concepts, where higher-order functions are the mathematical description of functions that operator on functions, while a first-class citizen is the computer science term for functions as values. F\# implements higher-order functions.
+\item[higher-order functions]\idxs{higher-order function}~\\
+Functional programming makes use of higher-order functions, where functions may be given as arguments and returned as results of a function application. higher-order functions and \idx{first-class citizenship} are related concepts, where higher-order functions are the mathematical description of functions that operator on functions, while a first-class citizen is the computer science term for functions as values. F\# implements higher-order functions.
 \item[Recursion]\idxs{recursion}~\\
 Functional programs use recursion instead of \keyword{for}- and \keyword{while}-loops. Recursion can make programs ineffective, but compilers are often designed to optimize tail-recursion calls. Common recursive programming structures are often available as optimized higher-order functions such as \idx{iter}, \idx{map}, \idx{reduce}, \idx{fold}, and \idx{foldback}. F\# has good support for all of these features.
 \item[Immutable states]\idxs{immutable state}\idxs{immutable state}~\\
-Functional programs operate on values not on variables. This implies lexicographical scope in contrast to mutable values, which implies dynamic scope.
-\item[Strongly typed]\idxs{strongly typed}~\\
-Functional programs are often strongly typed, meaning that types are set no later than at compile-time. F\# does have the ability to perform runtime type assertion, but for most parts it relies on explicit type annotations and type inference at compile-time. The implication is that type errors are caught at compile time instead of at runtime.
+Functional programs operate on values, not on variables. This implies lexicographical scope in contrast to mutable values, which implies dynamic scope.
+\item[Strongly typed]~\idxs{strongly typed}\\
+Functional programs are often strongly typed, meaning that types are set no later than at compile-time. F\# does have the ability to perform runtime type assertion, but for most parts it relies on explicit type annotations and type inference at compile-time. This means that type errors are caught at compile time instead of at runtime.
 \item[Lazy evaluation]\idxs{lazy evaluation}~\\
-Due to referential transparency, values can be compute any time up until the point, when needed. Hence, they need not be computed at compilation time, which allows for infinite data structures. F\# has support for lazy evaluations using the \idx[lazy@\lstinline{lazy}]{\keyword{lazy}}-keyword, sequences using the \idx[seq@\lstinline{seq}]{\keyword{seq}}-type, and computation expressions, all of which are advanced topics and not treated in this book.
+Due to referential transparency, values can be computed any time up until the point when it is needed. Hence, they need not be computed at compilation time, which allows for infinite data structures. F\# has support for lazy evaluations using the \idx[lazy@\lstinline{lazy}]{\keyword{lazy}}-keyword, sequences using the \idx[seq@\lstinline{seq}]{\keyword{seq}}-type, and computation expressions, all of which are advanced topics and not treated in this book.
 \end{description}
 
-Immutable states imply that data structures in functional programming are different than in imperative programming. E.g., in F\# lists are immutable, so if an element of a list is to be changed, a new list must be created by copying all old values except that which is to be changed. Such an operation is therefore linear in computational complexity. In contrast, arrays are mutable values, and changing a value is done by reference to the value's position and change the value at that location. This has constant computational complexity. While fast, mutable values give dynamic scope, makes reasoning about the correctness of a program harder, since mutable states do not have referential transparency.
+Immutable states imply that data structures in functional programming are different than in imperative programming. E.g., in F\# lists are immutable, so if an element of a list is to be changed, a new list must be created by copying all old values except that which is to be changed. Such an operation is therefore linear in computational complexity. In contrast, arrays are mutable values, and changing a value is done by reference to the value's position and changing the value at that location. This has constant computational complexity. While fast, mutable values give dynamic scope and makes reasoning about the correctness of a program harder, since mutable states do not have referential transparency.
 
-Functional programming may be considered a subset of \idx{imperative programming}, in the sense that functional programming does not include the concept of a state, or one may think of functional programming as only having one unchanging state. Functional programming has also a bigger focus on declaring rules for \emph{what} should be solved, and not explicitly listing statements describing \emph{how} these rules should be combined and executed in order to solve a given problem. Functional programming is often found to be less error-prone at runtime making more stable, safer programs, and less open for, e.g., hacking.
+Functional programming may be considered a subset of \idx{imperative programming}, in the sense that functional programming does not include the concept of a state, or one may think of functional programming as only having one unchanging state. Functional programming also has a bigger focus on declaring rules for \emph{what} should be solved, and not explicitly listing statements describing \emph{how} these rules should be combined and executed in order to solve a given problem. Functional programming is often found to be less error-prone at runtime, making more stable, safer programs that are less open for, e.g., hacking.
 
-\section{Functional design}
+\section{Functional Design}
 A key to all good programming designs is encapsulating code into modules. For functional programs, the essence is to consider data and functions as transformations of data. I.e., the basic pattern is a piping sequence, 
 \begin{quote}
   \lstinline{x |> f |> g |> h},
 \end{quote}
-where \lstinline{x} is the input data, and \lstinline{f}, \lstinline{g}, and \lstinline{h} are functions that transform the data. Of course, most long programs include lots of control structure implying that we would need junctions in the pipe system, however, piping is a useful memo technique. 
+where \lstinline{x} is the input data and \lstinline{f}, \lstinline{g}, and \lstinline{h} are functions that transform the data. Of course, most long programs include lots of control structure, implying that we would need junctions in the pipe system, however, piping is a useful memo technique. 
 
-In functional programming there are some pitfalls, that you should avoid:
+In functional programming there are some pitfalls that you should avoid:
 \begin{itemize}
-\item Creating large data structures, such as a single record containing all data. Since data is immutable, changing a single field in a monstrous record would mean a lot of copying in many parts of your program. Better is to use a range of data structures that express isolated semantic units of your problem.
+\item Creating large data structures, such as a single record containing all data. Since data is immutable, changing a single field in a monstrous record would mean a lot of copying in many parts of your program. In such cases, it is better to use a range of data structures that express isolated semantic units of your problem.
 \item Non-tail recursion. Relying on the built-in functions \lstinline{map}, \lstinline{fold}, etc., is a good start for efficiency.
-\item Single character identifiers. Since functional programming tends to produce small, well-defined functions, there is a tendency to the use of single character identifiers, e.g., \lstinline{let f x = ...}. In the very small, this can be defended, but the names used as identifiers can be used to increase the readability of code to yourself or to others. Typically, identifiers are long and informative in the outer most scope, while decreasing in size as you move in.
-\item Few comments. Since functional programming is very concise, there is a tendency, that we as programmers forget to add sufficient comments to the code, since at the time of writing, the meaning may be very clear and well thought through, but experience shows that this clarity deteriorates fast with time.
-\item Identifiers that are meaningless clones of each other. Since identifiers cannot be reused except by overshadowing in deeper scopes, there is often a tendency to have a family of identifiers like \lstinline{a}, \lstinline{a2}, \lstinline{newA} etc. Better is to use names, that more clearly states the semantic meaning of the values, or, if only used as temporary storage, to discard them completely in lieu of piping and function composition. However, the latter most often requires comments describing the transformation being performed.
+\item Single character identifiers. Since functional programming tends to produce small, well-defined functions, there is a tendency to use single character identifiers, e.g., \lstinline{let f x = ...}. In the very small, this can be defended, but the names used as identifiers can be used to increase the readability of code to yourself or to others. Typically, identifiers are long and informative in the outermost scope, while decreasing in size as you move in.
+\item Few comments. Since functional programming is very concise, there is a tendency for us as programmers to forget to add sufficient comments to the code, since at the time of writing, the meaning may be very clear and well thought through. However, experience shows that this clarity deteriorates fast with time.
+\item Identifiers that are meaningless clones of each other. Since identifiers cannot be reused except by overshadowing in deeper scopes, there is often a tendency to have a family of identifiers like \lstinline{a}, \lstinline{a2}, \lstinline{newA} etc. It is better to use names that more clearly state the semantic meaning of the values, or, if only used as temporary storage, to discard them completely in lieu of piping and function composition. However, the lattermost often requires comments describing the transformation being performed.
 \end{itemize}
 
 Thus, a design pattern for functional programs must focus on,
 \begin{itemize}
-\item What is the input data to be processed
-\item How is the data to be transformed
+\item What input data is to be processed
+\item How the data is to be transformed
 \end{itemize}
-For large programs, the design principle is often similar to other programming paradigms, which are often visualized graphically as components that take input, interact, and produces results often together with a user. The effect of functional programming is mostly seen in the small, i.e., where a subtask is to be structure functionally.
+For large programs, the design principle is often similar to other programming paradigms, which are often visualized graphically as components that take input, interact, and produce results often together with a user. The effect of functional programming is mostly seen in the small, i.e., where a subtask is to be structured functionally.
 
 \begin{comment}
   Let's consider such a smaller subtask as an example

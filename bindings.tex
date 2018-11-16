@@ -189,7 +189,7 @@ An example of defining a function and using it in interactive mode is shown in \
 %
 \fsOutput{letFunction}{An example of a binding of an identifier and a function.}
 %
-Here we see that the function is interpreted to have the type \lstinline!val sum : x:float -> y:float -> float!. The \lexeme{->} lexeme means a mapping between sets, in this case, floats. The function is also a higher order function, to be discussed in detail below, and here it suffices to think of \lstinline!sum! as a function that takes 2 floats as argument and returns a float.
+Here we see that the function is interpreted to have the type \lstinline!val sum : x:float -> y:float -> float!. The \lexeme{->} lexeme means a mapping between sets, in this case, floats. The function is also a higher-order function, to be discussed in detail below, and here it suffices to think of \lstinline!sum! as a function that takes 2 floats as argument and returns a float.
 %, that \lexeme{->} associates to the right, hence \lstinline!x:float -> y:float -> float! is equivalent to \lstinline!x:float -> (y:float -> float)! and thus, \lstinline!sum x! is a function, which gives a function
 
 Not all types need to be declared, just a sufficient number for F\# to be able to infer the types for the full statement. For the example, one is sufficient, and we could just have declare the type of the result, as in \Cref{letFunctionAlterantive}.
@@ -265,7 +265,7 @@ In F\#, functions (and procedures) are \idx{first-class citizens}, which means t
 %
 \fs{functionFirstClass}{The function \lstinline{ApplyFactor} has a non-trivial closure.}
 %
-It defines two functions \lstinline{mul} and \lstinline{applyFactor}, where the latter is a higher order function taking another function as an argument and uses part of the environment to produce its result. The two closures are:
+It defines two functions \lstinline{mul} and \lstinline{applyFactor}, where the latter is a higher-order function taking another function as an argument and uses part of the environment to produce its result. The two closures are:
 \begin{align}
   \text{\lstinline{mul}}: \left(\text{args}, \text{exp}, \text{env}\right) 
   = &\big((\text{\lstinline{x}},\text{\lstinline{y}}), \left(\text{\lstinline{x * y}}\right), ()\big)
@@ -293,13 +293,13 @@ Operators beginning with \lstinline!*! must use a space in its definition. For e
 
 Beware, redefining existing operators lexically redefines all future uses of the operators for all types, hence \advice{it is not a good idea to redefine operators, but better to define new ones.}\spec{It seems there is a bug in mono: \lstinline{let (~+) x = x+1 in printfn "\%A" +1;;} prints 1 and not 2.} In \Cref{chap:oop} we will discuss how to define type-specific operators, including prefix operators. 
 
-\section{Do Bindings}
-Aside from \keyword{let} bindings that binds names with values or functions, sometimes we just need to execute code. This is called a \idx[do@\lstinline{do}]{\keyword{do}} binding\idxs{do binding} or, alternatively, a \idx{statement}. The syntax is as follows:
+\section{Do-Bindings}
+Aside from \keyword{let}-bindings that binds names with values or functions, sometimes we just need to execute code. This is called a \idx[do@\lstinline{do}]{\keyword{do}}-binding\idxs{do-binding} or, alternatively, a \idx{statement}. The syntax is as follows:
 %
 \begin{verbatimwrite}{\ebnf/doBindings.ebnf}
 [*do *]<*expr*>
 \end{verbatimwrite}
-\syntax{\ebnf/doBindings.ebnf}{Syntax for \keyword{do} bindings.}
+\syntax{\ebnf/doBindings.ebnf}{Syntax for \keyword{do}-bindings.}
 %
 The expression \lstinline[language=syntax]{<*expr*>} must return \keyword{unit}. The keyword \keyword{do} is optional in most cases, but using it emphasizes that the expression is not a function that returns a useful value. Procedures are examples of such expressions, and a very useful family of procedures are the \lstinline{printf} family described below. In the remainder of this book, we will refrain from using the \keyword{do} keyword.
 
