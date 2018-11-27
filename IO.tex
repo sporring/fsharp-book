@@ -1,17 +1,17 @@
-\chapter{Working with files}
+\chapter{Working With Files}
 \label{chap:IO}
-An important part of programming is handling data. A typical source of data is hard-coded bindings and expressions from libraries or the program itself, and the result is often shown on a screen either as text output on the console. This is a good starting point when learning to program, and one which we have relied heavily upon in this book until now. However, many programs require more: We often need to ask a user to input data via, e.g., typing text on a keyboard, clicking with a mouse, striking a pose in front of a camera. We also often need to load and save data to files, retrieve and deposit information from the internet, and visualize data as graphically, as sounds, or by controlling electrical appliances. Graphical user interfaces will be discussed in \Cref{chap:windows}, and here we will concentrate on working with the console, with files, and with the general concept of streams.
+An important part of programming is handling data. A typical source of data is hard-coded bindings and expressions from libraries or the program itself, and the result is often shown on a screen as text output on the console. This is a good starting point when learning to program, and one which we have relied heavily upon in this book until now. However, many programs require more: We often need to ask a user to input data via, e.g., typing text on a keyboard, clicking with a mouse, or striking a pose in front of a camera. We also often need to load and save data to files, retrieve and deposit information from the internet, and visualize data graphically, as sounds, or by controlling electrical appliances. Graphical user interfaces will be discussed in \Cref{chap:windows}, and here we will concentrate on working with the console, files, and the general concept of streams.
 
-File and stream input and output are supported via built-in namespaces and classes. For example, the \lstinline!printf! family of functions discussed in \Cref{sec:printf} is defined in the \lstinline!Printf! module of the \lstinline!Fsharp.Core! namespace, and it is used to put characters on the \lstinline{stdout} stream, i.e., to print on the screen. Likewise, \lstinline{ReadLine} discussed in \Cref{sec:readline} is defined in the \lstinline{System.Console} class, and it fetches characters from the \lstinline{stdin} stream, that is, reads the characters the user types on the keyboard until the newline is pressed.
+File and stream input and output are supported via built-in namespaces and classes. For example, the \lstinline!printf! family of functions discussed in \Cref{sec:printf} is defined in the \lstinline!Printf! module of the \lstinline!Fsharp.Core! namespace, and it is used to put characters on the \lstinline{stdout} stream, i.e., to print on the screen. Likewise, \lstinline{ReadLine} discussed in \Cref{sec:readline} is defined in the \lstinline{System.Console} class, and it fetches characters from the \lstinline{stdin} stream, that is, reads the characters the user types on the keyboard until newline is pressed.
 
-A \idx{file} on a computer is a resource used to store data in and retrieve data from. Files are often associated with a physical device, such as a hard disk, but can also be a virtual representation in memory. Files are durable, such that other programs can access them independently, given certain rules for access. A file has a name, a size, and a type, where the type is related to the basic unit of storage such as characters, bytes, and words, (\keyword{char}, \keyword{byte}, and \keyword{int32}). Often data requires a conversion between the internal format to and from the format stored in the file. E.g., floating point numbers are sometimes converted to a UTF8 string using \lstinline!fprintf! in order to store them in a file in a human-readable form and interpreted from UTF8 when retrieving them at a later point from the file. Files have a low-level structure and representation, which varies from device to device, and the low-level details are less relevant for the use of the file and most often hidden for the user. Basic operations on files are \idx[create file]{creation}, \idx[open file]{opening}, \idx[read file]{reading from}, \idx[write file]{writing to}, \idx[close file]{closing}, and \idx[delete file]{deleting} files.
+A \idx{file} on a computer is a resource used to store data in and retrieve data from. Files are often associated with a physical device, such as a hard disk, but can also be a virtual representation in memory. Files are durable, such that other programs can access them independently, given certain rules for access. A file has a name, a size, and a type, where the type is related to the basic unit of storage such as characters, bytes, and words, (\keyword{char}, \keyword{byte}, and \keyword{int32}). Often data requires a conversion between the internal format to and from the format stored in the file. E.g., floating point numbers are sometimes converted to a UTF8 string using \lstinline!fprintf! in order to store them in a file in a human-readable form, and interpreted from UTF8 when retrieving them at a later point from the file. Files have a low-level structure, which varies from device to device, and the low-level details are less relevant for the use of the file and most often hidden for the user. Basic operations on files are \idx[create file]{creation}, \idx[open file]{opening}, \idx[read file]{reading from}, \idx[write file]{writing to}, \idx[close file]{closing}, and \idx[delete file]{deleting}.
 
-A \idx{stream} is similar to files in that they are used to store data in and retrieve data from, but streams only allow for handling of data one element at a time like the readout of a thermometer: we can make temperature readings as often as we like, making notes and thus saving a history of temperatures, but we cannot access the future. Hence, streams are in principle without an end, and thus have infinite size, and data from streams are programmed locally by considering the present and previous elements. In contrast, files are finite in size and allow for global operations on all the file's data. Files may be considered a stream, but the opposite is not true.\jon{Maybe add a figure illustrating the difference between files and streams.}
+A \idx{stream} is similar to files in that they are used to store data in and retrieve data from, but streams only allow for handling of data one element at a time, like the readout of a thermometer: we can make temperature readings as often as we like, making notes and thus saving a history of temperatures, but we cannot access the future. Hence, streams are in principle without an end, and thus have infinite size, and data from streams are programmed locally by considering the present and previous elements. In contrast, files are finite in size and allow for global operations on all the file's data. Files may be considered a stream, but the opposite is not true.\jon{Maybe add a figure illustrating the difference between files and streams.}
 
 %, and it was discussed in \Cref{sec:printf}, and will not be discussed here. What we will concentrate on is interaction with the console through the \lstinline!System.Console! class and the \lstinline!System.IO! namespace.
 
-\section{Command line arguments}
-Compiled programs may be started from the console with one or more arguments. E.g., if we have made a program called \lstinline[language=console]{prog}, then arguments may be passed as \lstinline[language=console]{mono prog arg1 arg2 ...}. To read the arguments in the program must define a function with the \idx[EntryPoint@\lstinline{EntryPoint}]{\lstinline{EntryPoint}} attribute, and this function must be of type \lstinline{string array -> int}.
+\section{Command Line Arguments}
+Compiled programs may be started from the console with one or more arguments. E.g., if we have made a program called \lstinline[language=console]{prog}, then arguments may be passed as \lstinline[language=console]{mono prog arg1 arg2 ...}. To read the arguments in the program, we must define a function with the \idx[EntryPoint@\lstinline{EntryPoint}]{\lstinline{EntryPoint}} attribute, and this function must be of type \lstinline{string array -> int}.
 %
 \begin{verbatimwrite}{\ebnf/commandLineArgs.ebnf}
 [<EntryPoint>]
@@ -20,7 +20,7 @@ let <*funcIdent*> <*arg*> =
 \end{verbatimwrite}
 \syntax{\ebnf/commandLineArgs.ebnf}{Defining an entry point function with arguments from the console.}
 %
-\lstinline[language=syntax]{<*funcIdent*>} is the function's name, \lstinline[language=syntax]{<*arg*>} is the name of an array of strings, and \lstinline[language=syntax]{<*bodyExpr*>} is the function body. Return value 0 implies a successful execution of the program, while non-zero means failure. The entry point function must be in the last file compiled. An example is given in \Cref{commandLineArgsCode}.
+\lstinline[language=syntax]{<*funcIdent*>} is the function's name, \lstinline[language=syntax]{<*arg*>} is the name of an array of strings, and \lstinline[language=syntax]{<*bodyExpr*>} is the function body. Return value 0 implies a successful execution of the program, while a non-zero value means failure. The entry point function can only be in the rightmost file in the list of files given to \lstinline[language=console]{fsharpc}. An example is given in \Cref{commandLineArgsCode}.
 %
 \fsCode{commandLineArgs}{commandLineArgsCode}{Interacting with a user with \lstinline!ReadLine! and \lstinline!WriteLine!.}{}
 %
@@ -28,15 +28,15 @@ An example execution with arguments is shown in \Cref{commandLineArgs}.
 %
 \fsOutput{commandLineArgs}{An example dialogue of running \Cref{commandLineArgsCode}.}{}%
 %
-In Bash, the return values is called the \idx{exit status} and can be tested using Bash's \lstinline[language=console]{if} statements as demonstrated in \Cref{commandLineArgsSuccess}.
+In Bash, the return value is called the \idx{exit status} and can be tested using Bash's \lstinline[language=console]{if} statements, as demonstrated in \Cref{commandLineArgsSuccess}.
 %
 \fsOutput{commandLineArgsSuccess}{Testing return values in Bash when running \Cref{commandLineArgsCode}.}{}%
 %
 Also in Bash, the exit status of the last executed program can be accessed using the \lstinline[language=console]{$?} %$
-built-in environment variable. In Windows this same variable is called \lstinline[language=console]{%errorlevel%}.
+built-in environment variable. In Windows, this same variable is called \lstinline[language=console]{%errorlevel%}.
 
-\section{Interacting with the console}
-From a programming perspective, the console is a stream: A program may send new data to the console, but cannot return to previously sent data and make changes. Likewise, the program may retrieve input from the user, but cannot go back and ask the user to have inputted something else, nor can we peak into the future and retrieve what the user will input in the future. The console uses three built-in streams in \lstinline!System.Console! listed in \Cref{tab:builtinStreams}.%
+\section{Interacting With the Console}
+From a programming perspective, the console is a stream: A program may send new data to the console, but cannot return to previously sent data and make changes. Likewise, the program may retrieve input from the user, but cannot go back and ask the user to have input something else, nor can we peek into the future and retrieve what the user will input in the future. The console uses three built-in streams in \lstinline!System.Console!, listed in \Cref{tab:builtinStreams}.%
 \idxss{\lstinline{stdout}}%
 \idxss{\lstinline{stderr}}%
 \idxss{\lstinline{stdin}}%
@@ -47,11 +47,11 @@ From a programming perspective, the console is a stream: A program may send new 
       \hline
       \rowcolor{headerRowColor} Stream & Description\\
       \hline
-      \lstinline{stdout} & Standard output stream used by \lstinline!printf! and \lstinline!printfn!.\\
+      \lstinline{stdout} & Standard output stream used to display regular output. It typically streams data to the console.\\
       \hline
-      \lstinline{stderr} & Standard error stream used to display warnings and errors by Mono.\\
+      \lstinline{stderr} & Standard error stream used to display warnings and errors, typically streams to the same place as \lstinline{stdout}.\\
       \hline
-      \lstinline{stdin} & Standard input stream used to read keyboard input.\\
+      \lstinline{stdin} & Standard input stream used to read input, typically from the keyboard input.\\
       \hline
     \end{tabularx}
   \end{center}
@@ -73,11 +73,11 @@ On the console, the standard output and error streams are displayed as text, and
       \hline
       \lstinline{Write: string -> unit} & Write to the console. E.g., \mbox{\lstinline!System.Console.Write "Hello world"!}. Similar to \lstinline{printf}.\\
       \hline
-      \lstinline{WriteLine: string -> unit} & As \lstinline!Write! but followed by a newline character, e.g., \mbox{\lstinline!WriteLine "Hello world"!}. Similar to \lstinline{printfn}.\\
+      \lstinline{WriteLine: string -> unit} & As \lstinline!Write!, but followed by a newline character, e.g., \mbox{\lstinline!WriteLine "Hello world"!}. Similar to \lstinline{printfn}.\\
       \hline
-      \lstinline{Read: unit -> int} & Read the next key from the keyboard blocking execution as long, e.g., \mbox{\lstinline!Read ()!}. The key pressed is echoed to the screen.\\
+      \lstinline{Read: unit -> int} & Wait until the next key is pressed, and read its value. The key pressed is echoed to the screen.\\
       \hline
-      \lstinline{ReadKey: bool -> System.ConsoleKeyInfo} & As \lstinline!Read! but returns more information about the key pressed. When given the value \lstinline{true} as argument, then the key pressed is not echoed to the screen. E.g., \mbox{\lstinline!ReadKey true!}.\\
+      \lstinline{ReadKey: bool -> System.ConsoleKeyInfo} & As \lstinline!Read!, but returns more information about the key pressed. When given the value \lstinline{true} as argument, then the key pressed is not echoed to the screen. E.g., \mbox{\lstinline!ReadKey true!}.\\
       \hline
       \lstinline{ReadLine unit -> string} & Read the next sequence of characters until newline from the keyboard, e.g., \mbox{\lstinline!ReadLine ()!}.\\
       \hline
@@ -86,28 +86,28 @@ On the console, the standard output and error streams are displayed as text, and
   \caption{Some functions for interacting with the user through the console in the \lstinline{System.Console} class. Prefix ``\lstinline{System.Console.}'' is omitted for brevity.}
   \label{tab:readWrite}
 \end{table}
-Note that you must supply the empty argument \lexeme{()} to the \lstinline!Read! functions, in order to run most of the functions instead of referring to them as values. A demonstration of the use of \lstinline{Write}, \lstinline{WriteLine},  and \lstinline{ReadLine} is given in \Cref{userDialogue}.
+Note that you must supply the empty argument \lexeme{()} to the \lstinline!Read! functions in order to run most of the functions instead of referring to them as values. A demonstration of the use of \lstinline{Write}, \lstinline{WriteLine},  and \lstinline{ReadLine} is given in \Cref{userDialogue}.
 %
 \fs{userDialogue}{Interacting with a user with \lstinline!ReadLine! and \lstinline!WriteLine!. The user typed ``3.5'' and ``7.4''.}
 %
-The functions \lstinline!Write! and \lstinline!WriteLine! acts as \lstinline!printfn! but without a formatting string. These functions have many overloaded definitions the description of which is outside the scope of this book. \advice{For writing to the console, \lstinline!printf! is to be preferred.}
+The functions \lstinline!Write! and \lstinline!WriteLine! act as \lstinline!printfn! without a formatting string. These functions have many overloaded definitions, the description of which is outside the scope of this book. \advice{For writing to the console, \lstinline!printf! is to be preferred.}
 
-Often \lstinline{ReadKey} is preferred over \lstinline{Read}, since the former returns a value of type \lstinline!System.ConsoleKeyInfo!, which is a structure with three properties: %
+Often \lstinline{ReadKey} is preferred over \lstinline{Read}, since the former returns a value of type \lstinline!System.ConsoleKeyInfo! which is a structure with three properties: %
 \idxss{\lstinline{System.ConsoleKeyInfo.Key}}%
 \idxss{\lstinline{System.ConsoleKeyInfo.KeyChar}}%
 \idxss{\lstinline{System.ConsoleKeyInfo.Modifiers}}%
 \begin{description}
-\item[\texttt{Key}] A \lstinline{System.ConsoleKey} enumeration of the key pressed. E.g., the character 'a' is \lstinline{ConsoleKey.A}.
-\item[\texttt{KeyChar}] A unicode representation of the key.
-\item[\texttt{Modifiers}] A \lstinline{System.ConsoleModifiers} enumeration of modifier keys shift, crtl, and alt.
+\item[\texttt{Key}:] A \lstinline{System.ConsoleKey} enumeration of the key pressed. E.g., the character 'a' is \lstinline{ConsoleKey.A}.
+\item[\texttt{KeyChar}:] A unicode representation of the key.
+\item[\texttt{Modifiers}:] A \lstinline{System.ConsoleModifiers} enumeration of modifier keys shift, crtl, and alt.
 \end{description}
 An example of a dialogue is shown in \Cref{readKey}.
 %
-\fs{readKey}{Reading keys and modifiers. The user press 'a', 'shift-a', and 'crtl-a', and the program was terminated by pressing 'crtl-c'. The 'alt-a' combination does not work on MacOS.}
+\fs{readKey}{Reading keys and modifiers. The user pressed 'a', 'shift-a', and 'crtl-a', and the program was terminated by pressing 'crtl-c'. The 'alt-a' combination does not work on MacOS.}
 %
 
-\section{Storing and retrieving data from a file}
-A file stored on the filesystem has a name, and it must be opened before it can be accessed and closed when finished. Opening files informs the operating system that your program is now going to use the file. While a file is open, the operating system will protect it depending on how the file is opened. E.g., if you are going to write to the file, then this typically implies that no one else may write to the file at the same time, since simultaneous writing to a file may leave the resulting file in an uncertain state. Sometimes the operating system will realize that a file, that was opened by a program, is no longer being used, e.g., since the program is no longer running, but \advice{it is good practice always to release reserved files, e.g., by closing them as soon as possible, such that other programs may have access to it.} On the other hand, it is typically safe for several programs to read the same file at the same time, but it is still important to close files after their use, such that the operating system can effectively manage the computer's resources. Reserved files are just one of the possible obstacles that you may meet when attempting to open a file. Other points of failure may be that the file may not exist, your program may not have sufficient rights for accessing it, or the device, where the file is stored, may have unreliable access. Thus, \advice{never assume that accessing files always works, but program defensively, e.g., by checking the return status of the file accessing functions and by \keyword{try} constructions.}
+\section{Storing and Retrieving Data From a File}
+A file stored on the filesystem has a name, and it must be opened before it can be accessed and closed when finished. Opening files informs the operating system that your program is now going to use the file. While a file is open, the operating system will protect it depending on how the file is opened. E.g., if you are going to write to the file, then this typically implies that no one else may write to the file at the same time, since simultaneous writing to a file may leave the resulting file in an uncertain state. Sometimes the operating system will realize that a file that was opened by a program is no longer being used, e.g., since the program is no longer running, but \advice{it is good practice always to release reserved files, e.g., by closing them as soon as possible, such that other programs may have access to it.} On the other hand, it is typically safe for several programs to read the same file at the same time, but it is still important to close files after their use, such that the operating system can effectively manage the computer's resources. Reserved files are just one of the possible obstacles that you may meet when attempting to open a file. Other points of failure may be that the file does not exist, your program may not have sufficient rights for accessing it, or the device where the file is stored may have unreliable access. Thus, \advice{never assume that accessing files always works, but program defensively, e.g., by checking the return status of the file accessing functions and by \keyword{try} constructions.}
 
 Data in files may have been stored in various ways, e.g., it may contain UTF8 encoded characters or sequences of floating point numbers stored as raw bits in chunks of 64 bits, or it may be a sequence of bytes that are later going to be interpreted as an image in jpeg or tiff format. To aid in retrieving the data, F\# has a family of open functions, all residing in the \lstinline!System.IO.File! class. These are described in \Cref{tab:File.Open}.%
 \idxss{\lstinline{System.IO.File.Open}}%
@@ -123,17 +123,17 @@ Data in files may have been stored in various ways, e.g., it may contain UTF8 en
       \hline
       \rowcolor{headerRowColor} \lstinline{System.IO.File} & Description\\
       \hline
-      \lstinline{Open:} \mbox{\lstinline{(path : string) * (mode : FileMode)}} \mbox{\lstinline{-> FileStream}} & Request the opening of a file on \lstinline{path} for reading and writing with access mode \lstinline!FileMode!, see \Cref{tab:fileMode}. Other programs are not allowed to access the file, before this program closes it.\\
+      \lstinline{Open:} \mbox{\lstinline{(path : string) * (mode : FileMode)}} \mbox{\lstinline{-> FileStream}} & Request the opening of a file on \lstinline{path} for reading and writing with access mode \lstinline!FileMode!, see \Cref{tab:fileMode}. Other programs are not allowed to access the file before this program closes it.\\
       \hline
       \lstinline{OpenRead:} \mbox{\lstinline{(path : string)}}  \mbox{\lstinline{-> FileStream}} & Request the opening of a file on \lstinline{path} for reading. Other programs may read the file regardless of this opening.\\
       \hline
       \lstinline{OpenText:} \mbox{\lstinline{(path : string)}}  \mbox{\lstinline{-> StreamReader}} & Request the opening of an existing UTF8 file on \lstinline{path} for reading. Other programs may read the file regardless of this opening.\\
       \hline
-      \lstinline{OpenWrite:} \mbox{\lstinline{(path : string)}}  \mbox{\lstinline{-> FileStream}} & Request the opening of a file on \lstinline{path} for writing with \lstinline{FileMode.OpenOrCreate}. Other programs may not access the file, before this program closes it.\\
+      \lstinline{OpenWrite:} \mbox{\lstinline{(path : string)}}  \mbox{\lstinline{-> FileStream}} & Request the opening of a file on \lstinline{path} for writing with \lstinline{FileMode.OpenOrCreate}. Other programs may not access the file before this program closes it.\\
       \hline
-      \lstinline{Create:} \mbox{\lstinline{(path : string)}} \mbox{\lstinline{-> FileStream}} & Request the creation of a file on \lstinline{path} for reading and writing, overwriting any existing file. Other programs may not access the file, before this program closes it.\\
+      \lstinline{Create:} \mbox{\lstinline{(path : string)}} \mbox{\lstinline{-> FileStream}} & Request the creation of a file on \lstinline{path} for reading and writing, overwriting any existing file. Other programs may not access the file before this program closes it.\\
       \hline
-      \lstinline{CreateText:} \mbox{\lstinline{(path : string)}} \mbox{\lstinline{-> StreamWriter}} & Request the creation of an UTF8 file on \lstinline{path} for reading and writing, overwriting any existing file. Other programs may not access the file, before this program closes it.\\
+      \lstinline{CreateText:} \mbox{\lstinline{(path : string)}} \mbox{\lstinline{-> StreamWriter}} & Request the creation of an UTF8 file on \lstinline{path} for reading and writing, overwriting any existing file. Other programs may not access the file before this program closes it.\\
       \hline
     \end{tabularx}
   \end{center}
@@ -155,13 +155,13 @@ Data in files may have been stored in various ways, e.g., it may contain UTF8 en
     \hline
     \lstinline{Append} & Open a file and seek to its end, if it exists, or create a new file. Can only be used together with FileAccess.Write. May throw \mbox{\lstinline{IOException}} and \mbox{\lstinline{NotSupportedException}} exceptions.\\
     \hline
-    \lstinline{Create} & Create a new file, and delete an already existing file. May throw the \mbox{\lstinline{UnauthorizedAccessException}} exception.\\
+    \lstinline{Create} & Create a new file. If a file with the given filename exists, then that file is deleted. May throw the \mbox{\lstinline{UnauthorizedAccessException}} exception.\\
     \hline
-    \lstinline{CreateNew} & Create a new file, but throw the \mbox{\lstinline{IOException}} exception, if the file already exists.\\
+    \lstinline{CreateNew} & Create a new file, but throw the \mbox{\lstinline{IOException}} exception if the file already exists.\\
     \hline
-    \lstinline{Open} & Open an existing file, and \mbox{\lstinline{System.IO.FileNotFoundException}} exception is thrown if the file does not exist.\\
+    \lstinline{Open} & Open an existing file. \mbox{\lstinline{System.IO.FileNotFoundException}} exception is thrown if the file does not exist.\\
     \hline
-    \lstinline{OpenOrCreate} & Open a file, if exists, or create a new file.\\
+    \lstinline{OpenOrCreate} & Open a file, if it exists, or create a new file.\\
     \hline
     \lstinline{Truncate} & Open an existing file and truncate its length to zero. Cannot be used together with \mbox{\lstinline{FileAccess.Read}}.\\
     \hline
@@ -236,7 +236,7 @@ Notice how the example uses the defensive programming style, where the \keyword{
 \end{table}
 \end{comment}
 
-In F\# the distinction between files and streams are not very clear. F\# offers built-in support for accessing files as bytes through the \lstinline!System.IO.FileStream! class, and for characters in a particular encoding through the \lstinline!System.IO.TextReader! and \lstinline!System.IO.TextWriter!.
+In F\#, the distinction between files and streams is not very clear. F\# offers built-in support for accessing files as bytes through the \lstinline!System.IO.FileStream! class, and for characters in a particular encoding through the \lstinline!System.IO.TextReader! and \lstinline!System.IO.TextWriter!.
 
 A successfully opened \lstinline!System.IO.FileStream! file, e.g., using \lstinline!System.IO.File.OpenRead! from \Cref{tab:File.Open}, will result in an \lstinline!FileStream! object. From this object we can extract information about the file, such as the permitted operations and more listed in \Cref{tab:fileStreamProperties}. %
 \idxss{\lstinline{System.IO.FileStream.CanRead}}%
@@ -258,7 +258,7 @@ A successfully opened \lstinline!System.IO.FileStream! file, e.g., using \lstinl
     \hline
     \lstinline{CanWrite} & Gets a value indicating whether the current stream supports writing. (Overrides Stream.CanWrite.)\\
     \hline
-    \lstinline{Length} & Gets the length in bytes of the stream. (Overrides Stream.Length.)\\
+    \lstinline{Length} & Gets the length of a stream in bytes. (Overrides Stream.Length.)\\
     \hline
     \lstinline{Name} & Gets the name of the FileStream that was passed to the constructor.\\
     \hline
@@ -301,7 +301,7 @@ This information is important in order to restrict the operation that we will pe
   \caption{Some methods of the \lstinline!System.IO.FileStream! class.}
   \label{tab:fileStreamMethods}
 \end{table}
-E.g., we may \lstinline!Seek! a particular position in the file, but only within the range of legal postions from 0 until the length of the file. Most operating systems do not necessarily write information to files immediately after one of the \lstinline!Write! functions, but will often for optimization purposes will often collect information in a buffer that is to be written to a device in batches. However, sometimes is is useful to be able to force the operating system to empty its buffer to the device. This is called \idx{flushing} and can be forced using the \lstinline!Flush! function.
+E.g., we may \lstinline!Seek! a particular position in the file, but only within the range of legal postions from 0 until the length of the file. Most operating systems do not necessarily write information to files immediately after one of the \lstinline!Write! functions, but will often for optimization purposes collect information in a buffer that is to be written to a device in batches. However, sometimes is is useful to be able to force the operating system to empty its buffer to the device. This is called \idx{flushing} and can be forced using the \lstinline!Flush! function.
 
 Text is typically streamed through the \lstinline!StreamReader! and \lstinline!StreamWriter!. These may be considered higher-order stream processing, since they include an added interpretation of the bits to strings. A \lstinline!StreamReader! has methods similar to a \lstinline!FileStream! object and a few new properties and methods, such as the \lstinline!EndOfStream! property and \lstinline!ReadToEnd! method, see \Cref{tab:streamReaderMethods}.%
 \idxss{\lstinline{System.IO.StreamReader.EndOfStream}}%
@@ -332,13 +332,13 @@ Text is typically streamed through the \lstinline!StreamReader! and \lstinline!S
     \hline
     \lstinline{ReadLine ()} & Reads the next line of characters until a newline. Newline is discarded.\\
     \hline
-    \lstinline{ReadToEnd ()} & Reads the remaining characters till end-of-file.\\
+    \lstinline{ReadToEnd ()} & Reads the remaining characters until end-of-file.\\
     \hline
   \end{tabularx}
   \caption{Some methods of the \lstinline!System.IO.StreamReader! class.}
   \label{tab:streamReaderMethods}
 \end{table}
-Likewise, a \lstinline!StreamWriter! has an added method for automatically flushing following every writing operation.%
+Likewise, a \lstinline!StreamWriter! has an added method for automatically flushing after every writing operation.%
 \idxss{\lstinline{System.IO.StreamWriter.AutoFlush}}%
 \idxss{\lstinline{System.IO.StreamWriter.Close}}%
 \idxss{\lstinline{System.IO.StreamWriter.Flush}}%
@@ -351,15 +351,15 @@ Likewise, a \lstinline!StreamWriter! has an added method for automatically flush
     \hline
     \rowcolor{headerRowColor}\lstinline{Property/Method} & Description\\
     \hline
-    \lstinline{AutoFlush : bool} & Get or set the auto-flush. If set, then every call to \lstinline!Write! will flush the stream.\\
+    \lstinline{AutoFlush : bool} & Gets or sets the auto-flush. If set, then every call to \lstinline!Write! will flush the stream.\\
     \hline
     \lstinline{Close ()} & Closes the stream.\\
     \hline
     \lstinline{Flush ()} & Causes any buffered data to be written to the file.\\
     \hline
-    \lstinline{Write \'a} & Write a basic type to the file.\\
+    \lstinline{Write \'a} & Writes a basic type to the file.\\
     \hline
-    \lstinline{WriteLine string} & As \lstinline!Write! but followed by newline.\\
+    \lstinline{WriteLine string} & As \lstinline!Write!, but followed by newline.\\
     \hline
   \end{tabularx}
   \caption{Some methods of the \lstinline!System.IO.StreamWriter! class.}
@@ -367,12 +367,12 @@ Likewise, a \lstinline!StreamWriter! has an added method for automatically flush
 \end{table}
 A simple example of opening a text-file and processing it is given in \Cref{readFile}.
 %
-\fs{readFile}{An example of opening a text file, and using the \lstinline!StreamReader! properties and methods.}
+\fs{readFile}{An example of opening a text file and using the \lstinline!StreamReader! properties and methods.}
 %
 Here the program reads the source code of itself, and prints it to the console.
 
-\section{Working with files and directories.}
-F\# has support for managing files summarized in the \lstinline!System.IO.File! class and summarized in \Cref{tab:File.Others}.%
+\section{Working With Files and Directories.}
+F\# has support for managing files, summarized in the \lstinline!System.IO.File! class and summarized in \Cref{tab:File.Others}.%
 \idxss{\lstinline{System.IO.File.Copy}}%
 \idxss{\lstinline{System.IO.File.Delete}}%
 \idxss{\lstinline{System.IO.File.Exists}}%
@@ -384,13 +384,13 @@ F\# has support for managing files summarized in the \lstinline!System.IO.File! 
       \hline
       \rowcolor{headerRowColor} Function & Description\\
       \hline
-      \lstinline{Copy (src : string, dest : string)} & Copy a file from \lstinline{src} to \lstinline{dest} possibly overwriting any existing file.\\
+      \lstinline{Copy (src : string, dest : string)} & Copy a file from \lstinline{src} to \lstinline{dest}, possibly overwriting any existing file.\\
       \hline
       \lstinline{Delete string} & Delete a file\\
       \hline
-      \lstinline{Exists string} & Check whether the file exists\\
+      \lstinline{Exists string} & Checks whether the file exists\\
       \hline
-      \lstinline{Move (from : string, to : string)} & Move a file from \lstinline{src} to \lstinline{to} possibly overwriting any existing file.\\
+      \lstinline{Move (from : string, to : string)} & Move a file from \lstinline{src} to \lstinline{to}, possibly overwriting any existing file.\\
       \hline
     \end{tabularx}
   \end{center}
@@ -398,7 +398,7 @@ F\# has support for managing files summarized in the \lstinline!System.IO.File! 
   \label{tab:File.Others}
 \end{table}
 
-In the \lstinline!System.IO.Directory! class there are a number of other frequently used functions summarized in \Cref{tab:directory}.%
+In the \lstinline!System.IO.Directory! class there are a number of other frequently used functions, summarized in \Cref{tab:directory}.%
 \idxss{\lstinline{System.IO.Directory.CreateDirectory}}%
 \idxss{\lstinline{System.IO.Directory.Delete}}%
 \idxss{\lstinline{System.IO.Directory.Exists}}%
@@ -416,15 +416,15 @@ In the \lstinline!System.IO.Directory! class there are a number of other frequen
       \hline
       \lstinline{CreateDirectory string} & Create the directory and all implied sub-directories.\\
       \hline
-      \lstinline{Delete string} & Delete a directory\\
+      \lstinline{Delete string} & Delete a directory.\\
       \hline
-      \lstinline{Exists string} & Check whether the directory exists\\
+      \lstinline{Exists string} & Check whether the directory exists.\\
       \hline
-      \lstinline{GetCurrentDirectory ()} & Get working directory of the program\\
+      \lstinline{GetCurrentDirectory ()} & Get working directory of the program.\\
       \hline
-      \lstinline{GetDirectories (path : string)} & Get directories in \lstinline{path}\\
+      \lstinline{GetDirectories (path : string)} & Get directories in \lstinline{path}.\\
       \hline
-      \lstinline{GetFiles (path : string)} & Get files in \lstinline{path}\\
+      \lstinline{GetFiles (path : string)} & Get files in \lstinline{path}.\\
       \hline
       \lstinline{Move (from : string, to : string)} & Move a directory and its content from \lstinline{src} to \lstinline{to}.\\
       \hline
@@ -451,7 +451,7 @@ In the \lstinline!System.IO.Path! class there are a number of other frequently u
       \hline
       \rowcolor{headerRowColor}  Function & Description\\
       \hline
-      \lstinline{Combine string * string} & Combine 2 paths into a new path.\\
+      \lstinline{Combine string * string} & Combine two paths into a new path.\\
       \hline
       \lstinline{GetDirectoryName (path: string)} & Extract the directory name from \lstinline{path}.\\
       \hline
@@ -471,12 +471,12 @@ In the \lstinline!System.IO.Path! class there are a number of other frequently u
   \label{tab:path}
 \end{table}
 
-\section{Reading from the internet}
+\section{Reading From the Internet}
 The internet is a global collection of computers that are connected in a network using the internet protocol suite TCP/IP. The internet is commonly used for transport of data such as emails and for offering services such as web pages on the World Wide Web. Web resources are identified by 
 %\idx{Uniform Resource Identifiers} (\idx{URI}) such as \lstinline[language=console]!www.google.com!. A 
-a \idx{Uniform Resource Locator} (\idx{URL}) popularly known as a web page, and an URL contains information about where and how data from the web page is to be obtained. E.g., the URL \lstinline[language=console]!https://en.wikipedia.org/wiki/F_Sharp_(programming_language)!, contains 3 pieces of information: \lstinline[language=console]!https! is the protocol to be used to interact with the resource, \lstinline[language=console]!en.wikipedia.org! is the host's name, and \lstinline[language=console]!wiki/F_Sharp_(programming_language)! is the filename.
+a \idx{Uniform Resource Locator} (\idx{URL}), popularly known as a web page, and an URL contains information about where and how data from the web page is to be obtained. E.g.,  \lstinline[language=console]!https://en.wikipedia.org/wiki/F_Sharp_(programming_language)! contains 3 pieces of information: \lstinline[language=console]!https! is the protocol to be used to interact with the resource, \lstinline[language=console]!en.wikipedia.org! is the host's name, and \lstinline[language=console]!wiki/F_Sharp_(programming_language)! is the filename.
 
-F\#'s \lstinline!System! namespace contains functions for accessing web pages as stream as illustrated in \Cref{webRequest}.
+F\#'s \lstinline!System! namespace contains functions for accessing web pages as stream, as illustrated in \Cref{webRequest}.
 %
 \fs{webRequest}{Downloading a web page and printing the first few characters.}
 %
@@ -484,7 +484,7 @@ To connect to a URL as a stream, we first need first format the URL string as a 
 
 \section{Resource Management}
 \label{sec:resourceManagement}
-Streams and files are examples of computer resources, that may be shared by several applications. Most operating systems allow for several applications to be running in parallel, and to avoid unnecessarily blocking and hogging of resources, all responsible applications must release resources as soon as they are done using them. F\# has language constructions for automatic releasing of resources: the \lstinline{use} binding and the \lstinline{using} function. These automatically dispose of resources, when the resource's name binding falls out of scope. Technically this is done by calling the \idx[Dispose@\lstinline{Dispose}]{\lstinline{Dispose}} method on objects that implement the \idx[System.IDisposable@\lstinline{System.IDisposable}]{\lstinline{System.IDisposable}} interface. See \Cref{sec:interfaces} for more on interfaces.
+Streams and files are examples of computer resources that may be shared by several applications. Most operating systems allow for several applications to be running in parallel, and to avoid unnecessarily blocking and hogging of resources, all responsible applications must release resources as soon as they are done using them. F\# has language constructions for automatic releasing of resources: the \lstinline{use} binding and the \lstinline{using} function. These automatically dispose of resources when the resource's name binding falls out of scope. Technically, this is done by calling the \idx[Dispose@\lstinline{Dispose}]{\lstinline{Dispose}} method on objects that implement the \idx[System.IDisposable@\lstinline{System.IDisposable}]{\lstinline{System.IDisposable}} interface. See \Cref{sec:interfaces} for more on interfaces.
 
 The \idx[use@\lstinline{use}]{\keyword{use}} keyword is similar to \keyword{let}:
 %
@@ -497,22 +497,22 @@ A \lstinline{use} binding provides a binding between the \lstinline[language=syn
 %
 \fsCode{useBinding}{useBinding}{Using \lstinline{use} instead of \lstinline{let} releases disposable resources at end of scope.}{}
 %
-Here, \lstinline{file} is an \lstinline{System.IDisposable} object, and before \lstinline{writeToFile} returns, \lstinline{file.Dispose()} is called automatically, which in this case implies that the file is closed. Had we used \keyword{let} instead, then the file would first be closed, when the program terminates.
+Here, \lstinline{file} is an \lstinline{System.IDisposable} object, and \lstinline{file.Dispose()} is called automatically before \lstinline{writeToFile} returns. This implies that the file is closed. Had we used \keyword{let} instead, then the file would first be closed when the program terminates.
 
-The higher-order function \idx[using@\lstinline{using}]{\lstinline{using}} takes a disposable object and a function, executes the function on the disposable objects and then calls \lstinline{Dispose()} on the disposable object. This is illustrated in \Cref{using}
+The higher-order function \idx[using@\lstinline{using}]{\lstinline{using}} takes a disposable object and a function, executes the function on the disposable objects, and then calls \lstinline{Dispose()} on the disposable object. This is illustrated in \Cref{using}
 %
 \fsCode{using}{using}{The \lstinline{using} function executes a function on an object and releases its disposable resources. Compare with \Cref{useBinding}.}{}
 %
 The main difference between \keyword{use} and \lstinline{using} is that resources allocated using \keyword{use} are disposed at the end of its scope, while \lstinline{using} disposes the resources after the execution of the function in its argument. In spite of the added control of \lstinline{using}, we \advice{prefer \keyword{use} over \lstinline{using} due to its simpler structure.}
 
-\section{Programming intermezzo: Ask user for existing file}
-A typical problem, when working with files, is
+\section{Programming intermezzo: Name of Existing File Dialogue}
+A typical problem when working with files is
 \begin{problem}
   Ask the user for the name of an existing file.
 \end{problem}
-Such a dialogue most often requires the program to aid the user, e.g., by telling the user, which files are available, and to check that the filename entered is an existing file. A solution could be,
+Such dialogues often require the program to aid the user, e.g., by telling the user which files are available, and by checking that the filename entered is an existing file. A solution could be,
 %
-\fsCode{filenamedialogue}{filenamedialogue}{\dots}{}
+\fsCode{filenamedialogue}{filenamedialogue}{Ask the user to input a name of an existing file.}{}
 %
 
 \begin{comment}

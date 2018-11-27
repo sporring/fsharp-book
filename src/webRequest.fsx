@@ -1,4 +1,4 @@
-/// Set a url up as a stream
+/// Set up a url as a stream
 let url2Stream url =        
     let uri = System.Uri url
     let request = System.Net.WebRequest.Create uri

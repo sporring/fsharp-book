@@ -1,4 +1,6 @@
 $ fsharpc --nologo class.fsx && mono class.exe
-A class has been created (2)
-A class has been created (1)
-2 6 1
+A red car has been created
+A blue car has been created
+Fuel left after 100km driving:
+red: 52.0
+blue: 40.0

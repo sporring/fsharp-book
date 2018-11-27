@@ -116,7 +116,7 @@
 \usepackage{comment}
 
 % UML
-\usepackage[school]{pgf-umlcd}
+\usepackage[school,simplified]{pgf-umlcd}
 \renewcommand{\umltextcolor}{black} 
 \renewcommand{\umlfillcolor}{black!5!white}
 \renewcommand{\umldrawcolor}{teal}
@@ -179,7 +179,32 @@
 % \setcounterref{lstFrom}{dynamicScopeTracing:a1}
 % \setcounterref{lstTo}{dynamicScopeTracing:a2}
 % \lstinputlisting[firstline=\thelstFrom,lastline=\thelstTo,escapechar=|]{\src/dynamicScopeTracing.fsx}
+
+%%%%%%% Latest version of listing package is incompatible with lstlinebdgrd :(
+% \usepackage{lstlinebgrd}
+
+%%%% Attempt to temporary fix according https://tex.stackexchange.com/questions/451532/recent-issues-with-lstlinebgrd-package-with-listings-after-the-latters-updates
+\makeatletter
+\let\old@lstKV@SwitchCases\lstKV@SwitchCases
+\def\lstKV@SwitchCases#1#2#3{}
+\makeatother
 \usepackage{lstlinebgrd}
+\makeatletter
+\let\lstKV@SwitchCases\old@lstKV@SwitchCases
+
+\lst@Key{numbers}{none}{%
+    \def\lst@PlaceNumber{\lst@linebgrd}%
+    \lstKV@SwitchCases{#1}%
+    {none:\\%
+     left:\def\lst@PlaceNumber{\llap{\normalfont
+                \lst@numberstyle{\thelstnumber}\kern\lst@numbersep}\lst@linebgrd}\\%
+     right:\def\lst@PlaceNumber{\rlap{\normalfont
+                \kern\linewidth \kern\lst@numbersep
+                \lst@numberstyle{\thelstnumber}}\lst@linebgrd}%
+    }{\PackageError{Listings}{Numbers #1 unknown}\@ehc}}
+\makeatother
+%%%% Attempt to temporary fix according https://tex.stackexchange.com/questions/451532/recent-issues-with-lstlinebgrd-package-with-listings-after-the-latters-updates
+
 \makeatletter
 %The following sets the box compatible with tcolorbox setup
 \def\lst@linebgrdcolor{\color{black!5!white}}
@@ -202,6 +227,7 @@
 \newcommand{\highlightRange}[2]{\ifnum\value{lstnumber}>\numexpr#1-1\ifnum\value{lstnumber}<\numexpr1+#2\lst@linebackgroundhighlight\fi\fi}
 % \highlight conflicts with skak. Just rewriting, wonder what breaks in skak
 \renewcommand{\highlight}[1]{\ifnum\value{lstnumber}=#1\lst@linebackgroundhighlight\fi}
+%%%%%%% Latest version of listing package is incompatible with lstlinebdgrd :(
 
 % To use verbatimwrite to write listing to file, e.g., in conjunction with ebnfs
 \usepackage{moreverb} 

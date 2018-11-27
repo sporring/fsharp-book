@@ -22,7 +22,23 @@ Sometimes it is useful to derive new classes from old in order to reuse code or 
   \label{fig:inheritanceVehicle}
 \end{figure}
 %
-Is-a relations can be implemented using class \idx{inheritance}, where vehicle is called the \idx{base class} and car and bicycle are each a \idx{derived class}. The advantage is that a derived class can inherent the members of the base class, \idx{override} and add possibly new members. Inheritance is indicated using the \lstinline[language=syntax]{inherit} keyword. \Cref{\ebnf/class.ebnf} shows the syntax for class definitions using inheritance, and an example of defining base and derived classes for vehicles is shown In \Cref{vehicle}.
+Is-a relations can be implemented using class \idx{inheritance}, where vehicle is called the \idx{base class} and car and bicycle are each a \idx{derived class}. The advantage is that a derived class can inherent the members of the base class, \idx{override} and add possibly new members.
+
+*******
+%
+\begin{verbatimwrite}{\ebnf/class.ebnf}
+type <*classIdent*> ({*<*arg*>*}) [*as <*selfIdent*>*] 
+  [*inherit <*baseClassIdent*>({*<*arg*>*})*]
+  {*[*let <*binding*>*] |* [*do <*statement*>*]*}
+  {*(*member |* abstract member |* default |* override*) <*memberDef*>*}
+\end{verbatimwrite}
+\syntax{\ebnf/class.ebnf}{A class definition with inheritance.}
+%
+The \lstinline[language=syntax]{<*classIdent*>} is the name of the class, \lstinline[language=syntax]{<*arg*>} are its optional arguments, \lstinline[language=syntax]{<*selfIdent*>} is an optional \idx{self identifier}, \lstinline[language=syntax]{<*baseClassIdent*>} is the name of another class that this class optionally builds upon using the \lstinline{inherit} keyword (see \Cref{sec:inheritance}), the optional \lstinline{let}-bindings and \lstinline{do}-statements define \idx{fields} and \idx{functions}, and \lstinline[language=syntax]{<*memberDef*>} are public members, i.e., \idx{properties} and \idx{methods}. Members may be regular members using the \lstinline{member} keyword or abstract members using either the \lstinline{abstract member}, 
+
+************
+
+Inheritance is indicated using the \lstinline[language=syntax]{inherit} keyword. \Cref{\ebnf/class.ebnf} shows the syntax for class definitions using inheritance, and an example of defining base and derived classes for vehicles is shown In \Cref{vehicle}.
 %
 %\fs{classInheritance}{New classes can be derived from old.}
 \fs{vehicle}{New classes can be derived from old.}

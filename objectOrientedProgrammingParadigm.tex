@@ -278,11 +278,11 @@ Finally, for visual flair, modules and namespaces are often visualized as a \idx
         \operation{get:  () -> int }
         \operation[0]{set: int -> ()} 
       \end{class}
-      \begin{class}[text width=5cm]{Guest}{-4,-4}
+      \begin{class}[text width=4cm]{Guest}{-4,-4}
         \attribute{aString : string}
         \operation{writeMessage : () -> ()}
       \end{class}
-      \begin{class}[text width=5cm]{Derived}{4, -4}
+      \begin{class}[text width=6cm]{Derived}{4, -4}
         \inherit{Base} 
         \attribute{dictionary : string list}
         \operation{checkSpelling : string -> bool}
@@ -354,55 +354,60 @@ With this description, we see that 'start signal' can be included as a natural p
   \centering
   \begin{tikzpicture} 
     \begin{package}{Race}
-      \begin{class}[text width=10cm]{Game}{0,0} 
-        \attribute{// racing clock}
+      \begin{class}[text width=6cm]{Game}{-4,0} 
+        \attribute{// Racing clock}
         \attribute{time : int = 0}
-        \operation{// setup game}
-        \operation{// m human and n computer players}
-        \operation{initialize:  (m : int) (n : int) -> () }
-        \operation{// main loop, starts race and time, finishes when winner found}
-        \operation{// or no players left. In each iteration clock is forwarded, each}
-        \operation{// player is queried for their action, vehicles are updated,}
-        \operation{// crashes are checked and handled, finish conditions are}
-        \operation{// checked. }
+        \operation{// Setup game}
+        \operation{// m human and n computer}
+        \operation{// players}
+        \operation{initialize:  (m : int) (n : int) -> ()}
+        \operation{// Main loop, starts race and time,}
+        \operation{// finishes when winner found or}
+        \operation{// no players left. In each iteration}
+        \operation{// clock is forwarded, each player}
+        \operation{// is queried for their action,}
+        \operation{// vehicles are updated, crashes}
+        \operation{// are checked and handled,}
+        \operation{// finish conditions are checked. }
         \operation{race:  () -> () }
       \end{class}
-      \begin{class}[text width=7cm]{Player}{-5,-7.75} 
-        \attribute{// number rounds completed}
-        \attribute{roundsLeft : int option = None}
-        \attribute{// human or computer player}
-        \attribute{human : bool = true}
-        \operation{// query user for acceleration}
-        \operation{getAction:  () -> (int * int) option}
-      \end{class}
-      \begin{class}[text width=7cm]{Vehicle}{0,-13} 
+      \begin{class}[text width=6.5cm]{Vehicle}{4.5,0} 
         \attribute{// size as a circle}
         \attribute{size : int}
-        \attribute{// present coordinate}
+        \attribute{// Present coordinate}
         \attribute{position : (int * int) option = None}
-        \attribute{// present acceleration vector}
+        \attribute{// Present acceleration vector}
         \attribute{acceleration : int * int = (0, 0)}
-        \attribute{// present speed vector}
+        \attribute{// Present speed vector}
         \attribute{velocity : int * int = (0, 0)}
-        \attribute{// handling ability 0.0..1.0, where 1.0 is best}
+        \attribute{// Handling ability 0.0..1.0, 1.0 is best}
         \attribute{handling : float = 0}
-        \operation{// change acceleration by argument}
+        \operation{// Change acceleration by argument}
         \operation{accelerate :  int * int -> () }
-        \operation{// update position after a clock tick}
+        \operation{// Update position after a clock tick}
         \operation{update :  () -> () }
-        \operation{// perform crash action}
+        \operation{// Perform crash action}
         \operation{crash :  () -> () }
       \end{class}
-      \begin{class}[text width=7cm]{Track}{5,-7} 
-        \attribute{// a curve specified by a list of coordinates}
+      \begin{class}[text width=6cm]{Player}{4.5,-12.1} 
+        \attribute{// Number rounds remaining}
+        \attribute{roundsLeft : int option = None}
+        \attribute{// Human or computer player}
+        \attribute{human : bool = true}
+        \operation{// Query user for acceleration}
+        \operation{getAction:  () -> (int * int) option}
+      \end{class}
+      \begin{class}[text width=6cm]{Track}{-4,-11}
+        \attribute{// A curve as by a list of}
+        \attribute{// coordinates}
         \attribute{shape : (int * int) list}
-        \attribute{// constant width perpendicular to curve}
+        \attribute{// Constant width of curve}
         \attribute{width : int}
-        \attribute{// index into shape list}
+        \attribute{// Index into shape list}
         \attribute{startLine : int}
-        \attribute{// index into shape list}
+        \attribute{// Index into shape list}
         \attribute{finishLine : int}
-        \operation{// query whether a position is on or off track}
+        \operation{// Is a position is on or off track}
         \operation{onTrack: int * int -> bool}
       \end{class}
       \composition{Game}{player}{1..(m+n)}{Player}

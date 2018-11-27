@@ -201,7 +201,7 @@ A sequential division is safe if the list does not contain zero values. However,
 %
 In this example, a recursive function is defined which updates an accumulator element, initially set to the neutral value 1.0. Division by zero results in a \lstinline{failwith} exception, wherefore we must wrap its use in a \keyword{try}--\keyword{with} expression.
 
-Instead of using exceptions, we may use \lstinline{Option.bind}. In order to use \lstinline{Option.bind} for a sequence of non-option floats, we will define a division operator, that reverses the order of operands. This is shown in \Cref{seqDivOption}.
+Instead of using exceptions, we may use \lstinline{Option.bind}. In order to use \lstinline{Option.bind} for a sequence of non-option floats, we will define a division operator that reverses the order of operands. This is shown in \Cref{seqDivOption}.
 %
 \fs{seqDivOption}{Sequentially dividing a sequence of numbers using \lstinline{Option.bind}. Compare with \Cref{seqDiv}.}
 %
