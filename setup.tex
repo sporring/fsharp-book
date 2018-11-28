@@ -227,6 +227,10 @@
 \newcommand{\highlightRange}[2]{\ifnum\value{lstnumber}>\numexpr#1-1\ifnum\value{lstnumber}<\numexpr1+#2\lst@linebackgroundhighlight\fi\fi}
 % \highlight conflicts with skak. Just rewriting, wonder what breaks in skak
 \renewcommand{\highlight}[1]{\ifnum\value{lstnumber}=#1\lst@linebackgroundhighlight\fi}
+
+\renewcommand{\highlightRange}[2]{}
+\renewcommand{\highlight}[1]{}
+
 %%%%%%% Latest version of listing package is incompatible with lstlinebdgrd :(
 
 % To use verbatimwrite to write listing to file, e.g., in conjunction with ebnfs

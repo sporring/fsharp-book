@@ -1,6 +1,6 @@
 $ fsharpc --nologo class.fsx && mono class.exe
-A red car has been created
-A blue car has been created
+Created a car (8.0, 60.0)
+Created a car (5.0, 45.0)
 Fuel left after 100km driving:
-red: 52.0
-blue: 40.0
+ sport: 52.0
+ economy: 40.0

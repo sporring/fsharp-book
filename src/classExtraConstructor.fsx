@@ -1,6 +1,6 @@
 type classExtraConstructor (name : string, greetings : string) =
   static let defaultGreetings = "Hello"
- // Additional constructor are defined by new () §\label{classExtraConstructorStart}§
+ // Additional constructors are defined by new () §\label{classExtraConstructorStart}§
   new (name : string) = 
     classExtraConstructor (name, defaultGreetings) (*//§\label{classExtraConstructorEnd}§*)
   member this.name = name
