@@ -1,6 +1,6 @@
 type car (col : string, econ : float, fuel : float) = (*//§\label{classHeader}§*)
   // Constructor body section §\label{classConstructorBodyStart}§
-  let fuelEconomy = econ // liter spent per 100 km 
+  let fuelEconomy = econ // liters spent per 100 km 
   do printfn "A %s car has been created" col(*//§\label{classConstructorBodyEnd}§*)
   // Member section §\label{classMemberStart}§
   member this.color = col (*//§\label{classMemberValue}§*)
