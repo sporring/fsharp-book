@@ -4,7 +4,7 @@
 \label{sec:inheritance}
 Sometimes it is useful to derive new classes from old in order to reuse code or to emphasize a program structure. For example, consider the concepts of a \emph{car} and \emph{bicycle}. They are both \emph{vehicles} that can move forward and turn, but a car can move in reverse, has 4 wheels uses gasoline or electricity, while a bicycle has 2 wheels and needs to be pedaled. Structurally we can say that ``a car is a vehicle'' and ``a bicycle is a vehicle''. Such a relation is sometimes drawn as a tree as shown in \Cref{fig:inheritanceVehicle} and is called an \idx{is-a relation}.
 %
-\begin{figure}
+\begin{figure}[h]
   \centering
   \begin{tikzpicture}[sibling distance=30mm,
     terminal/.style={
@@ -22,9 +22,9 @@ Sometimes it is useful to derive new classes from old in order to reuse code or 
   \label{fig:inheritanceVehicle}
 \end{figure}
 %
-Is-a relations can be implemented using class \idx{inheritance}, where vehicle is called the \idx{base class} and car and bicycle are each a \idx{derived class}. The advantage is that a derived class can inherent the members of the base class, \idx{override} and add possibly new members.
+Is-a relations can be implemented using class \idx{inheritance}, where vehicle is called the \idx{base class} and car and bicycle are each a \idx{derived class}. The advantage is that a derived class can inherent the members of the base class, \idx{override} and add possibly new members. Another advantage is that objects from derived classes can be made to look like as if they were objects of the base class while still containing all their data. Such mascarading is useful when, for example, listing cars and bicycles in the same list.
 
-*******
+In F\#, inheritance is indicated using the \lstinline[language=syntax]{inherit} keyword in the class definition. An extensions of the syntax in \Cref{\ebnf/class.ebnf} is:
 %
 \begin{verbatimwrite}{\ebnf/class.ebnf}
 type <*classIdent*> ({*<*arg*>*}) [*as <*selfIdent*>*] 
@@ -34,16 +34,14 @@ type <*classIdent*> ({*<*arg*>*}) [*as <*selfIdent*>*]
 \end{verbatimwrite}
 \syntax{\ebnf/class.ebnf}{A class definition with inheritance.}
 %
-The \lstinline[language=syntax]{<*classIdent*>} is the name of the class, \lstinline[language=syntax]{<*arg*>} are its optional arguments, \lstinline[language=syntax]{<*selfIdent*>} is an optional \idx{self identifier}, \lstinline[language=syntax]{<*baseClassIdent*>} is the name of another class that this class optionally builds upon using the \lstinline{inherit} keyword (see \Cref{sec:inheritance}), the optional \lstinline{let}-bindings and \lstinline{do}-statements define \idx{fields} and \idx{functions}, and \lstinline[language=syntax]{<*memberDef*>} are public members, i.e., \idx{properties} and \idx{methods}. Members may be regular members using the \lstinline{member} keyword or abstract members using either the \lstinline{abstract member}, 
+Extensions compared to \Cref{\ebnf/class.ebnf} are: \lstinline[language=syntax]{<*baseClassIdent*>} is the name of another class that this class optionally builds upon using the \lstinline{inherit} keyword. Members may be regular members using the \lstinline{member} keyword or other types of members indicated by the alternative keywords: \lstinline{abstract member}, \lstinline{default}, and \lstinline{override}.
 
-************
-
-Inheritance is indicated using the \lstinline[language=syntax]{inherit} keyword. \Cref{\ebnf/class.ebnf} shows the syntax for class definitions using inheritance, and an example of defining base and derived classes for vehicles is shown In \Cref{vehicle}.
+An example of defining base and derived classes for vehicles is shown In \Cref{vehicle}.
 %
 %\fs{classInheritance}{New classes can be derived from old.}
 \fs{vehicle}{New classes can be derived from old.}
 %
-In the example, a base class \lstinline{vehicle} is defined with members \lstinline{dir}, \lstinline{pos}, \lstinline{turn}, and \lstinline{forward}. The derived classes inherit all the members of the base class, but do not have access to any non-members of the base's constructor. I.e., \lstinline{car} and \lstinline{bicycle} automatically have methods \lstinline{turn} and \lstinline{forward}, and properties \lstinline{dir} and \lstinline{pos} with their accessors, but they do not have direct access to the fields \lstinline{p} and \lstinline{d}. Both derived classes additionally define a property \lstinline{wheels} and \lstinline{car} also define a method \lstinline{reverse}. Note that inheritance is one-way, and in spite that both derived classes define a member \lstinline{wheels}, the base class does not have a \lstinline{wheels} member.
+In the example, a simple base class \lstinline{vehicle} is defined to include \lstinline{wheels} as its single member. The derived classes inherit all the members of the base class, but do not have access to any non-members of the base's constructor. I.e., \lstinline{car} and \lstinline{bicycle} automatically have the \lstinline{wheels} attribute. Both derived classes additional members \lstinline{maxPassengers} and \lstinline{mustUseHelmet}, respectively.
 
 Derived classes can replace base class members by defining new members \idx{overshadow} the base' member. The base' members are still available using the \idx[base@\lstinline{base}]{\keyword{base}}-keyword. Consider the example in the \Cref{memberOvershadowing}.
 %
@@ -58,6 +56,26 @@ Even though derived classes are different from their base, the derived class inc
 Here \lstinline{howdy} is derived from \lstinline{hello}, overshadows \lstinline{str}, and adds property \lstinline{altStr}. By upcasting object \lstinline{b}, we create object \lstinline{c} as a copy of \lstinline{b} with all its fields, functions, and members as if it had been of type \lstinline{hello}. I.e., \lstinline{c} contains the base class version of \lstinline{str} and does not have property \lstinline{altStr}. Objects \lstinline{a} and \lstinline{c} are now of same type and can be put into, e.g., an array as \lstinline{let arr = [|a, c|]}. Previously upcasted objects can also be downcasted again using the \idx{downcast} operator \idx[:?>@\lstinline{:?>}]{\keyword{:?>}}, but the validity of the operation is checked at runtime. Thus, \advice{avoid downcasting when possible.}
 
 In the above, inheritance is used to modify and extend any class. I.e., the definition of the base classes were independent on the definitions of inherited classes. In that sense, the base classes were oblivious to any future derivation of them. Sometimes it is useful to define base classes, which are not independent on derived classes, and which impose design constraints on derived classes. Two such dependencies in F\# are abstract classes and interfaces to be described in the following sections.
+
+\section{Interfacing with the \lstinline{printf} Family}
+In previous examples, we accessed the property in order to print the contents of objects. Luckily, a more elegant solution is available. Objects can be printed directly, but the result is most often not very useful, as can be seen in \Cref{classPrintf}.
+%
+\fs [linebackgroundcolor={%
+\highlight{\getrefnumber{classPrintfApp}}%
+}]{classPrintf}{Printing classes yields low-level information about the class.}
+%
+All classes are given default members through a process called \idx{inheritance}, to be discussed below in \Cref{sec:inheritance}. One example is the \lstinline{ToString() : () -> string} function, which is useful in conjunction with, e.g., \lstinline{printf}. When an object is given as argument to a \lstinline{printf} function, then \lstinline{printf} calls the object's \lstinline{ToString()} function. The default implementation returns low-level information about the object, as can be seen above, but we may \idx{override}
+ this member using the \idx{\keyword{override}}-keyword, as demonstrated in \Cref{classToString}.\jon{something about ToString not working with 's' format string in printf.}
+%
+\fs[linebackgroundcolor={%
+\highlightRange{\getrefnumber{classToStringStart}}{\getrefnumber{classToStringEnd}}%
+\highlight{\getrefnumber{classToStringApp}}%
+}]{classToString}{Overriding \lstinline{ToString()} function for better interaction with members of the \lstinline{printf} family of procedures.  Compare with \Cref{classPrintf}.}
+%
+We see that as a consequence, the \lstinline{printf} statement is much simpler. However beware, an application program may require other formatting choices than selected at the time of designing the class, e.g., in our example, the application program may prefer square brackets as delimiters for vector tuples.  So in general \advice{when designing an override to \lstinline{ToString()}, choose simple, generic formatting for the widest possible use.} 
+
+The most generic formatting is not always obvious, and in the vector case some candidates for the formatting string of \lstinline{ToString()} are ``\lstinline{%A %A}'', ``\lstinline{%A, %A}'', ``\lstinline{(%A, %A)}'', and ``\lstinline{[%A, %A]}''.
+ Considering each carefully, it seems that arguments can be made against all them. A common choice is to let the formatting be controlled by static members that can be changed by the application program through accessors.
 
 \section{Abstract class}
 \label{sec:abstract}

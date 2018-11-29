@@ -1,3 +1,4 @@
 $ fsharpc --nologo vehicle.fsx && mono vehicle.exe
-The car aCar has 4 wheels
-The bicycle aBike has 2 wheels
+aVehicle has 1 wheel(s)
+aCar has 4 wheel(s) with room for 4 passenger(s)
+aBike has 2 wheel(s). Is helmet required? true

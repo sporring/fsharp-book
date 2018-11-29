@@ -207,28 +207,6 @@ The top constructor that does not use the \lstinline{new}-keyword is called the 
 %
 The \keyword{do}-keyword is often understood to be implied by F\#, e.g., in front of all \lstinline{printf}-statements, but in the above examples they are required where used. This may change in future releases of F\#. F\# allows for many additional constructors, but they must be distinguishable by type.
 
-\section{Interfacing with the \lstinline{printf} Family}
-In previous examples, we accessed the property in order to print the contents of objects. Luckily, a more elegant solution is available. Objects can be printed directly, but the result is most often not very useful, as can be seen in \Cref{classPrintf}.
-%
-\fs [linebackgroundcolor={%
-\highlight{\getrefnumber{classPrintfApp}}%
-}]{classPrintf}{Printing classes yields low-level information about the class.}
-%
-All classes are given default members through a process called \idx{inheritance}, to be discussed below in \Cref{sec:inheritance}. One example is the \lstinline{ToString() : () -> string} function, which is useful in conjunction with, e.g., \lstinline{printf}. When an object is given as argument to a \lstinline{printf} function, then \lstinline{printf} calls the object's \lstinline{ToString()} function. The default implementation returns low-level information about the object, as can be seen above, but we may \idx{override}
- this member using the \idx{\keyword{override}}-keyword, as demonstrated in \Cref{classToString}.\jon{something about ToString not working with 's' format string in printf.}
-%
-\fs[linebackgroundcolor={%
-\highlightRange{\getrefnumber{classToStringStart}}{\getrefnumber{classToStringEnd}}%
-\highlight{\getrefnumber{classToStringApp}}%
-}]{classToString}{Overriding \lstinline{ToString()} function for better interaction with members of the \lstinline{printf} family of procedures.  Compare with \Cref{classPrintf}.}
-%
-We see that as a consequence, the \lstinline{printf} statement is much simpler. However beware, an application program may require other formatting choices than selected at the time of designing the class, e.g., in our example, the application program may prefer square brackets as delimiters for vector tuples.  So in general \advice{when designing an override to \lstinline{ToString()}, choose simple, generic formatting for the widest possible use.} 
-
-The most generic formatting is not always obvious, and in the vector case some candidates for the formatting string of \lstinline{ToString()} are ``\lstinline{%A %A}'', ``\lstinline{%A, %A}'', ``\lstinline{(%A, %A)}'', and ``\lstinline{[%A, %A]}''.
- Considering each carefully, it seems that arguments can be made against all them. A common choice is to let the formatting be controlled by static members that can be changed by the application program through accessors.
-
-
-
 \section{Programming Intermezzo: Two Dimensional Vectors}
 Consider the following problem.
 \begin{problem}
