@@ -4,7 +4,7 @@ type counter (init : int) =
   let mutable i = init
   member this.value with get () = i and set (v) = i <- v
   member this.inc () = i <- i + 1
-/// A counter2 is a counter which increments in steps of 2. 
+/// counter2 is a counter which increments in steps of 2. 
 type counter2 (init : int) =
   inherit counter (init)
   member this.inc () = this.value <- this.value + 2

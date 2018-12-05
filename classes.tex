@@ -4,7 +4,7 @@
 \idx[object-oriented programming]{Object-oriented programming} is a programming paradigm that focuses on objects such as a persons, places, things, events, and concepts relevant for the problem.
 
 Object-oriented programming has a rich language for describing objects and their relations, which can seem overwhelming at first, and they will be explained in detail in this and following chapters. Here is a brief overview: The main programming structures are called a \idx[class]{classes} and \idx[object]{objects}. It is useful to think of classes as user defined types and objects as values of such types. However, there is more to classes and objects than types and values. Objects may contain both data and code, and it is sometimes useful to draw the corresponding class definition as shown in \Cref{fig:aClass}.
-\begin{figure}[h]
+\begin{figure}
   \centering
   \begin{tikzpicture} 
       \begin{class}[text width=7cm]{aClass}{0,0} 
@@ -54,7 +54,7 @@ The body of a member has access to the arguments, the constructor's bindings, an
 In contrast, members are not available in the constructor unless the self identifier has been declared in the header using the keyword \idx{\keyword{as}}, e.g., \lstinline{type classMutable(name : string) as this = ...}.
 
 Consider the example in \Cref{fig:instantiation}.
-\begin{figure}[h]
+\begin{figure}
   \centering
   \begin{tikzpicture} 
       \begin{class}[text width=4cm]{car}{0,0} 

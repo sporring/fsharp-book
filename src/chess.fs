@@ -31,8 +31,8 @@ and Board () =
     if rank < 0 || rank > 7 || file < 0 || file > 7 
     then None
     else Some (rank, file)
-  /// Convert relative coordinates to absolute and remove out
-  /// of board coordinates.
+  /// Convert relative coordinates to absolute and remove
+  /// out-of-board coordinates.
   let relativeToAbsolute (pos : Position) (lst : Position list) : Position list =
     let addPair (a : int, b : int) (c : int, d : int) : Position = 
       (a+c,b+d)
