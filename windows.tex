@@ -3,25 +3,25 @@
 
 A \idx{graphical user interface} (\idx{GUI}) uses graphical elements such as windows, icons, and sound to communicate with the user, and a typical way to activate these elements is through a pointing device such as the mouse or by touch. Some of these elements may themselves be textual, and thus most operating systems offer access to a \idx{command-line interface} (\idx{CLI}) in a window alongside other interface types.
 
-An example of a graphical user interface is a web-browser, as shown in \Cref{fig:safariGui}.
+An example of a graphical user interface is a web-browser, shown in \Cref{fig:safariGui}.
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{safariWinForms}
   \caption{A web-browser is a graphical user interface for accessing a web-server and interacting with its services. Here the browser is showing the page \url{https://en.wikipedia.org/wiki/Windows_Forms} at time of writing.}
   \label{fig:safariGui}
 \end{figure}
-The program presents information to the user in terms of text and images and has active areas that may be activated by clicking and which allows the user to go to other web-pages by typing a URL, to follow hyperlinks, and to generate new pages by entering search queries.
+The program presents information to the user in terms of text and images, has active areas that may be activated by clicking, allows the user to go other web-pages by typing a URL or following hyperlinks, and can generate new pages through search queries.
 
-F\# includes a number of implementations of graphical user interfaces, and at time of writing both \idx{GTK+} and \idx{WinForms 2.0} are supported on both the Microsoft .Net and the Mono platform. WinForms can be used without extra libraries during compilation, and therefore will be the subject of the following chapter.
+F\# includes a number of implementations of graphical user interfaces, and at time of writing, both \idx{GTK+} and \idx{WinForms 2.0} are supported on both the Microsoft .Net and the Mono platform. WinForms can be used without extra libraries during compilation, and therefore will be the subject of the following chapter.
 
-WinForms is a set of libraries that simplify many common tasks for applications, and in this chapter, we will focus on the graphical user interface part of WinForms. A \idx{form} is a visual interface used to communicate information with the user, typically a window. Communication is done through \idx[control]{controls}, which are elements that displays information or accepts input. Examples of controls are a box with text, a button, and a menu. When the user gives input to a control element, this generates an \idx{event}, which you can write code to react to. Winforms is designed for \idx{event-driven programming}, meaning that at runtime, most time is spent on waiting for the user to give input. See \Cref{chap:eventDriven} for more on event-driven programming.
+WinForms is a set of libraries that simplifies many common tasks for applications, and in this chapter, we will focus on the graphical user interface part of WinForms. A \idx{form} is a visual interface used to communicate information with the user, typically a window. Communication is done through \idx[control]{controls}, which are elements that display information or accept input. Examples of controls are a box with text, a button, and a menu. When the user gives input to a control element, this generates an \idx{event} which you can write code to react to. WinForms is designed for \idx{event-driven programming}, meaning that at runtime, most time is spent on waiting for the user to give input. See \Cref{chap:eventDriven} for more on event-driven programming.
 
-Designing easy to use graphical user interfaces is a challenging task. This chapter will focus on examples of basic graphical elements and how to program these in WinForms.
+Designing easy-to-use graphical user interfaces is a challenging task. This chapter will focus on examples of basic graphical elements and how to program these in WinForms.
 
-\section{Opening a window}
-Programming graphical user interface with WinForms uses the namespaces: \idx[System.Windows.Forms@\lstinline{System.Windows.Forms}]{\lstinline{System.Windows.Forms}} and \idx[System.Drawing@\lstinline{System.Drawing}]{\lstinline{System.Drawing}}. \lstinline{System.Windows.Forms} includes code for generating forms, controls, and handling events. \lstinline{System.Drawing} is used for low-level drawing, and it gives access to the \idx{Windows Graphics Device Interface} (\idx{GDI+}), which allows you to create and manipulate graphics objects targeting several platforms such as screens and paper. All controls in \lstinline{System.Windows.Forms} in Mono are drawn using \lstinline{System.Drawing}. 
+\section{Opening a Window}
+Programming graphical user interface with WinForms uses the namespaces \idx[System.Windows.Forms@\lstinline{System.Windows.Forms}]{\lstinline{System.Windows.Forms}} and \idx[System.Drawing@\lstinline{System.Drawing}]{\lstinline{System.Drawing}}. \lstinline{System.Windows.Forms} includes code for generating forms, controls, and handling events. \lstinline{System.Drawing} is used for low-level drawing, and it gives access to the \idx{Windows Graphics Device Interface} (\idx{GDI+}), which allows you to create and manipulate graphics objects targeting several platforms, such as screens and paper. All controls in \lstinline{System.Windows.Forms} in Mono are drawn using \lstinline{System.Drawing}. 
 
-To display a graphical user interface on the screen, the first thing to do is open a window, which acts as a reserved screen-space for our output. In WinForms, windows are called forms. Code for opening a window is shown in \Cref{winforms/openWindow}, and the result is shown in \Cref{fig:openWindow}. Note, the present version of WinForms on MacOs only works with the 32-bit implementation of mono, \idx[mono32@\filename{mono32}]{\filename{mono32}}, as demonstrated in the example.
+To display a graphical user interface on the screen, the first thing to do is open a window, which acts as a reserved screen-space for our output. In WinForms, windows are called forms. Code for opening a window is shown in \Cref{winforms/openWindow}, and the result is shown in \Cref{fig:openWindow}. Note that the present version of WinForms on MacOs only works with the 32-bit implementation of mono, \idx[mono32@\filename{mono32}]{\filename{mono32}}, as demonstrated in the example.
 %
 \fs{winforms/openWindow}{Create the window and turn over control to the operating system. See \Cref{fig:openWindow}.}
 %
@@ -34,11 +34,11 @@ To display a graphical user interface on the screen, the first thing to do is op
   \caption{A window opened by \Cref{winforms/openWindow}.}
   \label{fig:openWindow}
 \end{figure}
-The \lstinline!new System.Windows.Forms.Form ()! creates an object (See \Cref{chap:oop}), but does not display the window on the screen. We use the optional \keyword{new} keyword since the form is an \lstinline{IDisposable} object and may be implicitly disposed of. I.e., it is recommended to \advice{instantiate \lstinline{IDisposable} objects using \keyword{new} to contrast them with other object types.} Executing \lstinline!System.Windows.Forms.Application.Run! is applied to the object, then the control is handed over to the WinForms' \idx{event-loop}, which continues until the window is closed by, e.g., pressing the icon designated by the operating system. On the Mac OSX that is the red button in the top left corner of the window frame, and on Window it is the cross on the top right corner of the window frame.
+The \lstinline!new System.Windows.Forms.Form ()! creates an object (See \Cref{chap:oop}), but does not display the window on the screen. We use the optional \keyword{new} keyword, since the form is an \lstinline{IDisposable} object and may be implicitly disposed of. I.e., it is recommended to \advice{instantiate \lstinline{IDisposable} objects using \keyword{new} to contrast them with other object types.} Executing \lstinline!System.Windows.Forms.Application.Run! is applied to the object, then the control is handed over to the WinForms' \idx{event-loop}, which continues until the window is closed by, e.g., pressing the icon designated by the operating system. On the Mac OSX, that is the red button in the top left corner of the window frame, and on Window it is the cross on the top right corner of the window frame.
 
-The window form has a long list of \idx{methods} and \idx{properties}. E.g., the background color may be set by \lstinline!BackColor!, the title of the window may be set by \lstinline!Text!, and you may get and set the size of the window with the \lstinline!Size!. This is demonstrated in \Cref{winforms/windowProperty}.
+The window form has a long list of \idx{methods} and \idx{properties}. E.g., the background color may be set by \lstinline!BackColor!, the title of the window may be set by \lstinline!Text!, and you may get and set the size of the window with \lstinline!Size!. This is demonstrated in \Cref{winforms/windowProperty}.
 %
-\fsCode{winforms/windowProperty}{winforms/windowProperty}{Create the window and changing its properties. See \Cref{fig:windowProperty}}{}
+\fsCode{winforms/windowProperty}{winforms/windowProperty}{Create the window and change its properties. See \Cref{fig:windowProperty}}{}
 %
 \begin{figure}
   \centering
@@ -47,75 +47,74 @@ The window form has a long list of \idx{methods} and \idx{properties}. E.g., the
   \label{fig:windowProperty}
 \end{figure}
 %
-These properties are \idx{accessors} implying that they act as mutable variables. 
+These properties are \idx{accessors}, implying that they act as mutable variables. 
 
-\section{Drawing geometric primitives}
+\section{Drawing Geometric Primitives}
 The \idx[Color@\lstinline{Color}]{\lstinline{System.Drawing.Color}} is a structure for specifying colors as 4 channels: alpha, red, green, and blue. Some methods and properties for the Color structure is shown in \Cref{tab:color}.
 \begin{table}
   \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
-    \begin{tabularx}{\linewidth}{|l|X|}
+  \begin{tabularx}{\linewidth}{|X|X|}
       \hline
       \rowcolor{headerRowColor}  Method/Property & Description\\
       \hline
+      \rowcolor{subHeaderRowColor} \multicolumn{2}{|>{\hsize=\dimexpr2\hsize+2\tabcolsep+\arrayrulewidth\relax}X|}{Get values of an existing color structure}\\
+      \hline
       \lstinline{A}
       &Get the value of the alpha channel of a color.\\
-      \hline
-      \lstinline{B}
-      &Get the value of the blue channel of a color.\\
-      \hline
-      \lstinline{Black}
-      &Get a predefined color with ARGB value of \lstinline{0xFF000000}.\\
-      \hline
-      \lstinline{Blue}
-      &Get a predefined color with ARGB value of \lstinline{0xFF0000FF}.\\
-      \hline
-      \lstinline{Brown}
-      &Get a predefined color with ARGB value of \lstinline{0xFFA52A2A}.\\
-      \hline
-      \begin{minipage}{0.45\linewidth}
-        \lstinline{FromArgb : int -> Color}\\
-        \lstinline{FromArgb : int*int*int -> Color}
-        \lstinline{FromArgb : int*int*int*int -> Color}
-      \end{minipage}
-      &Create a color structure.\\
-      \hline
-      \lstinline{G}
-      &Get the value of the green channel of a color.\\
-      \hline
-      \lstinline{Gray}
-      &Get a predefined color with ARGB value of \lstinline{0xFF808080}.\\
-      \hline
-      \lstinline{Green}
-      &Get a predefined color with ARGB value of \lstinline{0xFF00FF00}.\\
-      \hline
-      \lstinline{Orange}
-      &Get a predefined color with ARGB value of \lstinline{0xFFFFA500}.\\
-      \hline
-      \lstinline{Purple}
-      &Get a predefined color with ARGB value of \lstinline{0xFF800080}.\\
-      \hline
       \lstinline{R}
       &Get the value of the red channel of a color.\\
-      \hline
-      \lstinline{Red}
-      &Get a predefined color with ARGB value of \lstinline{0xFFFF0000}.\\
-      \hline
+      \lstinline{G}
+      &Get the value of the green channel of a color.\\
+      \lstinline{B}
+      &Get the value of the blue channel of a color.\\
       \lstinline{ToArgb : Color -> int}
-      &Get the 32-bit integer representation of a color.\\
+      &Get the 32-bit integer representation of a color. The bits are organized in groups of 8 bits as 0xAARRGGBB.\\
       \hline
+      \rowcolor{subHeaderRowColor} \multicolumn{2}{|>{\hsize=\dimexpr2\hsize+2\tabcolsep+\arrayrulewidth\relax}X|}{Create a color structure by name as a single integer. The 32 bits are organized in groups of 8 bits as 0xAARRGGBB, where AA is the alpha channel's values 00--FF etc. }\\
+      \hline
+      \lstinline{Black}
+      &The ARGB value \lstinline{0xFF000000}.\\
+      \lstinline{Blue}
+      &The ARGB value \lstinline{0xFF0000FF}.\\
+      \lstinline{Brown}
+      &The ARGB value \lstinline{0xFFA52A2A}.\\
+      \lstinline{Gray}
+      &The ARGB value \lstinline{0xFF808080}.\\
+      \lstinline{Green}
+      &The ARGB value \lstinline{0xFF00FF00}.\\
+      \lstinline{Orange}
+      &The ARGB value \lstinline{0xFFFFA500}.\\
+      \lstinline{Purple}
+      &The ARGB value \lstinline{0xFF800080}.\\
+      \lstinline{Red}
+      &The ARGB value \lstinline{0xFFFF0000}.\\
       \lstinline{White}
-      &Get a predefined color with ARGB value of \lstinline{0xFFFFFFFF}.\\
-      \hline
+      &The ARGB value \lstinline{0xFFFFFFFF}.\\
       \lstinline{Yellow}
-      &Get a predefined color with ARGB value of \lstinline{0xFFFFFF00}.\\
+      &The ARGB value \lstinline{0xFFFFFF00}.\\
+      \hline
+      \rowcolor{subHeaderRowColor} \multicolumn{2}{|>{\hsize=\dimexpr2\hsize+2\tabcolsep+\arrayrulewidth\relax}X|}{Methods for creating a color structure from integers.}\\
+      \hline
+      \begin{minipage}[t]{0.5\linewidth}
+        \lstinline{FromArgb :}\\
+        \hspace*{5mm}\lstinline{r:int * g:int * b:int -> Color}
+      \end{minipage}
+      &Create a color structure from red, green, and blue values. The alpha value is implicitely set to 255 (fully opague).\\
+      \begin{minipage}[t]{0.55\linewidth}
+        \lstinline{FromArgb :}\\
+        \hspace*{5mm}\lstinline{a:int * r:int * g:int * b:int -> Color}
+      \end{minipage}
+      &Create a color structure from alpha, red, green, and blue values.\\
+        \lstinline{FromArgb : argb:int -> Color}
+      &Create a color structure from a single integer. The 32 bits are organized in groups of 8 bits as 0xAARRGGBB, where AA is the alpha channel's values 00--FF etc.\\
       \hline
     \end{tabularx}
   \end{center}
   \caption{Some methods and properties of the \lstinline{System.Drawing.Color}  structure.}
   \label{tab:color}
 \end{table}
-Each channel is an 8-bit unsigned integer, but often referred as the 32 bit unsigned integer by concatenating the channels. The alpha channel specifies the transparency of a color, where values 0--255 denotes the range of fully transparent to fully opaque, and the remaining channels denote the amount of red, green, and blue, where 0 is none and 255 is full intensity. Any color may be created using the \lstinline!FromArgb! method, e.g., an opaque red is given by \lstinline!System.Drawing.Color.FromArgb (255, 255, 0, 0)!. There are also many build-in colors, e.g., the same red color is also a known color and may be obtained as \lstinline!System.Drawing.Color.Red!. For a given color, then the 4 alpha, red, green, and blue channel's values may be obtained as the \lstinline!A!, \lstinline!R!, \lstinline!G!, and \lstinline!B! members, see \Cref{drawingColors}
+Each channel is an 8-bit unsigned integer, but often referred to as the 32-bit unsigned integer by concatenating the channels. The alpha channel specifies the transparency of a color, where values 0--255 denote the range of fully transparent to fully opaque, and the remaining channels denote the amount of red, green, and blue, where 0 is none and 255 is full intensity. Any color may be created using the \lstinline!FromArgb! method, e.g., an opaque red is given by \lstinline!System.Drawing.Color.FromArgb (255, 255, 0, 0)!. There are also many build-in colors, e.g., the same red color is also a known color and may be obtained as \lstinline!System.Drawing.Color.Red!. For a given color, the 4 alpha, red, green, and blue channels' values may be obtained as the \lstinline!A!, \lstinline!R!, \lstinline!G!, and \lstinline!B! members, see \Cref{drawingColors}
 %
 \fs{drawingColors}{Defining colors and accessing their values.}
 %
@@ -402,7 +401,7 @@ Our strategy to solve this problem will be first to define the curves in terms o
 
 To produce a graphical drawing of a command list, we must transform it into coordinates, and during the conversion, we need to keep track of both the present position and the present heading, since not all commands draw. This is a concept similar to Turtle Graphics, which is often associated with the Logo programming language from the 1960's. In Turtle graphics, we command a little robot - a turtle - which moves in 2 dimensions and can turn on the spot or move forward, and its track is the line being drawn. Thus we introduce a \lstinline!type Turtle = {x : float; y : float; d : float}! record. Conversion of command lists to turtle lists is a fold programming structure, where the command list is read from left-to-right, building up an accumulator by adding each new element. For efficiency, we choose to prepend the new element to the accumulator. This we have implemented as the \lstinline{addRev} function. Once the full list of turtles has been produced, then it is reversed.
 
-Finally, the turtle list is converted to Winforms \lstinline{Point} array, and a window of appropriate size is chosen. The resulting model part is shown in \Cref{hilbertModel}. The view and connection parts are identical to \Cref{winforms/transformWindowsView,winforms/transformWindowsConnect}, and \Cref{fig:hilbert} shows the result of using the program to draw Hilbert curves of orders 1, 2, 3, and 5.
+Finally, the turtle list is converted to WinForms \lstinline{Point} array, and a window of appropriate size is chosen. The resulting model part is shown in \Cref{hilbertModel}. The view and connection parts are identical to \Cref{winforms/transformWindowsView,winforms/transformWindowsConnect}, and \Cref{fig:hilbert} shows the result of using the program to draw Hilbert curves of orders 1, 2, 3, and 5.
 %
 \fsCode{winforms/hilbert}{hilbertModel}{Using simple turtle graphics to produce a list of points on a polygon. The view and connection parts are identical to \Cref{winforms/transformWindowsView,winforms/transformWindowsConnect}.}{firstline=15,firstnumber=15,lastline=68}
 %
