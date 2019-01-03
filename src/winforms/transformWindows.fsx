@@ -1,4 +1,4 @@
-// Open often used libraries, be ware of namespace polution!
+// Open often used libraries, beware of namespace polution!
 open System.Windows.Forms
 open System.Drawing
 
@@ -13,7 +13,7 @@ let view (sz : Size) (shapes : (Pen * (Point [])) list) : (unit -> unit) =
   fun () -> Application.Run win // function as return value
 
 ///////////// Model /////////////
-// A black triangle, using winform primitives for brevity
+// A black triangle, using WinForm primitives for brevity
 let model () : Size * ((Pen * (Point [])) list) = 
   /// Translate a primitive
   let translate (d : Point) (arr : Point []) : Point [] =

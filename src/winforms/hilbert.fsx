@@ -12,11 +12,11 @@ let view (sz : Size) (shapes : (Pen * (Point [])) list) : (unit -> unit) =
   fun () -> Application.Run win // function as return value
 
 ///////////// Model /////////////
-// Turtle commands, type definitions must be in outer most scope
+// Turtle commands, type definitions must be in outermost scope
 type Command = F | L | R
 type Turtle = {x : float; y : float; d : float}
 
-// A black Hilbert curve using winform primitives for brevity
+// A black Hilbert curve using WinForm primitives for brevity
 let model () : Size * ((Pen * (Point [])) list) = 
   /// Hilbert recursion production rules
   let rec A n : Command list =
@@ -30,16 +30,16 @@ let model () : Size * ((Pen * (Point [])) list) =
     else
       []
 
-  /// Convert a command to a turtle record and prepend to a list
+  /// Convert a command to turtle record and prepend to list
   let addRev (lst : Turtle list) (cmd : Command) (len : float) : Turtle list =
     let toInt = int << round
     match lst with
       | t::rest ->
         match cmd with
-          | L -> {t with d = t.d + 3.141592/2.0}::rest // turn left
-          | R -> {t with d = t.d - 3.141592/2.0}::rest // turn right
-          | F -> {t with x = t.x + len * cos t.d;
-                         y = t.y + len * sin t.d}::lst // forward
+          | L -> {t with d = t.d + 3.141592/2.0}::rest // left
+          | R -> {t with d = t.d - 3.141592/2.0}::rest // right
+          | F -> {t with x = t.x + len * cos t.d; // forward
+                         y = t.y + len * sin t.d}::lst
       | _ -> failwith "Turtle list must be non-empty."
 
   let maxPoint (p1 : Point) (p2 : Point) : Point =
@@ -51,21 +51,16 @@ let model () : Size * ((Pen * (Point [])) list) =
   let initTrtl = {x = 0.0; y = 0.0; d = 0.0}
   let len = 20.0
   let line =
-    // Convert command list to reverse turtle list
-    List.fold (fun acc elm -> addRev acc elm len) [initTrtl] curve
-    // Reverse list
-    |> List.rev
-    // Convert turtle list to point list
-    |> List.map (fun t -> Point (int (round t.x), int (round t.y)))
-    // Convert point list to point array
-    |> List.toArray
+    List.fold (fun acc elm -> addRev acc elm len) [initTrtl] curve // Convert command list to reverse turtle list
+    |> List.rev // Reverse list
+    |> List.map (fun t -> Point (int (round t.x), int (round t.y))) // Convert turtle list to point list
+    |> List.toArray // Convert point list to point array
   let black = new Pen (Color.FromArgb (0, 0, 0))
   // Set size to as large as shape
   let minVal = System.Int32.MinValue
   let maxPoint = Array.fold maxPoint (Point (minVal, minVal)) line
   let size = Size (maxPoint.X + 1, maxPoint.Y + 1)
-  // return shapes as singleton list
-  (size, [(black, line)])
+  (size, [(black, line)]) // return shapes as singleton list
 
 ///////////// Connection //////////////
 // Tie view and model together and enter main event loop

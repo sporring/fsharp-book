@@ -1,4 +1,4 @@
-// Open often used libraries, be ware of namespace polution!
+// Open often used libraries, beware of namespace polution!
 open System.Windows.Forms
 open System.Drawing
 
@@ -15,4 +15,4 @@ let paint (e : PaintEventArgs) : unit =
 win.Paint.Add paint
 
 // Start the event-loop.
-Application.Run win // Start the event-loop.
+Application.Run win

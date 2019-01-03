@@ -1,9 +1,9 @@
-// Open often used libraries, be ware of namespace polution!
+// Open often used libraries, beware of namespace polution!
 open System.Windows.Forms
 open System.Drawing
 
 ///////////// WinForm specifics /////////////
-/// Setup a window form and return function to activate
+/// Setup a window form and return function which can activate it
 let view (sz : Size) (pen : Pen) (pts : Point []) : (unit -> unit) =
   let win = new System.Windows.Forms.Form ()
   win.ClientSize <- sz

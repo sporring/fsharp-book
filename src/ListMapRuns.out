@@ -1,0 +1,1 @@
+$ fsharpc --nologo ListMapRuns.fsx && mono ListMapRuns.exe

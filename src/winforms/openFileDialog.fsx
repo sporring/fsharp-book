@@ -10,7 +10,7 @@ win.Controls.Add button
 button.Size <- new Size (100, 40)
 button.Location <- new Point (20, 20)
 button.Text <- "Click me"
-// Open a message box, when button clicked
+// Open a message box when button clicked
 let buttonClicked (e : EventArgs) =
   let opendlg = new OpenFileDialog()
   let okOrCancel = opendlg.ShowDialog()

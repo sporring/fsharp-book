@@ -1,0 +1,1 @@
+$ fsharpc --nologo imperativeRuns.fsx && mono imperativeRuns.exe
