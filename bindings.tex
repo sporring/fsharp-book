@@ -78,9 +78,9 @@ let <*valueIdent*> = <*bodyExpr*> [*in <*expr*>*]
 \end{verbatimwrite}
 \syntax{\ebnf/valueBindings.ebnf}{Value binding expression.}
 %
-The \idx[let@\lstinline{let}]{\keyword{let}} keyword binds a value-identifier \lstinline[language=syntax]{<*valueIdent*>} with an expression \lstinline[language=syntax]{<*bodyExpr*>} that evaluates to a value. The following square bracket notation \lstinline[language=syntax]{[**]} means that the enclosed is optional, and F\# is able to identify whether or not the optional part is used by whether or not the \idx[in@\lstinline{in}]{\keyword{in}} keyword is present in the binding expression. If the \keyword{in} keyword is used, then the value-identifier is a local definition in the following \lstinline[language=syntax]{<*expr*>} expression but in the following lines. For lightweight syntax, the \keyword{in} keyword is replaced with a newline, and the binding \emph{is} valid in the following lines at the level of scope of the value-binding, or deeper, \idx{lexically}.
+The \idx[let@\lstinline{let}]{\keyword{let}} keyword binds a value-identifier \lstinline[language=syntax]{<*valueIdent*>} with an expression \lstinline[language=syntax]{<*bodyExpr*>} that evaluates to a value. The following square bracket notation \lstinline[language=syntax]{[**]} means that the enclosed is optional, and F\# is able to identify whether or not the optional part is used by whether or not the \idx[in@\lstinline{in}]{\keyword{in}} keyword is present in the binding expression. If the \keyword{in} keyword is used, then the value-identifier is a local definition in the following \lstinline[language=syntax]{<*expr*>} expression but in the following lines. For lightweight syntax, the \keyword{in} keyword is replaced with a newline, and the binding \emph{is} valid in the following lines at the level of scope of the value-binding, or deeper, lexically.
 
-The value identifier annotated with a type by using the \idx[:@\lstinline{:}]{\lexeme{:}} lexeme followed by the name of a type, e.g., \lstinline{int}. The \idx[\_@\lstinline{_}]{\lexeme{\_}} lexeme may be used as a value-identifier. This lexeme is called the \idx{wildcard} pattern, and for value-bindings it means that \lstinline[language=syntax]{<*bodyExpr*>} is evaluated, but the result is discarded. See \Cref{chap:patterns} for more details on patterns.
+The value identifier annotated with a type by using the \idx[:@\lstinline{:}]{\lexeme{:}} lexeme followed by the name of a type, e.g., \lstinline{int}. The \idx[\_@\lstinline{_}]{\lexeme{\_}} lexeme may be used as a value-identifier. This lexeme is called the \idx{wildcard pattern}, and for value-bindings it means that \lstinline[language=syntax]{<*bodyExpr*>} is evaluated, but the result is discarded. See \Cref{chap:patterns} for more details on patterns.
 
 For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as shown in \Cref{letValue}.
 %
@@ -123,11 +123,11 @@ The lightweight syntax automatically inserts the \lexeme{;} lexeme at newlines, 
 \fs{letValueSequenceLightWeight}{A value-binding for a sequence using lightweight syntax.}
 %
 
-A key concept of programming is \idx{scope}. In F\#, the scope of a value-binding is lexically. This means that when F\# seeks the value bound to a name, it looks left and upward in the program text for its \keyword{let}-binding in the present or higher scopes, see \Cref{letValueScopeLower} for an example.
+A key concept of programming is \idx{scope}. When F\# seeks the value bound to a name, it looks left and upward in the program text for its \keyword{let}-binding in the present or higher scopes, see \Cref{letValueScopeLower} for an example. This is called \idx{lexical scope}.
 %
 \fs{letValueScopeLower}{Redefining identifiers is allowed in lower scopes.}
 %
-Some special bindings are mutable, in which case F\# uses the dynamic scope, that is, the value of a binding is defined by when it is used. This will be discussed in \Cref{sec:mutableValues}.
+Some special bindings are mutable, in which case F\# uses the \idx{dynamic scope}, that is, the value of a binding is defined by when it is used. This will be discussed in \Cref{sec:mutableValues}.
 
 Scopes are given levels, and scopes may be nested, where the nested scope has a level one lower than its parent.\jon{Drawings would be good to describe scope} F\# distinguishes between the top and lower levels, and at the top level in the lightweight syntax, redefining values is not allowed, as shown in \Cref{letValueScopeLowerError}.
 %
@@ -261,7 +261,7 @@ In F\#, this is automatically given the unit type as the return value. Procedura
 %which also does not have a return value. 
 For this reason, it is adviced to \advice{prefer functions over procedures.}  More on side-effects in \Cref{sec:mutableValues}.
 
-In F\#, functions (and procedures) are \idx{first-class citizens}, which means that functions are values: They may be passed as arguments, returned from a function, and bound to a name. For first-class citizens, the name it is bound to does not carry significance to the language, as, e.g., illustrated with the use of anonymous functions. Technically, a function is stored as a \idx{closure}. A closure is a description of the function, its arguments, its expression, and the environment at the time it was created, i.e., the triple $(args, exp, env)$. Consider the listing in \Cref{functionFirstClass}.
+In F\#, functions (and procedures) are \idx[first-class citizenship]{first-class citizens}, which means that functions are values: They may be passed as arguments, returned from a function, and bound to a name. For first-class citizens, the name it is bound to does not carry significance to the language, as, e.g., illustrated with the use of anonymous functions. Technically, a function is stored as a \idx{closure}. A closure is a description of the function, its arguments, its expression, and the environment at the time it was created, i.e., the triple $(args, exp, env)$. Consider the listing in \Cref{functionFirstClass}.
 %
 \fs{functionFirstClass}{The function \lstinline{ApplyFactor} has a non-trivial closure.}
 %
@@ -321,9 +321,9 @@ with the following argument, \lstinline{3}, and print the result to the console:
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|X|}
     \hline
-    \rowcolor{headerRowColor} Specifier& Type&Description\\
+    \rowcolor{headerRowColor} Specifier& Type&Comment\\
     \hline
-    \lstinline!\%b!&\lstinline!bool!&replaces with boolean value\\
+    \lstinline!\%b!&\lstinline!bool!&formatted as ``true'' or ``false''\\
     \hline
     \lstinline!\%s!&\lstinline!string!&\\
     \hline
@@ -345,18 +345,18 @@ with the following argument, \lstinline{3}, and print the result to the console:
     \hline
     \mbox{\lstinline!\%g!,} \mbox{\lstinline!\%G!,} &basic floats&formatted on the shortest of the corresponding decimal or scientific form.\\
     \hline
-    \lstinline!\%M!&decimal&\\
+%    \lstinline!\%M!&decimal&\\
+%    \hline
+    \lstinline!\%A!, \lstinline!\%O!&any value&formatted as a basic type or using the object's \lstinline!ToString! method\\
     \hline
-    \lstinline!\%O!&Objects \lstinline!ToString! method&\\
-    \hline
-    \lstinline!\%A!&any built-in types&formatted as a literal type\\
-    \hline
-    \lstinline!\%a!&\lstinline[language=ebnf]!Printf.TextWriterFormat ->'a -> ()!&\\
-    \hline
-    \lstinline!\%t!&\lstinline[language=ebnf]!(Printf.TextWriterFormat -> ()!&\\
-    \hline
+%    \lstinline!\%A!&any value&formatted as a basic type or using its \lstinline!ToString! method\\
+%    \hline
+%    \lstinline!\%a!&\lstinline[language=ebnf]!Printf.TextWriterFormat ->'a -> ()!&\\
+%    \hline
+%    \lstinline!\%t!&\lstinline[language=ebnf]!(Printf.TextWriterFormat -> ()!&\\
+%    \hline
   \end{tabularx}
-  \caption{Printf placeholder string}
+  \caption{Some printf placeholder strings.}
   \label{tab:printfPlaceholder}
 \end{table}
 The placeholder can be parametrized, e.g.,  the placeholder string \lstinline{%8s} %

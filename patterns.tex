@@ -105,7 +105,9 @@ Lists have a concatenation pattern\idxs{list pattern} associated with them. The 
 %
 \fs{listPattern}{Recursively parsing a list with list patterns.}
 %
-In the example, the function \lstinline{sumList} uses the cons operator to match the head of the list with \lstinline{n} and the tail with \lstinline{rest}. The pattern \lstinline{n :: tail} also matches \lstinline{3 :: []}, and in that case \lstinline{tail} would be assigned the value \lstinline{[]}. When \lstinline{lst} is empty, then it matches with \lexeme{[]}. List patterns can also be matched explicitly named elements, as demonstrated in the \lstinline{sumThree} function. The elements to be matched can be any mix of constants and variables. \jon{add example with \lstinline{elm1::elm2::rest} pattern.}
+In the example, the function \lstinline{sumList} uses the cons operator to match the head of the list with \lstinline{n} and the tail with \lstinline{rest}. The pattern \lstinline{n :: tail} also matches \lstinline{3 :: []}, and in that case \lstinline{tail} would be assigned the value \lstinline{[]}. When \lstinline{lst} is empty, then it matches with \lexeme{[]}. List patterns can also be matched explicitly named elements, as demonstrated in the \lstinline{sumThree} function. The elements to be matched can be any mix of constants and variables.
+
+It is also possible to match on a series of cons-operators. For example \lstinline{elm0 :: elm1 :: rest} would match a list with at least two elements, where the first will be bound to \lstinline{elm1}, the second to \lstinline{elm2}, and the remainder to \lstinline{rest}.
 
 \section{Array, Record, and Discriminated Union Patterns}
 \idx[array pattern]{Array}, \idx[record pattern]{record}, and \idx{discriminated union patterns} are direct extensions on constant, variable, and wildcard patterns. \Cref{arrayPattern} gives examples of array patterns.

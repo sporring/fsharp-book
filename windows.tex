@@ -36,7 +36,7 @@ To display a graphical user interface on the screen, the first thing to do is op
 \end{figure}
 The \lstinline!new System.Windows.Forms.Form ()! creates an object (See \Cref{chap:oop}), but does not display the window on the screen. We use the optional \keyword{new} keyword, since the form is an \lstinline{IDisposable} object and may be implicitly disposed of. I.e., it is recommended to \advice{instantiate \lstinline{IDisposable} objects using \keyword{new} to contrast them with other object types.} Executing \lstinline!System.Windows.Forms.Application.Run! is applied to the object, then the control is handed over to the WinForms' \idx{event-loop}, which continues until the window is closed by, e.g., pressing the icon designated by the operating system. On the Mac OSX, that is the red button in the top left corner of the window frame, and on Window it is the cross on the top right corner of the window frame.
 
-The window form has a long list of \idx{methods} and \idx{properties}. E.g., the background color may be set by \lstinline!BackColor!, the title of the window may be set by \lstinline!Text!, and you may get and set the size of the window with \lstinline!Size!. This is demonstrated in \Cref{winforms/windowProperty}.
+The window form has a long list of methods and properties. E.g., the background color may be set by \lstinline!BackColor!, the title of the window may be set by \lstinline!Text!, and you may get and set the size of the window with \lstinline!Size!. This is demonstrated in \Cref{winforms/windowProperty}.
 %
 \fsCode{winforms/windowProperty}{winforms/windowProperty}{Create the window and change its properties. See \Cref{fig:windowProperty}}{}
 %
@@ -156,7 +156,6 @@ The namespace \lstinline{System.Drawing} contains many useful functions and valu
   \caption{Basic geometrical structures in WinForms. \lstinline{Brush} and \lstinline{Image} are abstract classes.}
   \label{tab:basicStructures}
 \end{table}
-\jon{Do something about the vertical alignment of minpage.}
 
 The \idx[Graphics@\lstinline{Graphics}]{\lstinline{System.Drawing.Graphics}} is a class for drawing geometric primitives to a display device, and some of its methods are summarized in \Cref{tab:geometricPrimitives}.
 \begin{table}
@@ -439,7 +438,8 @@ Graphical user interfaces and other systems often need to perform actions that d
   \label{fig:clock}
 \end{figure}
 In the code, a label has been created to show the present date and time. The label is a type of control, and it is displayed using the default font which is rather small. How to change this and other details on controls will be discussed in the next section.
-\jon{Add something about Control.Refresh()}
+
+In the example, the label is redrawn everytime the text is changed, such that the current value is correctly displayed on the screen. Sometimes it is necessary to force a control to redraw which can be done with the \lstinline{Refresh()} method. Since a \lstinline{Form} is also a type of control, it is common to trigger a redraw event for the top form, which in \Cref{winforms/clock} would be \lstinline{win.Refresh()}. Thus, \lstinline{Refresh()} and a \lstinline{Timer} object can be used to produce animations.
 
 % %
 % \fsCode{winforms/refresh}{winforms/refresh}{\dots}{}

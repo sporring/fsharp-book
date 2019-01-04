@@ -7,6 +7,8 @@ let indToRel = [
 let rec makeRuns lst =
   match lst with
     | [] -> []
-    | f :: rest -> (List.map f [1..7]) :: makeRuns rest
+    | f :: rest ->
+      let run = List.map f [1..7]
+      run :: makeRuns rest
 makeRuns indToRel
     

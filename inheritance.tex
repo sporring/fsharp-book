@@ -41,7 +41,7 @@ An example of defining base and derived classes for vehicles is shown In \Cref{v
 %\fs{classInheritance}{New classes can be derived from old.}
 \fs{vehicle}{New classes can be derived from old ones.}
 %
-In the example, a simple base class \lstinline{vehicle} is defined to include \lstinline{wheels} as its single member. The derived classes inherit all the members of the base class, but do not have access to any non-members of the base constructor. I.e., \lstinline{car} and \lstinline{bicycle} automatically have the \lstinline{wheels} attribute. Both derived classes additional members \lstinline{maxPassengers} and \lstinline{mustUseHelmet}, respectively.
+In the example, a simple base class \lstinline{vehicle} is defined to include \lstinline{wheels} as its single member. The derived classes inherit all the members of the base class, but do not have access to any non-members of the base constructor. I.e., \lstinline{car} and \lstinline{bicycle} automatically have the \lstinline{wheels} property. Both derived classes additional members \lstinline{maxPassengers} and \lstinline{mustUseHelmet}, respectively.
 
 Derived classes can replace base class members by defining new members \idx{overshadow} the base members. The base members are still available through the \idx[base@\lstinline{base}]{\keyword{base}}-keyword. Consider the example in the \Cref{memberOvershadowing}.
 %
@@ -62,8 +62,11 @@ In previous examples, we accessed the property in order to print the contents of
 \highlight{\getrefnumber{classPrintfApp}}%
 }]{classPrintf}{Printing classes yields low-level information about the class.}
 %
-All classes are given default members through a process called \idx{inheritance}, to be discussed below in \Cref{sec:inheritance}. One example is the \lstinline{ToString() : () -> string} function, which is useful in conjunction with, e.g., \lstinline{printf}. When an object is given as argument to a \lstinline{printf} function, then \lstinline{printf} calls the object's \lstinline{ToString()} function. The default implementation returns low-level information about the object, as can be seen above, but we may \idx{override}
- this member using the \idx{\keyword{override}}-keyword, as demonstrated in \Cref{classToString}.\jon{something about ToString not working with 's' format string in printf.}
+All classes are given default members through a process called \idx{inheritance}, to be discussed below in \Cref{sec:inheritance}. One example is the \lstinline{ToString() : () -> string} function, which is useful in conjunction with, e.g., \lstinline{printf}. When an object is given as argument to a \lstinline{printf} function with the \lstinline{%A} %
+  or \lstinline{%O} %
+    placeholders in the formatting string, \lstinline{printf} calls the object's \lstinline{ToString()} function. The default implementation returns low-level information about the object, as can be seen above, but we may \idx{override}
+    this member using the \idx{\keyword{override}}-keyword, as demonstrated in \Cref{classToString}. Note, despite that \lstinline{ToString()} returns a string, the \lstinline{%s} %
+      placerholder only accepts values of the basic \lstinline{string} type.
 %
 \fs[linebackgroundcolor={%
 \highlightRange{\getrefnumber{classToStringStart}}{\getrefnumber{classToStringEnd}}%
@@ -163,7 +166,7 @@ The king has the simplest relative movement candidates, being the hypothetical e
     East:& \lstinline!List.map (fun elm -> (0, -elm)) [1..7]! 
   \end{tabular}
 \end{quote}
-and which can be combined as a list of 4 lists of runs. Further, since functions are values, we can combine the 4 different anonymous functions into a list of functions, as \lstinline{indToRel} in \Cref{pieces}, and use a for-loop to iterate over the list of functions. This is shown in \Cref{imperativeRuns}.
+and which can be combined as a list of 4 lists of runs. Further, since functions are values, we can combine the 4 different anonymous functions into a list of functions and use a for-loop to iterate over the list of functions. This is shown in \Cref{imperativeRuns}.
 %
 \fsCode{imperativeRuns}{imperativeRuns}{Calculating the runs of a rook using imperative programming.}{}
 %
@@ -173,21 +176,38 @@ However, this solution is imperative in nature and does not use the elegance of 
 %
 The functional version is slightly longer, but avoids the mutable variable.
 
-Both the imperative and functional solution above performs the combination of every value in \lstinline{[1..7]} with every function in \lstinline{indToRel}. This is similar to a \idx[cartesian product]{Cartesian product} of two sets and can also be performed with a clever combination of two \lstinline{List.map}. As an example, consider the list of string-concatenations of every combination of \lstinline{["a","b"]} and \lstinline{["1"; "2"; "3"]}, i.e., \lstinline{[a1"; a2"; "a3"; "b1"; "b2"; "b3"]}. For the first element in the letter-list, this can be hard-coded as
+Generating lists of runs from the two lists \lstinline{[1..7]} and \lstinline{indToRel} can also be performed with two \lstinline{List.map}s, as shown in \Cref{ListMapRuns}.
+
+\begin{comment}
+As an example, consider the list of string-concatenations of every combination of \lstinline{["a","b"]} and \lstinline{["1"; "2"; "3"]}, i.e., \lstinline{["a1"; "a2"; "a3"; "b1"; "b2"; "b3"]}. For the first element in the letter-list, this can be hard-coded as
 \begin{quote}
 \lstinline{List.map (fun d -> "a"+d) ["1"; "2"; "3"]},
 \end{quote}
 which produces \lstinline{["a1"; "a2"; "a3"]}. Using an outer \lstinline{List.map} iterating over all letters looks like:
 \begin{quote}
-\lstinline{List.map (fun d -> List.map (fun l -> d+l) ["1";"2";"3"]) ["a"; "b"]},
+\lstinline{List.map (fun l -> List.map (fun d -> l+d) ["1";"2";"3"]) ["a"; "b"]},
 \end{quote}
 which produces \lstinline{[a1"; a2"; "a3"; "b1"; "b2"; "b3"]}.
 
-The code for \lstinline{candidateRelativeMoves}, shown in \Cref{pieces}, is similar in spirit to the letter and digit example above, but is further complicated by the fact that \lstinline{indToRel} is a list of functions. A first version of this piece of code is shown in \Cref{ListMapRuns}.
+The code for \lstinline{candidateRelativeMoves}, shown in \Cref{pieces}, is similar in spirit to the letter and digit example above, but is further complicated by the fact that \lstinline{indToRel} is a list of functions.
+\end{comment}
 %
 \fsCode{ListMapRuns}{ListMapRuns}{Calculating the runs of a rook using double \lstinline{List.map}s.}{}
 %
-This produces the correct list of runs, \lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}. In the above, the anonumous function, \lstinline{(fun e -> List.map e [1..7])}, is a simple wrapper for \lstinline{List.map}. Consider an alternative wrapper, \lstinline{let altMap lst e = List.map e lst}, whose only difference is that the order of argument is reversed. With this, the anonymous function can be written as \lstinline{(fun e -> altMap [1..7] e)} or simply replaced by currying as \lstinline{(altMap [1..7])}. Reversing orders of arguments like this in combination with currrying is what the \idx{\lstinline{swap}} function is for, \lstinline{let swap f a b = f b a}. With swap we can write \lstinline{let altMap = swap List.map}. Thus, in \Cref{pieces}, \lstinline{swap List.map [1..7]} is the same as \lstinline{fun e -> List.map e [1..7]}, and thus, \lstinline{candidateRelativeMoves} correctly evaluates to \lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}.
+% This produces the correct list of runs, \lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}.
+The anonumous function,
+\begin{quote}
+\lstinline{fun e -> List.map e [1..7]},
+\end{quote}
+is used to wrap the inner \lstinline{List.map} functional. As an alternative, consider the function, \lstinline{let altMap lst e = List.map e lst}, which reverses the arguments of \lstinline{List.map}. With this, the anonymous function can be written as \lstinline{fun e -> altMap [1..7] e} or simply replaced by currying as \lstinline{altMap [1..7]}. Reversing orders of arguments like this in combination with currrying is what the \idx{\lstinline{swap}} function is for,
+\begin{quote}
+\lstinline{let swap f a b = f b a}.
+\end{quote}
+With swap we can write \lstinline{let altMap = swap List.map}. Thus, in \Cref{pieces},
+\begin{quote}
+\lstinline{swap List.map [1..7]}
+\end{quote}
+is the same as \lstinline{fun e -> List.map e [1..7]}, and thus, \lstinline{candidateRelativeMoves} correctly evaluates to \lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}.
 
 The final step will be to design the \lstinline{Board} and \lstinline{chessPiece} classes. The Chess module implements discriminated unions for color and an integer tuple for a position. These are shown in \Cref{chessDiscriminatedUniont}.
 %

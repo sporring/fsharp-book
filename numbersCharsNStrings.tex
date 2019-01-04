@@ -225,7 +225,7 @@ Typecasting is often a destructive operation, e.g., typecasting a \lstinline!flo
 %
 \fsOutput{downcasting}{Fractional part is removed by downcasting.}
 %
-Here we typecasted to a lesser type, in the sense that the set of integers is a subset of floating point numbers, and this is called \idx{downcasting}. The opposite is called \idx{upcasting} and is often non-destructive, as \Cref{upcastingInt} showed. Since floating point numbers are a superset of integers, the value is retained. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$, and those in $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting, as shown in \Cref{rounding}.
+Here we typecasted to a lesser type, in the sense that the set of integers is a subset of floating point numbers, and this is called \idx[downcast]{downcasting}. The opposite is called \idx[upcast]{upcasting} and is often non-destructive, as \Cref{upcastingInt} showed. Since floating point numbers are a superset of integers, the value is retained. As a side note, \idx{rounding} a number $y.x$, where $y$ is the \idx{whole part} and $x$ is the \idx{fractional part}, is the operation of mapping numbers in the interval $y.x \in [y.0,y.5)$ to $y$, and those in $y.x\in [y.5,y+1)$ to $y+1$. This can be performed by downcasting, as shown in \Cref{rounding}.
 %
 \fsOutput{rounding}{Rounding by modified downcasting.}
 %
