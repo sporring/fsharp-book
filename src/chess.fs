@@ -28,9 +28,10 @@ and Board () =
   /// Wrap a position as option type
   let validPositionWrap (pos : Position) : Position option =
     let (rank, file) = pos // square coordinate
-    if rank < 0 || rank > 7 || file < 0 || file > 7 
-    then None
-    else Some (rank, file)
+    if rank < 0 || rank > 7 || file < 0 || file > 7 then
+      None
+    else
+      Some (rank, file)
   /// Convert relative coordinates to absolute and remove
   /// out-of-board coordinates.
   let relativeToAbsolute (pos : Position) (lst : Position list) : Position list =
@@ -81,9 +82,10 @@ and Board () =
       let idx = List.findIndex (fun (i, j) -> this.[i,j].IsSome) run
       let (i,j) = run.[idx]
       let piece = this.[i, j] // The first non-vacant neighbour
-      if idx = 0
-      then ([], piece)
-      else (run.[..(idx-1)], piece)
+      if idx = 0 then
+        ([], piece)
+      else
+        (run.[..(idx-1)], piece)
     with
       _ -> (run, None) // outside the board
   /// find the list of all empty squares and list of neighbours
@@ -97,8 +99,6 @@ and Board () =
         let vacantPieceLists = List.map convertNWrap piece.candidateRelativeMoves
         // Extract and merge lists of vacant squares
         let vacant = List.collect fst vacantPieceLists
-        // Extract and merge lists of first obstruction pieces and filter out own pieces
-        let opponent = 
-          vacantPieceLists
-          |> List.choose snd 
-        (vacant, opponent)(*//§\label{chessBoardEnd}§*)
+        // Extract and merge lists of first obstruction pieces
+        let neighbours = List.choose snd vacantPieceLists
+        (vacant, neighbours)(*//§\label{chessBoardEnd}§*)
