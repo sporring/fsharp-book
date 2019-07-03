@@ -156,9 +156,9 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
                                             & {\lstinline!3UL!}\newline
                                               {\lstinline!3uL!}  
                                                        & 3 \\
-    % {\keyword{bignum}}$^*$                      & {\lstinline[language=syntax, keywords={}]!dInt "I"!}                                        & {\lstinline!3I!}  & 3 \\
-    % {\keyword{nativeint}}                            & {\lstinline[language=syntax, keywords={}]!(dInt | xInt) "n"!}                           & {\lstinline!3n!}  & 3 \\
-    % {\keyword{unativeint}}                          & {\lstinline[language=syntax, keywords={}]!(dInt | xInt) "un"!}                         & {\lstinline!3un!}  & 3 \\
+    % {\keyword{bignum}}$^*$                      & {\lstinline[language=syntax, keywords={}]!dInt "I"!}                                        & {\lstinline!3I!} & 3 \\
+    % {\keyword{nativeint}}                            & {\lstinline[language=syntax, keywords={}]!(dInt | xInt) "n"!}                           & {\lstinline!3n!} & 3 \\
+    % {\keyword{unativeint}}                          & {\lstinline[language=syntax, keywords={}]!(dInt | xInt) "un"!}                         & {\lstinline!3un!} & 3 \\
     {\keyword{float}}, {\keyword{double}}
                                    & {\lstinline[language=syntax, keywords={}]!<*float*>!}\newline
                                      {\lstinline[language=syntax, keywords={}]!<*hex*>LF!}
@@ -245,7 +245,131 @@ In order to discuss general programming structures, we will use a simplified lan
 \end{verbatimwrite}
 \syntax{\ebnf/binaryOperator.ebnf}{Syntax for a binary expression.}
 %
-Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the programmer, and \lstinline[language=syntax]{<*op*>} is a binary infix operator. F\# supports a range of arithmetic binary infix operators on its built-in types, such as addition, subtraction, multiplication, division, and exponentiation, using the \lexeme{+}, \lexeme{-}, \lexeme{*}, \lexeme{/}, \lexeme{**} lexemes, respectively. Not all operators are defined for all types, e.g., addition is defined for integer and float types as well as for characters and strings, but multiplication is only defined for integer and floating-point types. A complete list of built-in operators on basic types is shown in \Cref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators}, and a range of mathematical functions is shown in \Cref{tab:arithmeticFunctions}. Note that expressions can themselves be arguments to expressions, and thus, \lstinline!4+5+6! is also a legal statement. This is called \idx{recursion}, which means that a rule or a function is used by the rule or function itself in its definition. See \Cref{sec:recursion} for more on recursive functions.
+Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the programmer, and \lstinline[language=syntax]{<*op*>} is a binary infix operator. F\# supports a range of arithmetic binary infix operators on its built-in types, such as addition, subtraction, multiplication, division, and exponentiation, using the \lexeme{+}, \lexeme{-}, \lexeme{*}, \lexeme{/}, \lexeme{**} lexemes, respectively. Not all operators are defined for all types, e.g., addition is defined for integer and float types as well as for characters and strings, but multiplication is only defined for integer and floating-point types. A complete list of built-in operators on basic types is shown in \Cref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators}, and a range of mathematical functions is shown in \Cref{tab:arithmeticFunctions}.
+\begin{table}[ht]
+  \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+  \begin{tabularx}{\linewidth}{|c|c|c|c|c|c|l|l|X|}
+    \hline
+    \rowcolor{headerRowColor} \rotatebox{90}{Operator} & \rotatebox{90}{\lstinline!bool!}& \rotatebox{90}{\lstinline!ints!}& \rotatebox{90}{\lstinline!floats!}& \rotatebox{90}{\lstinline!char!}& \rotatebox{90}{\lstinline!string!} & Example & Result &Description\\
+    \hline
+    \lstinline!+!& & \checkmark & \checkmark & \checkmark & \checkmark & \lstinline!5 + 2!&\lstinline!7!&Addition\\
+    \hline
+    \lstinline!-!& & \checkmark & \checkmark & & & \lstinline!5.0 - 2.0!&\lstinline!3.0!&Subtraction\\
+    \hline
+    \lstinline!*!& & \checkmark & \checkmark & & & \lstinline!5 * 2!&\lstinline!10!&Multiplication\\
+    \hline
+    \lstinline!/!& & \checkmark & \checkmark & & & \lstinline!5.0 / 2.0!&\lstinline!2.5!&Division\\
+    \hline
+    \lstinline!\%!& & \checkmark & \checkmark & & & \lstinline!5 \% 2!&\lstinline!1!&Remainder\\
+    \hline
+    \lstinline!**!& & & \checkmark & & & \lstinline!5.0 ** 2.0!&\lstinline!25.0!&Exponentiation\\
+    \hline
+    \lstinline!+!& & \checkmark & \checkmark & & &\lstinline!+3!&\lstinline!3!&identity\\
+    \hline
+    \lstinline!-!& & \checkmark & \checkmark & & &\lstinline!-3.0!&\lstinline!-3.0!&negation\\
+    \hline
+    \lstinline!\&\&!& \checkmark & & & & & \lstinline!true \&\& false!&\lstinline!false!&boolean and\\
+    \hline
+    \lstinline!||!& \checkmark & & & & & \lstinline!true || false!&\lstinline!false!&boolean or\\
+    \hline
+    \lstinline!not!& \checkmark & & & & &\lstinline!not true!&\lstinline!false!&boolean negation\\
+    \hline
+    \lstinline!\&\&\&!& & \checkmark & & & & \lstinline!0b101 \&\&\& 0b110!&\lstinline!0b100!&bitwise boolean and\\
+    \hline
+    \lstinline!|||!& & \checkmark & & & & \lstinline!0b101 ||| 0b110!&\lstinline!0b111!&bitwise boolean or\\
+    \hline
+    \lstinline!\^\^\^!& & \checkmark & & & & \lstinline!0b101 \^\^\^ 0b110!&\lstinline!0b011!&bitwise boolean exclusive or\\
+    \hline
+    \lstinline!<<<!& & \checkmark & & & & \lstinline!0b110uy <<< 2!&\lstinline!0b11000uy!&bitwise left shift\\
+    \hline
+    \lstinline!>>>!& & \checkmark & & & & \lstinline!0b110uy >>> 2!&\lstinline!0b1uy!&bitwise right shift\\
+    \hline
+    \lstinline!\~\~\~!& & \checkmark & & &&\lstinline!\~\~\~0b110uy!&\lstinline!0b11111001uy!&bitwise boolean negation\\
+    \hline
+  \end{tabularx}
+  \caption{Arithmetic operators on basic types. Ints and floats means all built-in integer and float types. Note that for the bitwise operations, digits \lstinline{0} and \lstinline{1} are taken to be \lstinline{true} and \lstinline{false}.}
+  \label{tab:preNInfixOperators}
+\end{table}
+\begin{table}[ht]
+  \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+  \begin{tabularx}{\linewidth}{|c|c|c|c|c|c|l|l|X|}
+    \hline
+    \rowcolor{headerRowColor} \rotatebox{90}{Operator} & \rotatebox{90}{\lstinline!bool!}& \rotatebox{90}{\lstinline!ints!}& \rotatebox{90}{\lstinline!floats!}& \rotatebox{90}{\lstinline!char!}& \rotatebox{90}{\lstinline!string!} & Example & Result &Description\\
+    \hline
+    \lstinline!<!& \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \lstinline!true < false!&\lstinline!false!&Less than\\
+    \hline
+    \lstinline!>!& \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \lstinline!5 > 2!&\lstinline!true!&Greater than\\
+    \hline
+    \lstinline!=!& \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \lstinline!5.0 = 2.0!&\lstinline!false!&Equal\\
+    \hline
+    \lstinline!<=!& \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \lstinline!'a' <= 'b'!&\lstinline!true!&Less than or equal\\
+    \hline
+    \lstinline!>=!& \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \lstinline!"ab" >= "cd"!&\lstinline!false!&Greater than or equal\\
+    \hline
+    \lstinline!<>!& \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \lstinline!5 <> 2!&\lstinline!true!&Not equal\\
+    \hline
+  \end{tabularx}
+  \caption{Comparison operators on basic types. Types cannot be mixed, e.g., \lstinline!3<'a'! is a syntax error.}
+  \label{tab:comparisonOperators}
+\end{table}
+\idxss{\lstinline{abs}}\idxss{\lstinline{acos}}\idxss{\lstinline{asin}}\idxss{\lstinline{atan}}\idxss{\lstinline{atan2}}\idxss{\lstinline{ceil}}\idxss{\lstinline{cos}}\idxss{\lstinline{cosh}}\idxss{\lstinline{exp}}\idxss{\lstinline{floor}}\idxss{\lstinline{log}}\idxss{\lstinline{log10}}\idxss{\lstinline{max}}\idxss{\lstinline{min}}\idxss{\lstinline{pown}}\idxss{\lstinline{round}}\idxss{\lstinline{sign}}\idxss{\lstinline{sin}}\idxss{\lstinline{sinh}}\idxss{\lstinline{sqrt}}\idxss{\lstinline{tan}}\idxss{\lstinline{tanh}}
+\begin{table}[ht]
+  \centering
+  \begin{tabularx}{\linewidth}{|c|c|c|c|c|c|l|l|X|}
+    \hline
+    \rowcolor{headerRowColor} \rotatebox{90}{Operator} & \rotatebox{90}{\lstinline!bool!}& \rotatebox{90}{\lstinline!ints!}& \rotatebox{90}{\lstinline!floats!}& \rotatebox{90}{\lstinline!char!}& \rotatebox{90}{\lstinline!string!} & Example & Result &Description\\
+    \hline
+    \lstinline!abs! & & \checkmark & \checkmark & & &\lstinline!abs -3! & \lstinline!3! & Absolute value\\
+    \hline 
+    \lstinline!acos! & & & \checkmark & & &\lstinline!acos 0.8! & \lstinline!0.644! & Inverse cosine\\
+     \hline 
+     \lstinline!asin! & & & \checkmark & & & \lstinline!asin 0.8! & \lstinline!0.927! & Inverse sinus\\
+     \hline 
+     \lstinline!atan! & & & \checkmark & & & \lstinline!atan 0.8! & \lstinline!0.675! & Inverse tangent\\
+     \hline 
+     \lstinline!atan2! & & & \checkmark & & & \lstinline!atan2 0.8 2.3! & \lstinline!0.335! & Inverse tangentvariant\\
+     \hline 
+     \lstinline!ceil! & & & \checkmark & & & \lstinline!ceil 0.8! & \lstinline!1.0! & Ceiling\\
+     \hline 
+     \lstinline!cos!   & & & \checkmark & & & \lstinline!cos 0.8! & \lstinline!0.697! & Cosine\\
+     \hline 
+ %  \lstinline!cosh!   & & & \checkmark & & & \lstinline!cosh 0.8! & \lstinline!1.34! & Hyperbolic cosine\\
+ %    \hline 
+     \lstinline!exp! & & & \checkmark & & & \lstinline!exp 0.8! & \lstinline!2.23! & Natural exponent\\
+     \hline 
+     \lstinline!floor! & & & \checkmark & & & \lstinline!floor 0.8! & \lstinline!0.0! & Floor\\
+     \hline 
+     \lstinline!log! & & & \checkmark & & & \lstinline!log 0.8! & \lstinline!-0.223! & Natural logarithm\\
+     \hline 
+     \lstinline!log10! & & & \checkmark & & & \lstinline!log10 0.8! & \lstinline!-0.0969! & Base-10 logarithm\\
+     \hline 
+     \lstinline!max! & & \checkmark & \checkmark & \checkmark & \checkmark & \lstinline!max 3.0 4.0! & \lstinline!4.0! & Maximum\\
+     \hline 
+     \lstinline!min! & & \checkmark & \checkmark & \checkmark & \checkmark & \lstinline!min 3.0 4.0! & \lstinline!3.0! & Minimum\\
+     \hline 
+     \lstinline!pown! & & \checkmark & & & & \lstinline!pown 3 2! & \lstinline!9! & Integer exponent\\
+     \hline 
+     \lstinline!round! & & & \checkmark & & & \lstinline!round 0.8! & \lstinline!1.0! & Rounding\\
+     \hline 
+     \lstinline!sign!  & & \checkmark & \checkmark & & & \lstinline!sign -3! & \lstinline!-1! & Sign\\
+     \hline 
+     \lstinline!sin! & & & \checkmark & & & \lstinline!sin 0.8! & \lstinline!0.717! & Sinus\\
+     \hline 
+ %  \lstinline!sinh! & & & \checkmark & & & \lstinline!sinh 0.8! & \lstinline!0.888! & Hyperbolic sinus\\
+ %    \hline 
+     \lstinline!sqrt! & & & \checkmark & & & \lstinline!sqrt 0.8! & \lstinline!0.894! & Square root\\
+     \hline 
+     \lstinline!tan! & & & \checkmark & & & \lstinline!tan 0.8! & \lstinline!1.03! & Tangent\\
+     \hline 
+ %   \lstinline!tanh! & & & \checkmark & & & \lstinline!tanh 0.8! & \lstinline!0.664! & Hyperbolic tangent\\
+ %    \hline 
+  \end{tabularx}
+  \caption{Predefined functions for arithmetic operations.}
+  \label{tab:arithmeticFunctions}
+\end{table}
+Note that expressions can themselves be arguments to expressions, and thus, \lstinline!4+5+6! is also a legal statement. This is called \idx{recursion}, which means that a rule or a function is used by the rule or function itself in its definition. See \Cref{sec:recursion} for more on recursive functions.
 
 Unary operators take only one argument and have the syntax:
 %
@@ -262,33 +386,35 @@ The concept of \idx{precedence} is an important concept in arithmetic expression
 %
 Here, the addition and multiplication functions are shown in infix notation with the \idx{operator} lexemes \lexeme{+} and \lexeme{*}. To arrive at the resulting value 23, F\# has to decide in which order to perform the calculation. There are 2 possible orders, \lstinline|3 + (4 * 5)| and \lstinline|(3 + 4) * 5| that gives different results. For integer arithmetic, the correct order is, of course, multiplication before addition, and we say that multiplication takes \idx{precedence} over addition. Every atomic operation that F\# can perform is ordered in terms of its precedence, and for some common built-in operators shown in \Cref{tab:someOperatorPrecedences}, the precedence is shown by the order they are given in the table.
 \begin{table}
+  \newlength{\myl}
+  \setlength{\myl}{\widthof{\lstinline[language=syntax]|<*expr*> \^\^\^ <*expr*>|}+3em}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabularx}{\linewidth}{|>{\hsize=.8\hsize\raggedright\arraybackslash}X|>{\hsize=.4\hsize}X|>{\hsize=1.8\hsize}X|}
+  \begin{tabularx}{\linewidth}{|l|l|X|}
     \hline
-    \rowcolor{headerRowColor}     Operator & Associativity & Description\\
+    \rowcolor{headerRowColor} Operator & Associativity & Description\\
     \hline
-    \mbox{\lstinline[language=syntax]|+<*expr*>|\hspace*{3.5mm},} \mbox{\lstinline[language=syntax]|-<*expr*>|\hspace*{3.5mm},} \mbox{\lstinline[language=syntax]|\~\~\~<*expr*>|\hspace*{3.5mm}} & Left & Unary identity, negation, and bitwise negation operators\\
+    \begin{minipage}[t]{\the\myl}\lstinline[language=syntax]|+<*expr*>|\\\lstinline[language=syntax]|-<*expr*>|\\\lstinline[language=syntax]|\~\~\~<*expr*>|\end{minipage} & Left & Unary identity, negation, and bitwise negation operators\\
     \hline
-    \mbox{\lstinline[language=syntax]|f <*expr*>|\hspace*{3.5mm}} & Left & Function application\\
+    \begin{minipage}[t]{\the\myl}\lstinline[language=syntax]|f <*expr*>|\end{minipage} & Left & Function application\\
     \hline
-    \mbox{\lstinline[language=syntax]|<*expr*> ** <*expr*>|\hspace*{3.5mm}} & Right & Exponentiation\\ 
+    \begin{minipage}[t]{\the\myl}\lstinline[language=syntax]|<*expr*> ** <*expr*>|\end{minipage} & Right & Exponentiation\\ 
     \hline
-    \mbox{\lstinline[language=syntax]|<*expr*> * <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> / <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> \% <*expr*>|\hspace*{7mm}} & Left & Multiplication, division and remainder\\
+    \begin{minipage}[t]{\the\myl}\lstinline[language=syntax]|<*expr*> * <*expr*>|\\\lstinline[language=syntax]|<*expr*> / <*expr*>|\\\lstinline[language=syntax]|<*expr*> \% <*expr*>|\end{minipage} & Left & Multiplication, division and remainder\\
     \hline
-    \mbox{\lstinline[language=syntax]|<*expr*> + <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> - <*expr*>|\hspace*{7mm}} & Left & Addition and subtraction binary operators\\
+    \begin{minipage}[t]{\the\myl}\lstinline[language=syntax]|<*expr*> + <*expr*>|\\\lstinline[language=syntax]|<*expr*> - <*expr*>|\end{minipage} & Left & Addition and subtraction binary operators\\
     \hline
-    \mbox{\lstinline[language=syntax]|<*expr*> \^\^\^ <*expr*>|\hspace*{7mm}} & Right & Bitwise exclusive or\\
+    \begin{minipage}[t]{\the\myl}\lstinline[language=syntax]|<*expr*> \^\^\^ <*expr*>|\end{minipage} & Right & Bitwise exclusive or\\
     \hline
-    \mbox{\lstinline[language=syntax]|<*expr*> < <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> <= <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> > <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> >= <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> = <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> <> <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> \<\<\< <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> >>> <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]|<*expr*> \&\&\& <*expr*>|\hspace*{7mm},} \mbox{\lstinline[language=syntax]!<*expr*> ||| <*expr*>! \hspace*{7mm},}
+    \begin{minipage}[t]{\the\myl}\lstinline[language=syntax]|<*expr*> < <*expr*>|\\\lstinline[language=syntax]|<*expr*> <= <*expr*>|\\\lstinline[language=syntax]|<*expr*> > <*expr*>|\\\lstinline[language=syntax]|<*expr*> >= <*expr*>|\\\lstinline[language=syntax]|<*expr*> = <*expr*>|\\\lstinline[language=syntax]|<*expr*> <> <*expr*>|\\\lstinline[language=syntax]|<*expr*> \<\<\< <*expr*>|\\\lstinline[language=syntax]|<*expr*> >>> <*expr*>|\\\lstinline[language=syntax]|<*expr*> \&\&\& <*expr*>|\\\lstinline[language=syntax]!<*expr*> ||| <*expr*>!\end{minipage}
              & Left & Comparison operators, bitwise shift, and bitwise 'and' and 'or'.\\
     \hline
-    \mbox{\lstinline[language=syntax]|<*expr*> \&\& <*expr*>|\hspace*{7mm}} & Left & Boolean and\\
+    \begin{minipage}[t]{\the\myl}\lstinline[language=syntax]|<*expr*> \&\& <*expr*>|\end{minipage} & Left & Boolean and\\
     \hline
-    \mbox{\lstinline[language=syntax]+<*expr*> || <*expr*>+\hspace*{7mm}} & Left & Boolean or\\
+    \begin{minipage}[t]{\the\myl}\lstinline[language=syntax]+<*expr*> || <*expr*>+\end{minipage} & Left & Boolean or\\
     \hline
   \end{tabularx}
-  \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|<*expr*> * <*expr*>| has higher precedence than \lstinline|<*expr*> + <*expr*>|. Operators in the same row have the same precedence. Full table is given in \Cref{tab:operatorPrecedence}.}
+  \caption{Some common operators, their precedence, and their associativity. Rows are ordered from highest to lowest precedences, such that \lstinline|<*expr*> * <*expr*>| has higher precedence than \lstinline|<*expr*> + <*expr*>|. Operators in the same row have the same precedence..}
   \label{tab:someOperatorPrecedences}
 \end{table}
 

@@ -59,35 +59,37 @@ The \idx[Color@\lstinline{Color}]{\lstinline{System.Drawing.Color}} is a structu
     \rowcolor{headerRowColor}  Method/Property & Description\\
     \hline
     \rowcolor{subHeaderRowColor} \multicolumn{2}{|>{\hsize=\dimexpr2\hsize+2\tabcolsep+\arrayrulewidth\relax}X|}{Properties of an existing color structure}\\
-    \hline \lstinline{A}
+    \hline \lstinline{A : byte}
     &The value of the alpha channel.\\
-    \lstinline{R}
+    \lstinline{R : byte}
     &The value of the red channel.\\
-    \lstinline{G}
+    \lstinline{G : byte}
     &The value of the green channel.\\
-    \lstinline{B}
+    \lstinline{B : byte}
     &The value of the blue channel.\\
+      \lstinline{ToArgb : unit -> int}
+      &The 32-bit integer value of the color.\\
     \hline
-    \rowcolor{subHeaderRowColor} \multicolumn{2}{|>{\hsize=\dimexpr2\hsize+2\tabcolsep+\arrayrulewidth\relax}X|}{Static properties returning the integer representation of a color by its name.}\\
-    \hline \lstinline{Black}
+    \rowcolor{subHeaderRowColor} \multicolumn{2}{|>{\hsize=\dimexpr2\hsize+2\tabcolsep+\arrayrulewidth\relax}X|}{Static properties returning a color structure by its name.}\\
+    \hline \lstinline{Black : Color}
     &The ARGB value \lstinline{0xFF000000}.\\
-    \lstinline{Blue}
+    \lstinline{Blue : Color}
     &The ARGB value \lstinline{0xFF0000FF}.\\
-    \lstinline{Brown}
+    \lstinline{Brown : Color}
     &The ARGB value \lstinline{0xFFA52A2A}.\\
-    \lstinline{Gray}
+    \lstinline{Gray : Color}
     &The ARGB value \lstinline{0xFF808080}.\\
-    \lstinline{Green}
+    \lstinline{Green : Color}
     &The ARGB value \lstinline{0xFF00FF00}.\\
-    \lstinline{Orange}
+    \lstinline{Orange : Color}
     &The ARGB value \lstinline{0xFFFFA500}.\\
-    \lstinline{Purple}
+    \lstinline{Purple : Color}
     &The ARGB value \lstinline{0xFF800080}.\\
-    \lstinline{Red}
+    \lstinline{Red : Color}
     &The ARGB value \lstinline{0xFFFF0000}.\\
-    \lstinline{White}
+    \lstinline{White : Color}
     &The ARGB value \lstinline{0xFFFFFFFF}.\\
-    \lstinline{Yellow}
+    \lstinline{Yellow : Color}
     &The ARGB value \lstinline{0xFFFFFF00}.\\
     \hline \rowcolor{subHeaderRowColor} \multicolumn{2}{|>{\hsize=\dimexpr2\hsize+2\tabcolsep+\arrayrulewidth\relax}X|}{Static methods for converting between color structures and integers representations.}\\
     \hline
@@ -103,8 +105,6 @@ The \idx[Color@\lstinline{Color}]{\lstinline{System.Drawing.Color}} is a structu
       &Create a color structure from alpha, red, green, and blue values.\\
         \lstinline{FromArgb : argb:int -> Color}
       &Create a color structure from a single integer.\\
-      \lstinline{ToArgb : Color -> int}
-      &Get the 32-bit integer representation of a color.\\
       \hline
     \end{tabularx}
   \end{center}
