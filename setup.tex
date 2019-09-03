@@ -77,12 +77,15 @@
 % Avoid pagebreaks in footnotes
 \interfootnotelinepenalty=10000
 
+%%%%%% fncychap only works with default setup!!!!! Missing section number!!!!
 %Fancy chapter headings
-%\usepackage[Lenny]{fncychap}
-\usepackage{titlesec}
-\definecolor{gray75}{gray}{0.75}
-\newcommand{\hsp}{\hspace{20pt}}
-\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+%\usepackage{fncychap}
+%%%%%% titlesec no longer works (2019)!!!!! Missing section number!!!!
+%\usepackage[rm]{titlesec}
+%\usepackage[sf,sl,outermarks]{titlesec}
+% \definecolor{gray75}{gray}{0.75}
+% \newcommand{\hsp}{\hspace{20pt}}
+% \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
 
 % Clickable table of content
 \usepackage[pdfpagelabels]{hyperref}
@@ -546,9 +549,9 @@
 \newcommand{\noun}[1]{{\color{noun}#1}}
 % Notes to self
 \newcommand{\jon}[1]{\footnote{Jon: \textbf{#1}}}
-%\renewcommand{\jon}[1]{}
+\renewcommand{\jon}[1]{}
 \newcommand{\mael}[1]{\footnote{Mael: \textbf{#1}}}
-%\renewcommand{\mael}[1]{}
+\renewcommand{\mael}[1]{}
 \newcommand{\spec}[1]{\footnote{Spec: \textbf{#1}}}
 \renewcommand{\spec}[1]{}
 
