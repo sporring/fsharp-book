@@ -16,7 +16,7 @@ Here, we have implicitly defined a module with the name \lstinline{Meta}. Anothe
 %
 \fsCode{MetaApp}{MetaAppCode}{Defining a script calling the module.}{}
 %
-In the exmple above, we have explicitly used the module's type definition for illustration purposes. A shorter and possibly simpler program would have been to define \lstinline{add} as \lstinline{let add x y = x + y}, since F\#'s type system will infer the implied type. However, \advice{explicit definitions of types is recommended for readability.} Hence, an alternative to the above example's use of anonymous functions is: \lstinline{let add (x: float) (y: float) : float = x + y}. To compile the module and the application program, we write as demonstrated in \Cref{MetaApp}.
+In the example above, we have explicitly used the module's type definition for illustration purposes. A shorter and possibly simpler program would have been to define \lstinline{add} as \lstinline{let add x y = x + y}, since F\#'s type system will infer the implied type. However, \advice{explicit definitions of types is recommended for readability.} Hence, an alternative to the above example's use of anonymous functions is: \lstinline{let add (x: float) (y: float) : float = x + y}. To compile the module and the application program, we write as demonstrated in \Cref{MetaApp}.
 %
 \fsOutput{MetaApp}{Compiling both the module and the application code. Note that file order matters when compiling several files.}
 %

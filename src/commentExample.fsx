@@ -1,4 +1,5 @@
-/// The discriminant of a quadratic equation with parameters a, b, and c
+/// The discriminant of a quadratic equation with
+/// parameters a, b, and c
 let discriminant a b c = b ** 2.0 - 4.0 * a * c
 
 /// <summary>Find x when 0 = ax^2+bx+c.</summary>
@@ -10,9 +11,9 @@ let discriminant a b c = b ** 2.0 - 4.0 * a * c
 ///     let b = 0.0
 ///     let c = -1.0
 ///     let xp = (solution a b c +1.0)
-///     printfn "0 = %.1fx^2 + %.1fx + %.1f => x_+ = %.1f" a b c xp
+///     printfn "0=%.1fx^2+%.1fx+%.1f => x_+=%.1f" a b c xp
 ///   </code>
-///   prints <c>0 = 1.0x^2 + 0.0x + -1.0 => x_+ = 0.7</c> to the console.
+///   prints <c>0=1.0x^2+0.0x+-1.0 => x_+=0.7</c>.
 /// </example>
 /// <param name="a">Quadratic coefficient.</param>
 /// <param name="b">Linear coefficient.</param>

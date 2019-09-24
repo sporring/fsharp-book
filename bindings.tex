@@ -78,7 +78,7 @@ let <*valueIdent*> = <*bodyExpr*> [*in <*expr*>*]
 \end{verbatimwrite}
 \syntax{\ebnf/valueBindings.ebnf}{Value binding expression.}
 %
-The \idx[let@\lstinline{let}]{\keyword{let}} keyword binds a value-identifier \lstinline[language=syntax]{<*valueIdent*>} with an expression \lstinline[language=syntax]{<*bodyExpr*>} that evaluates to a value. The following square bracket notation \lstinline[language=syntax]{[**]} means that the enclosed is optional, and F\# is able to identify whether or not the optional part is used by whether or not the \idx[in@\lstinline{in}]{\keyword{in}} keyword is present in the binding expression. If the \keyword{in} keyword is used, then the value-identifier is a local definition in the following \lstinline[language=syntax]{<*expr*>} expression but in the following lines. For lightweight syntax, the \keyword{in} keyword is replaced with a newline, and the binding \emph{is} valid in the following lines at the level of scope of the value-binding, or deeper, lexically.
+The \idx[let@\lstinline{let}]{\keyword{let}} keyword binds a value-identifier \lstinline[language=syntax]{<*valueIdent*>} with an expression \lstinline[language=syntax]{<*bodyExpr*>} that evaluates to a value. The following square bracket notation \lstinline[language=syntax]{[**]} means that the enclosed is optional, and F\# is able to identify whether or not the optional part is used as signified by the optional presence of the \idx[in@\lstinline{in}]{\keyword{in}} keyword. If the \keyword{in} keyword is used, then the value-identifier is a local definition in the \lstinline[language=syntax]{<*expr*>} expression, and it is not available in later lines. For lightweight syntax, the \keyword{in} keyword is replaced with a newline, and the binding \emph{is} available in later lines until the end of the scope it is defined in.
 
 The value identifier annotated with a type by using the \idx[:@\lstinline{:}]{\lexeme{:}} lexeme followed by the name of a type, e.g., \lstinline{int}. The \idx[\_@\lstinline{_}]{\lexeme{\_}} lexeme may be used as a value-identifier. This lexeme is called the \idx{wildcard pattern}, and for value-bindings it means that \lstinline[language=syntax]{<*bodyExpr*>} is evaluated, but the result is discarded. See \Cref{chap:patterns} for more details on patterns.
 
@@ -401,7 +401,7 @@ The family of \lstinline!printf! is shown in \Cref{tab:printfFamily}.\idxss{stdo
     \lstinline!eprintf! & \lstinline!eprintf "\%d apples" 3! & Prints to \lstinline!stderr!\\
     \lstinline!eprintfn! & & As \lstinline!eprintf! but with added newline.\\
     \hline
-    \lstinline!sprintf! & \lstinline!printf "\%d apples" 3! & Return printed string\\
+    \lstinline!sprintf! & \lstinline!sprintf "\%d apples" 3! & Return printed string\\
     \hline
     \lstinline!failwithf! & \lstinline!failwithf "\%d failed apples" 3! & Prints to a string and used for raising an exception.\\
     \hline
