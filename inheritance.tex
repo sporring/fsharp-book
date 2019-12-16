@@ -62,7 +62,7 @@ In previous examples, we accessed the property in order to print the contents of
 \highlight{\getrefnumber{classPrintfApp}}%
 }]{classPrintf}{Printing classes yields low-level information about the class.}
 %
-All classes are given default members through a process called \idx{inheritance}, to be discussed below in \Cref{sec:inheritance}. One example is the \lstinline{ToString() : () -> string} function, which is useful in conjunction with, e.g., \lstinline{printf}. When an object is given as argument to a \lstinline{printf} function with the \lstinline{%A} %
+All classes implicitely inherit from a class with the peculiar name, \idx[System.Object@\lstinline{System.Object}]{\lstinline{System.Object}}, and as a consequence, all classes have a number of already defined members. One example is the \lstinline{ToString() : () -> string} function, which is useful in conjunction with, e.g., \lstinline{printf}. When an object is given as argument to a \lstinline{printf} function with the \lstinline{%A} %
   or \lstinline{%O} %
     placeholders in the formatting string, \lstinline{printf} calls the object's \lstinline{ToString()} function. The default implementation returns low-level information about the object, as can be seen above, but we may \idx{override}
     this member using the \idx{\keyword{override}}-keyword, as demonstrated in \Cref{classToString}. Note, despite that \lstinline{ToString()} returns a string, the \lstinline{%s} %

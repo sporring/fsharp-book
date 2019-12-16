@@ -117,25 +117,25 @@ Relations between classes and objects are indicated by lines and arrows. The mos
     \begin{tikzpicture}
       % \draw[umlcd style dashed line] (0,4) --(8,4);
       % \draw[splitline] (0,3) --(8,3);
-      \node [left] at (-2,5) {Compose:};
-      \node (composeLeft) [left] at (0,5) {Owner};
-      \node (composeRight) [right] at (8,5) {Dependent};
-      \composition{composeLeft}{depObj}{1..*}{composeRight};
+      \node [left] at (-2,5) {Associate:};
+      \node (associateLeft) [left] at (0,5) {HostA};
+      \node (associateRight) [right] at (8,5) {HostB};
+      \association{associateLeft}{objectsAinB}{0..1}{associateRight}{objectsBinA}{0..*} ;
       
-      \node [left] at (-2,4) {Aggregate:};
-      \node (aggregateLeft) [left] at (0,4) {Host};
-      \node (aggregateRight) [right] at (8,4) {Guest};
-      \aggregation{aggregateLeft}{guestObj}{4}{aggregateRight};
-      
-      \node [left] at (-2,3) {\parbox[r]{2.5cm}{\raggedleft Unidirectional associate:}};
-      \node (uniAssociateLeft) [left] at (0,3) {Host};
-      \node (uniAssociateRight) [right] at (8,3) {Guest};
+      \node [left] at (-2,4) {\parbox[r]{2.5cm}{\raggedleft Unidirectional associate:}};
+      \node (uniAssociateLeft) [left] at (0,4) {Host};
+      \node (uniAssociateRight) [right] at (8,4) {Guest};
       \unidirectionalAssociation{uniAssociateLeft}{guestObj}{0..*}{uniAssociateRight};
 
-      \node [left] at (-2,2) {Associate:};
-      \node (associateLeft) [left] at (0,2) {HostA};
-      \node (associateRight) [right] at (8,2) {HostB};
-      \association{associateLeft}{objectsAinB}{0..1}{associateRight}{objectsBinA}{0..*} ;
+      \node [left] at (-2,3) {Aggregate:};
+      \node (aggregateLeft) [left] at (0,3) {Host};
+      \node (aggregateRight) [right] at (8,3) {Guest};
+      \aggregation{aggregateLeft}{guestObj}{4}{aggregateRight};
+      
+      \node [left] at (-2,2) {Compose:};
+      \node (composeLeft) [left] at (0,2) {Owner};
+      \node (composeRight) [right] at (8,2) {Dependent};
+      \composition{composeLeft}{depObj}{1..*}{composeRight};
       
       \node [left] at (-2,1) {Implement:};
       \node (interfaceDerived) [left] at (0,1) {Derived};
@@ -153,49 +153,19 @@ Relations between classes and objects are indicated by lines and arrows. The mos
 \end{figure}
 Their meaning will be described in detail in the following. 
 
-Classes may inherit\idxs{inheritance} other classes where the parent is called the base class and the children its derived classes. Such a relation is often called an \idx[is-a relation]{is-a} relation, since the derived class \emph{is a} kind of base class. An illustration of inheritance in UML is shown in \Cref{fig:inherit}.
-\begin{figure}
-  \centering
-  \begin{tikzpicture}
-    \begin{class}[text width=5cm]{BaseClassName}{0,0}
-    \end{class}
-    \begin{class}[text width=5cm]{DerivedClassA}{-3,-2}
-      \inherit{BaseClassName}
-    \end{class}
-    \begin{class}[text width=5cm]{DerivedClassB}{3,-2} 
-      \inherit{BaseClassName} 
-    \end{class}
-  \end{tikzpicture}
-  \caption{Inheritance is shown by a closed arrowhead pointing to the base.}
-  \label{fig:inherit}
-\end{figure}
-Here two classes inherit the base class. The syntax is analogous for interfaces\idxs{interface}, except a stippled line is used to indicate that a derived class implements an interface, as shown in \Cref{fig:implement}.
-\begin{figure}
-  \centering
-  \begin{tikzpicture}
-    \begin{interface}[text width=5cm]{InterfaceName}{0,0} 
-    \end{interface}
-    \begin{class}[text width=5cm]{DerivedClassA}{-3,-2}
-      \implement{InterfaceName}
-    \end{class}
-    \begin{class}[text width=5cm]{DerivedClassB}{3,-2} 
-      \implement{InterfaceName} 
-    \end{class}
-  \end{tikzpicture}
-  \caption{Implementations of interfaces is shown with stippled line and closed arrowhead pointing to the base.}
-  \label{fig:implement}
-\end{figure}
 
-Other relations between classes are association, aggregation, and composition:
-\begin{description}
-\item[Association]\idxs{association}~\\
-In associated relations, one class knows about the other, e.g., uses it as arguments of a function or similar.
-\filbreak\item[Aggregation]\idxs{aggregation}~\\ 
-Aggregated relationships are a specialization of associations. In aggregated relations, the host object has a local copy of a guest object, but the host did not create the guest. E.g., the guest object is given as an argument to a function of the host, and the host makes a local alias for later use. When the host is deleted, the guest is not.
-\filbreak\item[Composition]\idxs{composition}~\\
-A composed relationship is a specialization of aggregations. In composed relations, the host creates the guest, and when the host is deleted, so is the guest.
-\end{description}
-Aggregational and compositional relations are often called \idx[has-a relation]{has-a} relations, since host objects have one or more guests either as aliases or as owners.
+\subsection{Associations}
+A family of relations is association, aggregation, and composition, and these are distinguished by how they handle the objects they are in relation with. The relation between the three relations is shown in \Cref{fig:associationAggregationCompositionRelation}.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\textwidth]{associationAggregationComposition}
+  \caption{The relation between Association, Aggregation and Composition in UML.}
+  \label{fig:associationAggregationCompositionRelation}
+\end{figure}
+Aggregational and compositional are specialized types of associations that imply ownership and are often called \idx[has-a relation]{has-a} relations. A composition is a collection of parts that makes up a whole. In object-oriented design, a compositional relation is a strong relation, where a guest object makes little sense without the host, as a room cannot exist without a house. An aggregation is a collection of assorted items, and in object-oriented design, an aggregational relation is a loose relation, like how a battery can meaningfully be separated from a torchlight. Some associations are neither aggregational nor compositional, and commonly just called an association. An association is a group of people or things linked for some common purpose a cooccurrence. In object-oriented design, associations between objects are the loosest possible relations, like how a student may be associated with the local coffee shop. Sometimes associational relations are called a  \idx[knows-about relation]{knows-about}.
+
+\paragraph{Association}\idxs{association}~\\
+The most general type of association, which is just called an association, is the possibility for objects to send messages to each other. This implies that one class knows about the other, e.g., uses it as arguments of a function or similar. A host is associated with a guest if the host has a reference to the guest. Objects are reference types, and therefore, any object which is not created by the host, but where a name is bound to a guest object but not explicitly copied, then this is an association relation.
 
 Bidirectional association means that classes know about each other. The UML notation is shown in \Cref{fig:association}.
 \begin{figure}
@@ -240,6 +210,27 @@ If the association is unidirectional, then an arrow is added for emphasis, as sh
 \end{figure}
 In this example, Host knows about Guest and has one instance of it, and Guest is oblivious about Host.
 
+A programming example showing a unidirectional association is given in \Cref{umlAssociation}.
+% 
+\fsCode{umlAssociation}{umlAssociation}{The \lstinline{student} is associated with a \lstinline{teacher}.}{}
+% 
+Here, the \lstinline{student} is unidirectionally associated with a \lstinline{teacher} since the \lstinline{student} can send and receive messages to and from the \lstinline{teacher}. The \lstinline{teacher}, on the other hand, does not know anything about the \lstinline{student}. In UML this is depicted as shown in \Cref{fig:umlAssociationUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}{student}{0,0}
+    \end{class}
+    \begin{class}{teacher}{9,0}
+    \end{class} 
+    \unidirectionalAssociation{student}{}{}{teacher}
+  \end{tikzpicture}
+  \caption{The \lstinline{teacher} and \lstinline{student} objects can access each other's functions, and thus they have an association relation.}
+  \label{fig:umlAssociationUML}
+\end{figure}
+
+\paragraph{Aggregation}\idxs{aggregation}~\\
+Aggregated relationships are a specialization of associations. As an example, an author may have written a book, but once created, the book gets a life independent of the author and may, for example, be given to a reader, and the book continues to exist even when the author dies. That is, In aggregated relations, the host object has a reference to a guest object and may have created the guest, but the guest will be shared with other objects, and when the host is deleted, the guest is not.
+
 Aggregation is illustrated using a diamond tail and an open arrow, as shown in \Cref{fig:aggregation}.
 \begin{figure}
   \centering
@@ -253,7 +244,31 @@ Aggregation is illustrated using a diamond tail and an open arrow, as shown in \
   \caption{Aggregation relations are a subset of associations where local aliases are stored for later use.}
   \label{fig:aggregation}
 \end{figure}
-Here the Host class has stored aliases to four different Guest objects. A stronger relation is composition. This is shown like aggregation but with a filled diamond, as illustrated in \Cref{fig:composition}.
+Here the Host class has stored aliases to four different Guest objects.
+
+An programming example of an aggregation relation is given in \Cref{umlAggregation}.
+% 
+\fsCode{umlAggregation}{umlAggregation}{The \lstinline{book} has an aggregated relation to \lstinline{author} and \lstinline{reader}.}{}
+% 
+In aggregated relations, there is a sense of ownership, and in the example, the \lstinline{author} object creates a \lstinline{book} object which is published and bought by a reader. Hence the \lstinline{book} change ownership during the execution of the program. In UML this is to be depicted as shown in \Cref{fig:umlAggregationUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}{author}{0,0}
+    \end{class}
+    \begin{class}{reader}{9,0} 
+    \end{class}
+    \begin{class}{book}{4.5,2}
+    \end{class}
+    \aggregation{author}{}{}{book}
+    \aggregation{reader}{}{}{book}
+  \end{tikzpicture}
+  \caption{A book is an object that can be owned by both an author and a reader.}
+  \label{fig:umlAggregationUML}
+\end{figure}
+
+\paragraph{Composition}\idxs{composition}~\\
+A compositional relationship is a specialization of aggregations. As an example, a dog has legs, and dog legs can not very sensibly be given to other animals. That is, in compositional relations, the host creates the guest, and when the host is deleted, so is the guest.  A composition is a stronger relation than aggregation and is illustated using a filled filled diamond tail, as illustrated in \Cref{fig:composition}.
 \begin{figure}
   \centering
   \begin{tikzpicture}
@@ -268,7 +283,109 @@ Here the Host class has stored aliases to four different Guest objects. A strong
 \end{figure}
 In this example, Owner has created 1 or more objects of type Dependent, and when Owner is deleted, so are these objects.
 
-Finally, for visual flair, modules and namespaces are often visualized as \idx[package]{packages}, as shown in \Cref{fig:package}. A package is like a module in F\#.
+A programming example of a composition relation is given in \Cref{umlComposition}.
+% 
+\fsCode{umlComposition}{umlComposition}{The \lstinline{dog} object is a composition of four \lstinline{leg} objects.}{}
+% 
+In \Cref{umlComposition}, a \lstinline{dog} object creates four \lstinline{leg} objects, and it makes less sense to be able to turn over the ownership of each \lstinline{leg} to other objects. Thus, a \lstinline{dog} is a composition of \lstinline{leg} objects. Using UML, this should be depicted as shown in \Cref{fig:umlCompositionUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}{dog}{0,0} 
+    \end{class}
+    \begin{class}{leg}{9,0}
+    \end{class}
+    \composition{dog}{}{}{leg}
+  \end{tikzpicture}
+  \caption{A dog is a composition of legs.}
+  \label{fig:umlCompositionUML}
+\end{figure}
+
+\subsection{Inheritance-type relations}
+Classes may inherit\idxs{inheritance} other classes where the parent is called the base class and the children its derived classes. Such a relation is often called an \idx[is-a relation]{is-a} relation, since the derived class \emph{is a} kind of base class.
+
+\paragraph{Inheritance}
+Inheritance is a relation between properties of classes. As an example, a student and a teacher is a type of person. All persons have names, while a student also has a reading list, and a teacher also has a a set of slides. Thus, both students and teacher may inherit from a person to gain the common property, name. In UML this is illustated with an non-filled, closed arrow as shown in \Cref{fig:inherit}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=5cm]{BaseClassName}{0,0}
+    \end{class}
+    \begin{class}[text width=5cm]{DerivedClassA}{-3,-2}
+      \inherit{BaseClassName}
+    \end{class}
+    \begin{class}[text width=5cm]{DerivedClassB}{3,-2} 
+      \inherit{BaseClassName} 
+    \end{class}
+  \end{tikzpicture}
+  \caption{Inheritance is shown by a closed arrowhead pointing to the base.}
+  \label{fig:inherit}
+\end{figure}
+Here two classes inherit the base class.
+
+A programming example of an inheritance is given in \Cref{umlInheritance}.
+% 
+\fsCode{umlInheritance}{umlInheritance}{The \lstinline{student} and the \lstinline{teacher} class inherits from the \lstinline{person} class.}{}
+% 
+In \Cref{umlInheritance}, the \lstinline{student} and the \lstinline{teacher} classes are derived from the same \lstinline{person} class. Thus, they all three have the \lstinline{name} property. Using UML, this should be depicted as shown in \Cref{fig:umlInheritanceUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}{person}{4.5,2}
+    \end{class}
+    \begin{class}{student}{0,0}
+      \inherit{person}
+    \end{class}
+    \begin{class}{teacher}{9,0} 
+      \inherit{person}
+    \end{class}
+  \end{tikzpicture}
+  \caption{A student and a teacher inherit from a person class.}
+  \label{fig:umlInheritanceUML}
+\end{figure}
+
+\paragraph{Interface}
+An interface is a relation between the properties of an abstract class and a regular class. As an example, a television and a car both have buttons, that you can press, although their effect will be quite different. Thus, a television and a car may both implement the same interface. In UML, interfaces are shown similarly to inheritance, but using a stippled line, as shown in \Cref{fig:implement}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{interface}[text width=5cm]{InterfaceName}{0,0} 
+    \end{interface}
+    \begin{class}[text width=5cm]{DerivedClassA}{-3,-2}
+      \implement{InterfaceName}
+    \end{class}
+    \begin{class}[text width=5cm]{DerivedClassB}{3,-2} 
+      \implement{InterfaceName} 
+    \end{class}
+  \end{tikzpicture}
+  \caption{Implementations of interfaces is shown with stippled line and closed arrowhead pointing to the base.}
+  \label{fig:implement}
+\end{figure}
+
+A programming example of an interface is given in \Cref{umlInterface}.
+% 
+\fsCode{umlInterface}{umlInterface}{The \lstinline{television} and the \lstinline{car} class both implement the \lstinline{button} interface.}{}
+% 
+In \Cref{umlInterface}, the \lstinline{television} and the \lstinline{car} classes implement the \lstinline{button} interface. Hence, although they are different classes, they both have the \lstinline{press ()} method and, e.g., can be given as a function requiring only the existence of the \lstinline{press ()} method. Using UML, this should be depicted as shown in \Cref{fig:umlInterfaceUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}{button}{4.5,2}
+    \end{class}
+    \begin{class}{television}{0,0}
+      \implement{button}
+    \end{class}
+    \begin{class}{car}{9,0} 
+      \implement{button}
+    \end{class}
+  \end{tikzpicture}
+  \caption{A student and a teacher inherit from a person class.}
+  \label{fig:umlInterfaceUML}
+\end{figure}
+
+\subsection{Packages}
+\paragraph{Namespace and modules}
+For visual flair, modules and namespaces are often visualized as \idx[package]{packages}, as shown in \Cref{fig:package}. A package is like a module in F\#.
 \begin{figure}
   \centering
   \begin{tikzpicture} 
