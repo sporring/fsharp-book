@@ -8,4 +8,4 @@ type teacher (name : string, slides : string) =
   member this.slides = slides
 
 let s = student("Hans", "Learning to Program")
-let t = student("Jon", "Slides of the day")
+let t = teacher("Jon", "Slides of the day")
