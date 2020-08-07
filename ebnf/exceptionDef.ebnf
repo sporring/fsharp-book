@@ -1,0 +1,1 @@
+exception <*ident*> of <*typeId*> {** <*typeId*>*}

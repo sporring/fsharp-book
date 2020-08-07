@@ -1,0 +1,5 @@
+type <*ident*> =
+  [* | *] <*ident*> = <*integerOrChar*>
+  | <*ident*> = <*integerOrChar*>
+  | <*ident*> = <*integerOrChar*>
+  ...

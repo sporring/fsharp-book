@@ -1,0 +1,4 @@
+let rec f a =
+  §\tikzmark{recursivePatternCriteriumStart}§if <*stopping condition*>§\tikzmark{recursivePatternCriteriumStop}§
+  then §\tikzmark{recursivePatternStopStart}§<*stopping step*>§\tikzmark{recursivePatternStopEnd}§
+  else §\tikzmark{recursivePatternRecurseStart}§<*recursion step*>§\tikzmark{recursivePatternRecurseEnd}§

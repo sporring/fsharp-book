@@ -1,0 +1,1 @@
+for <*ident*> = <*firstExpr*> to <*lastExpr*> do <*bodyExpr*> [*done*]

@@ -1,0 +1,2 @@
+[*[<Literal>]*]
+let [*mutable*] <*pat*> [*: <*returnType*>*] = <*bodyExpr*> [*in <*expr*>*]

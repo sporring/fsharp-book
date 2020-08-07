@@ -1,0 +1,28 @@
+#!/bin/bash
+# Compile a list of files, run in mono, and store the outputfile into a file
+# fsxvar2out outputfile header file1 file2 file3
+
+outputfile=$1
+shift
+header=$1
+shift
+
+if [ -f $outputfile ]; then
+    mv $outputfile $outputfile.bckp
+fi
+
+echo $header > $outputfile
+fsharpc --nologo -o fsxvar2out.exe "$@" >> $outputfile 2>&1
+mono fsxvar2out.exe >> $outputfile 2>&1
+rm fsxvar2out.exe
+
+here=`pwd`
+cat $outputfile | sed -e "s#$here\/##" > /tmp/$outputfile
+mv /tmp/$outputfile $outputfile
+
+if [ -f $outputfile.bckp ]; then
+    cmp --silent $outputfile $outputfile.bckp && rm $outputfile.bckp
+fi
+cat $outputfile
+
+exit 0

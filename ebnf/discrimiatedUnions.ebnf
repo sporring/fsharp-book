@@ -1,0 +1,5 @@
+[*<*attributes*>*]
+type <*ident*> =
+  [*| *]<*ident*> [*of [*<*ident*> :*] <*aType*> [** [*<*ident*> :*] <*aType*> ...*]*]
+  | <*ident*> [*of [*<*ident*> :*] <*aType*> [** [*<*ident*> :*] <*aType*> ...*]*]
+  ...

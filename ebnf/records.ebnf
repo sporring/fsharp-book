@@ -1,0 +1,6 @@
+[* <*attributes*> *]
+type <*ident*> = {
+  [* mutable *] <*label1*> : <*type1*>
+  [* mutable *] <*label2*> : <*type2*>
+  ...
+}

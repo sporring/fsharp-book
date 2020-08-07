@@ -1,0 +1,9 @@
+[* <*attributes*> *]
+[<Struct>]
+type <*ident*> =
+  val [* mutable *] <*label1*> : <*type1*>
+  val [* mutable *] <*label2*> : <*type2*>
+  ...
+  [*new (<*arg1*>, <*arg2*>, ...) = {<*label1*> = <*arg1*>; <*label1*> = <*arg2*>; ...}
+  [*new (<*arg1*>, <*arg2*>, ...) = {<*label1*> = <*arg1*>; <*label1*> = <*arg2*>; ...}
+  ...

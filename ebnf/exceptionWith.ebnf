@@ -1,0 +1,7 @@
+try
+   <*testExpr*>
+with
+   [* | *] <*pat1*> -> <*exprHndl1*>
+   | <*pa2*> -> <*exprHndl2*>
+   | <*pat3*> -> <*exprHndl3*>
+   ...

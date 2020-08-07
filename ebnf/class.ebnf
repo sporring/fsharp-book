@@ -1,0 +1,4 @@
+type <*classIdent*> ({*<*arg*>*}) [*as <*selfIdent*>*]
+  [*inherit <*baseClassIdent*>({*<*arg*>*})*]
+  {*[*let <*binding*>*] |* [*do <*statement*>*]*}
+  {*(*member |* abstract member |* default |* override*) <*memberDef*>*}

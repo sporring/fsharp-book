@@ -1,0 +1,3 @@
+type <*classIdent*> ({*<*arg*>*}) [*as <*selfIdent*>*]
+  {*let <*binding*> |* do <*statement*>*}
+  {*member <*memberDef*>*}

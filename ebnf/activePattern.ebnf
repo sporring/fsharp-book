@@ -1,0 +1,2 @@
+let (|<*caseName*>|[*_| *]) [* <*arg*> [*<*arg*> ... *]*] <*inputArgument*> = <*expr*>
+let (|<*caseName*>|<*caseName*>|...|<*caseName*>|) <*inputArgumet*> = <*expr*>

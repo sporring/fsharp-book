@@ -1,0 +1,3 @@
+[<EntryPoint>]
+let <*funcIdent*> <*arg*> =
+  <*bodyExpr*>

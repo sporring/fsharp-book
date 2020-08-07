@@ -1,0 +1,5 @@
+match <*inputExpr*> with
+ [*| *]<*pat*> [*when <*guardExpr*>*] -> <*caseExpr*>
+ | <*pat*> [*when <*guardExpr*>*] -> <*caseExpr*>
+ | <*pat*> [*when <*guardExpr*>*] -> <*caseExpr*>
+ ...
