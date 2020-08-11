@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{Common Language Infrastructure}
 \label{chap:cli} 
 The \idx{Common Language Infrastructure} (\idx{CLI}), not to be confused with \idx{Command Line Interface} with the same acronym, is a technical standard developed by Microsoft \cite{iso23271:2012, ecma335}. The standard specifies a language, its format, and a runtime environment that can execute the code. The main feature is that it provides a common interface between many languages and many platforms, such that programs can collaborate in a language-agnostic manner and can be executed on different platforms without having to be recompiled. Main features of the standard are:
@@ -16,7 +19,7 @@ The process of running an F\# program is shown in \Cref{fig:cliOverview}\jon{upd
 \end{figure}
 
 CLI defines a \idx{module} as a single file containing executable code by VES. Hence, CLI's notion of a module is somewhat related to F\#'s notion of module, but the two should not be confused. A collection of modules, a \idx{manifest}, and possibly other resources, which jointly define a complete program is called an \idx{assembly}. The manifest is the description of which files are included in the assembly together with its version, name, security information, and other bookkeeping information.
-
+\end{document}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

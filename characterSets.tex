@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{Commonly Used Character Sets}
 \label{sec:characterSets}
 Letters, digits, symbols, and space are the core of how we store data, write programs, and communicate with computers and each other. These symbols are in short called characters and represent a mapping between numbers, also known as codes, and a pictorial representation of the character. E.g., the ASCII code for the letter 'A' is 65. These mappings are for short called character sets, and due to differences in natural languages and symbols used across the globe, many different character sets are in use. E.g., the English alphabet contains the letters 'a' to 'z'. These letters are common to many other European languages which in addition use even more symbols and accents. For example, Danish has further the letters 'æ', 'ø', and 'å'. Many non-European languages have completely different symbols, where the Chinese character set is probably the most extreme, and some definitions contain 106,230 different characters, albeit only 2,600 are included in the official Chinese language test at the highest level.
@@ -191,7 +194,7 @@ The general category is used to specify valid characters that do not necessarily
 \end{table}
 
 To store and retrieve code points, they must be encoded and decoded. A common encoding is \idx{UTF-8}, which encodes code points as 1 to 4 bytes, and which is backward-compatible with ASCII and ISO 8859-1. Hence, in all 3 coding systems, the character with code 65 represents the character 'A'. Another popular encoding scheme is \idx{UTF-16}, which encodes characters as 2 or 4 bytes, but which is not backward-compatible with ASCII or ISO 8859-1. UTF-16 is used internally in many compilers, interpreters, and operating systems.
-
+\end{document}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

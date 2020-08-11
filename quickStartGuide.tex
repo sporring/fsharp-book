@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{Quick-start Guide}
 Programming is the art of solving problems by writing a program to be executed by a computer. For example, to solve the following problem,
 %
@@ -72,7 +75,7 @@ Alternatively, the types may be explicitly stated as shown in \Cref{typesAnnotat
 The function \lstinline{sum} has two arguments and a return type, and in \Cref{typesAnnotation} we have specified all three. This is done using the \lexeme{:} lexeme, and to resolve confusion, we must use parentheses around the arguments, such as \lstinline{(y : float)}, otherwise F\# would not be able to understand whether the type annotation was for the argument or the return value. Often it is sufficient to specify just some of the types, since type inference will enforce the remaining types. E.g., in this example, the \lexeme{+} operator is defined for identical types, so specifying the return value of \lstinline{sum} to be a float implies that the result of the \lexeme{+} operator is a float, and therefore that its arguments must be floats, and finally then that the arguments for \lstinline{sum} must be floats. However, in this book we advocate the following advice: \advice{specify types unless explicitly working with generic functions.}
 
 In this chapter, we have scratched the surface of learning how to program by concentrating on a number of key programming concepts and how they are expressed in the F\# language. In the following chapters, we will expand the description of F\# with features used in all programming approaches.
-
+\end{document}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

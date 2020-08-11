@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{Introduktion til terminalen\\ for Windows, MacOS X, og Linux\\Udkast!}
 \label{chap:console}
 \jon{Credit to Hans, Translate to english! Use proper console typesetting.}
@@ -299,7 +302,7 @@ De kommandoer, man kan køre fra kommandolinjen, skal være indbygget eller find
 FN11194:Documents sporring$ echo $PATH
 /Applications/Maple 17/:/Applications/PackageMaker.app/Contents/MacOS/:/Applications/MATLAB_R2014b.app/bin/:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin
 FN11194:Documents sporring$ 
-\end{lstlisting}
+\end{lstlisting} %$
 og stien kan ændres ved at editere opsætningsfilen for bash. På OSX hedder den \verb|~/.profile| mens på Linux kan den hedde enten \verb|~/.bash_profile| eller \verb|~/.bashrc|. I den kan man tilføje nye stier ved at indsætte en linje med \verb|export PATH="<min nye sti>:<min anden nye sti>:$PATH"|.
 
 En nyttig feature ved Bash er, at terminalen kan hjælpe med at skrive kommandoer: hvis man f.eks. skriver \verb|fs| efterfulgt af \verb|tab| og har installeret Mono korrekt, så vil bash typisk fortsætte linjen med \verb|fsharp|, og hvis man trykker på \verb|tab| 2 gange, vil den skrive en liste af muligheder, igen typisk \verb|fshpari| og \verb|fsharpc|. Desuden kan manualer til de fleste kommandoer kan findes ved at skrive \verb|man| foran kommandoen. Manualen til \verb|rm| kan f.eks. fås ved at skrive \verb|man rm|.
@@ -349,7 +352,7 @@ En nyttig feature ved Bash er, at terminalen kan hjælpe med at skrive kommandoe
 % \subsection{Windows.}
 
 % [OBS: MANGLER]
-
+\end{document}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

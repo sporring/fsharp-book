@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{Derived Classes}
 \label{chap:derivedClasses}
 \section{Inheritance}
@@ -241,7 +244,7 @@ Compiling the library files with the application and executing gives the result 
 \fsOutput{chessApp}{Running the program. Compare with \Cref{fig:chessKingsGame}.}{}
 %
 We see that the program has correctly determined that initially, the white king has the white rook as its neighbors and due to its location in the corner only has two free positions to move to. The white rook has many and the black king as its neighbor. The black king is free to move to all its eight neighboring fields. After moving the white rook to (3,1) or b4 in regular chess notation, then the white king has no neighbors, and the white rook and the black king are now neighbors with an appropriate restriction on their respective vacant squares. These simple use-tests are in no way a thorough test of the quality of the code, but they give us a good indication that our library offers a tolerable interface for the application, and that at least major parts of the code function as expected. Thus, we conclude this intermezzo.
-
+\end{document}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

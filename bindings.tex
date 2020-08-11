@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{Values and Functions}
 \label{chap:let}
 %
@@ -576,6 +579,7 @@ Mutable tuples are value types, meaning that binding to new names makes copies, 
 \fs{mutableTupleValue}{A mutable tuple is a value type.}
 %
 The use of tuples shortens code and highlights semantic content at a higher level, e.g., instead of focusing on the elements, tuples focus on their union. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, where an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
+\end{document}
 
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"

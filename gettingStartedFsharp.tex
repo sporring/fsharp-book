@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{Executing F\# Code}
 
 \section{Source Code}
@@ -140,7 +143,7 @@ On a MacBook Pro, with a 2.9 GHz Intel Core i5, the time the various stages take
 I.e., executing the script with \lstinline[language=console]|fsharpi| is slightly faster than by first compiling it with \lstinline[language=console]|fsharpc| and then executing the result with \lstinline[language=console]|mono| ($1.88\text{s} < 0.05\text{s}+1.90\text{s}$), if the script were to be executed only once, but every future execution of the script using the compiled version requires only the use of \lstinline[language=console]|mono|, which is much faster than \lstinline[language=console]|fsharpi| ($1.88\text{s}\gg 0.05\text{s}$).
 
 Executing programs with the interpreted directly from a file and compiling and executing the program is much preferred for programming complete programs, since the starting state is well defined, and since this better supports \idx{unit testing}, which is a method for debugging programs. Thus, \advice{prefer compiling over interpretation.}
-
+\end{document}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

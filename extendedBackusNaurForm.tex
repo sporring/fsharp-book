@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{A brief introduction to Extended Backus-Naur Form}
 \label{sec:ebnf}
 \idx{Extended Backus-Naur Form} (\idx{EBNF}) is a language to specify programming languages in. The name is a tribute to John Backus who used it to describe the syntax of ALGOL58 and Peter Nauer for his work on ALGOL 60.
@@ -156,7 +159,7 @@ rule = identifier  "="  rhs ";"
 grammar = rule { rule };
 \end{lstlisting}
 Here the comments demonstrate, the relaxed modification. Newline does not have an explicit representation in EBNF, which is why we use \lstinline[language=ebnf]{? ?} brackets
-
+\end{document}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

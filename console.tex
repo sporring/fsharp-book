@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{The Console in Windows,\\MacOS~X, and Linux}
 \label{chap:console}
 Almost all popular operating systems are accessed through a
@@ -317,7 +320,7 @@ FN11194:Documents sporring$
 The search path can be changed by editing the setup file for Bash. On MacOS X it is called \lstinline[language=console]{~/.profile}, and on Linux it is either \lstinline[language=console]{~/.bash_profile} or \lstinline[language=console]{~/.bashrc}. Here new paths can be added by adding the following line: \lstinline[language=console]{export PATH="<new path>:<another new path>:$PATH"}. %$
 
 A useful feature of Bash is that the console can help you write commands. E.g., if you write \lstinline[language=console]{fs} followed by pressing the \lstinline[language=console]{tab}-key, and if Mono is in the search path, then Bash will typically respond by completing the line as \lstinline[language=console]{fsharp}, and by further pressing the \lstinline[language=console]{tab}-key some times, Bash will show the list of options, typically \lstinline[language=console]{fshpari} and \lstinline[language=console]{fsharpc}. Also, most commands have an extensive manual which can be accessed using the \lstinline[language=console]{man} command. E.g., the manual for \lstinline[language=console]{rm} is retrieved by \lstinline[language=console]{man rm}.
-
+\end{document}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:

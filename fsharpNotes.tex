@@ -1,6 +1,6 @@
 \documentclass[oneside, a4paper]{scrbook}
-
 \input{setup}
+\usepackage{subfiles}
 
 \title{Learning to Program with F\#} 
 %
@@ -9,42 +9,42 @@
 \date{\DTMnow}
 %\author{Jon Sporring \& Torben Mogensen\\[1cm]Department of Computer Science,\\University of Copenhagen}
 
-\includeonly{
-  % preface,
-  % introduction,
-  % gettingStartedFsharp,
-  % quickStartGuide,
-  % numbersCharsNStrings,
-  % bindings,
-  %  comments,
-  % flow,
-  % nameSpacesNModules,
-  % testing,
-  % tuplesListsArraysSequences,
-  % imperativeProgrammingParadigm,
-  % recursion,
-  % types,
-  % patterns,
-  % higherOrderFunctions,
-  % functionalProgrammingParadigm,
-  % exceptions,
-  % IO,
-  classes,
-  inheritance,
-  objectOrientedProgrammingParadigm,
-  % windows,
-  % eventDrivenProgrammingParadigm,
-  % future,
-  % console,
-  % numberSystems,
-  % characterSets,
-  % commonLanguageInfrastructure,
-  %  % extendedBackusNaurForm,
-  %  % fflat,
-  %  % languageDetails,
-  %  % collection,
-  %  % todos
-}
+% \includeonly{
+%   % preface,
+%   % introduction,
+%   % gettingStartedFsharp,
+%   % quickStartGuide,
+%   % numbersCharsNStrings,
+%   % bindings,
+%   %  comments,
+%   % flow,
+%   % nameSpacesNModules,
+%   % testing,
+%   % tuplesListsArraysSequences,
+%   % imperativeProgrammingParadigm,
+%   % recursion,
+%   % types,
+%   % patterns,
+%   % higherOrderFunctions,
+%   % functionalProgrammingParadigm,
+%   % exceptions,
+%   % IO,
+%   classes,
+%   inheritance,
+%   objectOrientedProgrammingParadigm,
+%   % windows,
+%   % eventDrivenProgrammingParadigm,
+%   % future,
+%   % console,
+%   % numberSystems,
+%   % characterSets,
+%   % commonLanguageInfrastructure,
+%   %  % extendedBackusNaurForm,
+%   %  % fflat,
+%   %  % languageDetails,
+%   %  % collection,
+%   %  % todos
+% }
 
 \begin{document}
 %\counterwithin{lstlisting}{chapter} % Fix reference bug in listing package
@@ -56,79 +56,79 @@
 \pagenumbering{arabic}
 \tableofcontents
 
-\include{preface}
+\subfile{preface}
 
-\include{introduction}
+\subfile{introduction}
 
-\include{gettingStartedFsharp}
+\subfile{gettingStartedFsharp}
 
-\include{quickStartGuide}
+\subfile{quickStartGuide}
 
-\include{numbersCharsNStrings}
+\subfile{numbersCharsNStrings}
 
-\include{bindings}
+\subfile{bindings}
 
-\include{comments}
+\subfile{comments}
 
-\include{flow}
+\subfile{flow}
 
-\include{nameSpacesNModules}
+\subfile{nameSpacesNModules}
 
-\include{testing}
+\subfile{testing}
 
-\include{tuplesListsArraysSequences}
+\subfile{tuplesListsArraysSequences}
 
-\include{imperativeProgrammingParadigm}
+\subfile{imperativeProgrammingParadigm}
 
-\include{recursion}
+\subfile{recursion}
 
-\include{types}
+\subfile{types}
 
-\include{patterns}
+\subfile{patterns}
 
-\include{higherOrderFunctions}
+\subfile{higherOrderFunctions}
 
-\include{functionalProgrammingParadigm}
+\subfile{functionalProgrammingParadigm}
 
-\include{exceptions}
+\subfile{exceptions}
 
-\include{IO}
+\subfile{IO}
 
-%\include{sequences}
+%\subfile{sequences}
 
-%\include{typesNMeasures}
+%\subfile{typesNMeasures}
 
-\include{classes}
+\subfile{classes}
 
-\include{inheritance}
+\subfile{inheritance}
 
-\include{objectOrientedProgrammingParadigm}
+\subfile{objectOrientedProgrammingParadigm}
 
-\include{windows}
+\subfile{windows}
 
-\include{eventDrivenProgrammingParadigm}
+\subfile{eventDrivenProgrammingParadigm}
 
-\include{future}
+\subfile{future}
 
 \appendix
 
-\include{console}
+\subfile{console}
 
-\include{numberSystems}
+\subfile{numberSystems}
 
-\include{characterSets}
+\subfile{characterSets}
 
-\include{commonLanguageInfrastructure}
+\subfile{commonLanguageInfrastructure}
 
-%\include{extendedBackusNaurForm}
+%\subfile{extendedBackusNaurForm}
 
-%\include{fflat}
+%\subfile{fflat}
 
-%\include{languageDetails}
+%\subfile{languageDetails}
 
-%\include{collection}
+%\subfile{collection}
 
-%\include{todos}
+%\subfile{todos}
 
 \clearpage
 \addcontentsline{toc}{chapter}{Bibliography}

@@ -1,3 +1,6 @@
+\documentclass[fsharpnotes.tex]{subfiles}
+
+\begin{document}
 \chapter{Programming with Types}
 \label{chap:type}
 F\# is a strongly typed language, meaning that types are known or inferred at compile time. In the previous chapters, we have used \idx{primitive types} such as \lstinline{float} and \lstinline{bool},  function types, and compound types implicitly defined by tuples. These types are used for simple programming tasks, and everything that can be programmed can be accomplished using these types. However, larger programs are often easier to read and write when using more complicated type structures. In this chapter, we will discuss type abbreviations, enumerated types, discriminated unions, records, and structs. Class types are discussed in depth in \Cref{chap:oop}.
@@ -171,7 +174,7 @@ In the example, adding the \keyword{inline} does two things: Firstly, it copies 
 The example in \Cref{compiletimeVariableType} demonstrates the statically resolved variable type syntax, \lstinline[language=syntax]{^<*ident*>}, as well as the use of \idx{type constraints}, using the keyword \idx[when@\lstinline{when}]{\keyword{when}}.  Type constraints have a rich syntax, but will not be discussed further in this book.\jon{Should I extend on type constraints? Perhaps it is better left for a specialize chapter on generic functions.} In the example, the type constraint \lstinline{when ^a : (static member ( + ) :  ^a * ^a -> ^a)} is given using the object-oriented properties of the type variable \lstinline{^a}, meaning that the only acceptable type values are those which have a member function \lstinline{(+)} taking a tuple and giving a value all of identical type, and where the type can be inferred at compile time. See \Cref{chap:oop} for details on member functions.
 
 The \keyword{inline} construction is useful when generating generic functions and still profiting from static type checking. However, explicit copying of functions is often something better left to the compiler to optimize over. An alternative seems to be using runtime resolved variable types with the \lstinline[language=syntax]{'<*ident*>} syntax. Unfortunately, this is not possible in case of most operators, since they have been defined in the \lstinline{FSharp.Core} namespace to be statically resolved variable types. E.g., the \lexeme{+} operator has type \lstinline{( + ) : ^T1 -> ^T2 -> ^T3 (requires ^T1 with static member (+) and ^T2 with static member (+))}.
-
+\end{document}
 %%% Local Variables:
 %%% TeX-master: "fsharpNotes"
 %%% End:
