@@ -1,0 +1,16 @@
+*.log
+*.out
+*.idx
+*.aux
+*.ilg
+*.synctex.gz
+*.ind
+*.exe
+*.dll
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.toc
+*.rel
+*.bck
