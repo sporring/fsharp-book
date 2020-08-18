@@ -1,4 +1,5 @@
 \documentclass[fsharpnotes.tex]{subfiles}
+\graphicspath{ {./figures/} }
 
 \begin{document}
 \chapter{Recursion}
@@ -229,8 +230,103 @@ In the example above, we used the \lstinline!even! and \lstinline!odd! function 
 \fsCode{parity}{parity}{A better way to test for parity without recursion.}{}
 %
 This is to be preferred anytime as the solution to the problem. \jon{Here it would be nice to have an intermezzo, giving examples of how to write a recursive program by thinking the problem has been solved.}
+
+\section{Tracing Recursive Programs}
+\label{sec:recursiveTracing}
+Tracing by hand is a very illustrative method for understanding recursive programs. Consider the recursive program in \Cref{gcd}.
+%
+\fs{gcd}{The greatest common divisor of 2 integers.}
+%
+The program includes a function for calculating the greatest common divisor of 2 integers, and calls this function with the numbers 10 and 15. Following the notation introduced in \Cref{sec:tracing}, we write:
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    0 & - & $E_0$ & ()\\
+    1 &\ref{gcd:gcd} & $E_0$ & $\text{gcd} = \big((a, b), \text{gcd-body}, ()\big)$\\
+    2 &\ref{gcd:a} & $E_0$ & $a = 10$\\
+    3 &\ref{gcd:b} & $E_0$ & $b = 15$\\
+  \end{tabular*}
+\end{center}
+In line~\ref{gcd:printfn}, the \lstinline!gdc! is called before any output is generated, which initiates a new environment $E_1$ and we execute the code in gcd-body:
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+  4 & \ref{gcd:printfn} & $E_0$ & $\text{gcd a b} = \text{?}$\\
+  5 & \ref{gcd:gcd} & $E_1$ & $\big((a = 10, b =15), \text{gcd-body}, ()\big)$\\
+  \end{tabular*}
+\end{center}
+ In $E_1$ we have that $a<b$, which fulfills the first condition in line~\ref{gcd:if}. Hence, we call gdc with switched arguments and once again initiate a new environment,
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+  6&\ref{gcd:gcdR1} & $E_1$ &$\text{gcd b a} = \text{?}$\\
+  7 &\ref{gcd:gcd} & $E_2$ & $\big((a = 15, b = 10), \text{gcd-body}, ()\big)$\\
+  \end{tabular*}
+\end{center}
+In $E_2$, \lstinline!a < b! in line~\ref{gcd:if} is false, but \lstinline!b > 0! in line~\ref{gcd:elif} is true, hence, we first evaluate \lstinline{a % b}, call \lstinline{gcd b (a % b)}, and create a new environment,
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    8&\ref{gcd:gcdR2} & $E_2$ & $\text{a \% b} = 5$\\
+    9&\ref{gcd:gcdR2} & $E_2$ & $\text{gcd b (a \% b)} = \text{?}$\\
+    10&\ref{gcd:gcd} & $E_3$ &$\big((a = 10, b = 5), \text{gcd-body}, ()\big)$\\
+  \end{tabular*}
+\end{center}
+Again we fall through to line~\ref{gcd:gcdR2}, evaluate the remainder operator and initiate a new environment,
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    11&\ref{gcd:gcdR2} & $E_3$ & $\text{a \% b} = 0$\\
+    12&\ref{gcd:gcdR2} & $E_3$ & $\text{gcd b (a \% b)} = \text{?}$\\
+    13&\ref{gcd:gcd} & $E_4$ & $\big((a = 5, b = 0), \text{gcd-body}, ()\big)$\\
+  \end{tabular*}
+\end{center}
+This time both \lstinline!a < b! and \lstinline!b > 0! are false, so we fall through to line~\ref{gcd:return} and return the value of \lstinline!a! from $E_4$, which is \lstinline!5!:
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    14&\ref{gcd:return} & $E_4$ & $\text{return} = 5$\\
+  \end{tabular*}
+\end{center}
+We scratch $E_4$, return to $E_3$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc} we return the just evaluated value,
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    15&\ref{gcd:gcdR2} & $E_3$ & $\text{return} = 5$\\
+  \end{tabular*}
+\end{center}
+Like before, we scratch $E_3$, return to $E_2$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc} we return the just evaluated value,
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    16&\ref{gcd:gcdR2} & $E_2$ & $\text{return} = 5$\\
+  \end{tabular*}
+\end{center}
+Again, we scratch $E_2$, return to $E_1$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc} we return the just evaluated value,
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    17&\ref{gcd:gcdR1} & $E_1$ & $\text{return} = 5$\\
+  \end{tabular*}
+\end{center}
+Finally, we scratch $E_1$, return to $E_0$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}:
+\begin{center}
+  \begin{tabular*}{0.6\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    18 & \ref{gcd:printfn} & $E_0$ & $\text{output = "gcd a b = 5"}$\\
+    19 & \ref{gcd:printfn} & $E_0$ & $\text{return = ()}$\\
+  \end{tabular*}
+\end{center}
+Note that the output of \lstinline{printfn} is a side-effect while its return-value is unit. In any case, since this is the last line in our program, we are done tracing.
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
 

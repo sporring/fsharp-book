@@ -1,4 +1,5 @@
 \documentclass[fsharpnotes.tex]{subfiles}
+\graphicspath{ {./figures/} }
 
 \begin{document}
 \chapter{Using F\# as a Calculator}
@@ -372,7 +373,7 @@ Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the pro
   \caption{Predefined functions for arithmetic operations.}
   \label{tab:arithmeticFunctions}
 \end{table}
-Note that expressions can themselves be arguments to expressions, and thus, \lstinline!4+5+6! is also a legal statement. This is called \idx{recursion}, which means that a rule or a function is used by the rule or function itself in its definition. See \Cref{sec:recursion} for more on recursive functions.
+Note that expressions can themselves be arguments to expressions, and thus, \lstinline!4+5+6! is also a legal statement. Technically, F\# interprets the expression as \lstinline!(4+5)+6! meaning that first \lstinline!4+5! is evaluated according the \lstinline[language=syntax]{<*expr*><*op*><*expr*>} syntax. Then the result replaces the parenthesis to yield \lstinline!9+6!, which, once again, is evaluated according to the \lstinline[language=syntax]{<*expr*><*op*><*expr*>} syntax to give \lstinline!15!.  This is called \idx{recursion}, which is the name for a type of rule or function that uses itself in its definition. See \Cref{sec:recursion} for more on recursive functions.
 
 Unary operators take only one argument and have the syntax:
 %
@@ -624,7 +625,3 @@ val it : unit = ()
 \end{codeNOutput}
 Thus, by reading the second integer-response from \lstinline!printfn! from below and up, we again obtain the binary form of $11_{10}$ to be $1011_2$. For integers with a fractional part, the divide-by-two algorithm may be used on the whole part, while multiply-by-two may be used in a similar manner on the fractional part.
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
-
