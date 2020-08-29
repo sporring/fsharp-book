@@ -109,7 +109,19 @@ The sentence structure and its variants give rise to a more compact solution, si
 %
 While arguably shorter, this solution is also denser, and most likely more difficult to debug and maintain.
 
-Note that both \keyword{elif} and \keyword{else} branches are optional, which may cause problems. For example, both \mbox{\lstinline!let a = if true then 3!} and \mbox{\lstinline!let a = if true then 3 elif false then 4!}  will be invalid, since F\# is not smart enough to realize that the type of the expression is uniquely determined. Instead, F\# looks for the \keyword{else} to ensure all cases have been covered, and that \lstinline!a! always will be given a unique value of the same type regardless of the branch taken in the conditional statement. Hence, \mbox{\lstinline!let a = if true then 3 else 4!}  is the only valid expression of the 3. In practice, F\# assumes that the omitted branch returns \lexeme{()}, and thus it is fine to say \mbox{\lstinline!let a = if true then ()!} and \mbox{\lstinline!if true then printfn "hej"!}. Nevertheless, it is good practice in F\# to always include an \keyword{else} branch.
+Note that both \keyword{elif} and \keyword{else} branches are optional, which may cause problems. For example, both
+\begin{quote}
+\mbox{\lstinline!let a = if true then 3!}
+\end{quote}
+and
+\begin{quote}
+\mbox{\lstinline!let a = if true then 3 elif false then 4!}
+\end{quote}
+are invalid, since F\# is not smart enough to realize that the type of the expression is uniquely determined. Instead, F\# looks for the \keyword{else} to ensure all cases have been covered, and that \lstinline!a! always will be given a unique value of the same type regardless of the branch taken in the conditional statement. Hence,
+\begin{quote}
+\mbox{\lstinline!let a = if true then 3 else 4!}
+\end{quote}
+is the only valid expression of the 3. In practice, F\# assumes that the omitted branch returns \lexeme{()}, and thus it is fine to say \mbox{\lstinline!let a = if true then ()!} and \mbox{\lstinline!if true then printfn "hej"!}. Nevertheless, it is good practice in F\# to always include an \keyword{else} branch.
 
 \section{Programming Intermezzo: Automatic Conversion of Decimal to Binary Numbers}
 Using loops and conditional expressions, we are now able to solve the following problem:
@@ -130,7 +142,4 @@ and right-shift \lstinline{v} one bit to the right with \lstinline{v <- v / 2}. 
 \end{description}
 Thus we have proven that \lstinline{dec2bin} correctly converts integers to strings representing binary numbers.
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
 

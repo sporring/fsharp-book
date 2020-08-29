@@ -16,7 +16,19 @@ To solve for $x$ we use the quadratic formula from elementary algebra,
 \begin{equation}
   x = \frac{-b\pm\sqrt{b^2-4ac}}{2a},
 \end{equation}
-which gives the general solution for any values of the coefficients. Here, we will assume a positive discriminant, $b^2-4ac>0$. In order to write a program where the code may be reused later, we define a function \mbox{\lstinline!discriminant : float -> float -> float -> float!}, that is, a function that takes 3 arguments, \lstinline!a!, \lstinline!b!, and \lstinline!c!, and calculates the discriminant. Likewise, we will define \mbox{\lstinline!positiveSolution : float -> float -> float -> float!} and \mbox{\lstinline!negativeSolution : float -> float -> float -> float!}, that also take the polynomial's coefficients as arguments and calculate the solution corresponding to choosing the positive and negative sign for $\pm$ in the equation. Details on function definition is given in \Cref{sec:functions}. Our solution thus looks like \Cref{identifiersExample}.
+which gives the general solution for any values of the coefficients. Here, we will assume a positive discriminant, $b^2-4ac>0$. In order to write a program where the code may be reused later, we define a function
+\begin{quote}
+  \lstinline!discriminant : float -> float -> float -> float!
+\end{quote}
+that is, a function that takes 3 arguments, \lstinline!a!, \lstinline!b!, and \lstinline!c!, and calculates the discriminant. Likewise, we will define
+\begin{quote}
+  \lstinline!positiveSolution : float -> float -> float -> float!
+\end{quote}
+and
+\begin{quote}
+  \lstinline!negativeSolution : float -> float -> float -> float!
+\end{quote}
+that also take the polynomial's coefficients as arguments and calculate the solution corresponding to choosing the positive and negative sign for $\pm$ in the equation. Details on function definition is given in \Cref{sec:functions}. Our solution thus looks like \Cref{identifiersExample}.
 %
 \fs{identifiersExample}{Finding roots for quadratic equations using function name binding.}
 %
@@ -82,7 +94,7 @@ let <*valueIdent*> = <*bodyExpr*> [*in <*expr*>*]
 \end{verbatimwrite}
 \syntax{\ebnf/valueBindings.ebnf}{Value binding expression.}
 %
-The \idx[let@\lstinline{let}]{\keyword{let}} keyword binds a value-identifier \lstinline[language=syntax]{<*valueIdent*>} with an expression \lstinline[language=syntax]{<*bodyExpr*>} that evaluates to a value. The following square bracket notation \lstinline[language=syntax]{[**]} means that the enclosed is optional, and F\# is able to identify whether or not the optional part is used as signified by the optional presence of the \idx[in@\lstinline{in}]{\keyword{in}} keyword. If the \keyword{in} keyword is used, then the value-identifier is a local definition in the \lstinline[language=syntax]{<*expr*>} expression, and it is not available in later lines. For lightweight syntax, the \keyword{in} keyword is replaced with a newline, and the binding \emph{is} available in later lines until the end of the scope it is defined in.
+The \idx[let@\lstinline{let}]{\keyword{let}} keyword binds a value-identifier with an expression. The above notation means that \lstinline[language=syntax]{<*valueIdent*>} is to be replaced with a name and \lstinline[language=syntax]{<*bodyExpr*>} with an expression that evaluates to a value. The following square bracket notation \lstinline[language=syntax]{[**]} means that the enclosed is optional, and F\# is able to identify whether or not the optional part is used as signified by the optional presence of the \idx[in@\lstinline{in}]{\keyword{in}} keyword. If the \keyword{in} keyword is used, then the value-identifier is a local definition in the \lstinline[language=syntax]{<*expr*>} expression, and it is not available in later lines. For lightweight syntax, the \keyword{in} keyword is replaced with a newline, and the binding \emph{is} available in later lines until the end of the scope it is defined in.
 
 The value identifier annotated with a type by using the \idx[:@\lstinline{:}]{\lexeme{:}} lexeme followed by the name of a type, e.g., \lstinline{int}. The \idx[\_@\lstinline{_}]{\lexeme{\_}} lexeme may be used as a value-identifier. This lexeme is called the \idx{wildcard pattern}, and for value-bindings it means that \lstinline[language=syntax]{<*bodyExpr*>} is evaluated, but the result is discarded. See \Cref{chap:patterns} for more details on patterns.
 
@@ -274,9 +286,9 @@ It defines two functions \lstinline{mul} and \lstinline{applyFactor}, where the 
   \text{\lstinline{mul}}: \left(\text{args}, \text{exp}, \text{env}\right) 
   = &\big((\text{\lstinline{x}},\text{\lstinline{y}}), \left(\text{\lstinline{x * y}}\right), ()\big)
   \\\text{\lstinline{applyFactor}}: \left(\text{args}, \text{exp}, \text{env}\right) 
-  = &\left((\text{\lstinline{x}}, \text{\lstinline{fct}}), \left(\begin{subarray}{l}\displaystyle\text{\lstinline{let a = fct factor x}}\\\displaystyle\text{\lstinline{string a}}\end{subarray}\right),\left(\text{\lstinline{factor}} \rightarrow 2.0\right)\right)
+  = &\left((\text{\lstinline{x}}, \text{\lstinline{fct}}), \left(\text{\lstinline{body}}\right),\left(\text{\lstinline{factor}} \rightarrow 2.0\right)\right)
 \end{align}
-The function \lstinline{mul} does not use its environment, and everything needed to evaluate its expression are values for its arguments. The function \lstinline{applyFactor} also takes two arguments, a function and a value. It uses \lstinline{factor} from the environment, thus this is stored in its closure. When \lstinline{mul} is given as an argument in \Cref{functionFirstClass} line~\ref{functionFirstClassApplyFactor}, then it is its closure which is given to \lstinline{applyFactor}, and the closure contains everything that \lstinline{applyFactor} requires to use \lstinline{mul}. Likewise, if \lstinline{applyFactor} is given as argument to yet another function, then its closure includes the relevant part of its environment at the time of definition, \lstinline{factor}, such that when \lstinline{applyFactor} is applied to two arguments, then its closure contains everything needed to evaluate its expression.
+where lazily write \lstinline{body} instead of the whole function's body.  The function \lstinline{mul} does not use its environment, and everything needed to evaluate its expression are values for its arguments. The function \lstinline{applyFactor} also takes two arguments, a function and a value. It uses \lstinline{factor} from the environment, thus this is stored in its closure. When \lstinline{mul} is given as an argument in \Cref{functionFirstClass} line~\ref{functionFirstClassApplyFactor}, then it is its closure which is given to \lstinline{applyFactor}, and the closure contains everything that \lstinline{applyFactor} requires to use \lstinline{mul}. Likewise, if \lstinline{applyFactor} is given as argument to yet another function, then its closure includes the relevant part of its environment at the time of definition, \lstinline{factor}, such that when \lstinline{applyFactor} is applied to two arguments, then its closure contains everything needed to evaluate its expression.
 
 \section{Operators}
 \label{sec:operators}
@@ -321,7 +333,7 @@ The \lstinline[language=ebnf]!formatString! is a string (simple or verbatim) wit
 When executed, \lstinline{printf} will replace \lstinline!%d! %
 with the following argument, \lstinline{3}, and print the result to the console: \mbox{\lstinline!1 2 3!}.  There are specifiers for all the basic types, and more, as elaborated in \Cref{tab:printfPlaceholder}.
 % 
-\begin{table}
+\begin{table}[H]
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|X|}
@@ -487,7 +499,7 @@ Variables implement dynamic scope, that is, the value of an identifier depends o
 \fs{dynamicScopeNFunction}{Mutual variables implement dynamic scope rules. Compare with \Cref{lexicalScopeNFunction}.}
 %
 Here, the response is \lstinline!8.0!, since the value of \lstinline!a! changed before the function \lstinline!f! was called.
- 
+
 \section{Reference Cells}
 \label{sec:referenceCells}
 %F\# has a variation of mutable variables called \idx{reference cells}. Reference cells have built-in function \idx[ref@\lstinline{ref}]{\lstinline{ref}} and operators \idx[{!}@\lstinline{!}]{\lexeme{!}} and \idx[{:=}@\lstinline{:=}]{\lexeme{:=}}, where \lstinline{ref} creates a reference variable, and the '\lexeme{!}' and the '\lexeme{:=}' operators reads and writes its value. An example of using reference cells is given in \Cref{refCell}.
@@ -536,6 +548,7 @@ Since F\# version 4.0, the compiler has automatically converted mutable variable
 \fs{mutableEncapsulation}{Local mutable content can be indirectly accessed outside its scope.}
 % 
 Reference cells are preferred over mutable variables for encapsulation, in order to avoid confusion.
+\clearpage
 
 \section{Tuples}
 \idx[tuple]{Tuples} are a direct extension of constants. They are immutable and have neither concatenations nor indexing operations. Tuples are unions of immutable types and have the following syntax:
@@ -581,8 +594,3 @@ Mutable tuples are value types, meaning that binding to new names makes copies, 
 %
 The use of tuples shortens code and highlights semantic content at a higher level, e.g., instead of focusing on the elements, tuples focus on their union. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, where an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
 \end{document}
-
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
-

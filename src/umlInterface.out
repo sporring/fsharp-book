@@ -1,0 +1,3 @@
+$ fsharpc --nologo umlInterface.fsx && mono umlInterface.exe
+Changing channel
+Activating wipers

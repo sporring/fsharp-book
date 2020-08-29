@@ -1,0 +1,3 @@
+$ fsharpc --nologo lexicalScopeTracingCorrected.fsx
+$ mono lexicalScopeTracingCorrected.exe
+8.0

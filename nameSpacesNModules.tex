@@ -113,7 +113,7 @@ To compile, we now need to include all three files in the right order, see \Cref
 %
 \fsOutput{namespaceExtensionApp}{Compilation of namespaces defined in several files requires careful consideration of order, since the compiler reads once and only once through the files in the order they are given.}
 %
-The order matters, since \filename{namespaceExtension.fsx} relies on the definition of \lstinline{floatFunction} in the file \filename{namespace.fsx}. You can use extensions to extend existing namespaces included with the F\# compiler.\jon{Something about intrinsic and optional extension \protect\url{https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/type-extensions}.}\jon{Perhaps something about the global namespace \lstinline{global}.}
+The order matters:\filename{namespaceExtension.fsx} uses the definition of \lstinline{floatFunction} in the file \filename{namespace.fsx}. You can use extensions to extend existing namespaces included with the F\# compiler.\jon{Something about intrinsic and optional extension \protect\url{https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/type-extensions}.}\jon{Perhaps something about the global namespace \lstinline{global}.}
 
 Namespaces may also be nested. In contrast to modules, nesting is defined using the \lexeme{.} notation. That is, to create a child namespace \lstinline{more} of \lstinline{Utilities}, we must use initially write \mbox{\lstinline{namespace Utilities.more}}. Indentation is ignored in the \lstinline{namespace} line, thus left-most indentation is almost always used. Namespaces follow lexical scope rules, and identically to modules, namespaces containing mutually dependent children can be declared using the \keyword{rec} keyword, e.g., \mbox{\lstinline{namespace rec Utilities}}.
 
@@ -182,7 +182,4 @@ However, when using the newly created \filename{MetaWAdd.dll} with an applicatio
 \fsOutput{MetaWAddRemoved}{Automatic generation of a signature file at compile time.}
 %
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
 

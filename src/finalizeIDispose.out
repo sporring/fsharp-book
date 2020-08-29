@@ -1,0 +1,8 @@
+$ fsharpc --nologo finalizeIDispose.fsx && mono finalizeIDispose.exe
+Creating a scope
+Instantiated example-object
+This instance has been in existence for 00:00:00.0107819
+Finalizing example-object
+This instance has been in existence for 00:00:00.0387752
+Scope deleted
+Program done

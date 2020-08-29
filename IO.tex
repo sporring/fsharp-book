@@ -178,7 +178,7 @@ For the general \lstinline!Open! function, you must also specify how the file is
 %
 \fs{openFile}{Opening and closing a file, in this case, the source code of this same file.}
 %
-Notice how the example uses the defensive programming style, where the \keyword{try}-expression is used to return the optional datatype, and further processing is made dependent on the success of the opening operation.
+Notice how the example uses a defensive programming style, where the \keyword{try}-expression is used to return the optional datatype, and further processing is made dependent on the success of the opening operation.
 
 \begin{comment}
  The \lstinline!stdout!, \lstinline!stderr!, and \lstinline!stdin! may also be opened and treated as files using functions in \lstinline!System.Console! shown in \Cref{tab:OpenStandard}.
@@ -242,7 +242,7 @@ Notice how the example uses the defensive programming style, where the \keyword{
 
 In F\#, the distinction between files and streams is not very clear. F\# offers built-in support for accessing files as bytes through the \lstinline!System.IO.FileStream! class, and for characters in a particular encoding through the \lstinline!System.IO.TextReader! and \lstinline!System.IO.TextWriter!.
 
-A successfully opened \lstinline!System.IO.FileStream! file, e.g., using \lstinline!System.IO.File.OpenRead! from \Cref{tab:File.Open}, will result in an \lstinline!FileStream! object. From this object we can extract information about the file, such as the permitted operations and more listed in \Cref{tab:fileStreamProperties}. %
+A successfully opened \lstinline!System.IO.FileStream! file by, e.g., \lstinline!System.IO.File.OpenRead! from \Cref{tab:File.Open}, will result in an \lstinline!FileStream! object. From this object we can extract information about the file, such as the permitted operations and more listed in \Cref{tab:fileStreamProperties}. %
 \idxss{\lstinline{System.IO.FileStream.CanRead}}%
 \idxss{\lstinline{System.IO.FileStream.CanSeek}}%
 \idxss{\lstinline{System.IO.FileStream.CanWrite}}%
@@ -307,6 +307,9 @@ This information is important in order to restrict the operation that we will pe
 \end{table}
 E.g., we may \lstinline!Seek! a particular position in the file, but only within the range of legal postions from 0 until the length of the file. Most operating systems do not necessarily write information to files immediately after one of the \lstinline!Write! functions, but will often for optimization purposes collect information in a buffer that is to be written to a device in batches. However, sometimes is is useful to be able to force the operating system to empty its buffer to the device. This is called \idx{flushing} and can be forced using the \lstinline!Flush! function.
 
+%
+\fs{readFile}{An example of opening a text file and using the \lstinline!StreamReader! properties and methods.}
+%
 Text is typically streamed through the \lstinline!StreamReader! and \lstinline!StreamWriter!. These may be considered higher-order stream processing, since they include an added interpretation of the bits to strings. A \lstinline!StreamReader! has methods similar to a \lstinline!FileStream! object and a few new properties and methods, such as the \lstinline!EndOfStream! property and \lstinline!ReadToEnd! method, see \Cref{tab:streamReaderMethods}.%
 \idxss{\lstinline{System.IO.StreamReader.EndOfStream}}%
 \idxss{\lstinline{System.IO.StreamReader.Close}}%
@@ -370,9 +373,6 @@ Likewise, a \lstinline!StreamWriter! has an added method for automatically flush
   \label{tab:streamWriterMethods}
 \end{table}
 A simple example of opening a text-file and processing it is given in \Cref{readFile}.
-%
-\fs{readFile}{An example of opening a text file and using the \lstinline!StreamReader! properties and methods.}
-%
 Here the program reads the source code of itself, and prints it to the console.
 
 \section{Working With Files and Directories.}
@@ -474,11 +474,16 @@ In the \lstinline!System.IO.Path! class there are a number of other frequently u
   \caption{Some methods of the \lstinline!System.IO.Path! class.}
   \label{tab:path}
 \end{table}
+\clearpage
 
 \section{Reading From the Internet}
 The internet is a global collection of computers that are connected in a network using the internet protocol suite TCP/IP. The internet is commonly used for transport of data such as emails and for offering services such as web pages on the World Wide Web. Web resources are identified by 
 %\idx{Uniform Resource Identifiers} (\idx{URI}) such as \lstinline[language=console]!www.google.com!. A 
-a \idx{Uniform Resource Locator} (\idx{URL}), popularly known as a web page, and an URL contains information about where and how data from the web page is to be obtained. E.g.,  \lstinline[language=console]!https://en.wikipedia.org/wiki/F_Sharp_(programming_language)! contains 3 pieces of information: \lstinline[language=console]!https! is the protocol to be used to interact with the resource, \lstinline[language=console]!en.wikipedia.org! is the host's name, and \lstinline[language=console]!wiki/F_Sharp_(programming_language)! is the filename.
+a \idx{Uniform Resource Locator} (\idx{URL}), popularly known as a web page, and an URL contains information about where and how data from the web page is to be obtained. E.g.,
+\begin{quote}
+\lstinline[language=console]!https://en.wikipedia.org/wiki/F_Sharp_(programming_language)!
+\end{quote}
+contains 3 pieces of information: The host uses the \lstinline[language=console]!https! protocol, \lstinline[language=console]!en.wikipedia.org! is its name, and \lstinline[language=console]!wiki/F_Sharp_(programming_language)! is the filename.
 
 F\#'s \lstinline!System! namespace contains functions for accessing web pages as stream, as illustrated in \Cref{webRequest}.
 %
@@ -497,7 +502,7 @@ use <*valueIdent*> = <*bodyExpr*> [*in <*expr*>*]
 \end{verbatimwrite}
 \syntax{\ebnf/useBindings.ebnf}{Use binding expression.}
 %
-A \lstinline{use} binding provides a binding between the \lstinline[language=syntax]{<*bodyExpr*>} expression to the name \lstinline[language=syntax]{<*valueIdent*>} in the following expression(s), and adds a call to \lstinline{Dispose()} on \lstinline[language=syntax]{<*valueIdent*>}  if it implements \lstinline{System.IDisposable}. See for example \Cref{useBinding}.
+A \lstinline{use} binding provides a binding between the \lstinline[language=syntax]{<*bodyExpr*>} expression to the name \lstinline[language=syntax]{<*valueIdent*>} in the following expression(s), and in contrast to \keyword{let}, it also adds a call to \lstinline{Dispose()} on \lstinline[language=syntax]{<*valueIdent*>}  if it implements \lstinline{System.IDisposable}. See for example \Cref{useBinding}.
 %
 \fsCode{useBinding}{useBinding}{Using \lstinline{use} instead of \lstinline{let} releases disposable resources at end of scope.}{}
 %
@@ -533,7 +538,4 @@ This could be solved as,
 \end{comment}
 
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
 

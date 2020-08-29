@@ -4,7 +4,7 @@ $ mono exceptionInvalidArg.exe
 Unhandled Exception:
 System.ArgumentException: is too much 'a'
 Parameter name: a
-  at <StartupCode$exceptionInvalidArg>.$ExceptionInvalidArg$fsx.main@ () [0x0000b] in <599574c911642f55a7450383c9749559>:0 
+  at <StartupCode$exceptionInvalidArg>. $ExceptionInvalidArg$fsx.main@ () [0x0000b] in <599574c911642f55a7450383c9749559>:0 
 [ERROR] FATAL UNHANDLED EXCEPTION: System.ArgumentException: is too much 'a'
 Parameter name: a
-  at <StartupCode$exceptionInvalidArg>.$ExceptionInvalidArg$fsx.main@ () [0x0000b] in <599574c911642f55a7450383c9749559>:0 
+  at <StartupCode$exceptionInvalidArg>. $ExceptionInvalidArg$fsx.main@ () [0x0000b] in <599574c911642f55a7450383c9749559>:0 

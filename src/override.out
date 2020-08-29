@@ -1,0 +1,4 @@
+$ fsharpc --nologo override.fsx && mono override.exe
+I'm Prof. Jon
+I'm Prof. Jon
+I'm Prof. Jon

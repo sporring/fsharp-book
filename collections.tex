@@ -75,7 +75,7 @@ The \lstinline{String} module offers many functions for working with strings. So
 \end{verbatimwrite}
 \syntax{\ebnf/lists.ebnf}{The syntax for a list using the sequence expression.}
 %
-Examples are a list of integers \mbox{\lstinline![1; 2; 3]!}, a list of strings \mbox{\lstinline!["This"; "is"; "a"; "list"]!}, a list of anonymous functions \mbox{\lstinline![(fun x -> x); (fun x -> x*x)]!}, and an empty list \lstinline![]!. Lists may also be given as ranges,
+For example, \mbox{\lstinline![1; 2; 3]!} is a list of integers, \mbox{\lstinline!["This"; "is"; "a"; "list"]!} is a list of strings, \mbox{\lstinline![(fun x -> x); (fun x -> x*x)]!} is a list of functions, and \lstinline![]! is the empty list. Lists may also be given as ranges,
 %
 \begin{verbatimwrite}{\ebnf/listsRange.ebnf}
 [<*expr*> .. <*expr*> [*.. <*expr*>*]]
@@ -169,14 +169,14 @@ briefly summarized below:
   \fsOutput{listFind}{\lstinline{List.find}}\idxss{List.find@\lstinline{List.find}}
 \item[\texttt{List.findIndex}:] \lstinline{f:('T -> bool) -> lst:'T list -> int}. Returns the index of the first element of \lstinline{lst} for which \lstinline{f} is true.
   \fsOutput{listFindIndex}{\lstinline{List.findIndex}}\idxss{List.findIndex@\lstinline{List.findIndex}}
-\item[\texttt{List.fold}:] \lstinline{f:('State -> 'T -> 'State) -> elm:'State -> lst:'T list -> 'State}. Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{lst} consists of \lstinline{n+1} elements
+\item[\texttt{List.fold}:] \lstinline{f:('S -> 'T -> 'S) -> elm:'S -> lst:'T list -> 'S}. Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{lst} consists of \lstinline{n+1} elements
   % \lstinline{[x}$_0$\lstinline{; x}$_1$\lstinline{; x}$_2$\lstinline{;} $\ldots$\lstinline{; x}$_n$\lstinline{]}, a supplied function \lstinline{f}, and an initial value for the accumulator \lstinline{elm},
   \lstinline{List.fold} calculates:
   \begin{quote}
     \lstinline{f (}$\ldots$ \lstinline{(f (f elm lst.[0]) lst.[1])} $\ldots$\lstinline{) lst.[n]}.
   \end{quote}
   \fsOutput{listFold}{\lstinline{List.fold}}\idxss{List.fold@\lstinline{List.fold}}
-\item[\texttt{List.foldBack}:] \lstinline{f:('T -> 'State -> 'State) -> lst:'T list -> elm:'State -> 'State}. Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{lst} consists of \lstinline{n+1} elements
+\item[\texttt{List.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> lst:'T list -> elm:'S -> 'S}.~\\ Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{lst} consists of \lstinline{n+1} elements
   %function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{List.foldBack} calculates $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
   \lstinline{List.foldBack} calculates:
   \begin{quote}
@@ -211,7 +211,7 @@ briefly summarized below:
   \fsOutput{listToArray}{\lstinline{List.toArray}}\idxss{List.toArray@\lstinline{List.toArray}}
 \item[\texttt{List.unzip}:] \lstinline{lst:('T1 * 'T2) list -> 'T1 list * 'T2 list}. Returns a pair of lists of all the first elements and all the second elements of \lstinline{lst}, respectively.
   \fsOutput{listUnzip}{\lstinline{List.unzip}}\idxss{List.unzip@\lstinline{List.unzip}}
-\item[\texttt{List.zip}:] \lstinline{lst1:'T1 list -> lst2:'T2 list -> ('T1 * 'T2) list}. Returns a list of pairs, where elements in \lstinline{lst1} and \lstinline{lst2} are iteratively paired.
+\item[\texttt{List.zip}:] \lstinline{lst1:'T1 list -> lst2:'T2 list -> ('T1 * 'T2) list}.~\\ Returns a list of pairs, where elements in \lstinline{lst1} and \lstinline{lst2} are iteratively paired.
   \fsOutput{listZip}{\lstinline{List.zip}}\idxss{List.zip@\lstinline{List.zip}}
 \end{description}
 
@@ -224,7 +224,7 @@ One dimensional \idx{arrays}, or just arrays for short, are mutable lists of the
 \end{verbatimwrite}
 \syntax{\ebnf/arrays.ebnf}{The syntax for an array using the sequence expression.}
 %
-Examples are arrays of integers \mbox{\lstinline![|1; 2; 3|]!}, of strings \mbox{\lstinline![|"This"; "is"; "an"; "array"|]!}, of functions \mbox{\lstinline![|(fun x -> x); (fun x -> x*x)|]!}, and an empty array \lstinline![||]!.  Arrays may also be given as ranges,
+E.g., \mbox{\lstinline![|1; 2; 3|]!} is an array of integers, \mbox{\lstinline![|"This"; "is"; "an"; "array"|]!} is an array of strings, \mbox{\lstinline![|(fun x -> x); (fun x -> x*x)|]!} is an array of functions, \lstinline![||]! is the empty array.  Arrays may also be given as ranges,
 %
 \begin{verbatimwrite}{\ebnf/arrayRange.ebnf}
 [|<*expr*> .. <*expr*> [*.. <*expr*>*]|]
@@ -288,19 +288,19 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
 %  \fsOutput{arrayFill}{\lstinline{Array.fill}}\idxss{Array.fill@\lstinline{Array.fill}}
 \item[\texttt{Array.filter}:] \lstinline{f:('T -> bool) -> arr:'T [] -> 'T []}. Returns an array of elements from \lstinline{arr} who evaluate to true when \lstinline{f} is applied to them.
   \fsOutput{arrayFilter}{\lstinline{Array.filter}}\idxss{Array.filter@\lstinline{Array.filter}}
-\item[\texttt{Array.find}:] \lstinline{f:('T -> bool) -> arr:'T [] -> 'T}. Returns the first element in \lstinline{arr} for which \lstinline{f} evaluates to true. The \lstinline{System.Collections.Generic.KeyNotFoundException} exception is raised if no element is found.  See \Cref{sec:exceptions} for more on exceptions.
+\item[\texttt{Array.find}:] \lstinline{f:('T -> bool) -> arr:'T [] -> 'T}. Returns the first element in \lstinline{arr} for which \lstinline{f} evaluates to true. The \lstinline{KeyNotFoundException} exception is raised if no element is found.  See \Cref{sec:exceptions} for more on exceptions.
   \fsOutput{arrayFind}{\lstinline{Array.find}}  \idxss{Array.find@\lstinline{Array.find}}
 \item[\texttt{Array.findIndex}:] \lstinline{f:('T -> bool) -> arr:'T [] -> int}. Returns the index of the first element in in \lstinline{arr} for which \lstinline{f} evaluates to true. If none are found, then the \lstinline{System.Collections.Generic.KeyNotFoundException} exception is raised.  See \Cref{sec:exceptions} for more on exceptions.
   \fsOutput{arrayFindindex}{\lstinline{Array.findIndex}}\idxss{Array.findIndex@\lstinline{Array.findIndex}}
-\item[\texttt{Array.fold}:] \lstinline{f:('State -> 'T -> 'State) -> elm:'State -> arr:'T [] -> 'State}. Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{arr} consists of \lstinline{n+1} elements
+\item[\texttt{Array.fold}:] \lstinline{f:('S -> 'T -> 'S) -> elm:'S -> arr:'T [] -> 'S}. Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{arr} consists of \lstinline{n+1} elements
   \lstinline{Array.fold} calculates:
   \begin{quote}
     \lstinline{f (}$\ldots$ \lstinline{(f (f elm arr.[0]) arr.[1])} $\ldots$\lstinline{) arr.[n]}.
   \end{quote}
   \fsOutput{arrayFold}{\lstinline{Array.fold}}\idxss{Array.fold@\lstinline{Array.fold}}
-\item[\texttt{Array.foldBack}:] \lstinline{f:('T -> 'State -> 'State) -> arr:'T [] -> elm:'State -> 'State}. Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{arr} consists of \lstinline{n+1} elements
-  %function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{List.foldBack} calculates $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
-  \lstinline{List.foldBack} calculates:
+\item[\texttt{Array.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> arr:'T [] -> elm:'S -> 'S}. Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{arr} consists of \lstinline{n+1} elements
+  %function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{Array.foldBack} calculates $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
+  \lstinline{Array.foldBack} calculates:
   \begin{quote}
     \lstinline{f arr.[0] (f arr.[1]} ($\ldots$\lstinline{(f arr.[n] elm)} $\ldots$\lstinline{))}.
   \end{quote}
@@ -394,8 +394,6 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
 \section{Comparison}
 % \begin{table}
 %   \centering
-%\afterpage{%
-%  \clearpage% Flush earlier floats (otherwise order might not be correct)
 %  \thispagestyle{empty}% empty page style (?)
   \begin{landscape}% Landscape page
     \centering % Center table
@@ -532,14 +530,9 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
     \captionof{table}{Comparing Core.String, Collections.List, Collections.Array and Collections.Array2D, Collections.Set, Collections.Map, and Collections.Seq Modules}% Add 'table' caption
     \label{tab:listableComparision}
   \end{landscape}
-%  \clearpage% Flush page
 %}
 %  \caption{Comparing listable stuff}
 %  \label{tab:listableComparision}
 %\end{table}
 \end{comment}    
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
-

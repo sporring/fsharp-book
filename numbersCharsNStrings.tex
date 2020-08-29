@@ -75,7 +75,7 @@ A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals ar
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabular}{|c|p{0.2\textwidth}|p{0.6\textwidth}|}
+  \begin{tabular}{|c|p{0.2\textwidth}|p{0.57\textwidth}|}
     \hline
     \rowcolor{headerRowColor} Character& Escape sequence & Description\\
     \hline
@@ -105,28 +105,29 @@ A \idx{string} is a sequence of characters enclosed in double quotation marks.  
 Note that the response from \lstinline[language=console]{fsharpi} is shown in double quotation marks, but this is not part of the string. 
 
 F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix or suffix as shown in \Cref{tab:literalTypes}.\idxss{int32@\lstinline{int32}}\idxss{uint32@\lstinline{uint32}}\idxss{byte@\lstinline{byte}}\idxss{uint8@\lstinline{uint8}}\idxss{byte@\lstinline{byte[]}}\idxss{sbyte@\lstinline{sbyte}}\idxss{int8@\lstinline{int8}}\idxss{int16@\lstinline{int16}}\idxss{uint16@\lstinline{uint16}}\idxss{int64@\lstinline{int64}}\idxss{uint64@\lstinline{uint64}}\idxss{double@\lstinline{double}}\idxss{single@\lstinline{single}}\idxss{float32@\lstinline{float32}}\idxss{decimal@\lstinline{decimal}}
-\begin{table}
+\begin{table}[H]
   \centering
   %\begin{tabularx}{\linewidth}{|>{\hsize=.6\hsize}X|>{\hsize=1.4\hsize}X|>{\hsize=1\hsize}X|}
   \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabular}{|p{3cm}|p{3cm}|p{3.7cm}|p{3.6cm}|}
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{|p{2.8cm}|p{2.8cm}|p{3.1cm}|p{3.5cm}|}
     \hline
     \rowcolor{headerRowColor} Type & syntax & Examples & Value \\
     \hline
     {\keyword{int}}, {\keyword{int32}}          
-                                   & {\lstinline[language=syntax, keywords={}]!<*int or hex*>!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!<*int or hex*>l!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>!}\newline
+                                     {\lstinline[language=syntax, keywords={}]!<*int | hex*>l!}
                                             & {\lstinline!3!}, {\lstinline!0x3!}\newline
                                               {\lstinline!3l!}, {\lstinline!0x3l!}
                                                        & 3\\
     {\keyword{uint32}}                                 
-                                   & {\lstinline[language=syntax, keywords={}]!<*int or hex*>u!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!<*int or hex*>ul!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>u!}\newline
+                                     {\lstinline[language=syntax, keywords={}]!<*int | hex*>ul!}
                                             & {\lstinline!3u!}\newline
                                               {\lstinline!3ul!}
                                                        & 3 \\
     {\keyword{byte}}, {\keyword{uint8}}       
-                                   & {\lstinline[language=syntax, keywords={}]!<*int or hex*>uy!}\newline
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>uy!}\newline
                                      {\lstinline[language=syntax, keywords={}]!'<*char*>'B!}
                                             & {\lstinline!97uy!}\newline
                                                        {\lstinline!'a'B!} 
@@ -139,24 +140,24 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
                                                        & [|97uy; 10uy|]\newline
                                                          [|97uy; 92uy; 110uy|] \\
     {\keyword{sbyte}}, {\keyword{int8}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int or hex*>y!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>y!}
                                             & {\lstinline!3y!}
                                                        & 3 \\
     {\keyword{int16}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int or hex*>s!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>s!}
                                             & {\lstinline!3s!}
                                                        & 3 \\
     {\keyword{uint16}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int or hex*>us!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>us!}
                                             & {\lstinline!3us!}
                                                        & 3 \\
     {\keyword{int64}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int or hex*>L!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>L!}
                                             & {\lstinline!3L!}
                                                        & 3 \\
     {\keyword{uint64}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int or hex*>UL!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!<*int or hex*>uL!}   
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>UL!}\newline
+                                     {\lstinline[language=syntax, keywords={}]!<*int | hex*>uL!}   
                                             & {\lstinline!3UL!}\newline
                                               {\lstinline!3uL!}  
                                                        & 3 \\
@@ -181,8 +182,8 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
                                                          3.0 \newline
                                                          4.4701421e-43f \\
     {\keyword{decimal}}  
-                                   & {\lstinline[language=syntax, keywords={}]!<*float or int*>M!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!<*float or int*>m!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*float | int*>M!}\newline
+                                     {\lstinline[language=syntax, keywords={}]!<*float | int*>m!}
                                             & {\lstinline!3.0M!},{\lstinline!3M!}\newline
                                               {\lstinline!3.0m!},{\lstinline!3m!} 
                                                        & 3.0  \\
@@ -190,12 +191,12 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
                                    & {\lstinline[language=syntax, keywords={}]!"<*string*>"!}\newline
                                      {\lstinline[language=syntax, keywords={}]!@"<*string*>"!}\newline
                                      {\lstinline[language=syntax, keywords={}]!"""<*string*>"""!}
-                                            & {\lstinline!"a \"quote\".\n"!}\newline
-                                              {\lstinline!@"a ""quote"".\n"!}\newline
-                                              {\lstinline!"""a "quote".\n"""!}
-                                                       & a "quote".<newline>\newline
-                                                         a "quote".\textbackslash n.\newline
-                                                         a "quote".\textbackslash n\\
+                                            & {\lstinline!"\"quote\".\n"!}\newline
+                                              {\lstinline!@"""quote"".\n"!}\newline
+                                              {\lstinline!""""quote".\n"""!}
+                                                       & "quote".<newline>\newline
+                                                         "quote".\textbackslash n.\newline
+                                                         "quote".\textbackslash n\\
     \hline
   \end{tabular}
   % \end{tabularx}
@@ -250,10 +251,11 @@ In order to discuss general programming structures, we will use a simplified lan
 \syntax{\ebnf/binaryOperator.ebnf}{Syntax for a binary expression.}
 %
 Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the programmer, and \lstinline[language=syntax]{<*op*>} is a binary infix operator. F\# supports a range of arithmetic binary infix operators on its built-in types, such as addition, subtraction, multiplication, division, and exponentiation, using the \lexeme{+}, \lexeme{-}, \lexeme{*}, \lexeme{/}, \lexeme{**} lexemes, respectively. Not all operators are defined for all types, e.g., addition is defined for integer and float types as well as for characters and strings, but multiplication is only defined for integer and floating-point types. A complete list of built-in operators on basic types is shown in \Cref{tab:preNInfixOperators} and~\ref{tab:comparisonOperators}, and a range of mathematical functions is shown in \Cref{tab:arithmeticFunctions}.
-\begin{table}[ht]
+%
+\begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabularx}{\linewidth}{|c|c|c|c|c|c|l|l|X|}
+  \begin{tabularx}{\linewidth}{|c|c|c|c|c|c|l|l|>{\raggedright\arraybackslash}X|}
     \hline
     \rowcolor{headerRowColor} \rotatebox{90}{Operator} & \rotatebox{90}{\lstinline!bool!}& \rotatebox{90}{\lstinline!ints!}& \rotatebox{90}{\lstinline!floats!}& \rotatebox{90}{\lstinline!char!}& \rotatebox{90}{\lstinline!string!} & Example & Result &Description\\
     \hline
@@ -295,7 +297,8 @@ Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the pro
   \caption{Arithmetic operators on basic types. Ints and floats means all built-in integer and float types. Note that for the bitwise operations, digits \lstinline{0} and \lstinline{1} are taken to be \lstinline{true} and \lstinline{false}.}
   \label{tab:preNInfixOperators}
 \end{table}
-\begin{table}[ht]
+%
+\begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|c|c|c|c|c|c|l|l|X|}
@@ -319,9 +322,10 @@ Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the pro
   \label{tab:comparisonOperators}
 \end{table}
 \idxss{\lstinline{abs}}\idxss{\lstinline{acos}}\idxss{\lstinline{asin}}\idxss{\lstinline{atan}}\idxss{\lstinline{atan2}}\idxss{\lstinline{ceil}}\idxss{\lstinline{cos}}\idxss{\lstinline{cosh}}\idxss{\lstinline{exp}}\idxss{\lstinline{floor}}\idxss{\lstinline{log}}\idxss{\lstinline{log10}}\idxss{\lstinline{max}}\idxss{\lstinline{min}}\idxss{\lstinline{pown}}\idxss{\lstinline{round}}\idxss{\lstinline{sign}}\idxss{\lstinline{sin}}\idxss{\lstinline{sinh}}\idxss{\lstinline{sqrt}}\idxss{\lstinline{tan}}\idxss{\lstinline{tanh}}
-\begin{table}[ht]
+%
+\begin{table}
   \centering
-  \begin{tabularx}{\linewidth}{|c|c|c|c|c|c|l|l|X|}
+  \begin{tabularx}{\linewidth}{|c|c|c|c|c|c|l|l|>{\raggedright\arraybackslash}X|}
     \hline
     \rowcolor{headerRowColor} \rotatebox{90}{Operator} & \rotatebox{90}{\lstinline!bool!}& \rotatebox{90}{\lstinline!ints!}& \rotatebox{90}{\lstinline!floats!}& \rotatebox{90}{\lstinline!char!}& \rotatebox{90}{\lstinline!string!} & Example & Result &Description\\
     \hline
@@ -373,6 +377,7 @@ Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the pro
   \caption{Predefined functions for arithmetic operations.}
   \label{tab:arithmeticFunctions}
 \end{table}
+%
 Note that expressions can themselves be arguments to expressions, and thus, \lstinline!4+5+6! is also a legal statement. Technically, F\# interprets the expression as \lstinline!(4+5)+6! meaning that first \lstinline!4+5! is evaluated according the \lstinline[language=syntax]{<*expr*><*op*><*expr*>} syntax. Then the result replaces the parenthesis to yield \lstinline!9+6!, which, once again, is evaluated according to the \lstinline[language=syntax]{<*expr*><*op*><*expr*>} syntax to give \lstinline!15!.  This is called \idx{recursion}, which is the name for a type of rule or function that uses itself in its definition. See \Cref{sec:recursion} for more on recursive functions.
 
 Unary operators take only one argument and have the syntax:
@@ -426,7 +431,7 @@ Associativity describes the order in which calculations are performed for binary
 %
 \fsOutput{precedence}{Precedence rules define implicit parentheses.}
 %
-\advice{Whenever in doubt of association or any other basic semantic rules, it is a good idea to use parentheses. It is also a good idea to test your understanding of the syntax and semantic rules by making a simple script.}
+\advice{Whenever in doubt of association or any other basic semantic rules, it is a good idea to use parentheses. It is also a good idea to test your understanding of the syntax and semantic rules by making a simple script.}%
 
 \section{Boolean Arithmetic}
 Boolean arithmetic is the basis of almost all computers and particularly important for controlling program flow, which will be discussed in \Cref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Basic operations on Boolean values are '\idx{and}', '\idx{or}', and '\idx{not}', which in F\# are written respectively as the binary operators \lstinline!&&!, \lstinline!||!, and the function \lstinline!not!. Since the domain of Boolean values is so small, all possible combination of input on these values can be written on the tabular form, known as a \idx{truth table}, and the truth tables for the basic Boolean operators and functions are shown in \Cref{tab:truthTable}.

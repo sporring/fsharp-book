@@ -100,6 +100,7 @@ The \idx[match@\lstinline{match}]{\keyword{match}} -- \idx[with@\lstinline{with}
   \ebnf{tmp.ebnf}{Recursive functions.}
 %
 \end{comment}
+\afterpage{\clearpage} % flush floats
 
 \section{The Call Stack and Tail Recursion}
 \label{sec:callStack}
@@ -208,9 +209,9 @@ The implementation of Fibonacci's sequence in \Cref{fibRecursive} can be improve
 %
 \fs{fibRecursiveAlt}{A fast, recursive implementation of Fibonacci's numbers. Compare with \Cref{fibRecursive}.}
 %
-Calculating the 45th Fibonacci number a MacBook Pro, with a 2.9 GHz Intel Core i5 using \Cref{fibRecursive} takes about 11.2s while using \Cref{fibRecursiveAlt} is about 224 times faster and only takes 0.050s. The reason is that \lstinline{fib} in \Cref{fibRecursiveAlt} calculates every number in the sequence once and only once by processing the list recursively while maintaining the previous two values needed to calculate the next in the sequence. I.e., the function \lstinline{helper} transforms the pair \lstinline{(a,b)} to \lstinline{(b,a+b)} such that, e.g., the 4th and 5th pair \lstinline{(3,5)} is transformed into the 5th and the 6th pair \lstinline{(5,8)} in the sequence. What complicates the algorithm is that besides the transformation, we must keep track of when to stop, which here is done using a counter variable, that is recursively reduced by 1 until our stopping criterium.
+Calculating the 45th Fibonacci number a MacBook Pro, with a 2.9 GHz Intel Core i5 using \Cref{fibRecursive} takes about 11.2s while using \Cref{fibRecursiveAlt} is about 224 times faster and only takes 0.050s. The reason is that \lstinline{fib} in \Cref{fibRecursiveAlt} calculates every number in the sequence once and only once by processing the list recursively while maintaining the previous two values needed to calculate the next in the sequence. I.e., the function \lstinline{fibPair} transforms the pair \lstinline{(a,b)} to \lstinline{(b,a+b)} such that, e.g., the 4th and 5th pair \lstinline{(3,5)} is transformed into the 5th and the 6th pair \lstinline{(5,8)} in the sequence. What complicates the algorithm is that besides the transformation, we must keep track of when to stop, which here is done using a counter variable, that is recursively reduced by 1 until our stopping criterium.
 
-\Cref{fibRecursiveAlt} also uses much less memory than \Cref{fibRecursive}, since its recursive call is the last expression in the function, and since the return value of two recursive calls to \lstinline{helper} is the same as the return value of the last. In fact, the return value of any number of recursive calls to \lstinline{helper} is the return value of the last. This structure is called \idx{tail-recursion}. Compilers can easily optimize the call stack usage for tail recursion, since when in this example \lstinline{helper} calls itself, then its frame is no longer needed, and may be replaced by the new \lstinline{helper} with the slight modification, that the return point should be to \lstinline{fib} and not the end of the previous \lstinline{helper}. Once the recursion reaches the stopping criteria, then instead of popping a long list of calls of \lstinline{helper} frames, then there is only one, and the return value is equal to the return value of the last call and the return point is to \lstinline{fib}. Thus, many stack frames in tail recursion are replaced by one. Hence, \advice{prefer tail-recursion whenever possible.}
+\Cref{fibRecursiveAlt} also uses much less memory than \Cref{fibRecursive}, since its recursive call is the last expression in the function, and since the return value of two recursive calls to \lstinline{fibPair} is the same as the return value of the last. In fact, the return value of any number of recursive calls to \lstinline{fibPair} is the return value of the last. This structure is called \idx{tail-recursion}. Compilers can easily optimize the call stack usage for tail recursion, since when in this example \lstinline{fibPair} calls itself, then its frame is no longer needed, and may be replaced by the new \lstinline{fibPair} with the slight modification, that the return point should be to \lstinline{fib} and not the end of the previous \lstinline{fibPair}. Once the recursion reaches the stopping criteria, then instead of popping a long list of calls of \lstinline{fibPair} frames, then there is only one, and the return value is equal to the return value of the last call and the return point is to \lstinline{fib}. Thus, many stack frames in tail recursion are replaced by one. Hence, \advice{prefer tail-recursion whenever possible.}
 
 \section{Mutually Recursive Functions}
 Functions that recursively call each other are called \idx{mutually recursive} functions. F\# offers the \idx[let@\lstinline{let}]{\keyword{let}} -- \idx[rec@\lstinline{rec}]{\keyword{rec}} -- \idx[and@\lstinline{and}]{\keyword{and}} notation for co-defining mutually recursive functions. As an example, consider the function \mbox{\lstinline!even : int -> bool!}, which returns true if its argument is even and false otherwise, and the opposite function \mbox{\lstinline!odd : int -> bool!}. A mutually recursive implementation of these functions can be developed from the following relations: \mbox{\lstinline!even 0 = true!}, \mbox{\lstinline!odd 0 = false!}, and for $n>0$, \mbox{\lstinline!even n = odd (n-1)!}, which implies that for $n>0$, \mbox{\lstinline!odd n = even (n-1)!}:
@@ -238,7 +239,7 @@ Tracing by hand is a very illustrative method for understanding recursive progra
 \fs{gcd}{The greatest common divisor of 2 integers.}
 %
 The program includes a function for calculating the greatest common divisor of 2 integers, and calls this function with the numbers 10 and 15. Following the notation introduced in \Cref{sec:tracing}, we write:
-\begin{center}
+\begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
@@ -247,27 +248,29 @@ The program includes a function for calculating the greatest common divisor of 2
     2 &\ref{gcd:a} & $E_0$ & $a = 10$\\
     3 &\ref{gcd:b} & $E_0$ & $b = 15$\\
   \end{tabular*}
-\end{center}
-In line~\ref{gcd:printfn}, the \lstinline!gdc! is called before any output is generated, which initiates a new environment $E_1$ and we execute the code in gcd-body:
-\begin{center}
+\end{quote}
+In line~\ref{gcd:printfn}, \lstinline!gdc! is called before any output is generated, which initiates a new environment $E_1$ and executes the code in gcd-body:
+\begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
   4 & \ref{gcd:printfn} & $E_0$ & $\text{gcd a b} = \text{?}$\\
   5 & \ref{gcd:gcd} & $E_1$ & $\big((a = 10, b =15), \text{gcd-body}, ()\big)$\\
   \end{tabular*}
-\end{center}
+\end{quote}
  In $E_1$ we have that $a<b$, which fulfills the first condition in line~\ref{gcd:if}. Hence, we call gdc with switched arguments and once again initiate a new environment,
-\begin{center}
+\begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
   6&\ref{gcd:gcdR1} & $E_1$ &$\text{gcd b a} = \text{?}$\\
   7 &\ref{gcd:gcd} & $E_2$ & $\big((a = 15, b = 10), \text{gcd-body}, ()\big)$\\
   \end{tabular*}
-\end{center}
-In $E_2$, \lstinline!a < b! in line~\ref{gcd:if} is false, but \lstinline!b > 0! in line~\ref{gcd:elif} is true, hence, we first evaluate \lstinline{a % b}, call \lstinline{gcd b (a % b)}, and create a new environment,
-\begin{center}
+\end{quote}
+In $E_2$, \lstinline!a < b! in line~\ref{gcd:if} is false, but
+\lstinline!b > 0! in line~\ref{gcd:elif} is true, hence, we first
+evaluate \lstinline{a % b}, call \lstinline{gcd b (a % b)}, and then create a new environment,
+\begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
@@ -275,9 +278,9 @@ In $E_2$, \lstinline!a < b! in line~\ref{gcd:if} is false, but \lstinline!b > 0!
     9&\ref{gcd:gcdR2} & $E_2$ & $\text{gcd b (a \% b)} = \text{?}$\\
     10&\ref{gcd:gcd} & $E_3$ &$\big((a = 10, b = 5), \text{gcd-body}, ()\big)$\\
   \end{tabular*}
-\end{center}
+\end{quote}
 Again we fall through to line~\ref{gcd:gcdR2}, evaluate the remainder operator and initiate a new environment,
-\begin{center}
+\begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
@@ -285,48 +288,48 @@ Again we fall through to line~\ref{gcd:gcdR2}, evaluate the remainder operator a
     12&\ref{gcd:gcdR2} & $E_3$ & $\text{gcd b (a \% b)} = \text{?}$\\
     13&\ref{gcd:gcd} & $E_4$ & $\big((a = 5, b = 0), \text{gcd-body}, ()\big)$\\
   \end{tabular*}
-\end{center}
+\end{quote}
 This time both \lstinline!a < b! and \lstinline!b > 0! are false, so we fall through to line~\ref{gcd:return} and return the value of \lstinline!a! from $E_4$, which is \lstinline!5!:
-\begin{center}
+\begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
     14&\ref{gcd:return} & $E_4$ & $\text{return} = 5$\\
   \end{tabular*}
-\end{center}
-We scratch $E_4$, return to $E_3$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc} we return the just evaluated value,
-\begin{center}
+\end{quote}
+We scratch $E_4$, return to $E_3$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc}, we return the previously evaluated value,
+\begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
     15&\ref{gcd:gcdR2} & $E_3$ & $\text{return} = 5$\\
   \end{tabular*}
-\end{center}
-Like before, we scratch $E_3$, return to $E_2$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc} we return the just evaluated value,
-\begin{center}
+\end{quote}
+Like before, we scratch $E_3$, return to $E_2$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc}, we return the just evaluated value,
+\begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
     16&\ref{gcd:gcdR2} & $E_2$ & $\text{return} = 5$\\
   \end{tabular*}
-\end{center}
-Again, we scratch $E_2$, return to $E_1$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc} we return the just evaluated value,
-\begin{center}
+\end{quote}
+Again, we scratch $E_2$, return to $E_1$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc}, we return the just evaluated value,
+\begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
     17&\ref{gcd:gcdR1} & $E_1$ & $\text{return} = 5$\\
   \end{tabular*}
-\end{center}
+\end{quote}
 Finally, we scratch $E_1$, return to $E_0$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}:
-\begin{center}
-  \begin{tabular*}{0.6\linewidth}{l|lll}
+\begin{quote}
+  \begin{tabular*}{0.6\linewidth}{l|lll}3
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
     18 & \ref{gcd:printfn} & $E_0$ & $\text{output = "gcd a b = 5"}$\\
     19 & \ref{gcd:printfn} & $E_0$ & $\text{return = ()}$\\
   \end{tabular*}
-\end{center}
+\end{quote}
 Note that the output of \lstinline{printfn} is a side-effect while its return-value is unit. In any case, since this is the last line in our program, we are done tracing.
 \end{document}
 

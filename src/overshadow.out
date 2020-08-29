@@ -1,0 +1,5 @@
+$ fsharpc --nologo overshadow.fsx && mono overshadow.exe
+I'm Hans
+I'm Prof. Jon
+I'm Jon
+I'm Prof. Jon

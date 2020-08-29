@@ -17,7 +17,7 @@ type <*ident*> = <*aType*>
 %
 where the identifier is a new name, and the type-name is an existing type or a compound of existing types. \Cref{typeAbbreviation} shows examples of the defintion of several type abbreviations.
 %
-\fs{typeAbbreviation}{Defining three type abbreviations, two of which are compound types.}
+\fs{typeAbbreviation}{Defining four type abbreviations, three of which are compound types.}
 %
 Here we define the abbreviations \lstinline{size}, \lstinline{position}, \lstinline{person}, and \lstinline{intToFloat}, and later make bindings enforcing the usage of these abbreviations.
 
@@ -106,13 +106,13 @@ Records are collections of named variables and values of possibly different type
 %
 \fs{records}{A record is defined for holding information about a person.}
 %
-This examples illustrate a how record type is defined to store varied data about a person, and how a value is created by a record expression defining its field values.
+This example illustrates a how record type is used to store varied data about a person.
 
 If two record types are defined with the same label set, then the latter dominates the former. This is demonstrated in \Cref{recordsDominance}.
 %
 \fs{recordsDominance}{Redefined types dominate old record types, but earlier definitions are still accessible using explicit or implicit specification for bindings.}
 %
-In the example, two identical record types are defined, and we use the built-in \lstinline{GetType()} method to inspect the type of bindings. We see that \lstinline{lecturer} is of \lstinline{RecordsDominance+teacher} type, since \lstinline{teacher} dominates the identical \lstinline{author} type definition. However, we may enforce the \lstinline{person} type by either specifying it for the name, as in \lstinline{let author : person = ...}, or by fully or partially specifying it in the record expression following the \lexeme{=} sign. In both cases, they are of \lstinline{RecordsDominance+author} type. The built-in \lstinline{GetType()} method is inherited from the base class for all types, see \Cref{chap:oop} for a discussion on classes and inheritance.
+In the example, two identical record types are defined, and we use the built-in \lstinline{GetType()} method to inspect the type of bindings. We see that \lstinline{lecturer} is of \lstinline{RecordsDominance+teacher} type, since \lstinline{teacher} dominates the identical \lstinline{person} type definition. However, we may enforce the \lstinline{person} type by either specifying it for the name, as in \lstinline{let author : person = ...}, or by fully or partially specifying it in the record expression following the \lexeme{=} sign. In both cases, they are of \lstinline{RecordsDominance+person} type. The built-in \lstinline{GetType()} method is inherited from the base class for all types, see \Cref{chap:oop} for a discussion on classes and inheritance.
 
 Note that when creating a record you must supply a value to all fields, and you cannot refer to other fields of the same record, i.e., \lstinline!{name = "Jon"; age = height * 3; height = 1.75}! is illegal.
 

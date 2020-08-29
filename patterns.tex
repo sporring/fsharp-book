@@ -156,7 +156,7 @@ let (|<*caseName*>|<*caseName*>|...|<*caseName*>|) <*inputArgumet*> = <*expr*>
 \end{verbatimwrite}
 \syntax{\ebnf/activePattern.ebnf}{Syntax for binding active patterns to expressions.}
 %
-When using the \lstinline[language=syntax]{(|<*caseName*>|_|])} variants, then the active pattern function must return an option type. The multi-case variant \lstinline[language=syntax]{(|<*caseName*>|<*caseName*>|...|<*caseName*>|)} must return a \lstinline{Fsharp.Core.Choice} type. All other variants can return any type. There are no restrictions on arguments \lstinline[language=syntax]{<*arg*>}, and \lstinline[language=syntax]{<*inputArgumetn*>} is the input pattern to be matched. Notice in particular that the multi-case variant only takes one argument and cannot be combined with the option-type syntax. Below we will demonstrate by example how the various patterns are used.
+When using the \lstinline[language=syntax]{(|<*caseName*>|_|])} variants, then the active pattern function must return an option type. \lstinline[language=syntax]{(|<*caseName*>|<*caseName*>|...|<*caseName*>|)} is the multi-case variant and must return a \lstinline{Fsharp.Core.Choice} type. All other variants can return any type. There are no restrictions on arguments \lstinline[language=syntax]{<*arg*>}, and \lstinline[language=syntax]{<*inputArgumetn*>} is the input pattern to be matched. Notice in particular that the multi-case variant only takes one argument and cannot be combined with the option-type syntax. Below we will demonstrate by example how the various patterns are used.
 
 The single case, \lstinline[language=syntax]{(|<*caseName*>|])}, matches all and is useful for extracting information from complex types, as demonstrated in \Cref{activePattern}.
 %
@@ -230,7 +230,4 @@ Comparing with \Cref{matchWith} notice that the function definition does not exp
   of possibilities from Spec-4.0 Chapter 7?}
  \end{comment}
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
 

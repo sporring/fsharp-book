@@ -1,0 +1,3 @@
+$ fsharpc --nologo overload.fsx && mono overload.exe
+Jon says hi
+Jon says goodbye

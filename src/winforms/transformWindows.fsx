@@ -5,7 +5,7 @@ open System.Drawing
 ///////////// WinForm specifics /////////////
 /// Setup a window form and return function to activate
 let view (sz : Size) (shapes : (Pen * (Point [])) list) : (unit -> unit) =
-  let win = new System.Windows.Forms.Form ()
+  let win = new Form ()
   win.ClientSize <- sz
   let paint (e : PaintEventArgs) ((p, pts) : (Pen * (Point []))) : unit = 
     e.Graphics.DrawLines (p, pts)

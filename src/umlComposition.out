@@ -1,0 +1,1 @@
+$ fsharpc --nologo umlComposition.fsx && mono umlComposition.exe

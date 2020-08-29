@@ -55,7 +55,7 @@ These properties are \idx{accessors}, implying that they act as mutable variable
 
 \section{Drawing Geometric Primitives}
 The \idx[Color@\lstinline{Color}]{\lstinline{System.Drawing.Color}} is a structure for specifying colors as 4 channels: alpha, red, green, and blue. Some methods and properties for the Color structure is shown in \Cref{tab:color}.
-\begin{table}[h]
+\begin{table}
   \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|>{\hsize=1.15\hsize}X|>{\hsize=.85\hsize}X|}
@@ -121,7 +121,7 @@ Each channel is an 8-bit unsigned integer. The alpha channel specifies the trans
 %
 
 The namespace \lstinline{System.Drawing} contains many useful functions and values. \Cref{winforms/windowProperty} used \idx[Size@\lstinline{Size}]{\lstinline!System.Drawing.Size!} to specify a size by a pair of integers. Other important values and functions are  \idx[Point@\lstinline{Point}]{\lstinline{Point}}, which specifies a coordinate as a pair of points; \idx[Pen@\lstinline{Pen}]{\lstinline{Pen}}, which specifies how to draw lines and curves; \idx[Font@\lstinline{Font}]{\lstinline{Font}}, which specifies the font of a string; \idx[SolidBrush@\lstinline{SolidBrush}]{\lstinline{SolidBrush}} and \idx[TextureBrush@\lstinline{TextureBrush}]{\lstinline{TextureBrush}}, used for filling geometric primitives, and \idx[Bitmap@\lstinline{Bitmap}]{\lstinline{Bitmap}}, which is a type of \idx[Image@\lstinline{Image}]{\lstinline{Image}}. These are summarized in \Cref{tab:basicStructures}.
-\begin{table}[h]
+\begin{table}
   \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
     \begin{tabularx}{\linewidth}{|p{0.5\linewidth}|X|}
@@ -370,6 +370,7 @@ Since we are using WinForms primitives in the model, the connection layer is tri
 %   \label{tab:graphicsMethods}
 % \end{table}
 % \jon{Give examples of more methods}
+\clearpage % The figures are having trouble interacting with listings
 
 \section{Programming Intermezzo: Hilbert Curve}
 A curve in 2 dimensions has a length but no width, and we can only visualize it by giving it a width. Thus, it came as a surprise to many when Giuseppe Peano in 1890 demonstrated that there exist curves which fill every point in a square. The method he used to achieve this was recursion:
@@ -407,7 +408,9 @@ To produce a graphical drawing of a command list, we must transform it into coor
 
 Finally, the turtle list is converted to WinForms \lstinline{Point} array, and a window of appropriate size is chosen. The resulting model part is shown in \Cref{hilbertModel}. The view and connection parts are identical to \Cref{winforms/transformWindowsView,winforms/transformWindowsConnect}, and \Cref{fig:hilbert} shows the result of using the program to draw Hilbert curves of orders 1, 2, 3, and 5.
 %
-\fsCode{winforms/hilbert}{hilbertModel}{Using simple turtle graphics to produce a list of points on a polygon. The view and connection parts are identical to \Cref{winforms/transformWindowsView,winforms/transformWindowsConnect}.}{firstline=15,firstnumber=15,lastline=63}
+\fsCode{winforms/hilbert}{hilbertModel}{Using simple turtle graphics to produce a list of points on a polygon. The code continues in Listing~\ref{hilbertModelCont}. The view and connection parts are identical to \Cref{winforms/transformWindowsView,winforms/transformWindowsConnect}.}{firstline=15,firstnumber=15,lastline=46}
+%
+\fsCode{winforms/hilbert}{hilbertModelCont}{Continued from Listing~\ref{hilbertModel}.}{firstline=48,firstnumber=48,lastline=63}
 %
 \begin{figure}
   \centering
@@ -454,6 +457,7 @@ In the example, the label is redrawn everytime the text is changed, such that th
 %   \caption{See \Cref{winforms/refresh}.}
 %   \label{fig:refresh}
 % \end{figure}
+\clearpage
 
 \section{Labels, Buttons, and Pop-up Windows}
 In WinForms, buttons, menus and other interactive elements are called \idx[control]{Controls}. A form is a type of control, and thus, programming controls are very similar to programming windows. \Cref{winforms/buttonControl} shows a small program that displays a label and a button in a window, and when the button is pressed, then the label is updated.
@@ -542,6 +546,7 @@ With \idx[OpenFileDialog@\lstinline{OpenFileDialog}]{\lstinline{System.Windows.F
 \end{figure}
 %
 Similarly to \lstinline{OpenFileDialog}, \idx[SaveFileDialog@\lstinline{SaveFileDialog}]{\lstinline{System.Windows.Forms.SaveFileDialog}} asks for a file name, but if an existing file is selected, then the user will be asked to confirm the choice.
+\clearpage
 
 \section{Organizing Controls}
 It is often useful to organize the controls in groups, and such groups are called \idx{Panels} in WinForms. An example of creating a \lstinline{System.Windows.Forms.Panel} that includes a \lstinline{System.Windows.Forms.TextBox} and \lstinline{System.Windows.Forms.Label} for getting user input is shown in \Cref{winforms/panel} and \Cref{fig:panel}. 
@@ -686,7 +691,3 @@ The program in \Cref{winforms/flowLayoutPanel} has not completely separated the 
 %   \label{fig:imageProcessing2}
 % \end{figure}
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
-

@@ -1,3 +1,13 @@
+% KOMA setup
+\usepackage{scrlayer-scrpage}
+\pagestyle{scrheadings}
+%\addtokomafont{pagenumber}{\oldstylenums}
+\clearscrheadfoot %% <-----
+\lehead{\headmark}% left even head <===================================
+\rehead[\pagemark]{\pagemark}
+\lohead[\pagemark]{\pagemark}
+\rohead{\headmark}% right odd head <===================================
+
 % Change font
 %\usepackage{mathptmx}
 
@@ -22,12 +32,41 @@
 % \SetWatermarkLightness{.95}
 
 % Page setup
-\usepackage[top=25mm,bottom=20mm,inner=20mm,outer=40mm,marginparsep=3mm,marginparwidth=35mm]{geometry}
+%\usepackage[top=25mm,bottom=20mm,inner=20mm,outer=40mm,marginparsep=3mm,marginparwidth=35mm]{geometry}
+% Lulu setup from https://3d.bk.tudelft.nl/ken/en/2016/03/20/self-publishing-your-latex-thesis.html
+\usepackage[showframe,
+            %showcrop,
+            includemp,
+            includehead,
+            includefoot,
+            nofoot,
+            layoutwidth=189mm,  % Crown Quarto
+            layoutheight=246mm,
+            paperwidth=195mm,  % Crown Quarto with bleed (2x0.3 mm according to lulu.com)
+            paperheight=252mm,
+            %layoutwidth=178mm,  % Executive (approx. Hansen & Rischel)
+            %layoutheight=254mm,
+            %paperwidth=184mm,  % Executive with bleed (2x0.3 mm according to lulu.com)
+            %paperheight=260mm,
+            %layoutwidth=152mm,  % US Trade (Magnus & Neudecker)
+            %layoutheight=229mm,
+            %paperwidth=158mm,  % Royal with bleed (2x0.3 mm according to lulu.com)
+            %paperheight=235mm,
+            layouthoffset=3mm,
+            layoutvoffset=3mm,
+            top=13mm,  % lulu example of 0.5 inch
+            bottom=13mm,
+            inner=29mm, % lulu recommended inner margin for 400-600 page books
+            outer=13mm, % lulu example of 0.5 inch
+            marginparwidth=0.2cm, % Increase if you want margin notes, e.g., index terms
+            marginparsep=0.4cm
+            ]{geometry}
 \renewcommand{\floatpagefraction}{.8}%
 
-% force floats to [h]
+% force floats to [H] - here definitely
 \usepackage{float}
-\floatplacement{figure}{h}
+\floatplacement{figure}{!h}
+\floatplacement{table}{!h}
 
 % paragraph indentation is stupid
 \setlength\parindent{0pt}
@@ -135,7 +174,9 @@
 \usepackage{xstring}
 \usepackage{makeidx}
 \usepackage{marginfix} % fixes marginpar location problem in 2 -page mode.
-\newcommand{\idxs}[1]{\marginpar{$\cdot$~\parbox[t]{\linewidth}{\raggedright \expandarg\IfSubStr{#1}{@}{\StrBehind{#1}{@}}{#1}}}\index{#1}} % The parbox is too wide, since the line also includes cdot-space
+%\newcommand{\idxs}[1]{\marginpar{$\cdot$~\parbox[t]{\linewidth}{\raggedright \expandarg\IfSubStr{#1}{@}{\StrBehind{#1}{@}}{#1}}}\index{#1}} % The parbox is too wide, since the line also includes cdot-space
+\newcommand{\idxs}[1]{\marginpar{%$\cdot$~\parbox[t]{\linewidth}{\raggedright \expandarg\IfSubStr{#1}{@}{\StrBehind{#1}{@}}{#1}}
+                                                                              }\index{#1}} % The parbox is too wide, since the line also includes cdot-space
 \newcommand{\idxss}[1]{\index{#1}}
 % Define a new command idx with an optional parameter, which if given is the key to the index
 \makeatletter
@@ -485,8 +526,12 @@
 \newcommand{\filename}[1]{\lstinline[language=console]{#1}}
 
 % highlighted text snippets
-\newcommand{\advice}[1]{\marginpar{Advice}{\textbf{#1}}}
-\newcommand{\advanced}[1]{\marginpar{Advanced material}\textbf{#1}}
+% Save space
+%\newcommand{\advice}[1]{\marginpar{Advice}{\textbf{#1}}}
+%\newcommand{\advanced}[1]{\marginpar{Advanced material}\textbf{#1}}
+% The hspace forces the margin note to be on the same line as the text. For the newlines add '%': https://tex.stackexchange.com/questions/147827/why-does-marginpar-sometimes-add-an-unnecessary-newline
+\newcommand{\advice}[1]{\hspace*{0mm}\marginpar{$\star$}\textbf{#1}}
+\newcommand{\advanced}[1]{\hspace*{0mm}\marginpar{$\star$}\textbf{#1}}
 
 % sometimes we need to include hash sign as arguments
 \begingroup\catcode`\#=12

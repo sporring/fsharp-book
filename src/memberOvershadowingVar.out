@@ -1,0 +1,3 @@
+$ fsharpc --nologo memberOvershadowingVar.fsx
+$ mono memberOvershadowingVar.exe
+hi, hello, howdy

@@ -11,7 +11,7 @@ Exceptions are runtime errors, such as division by zero. E.g., attempting intege
 %
 \fsOutput{DivByZero}{Division by zero halts execution with an error message.}
 %
-The error message starts by \lstinline[language=console]{System.DivideByZeroException: Attempted to divide by zero}, followed by a description of which libraries were involved when the error occurred, and finally F\# states that it \lstinline[language=console]{Stopped due to error}. \lstinline{System.DivideByZeroException} is a built-in exception type, and the built-in integer division operator chooses to raise the exception when the undefined division by zero is attempted. Many times such errors can be avoided by clever program design. However, this is not always possible or desirable, which is why F\# implements exception handling for graceful control.
+The error message reads \lstinline[language=console]{System.DivideByZeroException: Attempted to divide by zero}, followed by list of which libraries were involved when the error occurred, and finally F\# states that it \lstinline[language=console]{Stopped due to error}. \lstinline{System.DivideByZeroException} is a built-in exception type, and the built-in integer division operator chooses to raise the exception when the undefined division by zero is attempted. Many times such errors can be avoided by clever program design. However, this is not always possible or desirable, which is why F\# implements exception handling for graceful control.
 
 Exceptions are a basic-type called \idx[exn@\lstinline{exn}]{\lstinline{exn}}, and F\# has a number of built-in ones, a few of which are listed in \Cref{tab:exceptions}.\idxss{ArgumentException@\lstinline{ArgumentException}}\idxss{DivideByZeroException@\lstinline{DivideByZeroException}}\idxss{NotFiniteNumberException@\lstinline{NotFiniteNumberException}}\idxss{OverflowException@\lstinline{OverflowException}}\idxss{IndexOutOfRangeException@\lstinline{IndexOutOfRangeException}}
 \begin{table}
@@ -229,8 +229,3 @@ Exceptions and option type are systems to communicate errors up through a hierar
   \end{itemize}
 \end{comment}
 \end{document}
-
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
-
