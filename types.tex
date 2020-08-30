@@ -121,6 +121,7 @@ Since records are per default reference types, binding creates aliases, not copi
 \fs{recordCopy}{Bindings are references. To copy and not make an alias, explicit copying must be performed.}
 %
 Here, \lstinline{age} is defined as a mutable value and can be changed using the usual \lexeme{<-} assignment operator. The example demonstrates two different ways to create records. Note that when the mutable value \lstinline{author.age} is changed in line~\ref{recordCopyAgeUpdate}, then \lstinline{authorAlias} also changes, since it is an alias of \lstinline{author}, but neither \lstinline{authorCopy} nor \lstinline{authorCopyAlt} changes, since they are copies. As illustrated, copying using \keyword{with} allows for easy copying and partial updates of another record value.
+\clearpage
 
 \section{Structures}
 \label{sec:structs}
@@ -176,7 +177,4 @@ The example in \Cref{compiletimeVariableType} demonstrates the statically resolv
 
 The \keyword{inline} construction is useful when generating generic functions and still profiting from static type checking. However, explicit copying of functions is often something better left to the compiler to optimize over. An alternative seems to be using runtime resolved variable types with the \lstinline[language=syntax]{'<*ident*>} syntax. Unfortunately, this is not possible in case of most operators, since they have been defined in the \lstinline{FSharp.Core} namespace to be statically resolved variable types. E.g., the \lexeme{+} operator has type \lstinline{( + ) : ^T1 -> ^T2 -> ^T3 (requires ^T1 with static member (+) and ^T2 with static member (+))}.
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
 

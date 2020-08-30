@@ -21,50 +21,79 @@ See the F\# Language Reference at \url{https://docs.microsoft.com/en-us/dotnet/f
 \label{sec:strings}
 Strings have been discussed in \Cref{chap:calculator}, the content of which will be briefly revisited here followed by a description of some of the many supporting built-in functions in F\# on strings.
 
-A \idx{string} is a sequence of characters. Each character is represented using UTF-16, see \Cref{sec:characterSets} for further details on the unicode standard. The type \lstinline{string} is an alias for \idx[System.string@\lstinline{System.string}]{\lstinline{System.string}}. String literals are delimited by double quotation marks \lexeme{"} and inside the delimiters, character escape sequences are allowed (see \Cref{tab:escapeChar}), which are replaced by the corresponding character code. Examples are \lstinline{"This is a string"}, \lstinline{"\tTabulated string"}, \lstinline{"A \"quoted\" string"}, and \lstinline{""}. Strings may span several lines, and new lines inside strings are part of the string unless the line is ended with a backslash. Strings may be \idx[verbatim string]{verbatim} by preceding the string with \lexeme{@}, in which case escape sequences are not replaced, but two double quotation marks are an escape sequence which is replaced by a one double quotation mark. Examples of \lexeme{@}-verbatim strings are: \lstinline{@"This is a string"}, \lstinline{@"\tNon-tabulated string"}, \lstinline{@"A ""quoted"" string"}, and \lstinline{@""}. Alternatively, a verbatim string may be delimited by three double quotation marks. Examples of \lexeme{"""}-verbatim strings are: \lstinline{"""This is a string"""}, \lstinline{"""\tNon-tabulated string"""}, \lstinline{"""A "quoted" string"""}, and \lstinline{""""""}. Strings may be indexed using the \lstinline{.[]} notation, as demonstrated in \Cref{stringIndexing}.
+A \idx{string} is a sequence of characters. Each character is represented using UTF-16, see \Cref{sec:characterSets} for further details on the unicode standard. The type \lstinline{string} is an alias for \idx[System.string@\lstinline{System.string}]{\lstinline{System.string}}. String literals are delimited by double quotation marks \lexeme{"} and inside the delimiters, character escape sequences are allowed (see \Cref{tab:escapeChar}), which are replaced by the corresponding character code. Examples are \lstinline{"This is a string"}, \lstinline{"\tTabulated string"}, \lstinline{"A \"quoted\" string"}, and \lstinline{""}. Strings may span several lines, and new lines inside strings are part of the string unless the line is ended with a backslash. Strings may be \idx[verbatim string]{verbatim} by preceding the string with \lexeme{@}, in which case escape sequences are not replaced, but two double quotation marks are an escape sequence which is replaced by a one double quotation mark. Examples of \lexeme{@}-verbatim strings are:
+\begin{itemize}
+\item \lstinline{@"This is a string"}, 
+\item \lstinline{@"\tNon-tabulated string"},
+\item \lstinline{@"A ""quoted"" string"}, and
+\item \lstinline{@""}.
+\end{itemize}
+Alternatively, a verbatim string may be delimited by three double quotation marks. Examples of \lexeme{"""}-verbatim strings are:
+\begin{itemize}
+\item \lstinline{"""This is a string"""},
+\item \lstinline{"""\tNon-tabulated string"""},
+\item \lstinline{"""A "quoted" string"""}, and
+\item  \lstinline{""""""}.
+\end{itemize}
+Strings may be indexed using the \lstinline{.[]} notation, as demonstrated in \Cref{stringIndexing}.
 
 \subsection{String Properties and Methods}
 Strings have a few properties which are values attached to each string and accessed using the \lexeme{.} notation. The only to be mentioned here is:
 \begin{description}
-\item[\texttt{IndexOf()}:] \lstinline{str:string -> int}. Returns the index of the first occurence of \lstinline{s} or $-1$, if \lstinline{str} does not appear in the string.
-  \fsOutput{stringIndexOfMethod}{\lstinline{IndexOf()}}\idxss{IndexOf@\lstinline{IndexOf}}
-\item[\texttt{Length}:] \lstinline{int}. Returns the length of the string.
-  \fsOutput{stringLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
-\item[\texttt{ToLower()}:] \lstinline{unit -> string}. Returns a copy of the string where each letter has been converted to lower case.
-  \fsOutput{stringToLowerMethod}{\lstinline{ToLower()}}\idxss{ToLower@\lstinline{ToLower}}
-\item[\texttt{ToUpper()}:] \lstinline{unit -> string}. Returns a copy of the string where each letter has been converted to upper case.
-  \fsOutput{stringToUpperMethod}{\lstinline{ToUpper()}}\idxss{ToUpper@\lstinline{ToUpper}}
-\item[\texttt{Trim()}:] \lstinline{unit -> string}. Returns a copy of the string where leading and trailing whitespaces have been removed.
-  \fsOutput{stringTrimMethod}{\lstinline{Trim()}}\idxss{Trim@\lstinline{Trim}}
-\item[\texttt{Split()}:] \lstinline{unit -> string []}. Splits a string of words separated by spaces into an array of words. See \Cref{sec:arrays} for more information about arrays.
-  \fsOutput{stringSplitMethod}{\lstinline{Split()}}\idxss{Split@\lstinline{Split}}
+\item[\texttt{IndexOf()}:] \lstinline{str:string -> int}.~\\
+  Returns the index of the first occurence of \lstinline{s} or $-1$, if \lstinline{str} does not appear in the string.
+  \fsOutputNF{stringIndexOfMethod}{\lstinline{IndexOf()}}\idxss{IndexOf@\lstinline{IndexOf}}
+\item[\texttt{Length}:] \lstinline{int}.~\\
+  Returns the length of the string.
+  \fsOutputNF{stringLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
+\item[\texttt{ToLower()}:] \lstinline{unit -> string}.~\\
+  Returns a copy of the string where each letter has been converted to lower case.
+  \fsOutputNF{stringToLowerMethod}{\lstinline{ToLower()}}\idxss{ToLower@\lstinline{ToLower}}
+\item[\texttt{ToUpper()}:] \lstinline{unit -> string}.~\\
+  Returns a copy of the string where each letter has been converted to upper case.
+  \fsOutputNF{stringToUpperMethod}{\lstinline{ToUpper()}}\idxss{ToUpper@\lstinline{ToUpper}}
+\item[\texttt{Trim()}:] \lstinline{unit -> string}.~\\
+  Returns a copy of the string where leading and trailing whitespaces have been removed.
+  \fsOutputNF{stringTrimMethod}{\lstinline{Trim()}}\idxss{Trim@\lstinline{Trim}}
+\item[\texttt{Split()}:] \lstinline{unit -> string []}.~\\
+  Splits a string of words separated by spaces into an array of words. See \Cref{sec:arrays} for more information about arrays.
+  \fsOutputNF{stringSplitMethod}{\lstinline{Split()}}\idxss{Split@\lstinline{Split}}
 \end{description}
 
 \subsection{The String Module}
 The \lstinline{String} module offers many functions for working with strings. Some of the most powerful ones are listed below, and they are all higher-order functions.
 \begin{description}
-\item[\texttt{String.collect}:] \lstinline{f:(char -> string) -> str:string -> string}. Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{str} and concatenating the resulting strings.
-   \fsOutput{stringCollect}{\lstinline{String.collect}}\idxss{String.collect@\lstinline{String.collect}}
-% \item[\texttt{String.concat}:] \lstinline{string -> seq<string> -> string}. Returns a new string made by concatenating the given strings with a separator. Here \lstinline{seq<string>} is a sequence but can also be a list or an array. 
-% \fsOutput{stringConcat}{\lstinline{String.concat}}\idxss{String.concat@\lstinline{String.concat}}
- \item[\texttt{String.exists}:] \lstinline{f:(char -> bool) -> str:string -> bool}. Returns true if any character in \lstinline{str} evaluates to true when using \lstinline{f}.
-  \fsOutput{stringExists}{\lstinline{String.exists}}\idxss{String.exists@\lstinline{String.exists}}
- \item[\texttt{String.forall}:] \lstinline{f:(char -> bool) -> str:string -> bool}. Returns true if all characters in \lstinline{str} evalutes to true when using \lstinline{f}.
- \fsOutput{stringForall}{\lstinline{String.forall}}\idxss{String.forall@\lstinline{String.forall}}
-\item[\texttt{String.init}:] \lstinline{n:int -> f:(int -> string) -> string}. Creates a new string with length \lstinline{n} and whose characters are the result of applying \lstinline{f} to each index of that string.
-\fsOutput{stringInit}{\lstinline{String.init}}\idxss{String.init@\lstinline{String.init}}
-\item[\texttt{String.iter}:] \lstinline{f:(char -> unit) -> str:string -> unit}. Applies \lstinline{f} to each character in \lstinline{str}.
-\fsOutput{stringIter}{\lstinline{String.iter}}\idxss{String.iter@\lstinline{String.iter}}
-% \item[\texttt{String.iteri}:] \lstinline{(int -> char -> unit) -> string -> unit}. Applies a specified function to the index of each character in the string and the character itself.
-% \fsOutput{stringIterI}{\lstinline{String.iteri}}\idxss{String.iteri@\lstinline{String.iteri}}
+\item[\texttt{String.collect}:] \lstinline{f:(char -> string) -> str:string -> string}.~\\
+  Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{str} and concatenating the resulting strings.
+   \fsOutputNF{stringCollect}{\lstinline{String.collect}}\idxss{String.collect@\lstinline{String.collect}}
+   % \item[\texttt{String.concat}:] \lstinline{string -> seq<string> -> string}.~\\
+   %Returns a new string made by concatenating the given strings with a separator. Here \lstinline{seq<string>} is a sequence but can also be a list or an array. 
+% \fsOutputNF{stringConcat}{\lstinline{String.concat}}\idxss{String.concat@\lstinline{String.concat}}
+ \item[\texttt{String.exists}:] \lstinline{f:(char -> bool) -> str:string -> bool}.~\\
+   Returns true if any character in \lstinline{str} evaluates to true when using \lstinline{f}.
+  \fsOutputNF{stringExists}{\lstinline{String.exists}}\idxss{String.exists@\lstinline{String.exists}}
+\item[\texttt{String.forall}:] \lstinline{f:(char -> bool) -> str:string -> bool}.~\\
+  Returns true if all characters in \lstinline{str} evalutes to true when using \lstinline{f}.
+ \fsOutputNF{stringForall}{\lstinline{String.forall}}\idxss{String.forall@\lstinline{String.forall}}
+\item[\texttt{String.init}:] \lstinline{n:int -> f:(int -> string) -> string}.~\\
+  Creates a new string with length \lstinline{n} and whose characters are the result of applying \lstinline{f} to each index of that string.
+\fsOutputNF{stringInit}{\lstinline{String.init}}\idxss{String.init@\lstinline{String.init}}
+\item[\texttt{String.iter}:] \lstinline{f:(char -> unit) -> str:string -> unit}.~\\
+  Applies \lstinline{f} to each character in \lstinline{str}.
+\fsOutputNF{stringIter}{\lstinline{String.iter}}\idxss{String.iter@\lstinline{String.iter}}
+% \item[\texttt{String.iteri}:] \lstinline{(int -> char -> unit) -> string -> unit}.~\\
+%Applies a specified function to the index of each character in the string and the character itself.
+% \fsOutputNF{stringIterI}{\lstinline{String.iteri}}\idxss{String.iteri@\lstinline{String.iteri}}
 % \item[\texttt{String.length}:] \lstinline{string -> int}. Returns the length of the string.
-% \fsOutput{stringLength}{\lstinline{String.length}}\idxss{String.length@\lstinline{String.length}}
- \item[\texttt{String.map}:] \lstinline{f:(char -> char) -> str:string -> string}. Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{str}.
- \fsOutput{stringMap}{\lstinline{String.map}}\idxss{String.map@\lstinline{String.map}}
-% \item[\texttt{String.mapi}:] \lstinline{(int -> char -> char) -> string -> string}. Creates a new string whose characters are the results of applying a specified function to each character and index of the input string.
-% \fsOutput{stringMapI}{\lstinline{String.mapi}}\idxss{String.mapi@\lstinline{String.mapi}}
+% \fsOutputNF{stringLength}{\lstinline{String.length}}\idxss{String.length@\lstinline{String.length}}
+\item[\texttt{String.map}:] \lstinline{f:(char -> char) -> str:string -> string}.~\\
+  Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{str}.
+ \fsOutputNF{stringMap}{\lstinline{String.map}}\idxss{String.map@\lstinline{String.map}}
+ % \item[\texttt{String.mapi}:] \lstinline{(int -> char -> char) -> string -> string}.~\\
+ %Creates a new string whose characters are the results of applying a specified function to each character and index of the input string.
+% \fsOutputNF{stringMapI}{\lstinline{String.mapi}}\idxss{String.mapi@\lstinline{String.mapi}}
 % \item[\texttt{String.replicate}:] \lstinline{int -> string -> string}. Returns a string by concatenating a specified number of instances of a string.
-% \fsOutput{stringReplicate}{\lstinline{String.replicate}}\idxss{String.replicate@\lstinline{String.replicate}}
+% \fsOutputNF{stringReplicate}{\lstinline{String.replicate}}\idxss{String.replicate@\lstinline{String.replicate}}
 \end{description}
 
 \section{Lists}
@@ -134,18 +163,23 @@ The example shows a \idx{ragged multidimensional list}, since each row has a dif
 \end{figure}
 
  The indexing of a particular element is slow due to the linked list implementation of lists, which is why arrays are often preferred for two- and higher-dimensional data structures, see \Cref{sec:arrays}.
-
+ \clearpage
+ 
 \subsection{List Properties}
 Lists support a number of properties, some of which are listed below.
 \begin{description}
 \item[\texttt{Head}:] Returns the first element of a list.
-  \fsOutput{listHeadProp}{\lstinline{Head}}\idxss{Head@\lstinline{Head}}
+  \fsOutputNF{listHeadProp}{\lstinline{Head}}~\\
+  \idxss{Head@\lstinline{Head}}
 \item[\texttt{IsEmpty}:] Returns true if the list is empty.
-  \fsOutput{listIsEmptyProp}{\lstinline{IsEmpty}}\idxss{IsEmpty@\lstinline{IsEmpty}}
+  \fsOutputNF{listIsEmptyProp}{\lstinline{IsEmpty}}~\\
+  \idxss{IsEmpty@\lstinline{IsEmpty}}
 \item[\texttt{Length}:] Returns the number of elements in the list.
-  \fsOutput{listLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
+  \fsOutputNF{listLengthProp}{\lstinline{Length}}~\\
+  \idxss{Length@\lstinline{Length}}
 \item[\texttt{Tail}:] Returns the list, except for its first element.
-  \fsOutput{listTailProp}{\lstinline{Tail}}\idxss{Head@\lstinline{Tail}}
+  \fsOutputNF{listTailProp}{\lstinline{Tail}}~\\
+  \idxss{Head@\lstinline{Tail}}
 \end{description}
 
 \subsection{The List Module}
@@ -155,64 +189,86 @@ The built-in \lstinline{List} module contains a wealth of functions for lists, s
 briefly summarized below:
 %\Cref{tab:list,tab:listCont}.\idxss{Length}\idxss{List.Empty}\idxss{IsEmpty}\idxss{Item}\idxss{Head}\idxss{Tail}\idxss{Cons}
 \begin{description}
-\item[\texttt{List.collect}:] \lstinline{f:('T -> 'U list) -> lst:'T list -> 'U list}. Applies \lstinline{f} to each element in \lstinline{lst} and return a concatenated list of the results.
-  \fsOutput{listCollect}{\lstinline{List.collect}}\idxss{List.collect@\lstinline{List.collect}}
-\item[\texttt{List.contains}:] \lstinline{elm:'T -> lst:'T list -> bool}. Returns true or false depending on whether or not \lstinline{elm} is contained in \lstinline{lst}.
-  \fsOutput{listContains}{\lstinline{List.contains}}\idxss{List.contains@\lstinline{List.contains}}
-%\item[\texttt{List.empty}:]  \lstinline{'T list}. An empty list of inferred type.
-%  \fsOutput{listEmpty}{\lstinline{List.empty}}\idxss{List.empty@\lstinline{List.empty}}
+\item[\texttt{List.collect}:] \lstinline{f:('T -> 'U list) -> lst:'T list -> 'U list}.~\\
+  Applies \lstinline{f} to each element in \lstinline{lst} and return a concatenated list of the results.
+  \fsOutputNF{listCollect}{\lstinline{List.collect}}\idxss{List.collect@\lstinline{List.collect}}
+\item[\texttt{List.contains}:] \lstinline{elm:'T -> lst:'T list -> bool}.~\\
+  Returns true or false depending on whether or not \lstinline{elm} is contained in \lstinline{lst}.
+  \fsOutputNF{listContains}{\lstinline{List.contains}}\idxss{List.contains@\lstinline{List.contains}}
+  % \item[\texttt{List.empty}:]  \lstinline{'T list}.~\\
+  %An empty list of inferred type.
+%  \fsOutputNF{listEmpty}{\lstinline{List.empty}}\idxss{List.empty@\lstinline{List.empty}}
 % \item[\texttt{List.exists}:] \lstinline{('T -> bool) -> 'T list -> bool}. Returns true or false depending on whether any element is true for a given function.
-%   \fsOutput{listExists}{\lstinline{List.exists}}\idxss{List.exists@\lstinline{List.exists}}
-\item[\texttt{List.filter}:] \lstinline{f:('T -> bool) -> lst:'T list -> 'T list}. Returns a new list with all the elements of \lstinline{lst} for which \lstinline{f} evaluates to true.
-  \fsOutput{listFilter}{\lstinline{List.filter}}\idxss{List.filter@\lstinline{List.filter}}
-\item[\texttt{List.find}:] \lstinline{f:('T -> bool) -> lst:'T list -> 'T}. Returns the first element of \lstinline{lst} for which \lstinline{f} is true.
-  \fsOutput{listFind}{\lstinline{List.find}}\idxss{List.find@\lstinline{List.find}}
-\item[\texttt{List.findIndex}:] \lstinline{f:('T -> bool) -> lst:'T list -> int}. Returns the index of the first element of \lstinline{lst} for which \lstinline{f} is true.
-  \fsOutput{listFindIndex}{\lstinline{List.findIndex}}\idxss{List.findIndex@\lstinline{List.findIndex}}
-\item[\texttt{List.fold}:] \lstinline{f:('S -> 'T -> 'S) -> elm:'S -> lst:'T list -> 'S}. Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{lst} consists of \lstinline{n+1} elements
+%   \fsOutputNF{listExists}{\lstinline{List.exists}}\idxss{List.exists@\lstinline{List.exists}}
+\item[\texttt{List.filter}:] \lstinline{f:('T -> bool) -> lst:'T list -> 'T list}.~\\
+  Returns a new list with all the elements of \lstinline{lst} for which \lstinline{f} evaluates to true.
+  \fsOutputNF{listFilter}{\lstinline{List.filter}}\idxss{List.filter@\lstinline{List.filter}}
+\item[\texttt{List.find}:] \lstinline{f:('T -> bool) -> lst:'T list -> 'T}.~\\
+  Returns the first element of \lstinline{lst} for which \lstinline{f} is true.
+  \fsOutputNF{listFind}{\lstinline{List.find}}\idxss{List.find@\lstinline{List.find}}
+\item[\texttt{List.findIndex}:] \lstinline{f:('T -> bool) -> lst:'T list -> int}.~\\
+  Returns the index of the first element of \lstinline{lst} for which \lstinline{f} is true.
+  \fsOutputNF{listFindIndex}{\lstinline{List.findIndex}}\idxss{List.findIndex@\lstinline{List.findIndex}}
+\item[\texttt{List.fold}:] \lstinline{f:('S -> 'T -> 'S) -> elm:'S -> lst:'T list -> 'S}.~\\
+  Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{lst} consists of \lstinline{n+1} elements
   % \lstinline{[x}$_0$\lstinline{; x}$_1$\lstinline{; x}$_2$\lstinline{;} $\ldots$\lstinline{; x}$_n$\lstinline{]}, a supplied function \lstinline{f}, and an initial value for the accumulator \lstinline{elm},
   \lstinline{List.fold} calculates:
   \begin{quote}
     \lstinline{f (}$\ldots$ \lstinline{(f (f elm lst.[0]) lst.[1])} $\ldots$\lstinline{) lst.[n]}.
   \end{quote}
-  \fsOutput{listFold}{\lstinline{List.fold}}\idxss{List.fold@\lstinline{List.fold}}
-\item[\texttt{List.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> lst:'T list -> elm:'S -> 'S}.~\\ Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{lst} consists of \lstinline{n+1} elements
+  \fsOutputNF{listFold}{\lstinline{List.fold}}\idxss{List.fold@\lstinline{List.fold}}
+\item[\texttt{List.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> lst:'T list -> elm:'S -> 'S}.~\\
+  Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{lst} consists of \lstinline{n+1} elements
   %function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{List.foldBack} calculates $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
   \lstinline{List.foldBack} calculates:
   \begin{quote}
     \lstinline{f lst.[0] (f lst.[1]} ($\ldots$\lstinline{(f lst.[n] elm)} $\ldots$\lstinline{))}.
   \end{quote}
-  \fsOutput{listFoldBack}{\lstinline{List.foldBack}}\idxss{List.foldBack@\lstinline{List.foldBack}}
-\item[\texttt{List.forall}:] \lstinline{f:('T -> bool) -> lst:'T list -> bool}. Returns true if all elements in \lstinline{lst} are true when \lstinline{f} is applied to them.
-  \fsOutput{listForall}{\lstinline{List.forall}}\idxss{List.forall@\lstinline{List.forall}}
-\item[\texttt{List.head}:] \lstinline{lst:'T list -> int}. Returns the first element in \lstinline{lst}. An exception is raised if \lstinline{lst} is empty. See \Cref{sec:exceptions} for more on exceptions.
-  \fsOutput{listHeadAlt}{\lstinline{List.head}}\idxss{List.head@\lstinline{List.head}}
-\item[\texttt{List.init}:] \lstinline{m:int -> f:(int -> 'T) -> 'T list}. Create a list with \lstinline{m} elements and whose value is the result of applying \lstinline{f} to the index of the element.
-  \fsOutput{listInit}{\lstinline{List.init}}\idxss{List.init@\lstinline{List.init}}
-\item[\texttt{List.isEmpty}:]  \lstinline{lst:'T list -> bool}. Returns true if \lstinline{lst} is empty.
-  \fsOutput{listIsEmptyAlt}{\lstinline{List.isEmpty}}\idxss{List.isEmpty@\lstinline{List.isEmpty}}
-% \item[\texttt{List.item}:]  \lstinline{'T list -> int}. Retrieves an element of a list by its index.
-%   \fsOutput{listItemAlt}{\lstinline{List.item}}\idxss{List.item@\lstinline{List.item}}
-\item[\texttt{List.iter}:] \lstinline{f:('T -> unit) -> lst:'T list -> unit}. Applies \lstinline{f} to every element in \lstinline{lst}.
-  \fsOutput{listIter}{\lstinline{List.iter}}\idxss{List.iter@\lstinline{List.iter}}
+  \fsOutputNF{listFoldBack}{\lstinline{List.foldBack}}\idxss{List.foldBack@\lstinline{List.foldBack}}
+\item[\texttt{List.forall}:] \lstinline{f:('T -> bool) -> lst:'T list -> bool}.~\\
+  Returns true if all elements in \lstinline{lst} are true when \lstinline{f} is applied to them.
+  \fsOutputNF{listForall}{\lstinline{List.forall}}\idxss{List.forall@\lstinline{List.forall}}
+\item[\texttt{List.head}:] \lstinline{lst:'T list -> int}.~\\
+  Returns the first element in \lstinline{lst}. An exception is raised if \lstinline{lst} is empty. See \Cref{sec:exceptions} for more on exceptions.
+  \fsOutputNF{listHeadAlt}{\lstinline{List.head}}\idxss{List.head@\lstinline{List.head}}
+\item[\texttt{List.init}:] \lstinline{m:int -> f:(int -> 'T) -> 'T list}.~\\
+  Create a list with \lstinline{m} elements and whose value is the result of applying \lstinline{f} to the index of the element.
+  \fsOutputNF{listInit}{\lstinline{List.init}}\idxss{List.init@\lstinline{List.init}}
+\item[\texttt{List.isEmpty}:]  \lstinline{lst:'T list -> bool}.~\\
+  Returns true if \lstinline{lst} is empty.
+  \fsOutputNF{listIsEmptyAlt}{\lstinline{List.isEmpty}}\idxss{List.isEmpty@\lstinline{List.isEmpty}}
+  % \item[\texttt{List.item}:]  \lstinline{'T list -> int}.~\\
+  %Retrieves an element of a list by its index.
+%   \fsOutputNF{listItemAlt}{\lstinline{List.item}}\idxss{List.item@\lstinline{List.item}}
+\item[\texttt{List.iter}:] \lstinline{f:('T -> unit) -> lst:'T list -> unit}.~\\
+  Applies \lstinline{f} to every element in \lstinline{lst}.
+  \fsOutputNF{listIter}{\lstinline{List.iter}}\idxss{List.iter@\lstinline{List.iter}}
 % \item[\texttt{List.Length}:]  \lstinline{'T list -> int}. Returns the number of elements in a list.
-%   \fsOutput{listLengthAlt}{\lstinline{List.Length}}\idxss{List.Length@\lstinline{List.Length}}
-\item[\texttt{List.map}:] \lstinline{f:('T -> 'U) -> lst:'T list -> 'U list}. Returns a list as a concatenation of applying \lstinline{f} to every element of \lstinline{lst}.
-  \fsOutput{listMap}{\lstinline{List.map}}\idxss{List.map@\lstinline{List.map}}
-\item[\texttt{List.ofArray}:] \lstinline{arr:'T [] -> 'T list}. Returns a list whose elements are the same as \lstinline{arr}. See \Cref{sec:arrays} for more on arrays.
-  \fsOutput{listOfArray}{\lstinline{List.ofArray}}\idxss{List.ofArray@\lstinline{List.ofArray}}
-\item[\texttt{List.rev}:] \lstinline{lst:'T list -> 'T list}. Returns a new list with the same elements as in \lstinline{lst} but in reversed order.
-  \fsOutput{listRev}{\lstinline{List.rev}}\idxss{List.rev@\lstinline{List.rev}}
-\item[\texttt{List.sort}:] \lstinline{lst:'T list -> 'T list}. Returns a new list with the same elements as in \lstinline{lst} but where the elements are sorted.
-  \fsOutput{listSort}{\lstinline{List.sort}}\idxss{List.sort@\lstinline{List.sort}}
-\item[\texttt{List.tail}:]  \lstinline{'T list -> 'T list}. Returns a new list identical to \lstinline{lst} but without its first element. An Exception is raised if \lstinline{lst} is empty.  See \Cref{sec:exceptions} for more on exceptions.
-  \fsOutput{listTailAlt}{\lstinline{List.tail}}\idxss{List.tail@\lstinline{List.tail}}
-\item[\texttt{List.toArray}:] \lstinline{lst:'T list -> 'T []}. Returns an array whose elements are the same as \lstinline{lst}.  See \Cref{sec:arrays} for more on arrays.
-  \fsOutput{listToArray}{\lstinline{List.toArray}}\idxss{List.toArray@\lstinline{List.toArray}}
-\item[\texttt{List.unzip}:] \lstinline{lst:('T1 * 'T2) list -> 'T1 list * 'T2 list}. Returns a pair of lists of all the first elements and all the second elements of \lstinline{lst}, respectively.
-  \fsOutput{listUnzip}{\lstinline{List.unzip}}\idxss{List.unzip@\lstinline{List.unzip}}
-\item[\texttt{List.zip}:] \lstinline{lst1:'T1 list -> lst2:'T2 list -> ('T1 * 'T2) list}.~\\ Returns a list of pairs, where elements in \lstinline{lst1} and \lstinline{lst2} are iteratively paired.
-  \fsOutput{listZip}{\lstinline{List.zip}}\idxss{List.zip@\lstinline{List.zip}}
+%   \fsOutputNF{listLengthAlt}{\lstinline{List.Length}}\idxss{List.Length@\lstinline{List.Length}}
+\item[\texttt{List.map}:] \lstinline{f:('T -> 'U) -> lst:'T list -> 'U list}.~\\
+  Returns a list as a concatenation of applying \lstinline{f} to every element of \lstinline{lst}.
+  \fsOutputNF{listMap}{\lstinline{List.map}}\idxss{List.map@\lstinline{List.map}}
+\item[\texttt{List.ofArray}:] \lstinline{arr:'T [] -> 'T list}.~\\
+  Returns a list whose elements are the same as \lstinline{arr}. See \Cref{sec:arrays} for more on arrays.
+  \fsOutputNF{listOfArray}{\lstinline{List.ofArray}}\idxss{List.ofArray@\lstinline{List.ofArray}}
+\item[\texttt{List.rev}:] \lstinline{lst:'T list -> 'T list}.~\\
+  Returns a new list with the same elements as in \lstinline{lst} but in reversed order.
+  \fsOutputNF{listRev}{\lstinline{List.rev}}\idxss{List.rev@\lstinline{List.rev}}
+\item[\texttt{List.sort}:] \lstinline{lst:'T list -> 'T list}.~\\
+  Returns a new list with the same elements as in \lstinline{lst} but where the elements are sorted.
+  \fsOutputNF{listSort}{\lstinline{List.sort}}\idxss{List.sort@\lstinline{List.sort}}
+\item[\texttt{List.tail}:]  \lstinline{'T list -> 'T list}.~\\
+  Returns a new list identical to \lstinline{lst} but without its first element. An Exception is raised if \lstinline{lst} is empty.  See \Cref{sec:exceptions} for more on exceptions.
+  \fsOutputNF{listTailAlt}{\lstinline{List.tail}}\idxss{List.tail@\lstinline{List.tail}}
+\item[\texttt{List.toArray}:] \lstinline{lst:'T list -> 'T []}.~\\
+  Returns an array whose elements are the same as \lstinline{lst}.  See \Cref{sec:arrays} for more on arrays.
+  \fsOutputNF{listToArray}{\lstinline{List.toArray}}\idxss{List.toArray@\lstinline{List.toArray}}
+\item[\texttt{List.unzip}:] \lstinline{lst:('T1 * 'T2) list -> 'T1 list * 'T2 list}.~\\
+  Returns a pair of lists of all the first elements and all the second elements of \lstinline{lst}, respectively.
+  \fsOutputNF{listUnzip}{\lstinline{List.unzip}}\idxss{List.unzip@\lstinline{List.unzip}}
+\item[\texttt{List.zip}:] \lstinline{lst1:'T1 list -> lst2:'T2 list -> ('T1 * 'T2) list}.~\\
+  Returns a list of pairs, where elements in \lstinline{lst1} and \lstinline{lst2} are iteratively paired.
+  \fsOutputNF{listZip}{\lstinline{List.zip}}\idxss{List.zip@\lstinline{List.zip}}
 \end{description}
 
 \section{Arrays}
@@ -254,89 +310,118 @@ Arrays are \idx{reference types}, meaning that identifiers are references and th
 %
 \fs{arrayAliasing}{Arrays are reference types and suffer from aliasing.}
 %
+\clearpage
 
 \subsection{Array Properties and Methods}
 \label{sec:arrayMethods}
 Some important properties and methods for arrays are:
 \begin{description}
-\item[\texttt{Clone()}:] \lstinline{'T []}. Returns a copy of the array.
-  \fsOutput{arrayCloneProp}{\lstinline{Clone}}\idxss{Clone@\lstinline{Clone}}
-\item[\texttt{Length}:] \lstinline{int}. Returns the number of elements in the array.
-  \fsOutput{arrayLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
+\item[\texttt{Clone()}:] \lstinline{'T []}.~\\
+  Returns a copy of the array.
+  \fsOutputNF{arrayCloneProp}{\lstinline{Clone}}\idxss{Clone@\lstinline{Clone}}
+\item[\texttt{Length}:] \lstinline{int}.~\\
+  Returns the number of elements in the array.
+  \fsOutputNF{arrayLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
 \end{description}
 
 \subsection{The Array Module}
 There are quite a number of built-in procedures for arrays in the \lstinline{Array} module, some of which are summarized below.
 \begin{description}
-\item[\texttt{Array.append}:] \lstinline{arr1:'T [] -> arr2:'T [] -> 'T []}. Creates an new array whose elements are a concatenated copy of \lstinline{arr1} and \lstinline{arr2}.
-  \fsOutput{arrayAppendAlt}{\lstinline{Array.append}}\idxss{Array.append@\lstinline{Array.append}}
-% \item[\texttt{Array.compareWith}:] \lstinline{f:('T -> 'T -> int) -> arr1:'T [] -> arr2:'T [] -> int}. Traverseses \lstinline{arr1} and \lstinline{arr2} in parallel evaluating \lstinline{f} on pairs of their elements. Compares two arrays using the given comparison function, element by element.
-%   \fsOutput{arrayComparewith}{\lstinline{Array.compareWith}}\idxss{Array.compareWith@\lstinline{Array.compareWith}}
+\item[\texttt{Array.append}:] \lstinline{arr1:'T [] -> arr2:'T [] -> 'T []}.~\\
+  Creates an new array whose elements are a concatenated copy of \lstinline{arr1} and \lstinline{arr2}.
+  \fsOutputNF{arrayAppendAlt}{\lstinline{Array.append}}\idxss{Array.append@\lstinline{Array.append}}
+  % \item[\texttt{Array.compareWith}:] \lstinline{f:('T -> 'T -> int) -> arr1:'T [] -> arr2:'T [] -> int}.~\\
+  %Traverseses \lstinline{arr1} and \lstinline{arr2} in parallel evaluating \lstinline{f} on pairs of their elements. Compares two arrays using the given comparison function, element by element.
+%   \fsOutputNF{arrayComparewith}{\lstinline{Array.compareWith}}\idxss{Array.compareWith@\lstinline{Array.compareWith}}
 %\item[\texttt{Array.concat}:] \lstinline{seq<'T []> -> 'T []}. Creates an array that contains the elements of each of the supplied sequence of arrays.
-%  \fsOutput{arrayConcat}{\lstinline{Array.concat}}\idxss{Array.concat@\lstinline{Array.concat}}
-\item[\texttt{Array.contains}:] \lstinline{elm:'T -> arr:'T [] -> bool}. Returns true if \lstinline{arr} contains \lstinline{elm}.
-  \fsOutput{arrayContains}{\lstinline{Array.contains}}\idxss{Array.contains@\lstinline{Array.contains}}
-%\item[\texttt{Array.copy}:] \lstinline{'T [] -> 'T []}. Creates an array that contains the elements of the supplied array.
-%  \fsOutput{arrayCopy}{\lstinline{Array.copy}}\idxss{Array.copy@\lstinline{Array.copy}}
+%  \fsOutputNF{arrayConcat}{\lstinline{Array.concat}}\idxss{Array.concat@\lstinline{Array.concat}}
+\item[\texttt{Array.contains}:] \lstinline{elm:'T -> arr:'T [] -> bool}.~\\
+  Returns true if \lstinline{arr} contains \lstinline{elm}.
+  \fsOutputNF{arrayContains}{\lstinline{Array.contains}}\idxss{Array.contains@\lstinline{Array.contains}}
+  % \item[\texttt{Array.copy}:] \lstinline{'T [] -> 'T []}.~\\
+  %Creates an array that contains the elements of the supplied array.
+%  \fsOutputNF{arrayCopy}{\lstinline{Array.copy}}\idxss{Array.copy@\lstinline{Array.copy}}
 %\item[\texttt{Array.create}:] \lstinline{n:int -> v:'T -> 'T []}. Creates an array of length \lstinline{n} with value \lstinline{v}.
-%  \fsOutput{arrayCreate}{\lstinline{Array.create}}\idxss{Array.create@\lstinline{Array.create}}
+%  \fsOutputNF{arrayCreate}{\lstinline{Array.create}}\idxss{Array.create@\lstinline{Array.create}}
 %\item[\texttt{Array.empty}:] \lstinline{'T []}. Creates an empty array of the given type.
-%  \fsOutput{arrayEmpty}{\lstinline{Array.empty}}\idxss{Array.empty@\lstinline{Array.empty}}
-\item[\texttt{Array.exists}:] \lstinline{f:('T -> bool) -> arr:'T [] -> bool}. Returns true if any application of \lstinline{f} evaluates to true when applied to the elements of \lstinline{arr}.
-  \fsOutput{arrayExists}{\lstinline{Array.exists}}\idxss{Array.exists@\lstinline{Array.exists}}
+%  \fsOutputNF{arrayEmpty}{\lstinline{Array.empty}}\idxss{Array.empty@\lstinline{Array.empty}}
+\item[\texttt{Array.exists}:] \lstinline{f:('T -> bool) -> arr:'T [] -> bool}.~\\
+  Returns true if any application of \lstinline{f} evaluates to true when applied to the elements of \lstinline{arr}.
+  \fsOutputNF{arrayExists}{\lstinline{Array.exists}}\idxss{Array.exists@\lstinline{Array.exists}}
 %\item[\texttt{Array.fill}:] \lstinline{'T [] -> int -> int -> 'T -> unit}. Fills a range of elements of an array with the supplied value.
-%  \fsOutput{arrayFill}{\lstinline{Array.fill}}\idxss{Array.fill@\lstinline{Array.fill}}
-\item[\texttt{Array.filter}:] \lstinline{f:('T -> bool) -> arr:'T [] -> 'T []}. Returns an array of elements from \lstinline{arr} who evaluate to true when \lstinline{f} is applied to them.
-  \fsOutput{arrayFilter}{\lstinline{Array.filter}}\idxss{Array.filter@\lstinline{Array.filter}}
-\item[\texttt{Array.find}:] \lstinline{f:('T -> bool) -> arr:'T [] -> 'T}. Returns the first element in \lstinline{arr} for which \lstinline{f} evaluates to true. The \lstinline{KeyNotFoundException} exception is raised if no element is found.  See \Cref{sec:exceptions} for more on exceptions.
-  \fsOutput{arrayFind}{\lstinline{Array.find}}  \idxss{Array.find@\lstinline{Array.find}}
-\item[\texttt{Array.findIndex}:] \lstinline{f:('T -> bool) -> arr:'T [] -> int}. Returns the index of the first element in in \lstinline{arr} for which \lstinline{f} evaluates to true. If none are found, then the \lstinline{System.Collections.Generic.KeyNotFoundException} exception is raised.  See \Cref{sec:exceptions} for more on exceptions.
-  \fsOutput{arrayFindindex}{\lstinline{Array.findIndex}}\idxss{Array.findIndex@\lstinline{Array.findIndex}}
-\item[\texttt{Array.fold}:] \lstinline{f:('S -> 'T -> 'S) -> elm:'S -> arr:'T [] -> 'S}. Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{arr} consists of \lstinline{n+1} elements
+%  \fsOutputNF{arrayFill}{\lstinline{Array.fill}}\idxss{Array.fill@\lstinline{Array.fill}}
+\item[\texttt{Array.filter}:] \lstinline{f:('T -> bool) -> arr:'T [] -> 'T []}.~\\
+  Returns an array of elements from \lstinline{arr} who evaluate to true when \lstinline{f} is applied to them.
+  \fsOutputNF{arrayFilter}{\lstinline{Array.filter}}\idxss{Array.filter@\lstinline{Array.filter}}
+\item[\texttt{Array.find}:] \lstinline{f:('T -> bool) -> arr:'T [] -> 'T}.~\\
+  Returns the first element in \lstinline{arr} for which \lstinline{f} evaluates to true. The \lstinline{KeyNotFoundException} exception is raised if no element is found.  See \Cref{sec:exceptions} for more on exceptions.
+  \fsOutputNF{arrayFind}{\lstinline{Array.find}}  \idxss{Array.find@\lstinline{Array.find}}
+\item[\texttt{Array.findIndex}:] \lstinline{f:('T -> bool) -> arr:'T [] -> int}.~\\
+  Returns the index of the first element in in \lstinline{arr} for which \lstinline{f} evaluates to true. If none are found, then the \lstinline{System.Collections.Generic.KeyNotFoundException} exception is raised.  See \Cref{sec:exceptions} for more on exceptions.
+  \fsOutputNF{arrayFindindex}{\lstinline{Array.findIndex}}\idxss{Array.findIndex@\lstinline{Array.findIndex}}
+\item[\texttt{Array.fold}:] \lstinline{f:('S -> 'T -> 'S) -> elm:'S -> arr:'T [] -> 'S}.~\\
+  Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{arr} consists of \lstinline{n+1} elements
   \lstinline{Array.fold} calculates:
   \begin{quote}
     \lstinline{f (}$\ldots$ \lstinline{(f (f elm arr.[0]) arr.[1])} $\ldots$\lstinline{) arr.[n]}.
   \end{quote}
-  \fsOutput{arrayFold}{\lstinline{Array.fold}}\idxss{Array.fold@\lstinline{Array.fold}}
-\item[\texttt{Array.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> arr:'T [] -> elm:'S -> 'S}. Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{arr} consists of \lstinline{n+1} elements
+  \fsOutputNF{arrayFold}{\lstinline{Array.fold}}\idxss{Array.fold@\lstinline{Array.fold}}
+\item[\texttt{Array.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> arr:'T [] -> elm:'S -> 'S}.~\\
+  Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{arr} consists of \lstinline{n+1} elements
   %function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{Array.foldBack} calculates $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
   \lstinline{Array.foldBack} calculates:
   \begin{quote}
     \lstinline{f arr.[0] (f arr.[1]} ($\ldots$\lstinline{(f arr.[n] elm)} $\ldots$\lstinline{))}.
   \end{quote}
-  \fsOutput{arrayFoldback}{\lstinline{Array.foldBack}}\idxss{Array.foldBack@\lstinline{Array.foldBack}}
-\item[\texttt{Array.forall}:] \lstinline{f:('T -> bool) -> arr:'T [] -> bool}. Returns true if \lstinline{f} evaluates to true for every element in \lstinline{arr}.
-  \fsOutput{arrayForall}{\lstinline{Array.forall}}\idxss{Array.forall@\lstinline{Array.forall}}
-%\item[\texttt{Array.get}:] \lstinline{'T [] -> int -> 'T}. Gets an element from an array.
-%  \fsOutput{arrayGet}{\lstinline{Array.get}}\idxss{Array.get@\lstinline{Array.get}}
-\item[\texttt{Array.init}:] \lstinline{m:int -> f:(int -> 'T) -> 'T []}. Create an array with \lstinline{m} elements and whose value is the result of applying \lstinline{f} to the index of the element.
-  \fsOutput{arrayInit}{\lstinline{Array.init}}\idxss{Array.init@\lstinline{Array.init}}
-\item[\texttt{Array.isEmpty}:] \lstinline{arr:'T [] -> bool}. Returns true if \lstinline{arr} is empty.
-  \fsOutput{arrayIsempty}{\lstinline{Array.isEmpty}}\idxss{Array.isEmpty@\lstinline{Array.isEmpty}}
-\item[\texttt{Array.iter}:] \lstinline{f:('T -> unit) -> arr:'T [] -> unit}. Applies \lstinline{f} to each element of \lstinline{arr}.
-  \fsOutput{arrayIter}{\lstinline{Array.iter}}\idxss{Array.iter@\lstinline{Array.iter}}
-%\item[\texttt{Array.length}:] \lstinline{'T [] -> int}. Returns the length of an array. The \lstinline{System.Array.Length} property does the same thing.
-%  \fsOutput{arrayLength}{\lstinline{Array.length}}\idxss{Array.length@\lstinline{Array.length}}
-\item[\texttt{Array.map}:] \lstinline{f:('T -> 'U) -> arr:'T [] -> 'U []}. Creates an new array whose elements are the results of applying \lstinline{f} to each of the elements of \lstinline{arr}.
-  \fsOutput{arrayMap}{\lstinline{Array.map}}\idxss{Array.map@\lstinline{Array.map}}
-\item[\texttt{Array.ofList}:] \lstinline{lst:'T list -> 'T []}. Creates an array whose elements are copied from \lstinline{lst}.
-  \fsOutput{arrayOflist}{\lstinline{Array.ofList}}\idxss{Array.ofList@\lstinline{Array.ofList}}
-\item[\texttt{Array.rev}:] \lstinline{arr:'T [] -> 'T []}. Creates a new array whose elements are identical to \lstinline{arr} but in reverse order.
-  \fsOutput{arrayRev}{\lstinline{Array.rev}}\idxss{Array.rev@\lstinline{Array.rev}}
-%\item[\texttt{Array.set}:] \lstinline{'T [] -> int -> 'T -> unit}. Sets an element of an array.
-%  \fsOutput{arraySet}{\lstinline{Array.set}}\idxss{Array.set@\lstinline{Array.set}}
-\item[\texttt{Array.sort}:] \lstinline{arr:'T[] -> 'T []}. Creates a new array with the same elements as in \lstinline{arr} but in sorted order %Sorts the elements of an array and returns a new array. \lstinline{Operators.compare} is used to compare the elements.
-  \fsOutput{arraySort}{\lstinline{Array.sort}}\idxss{Array.sort@\lstinline{Array.sort}}
-%\item[\texttt{Array.sub}:] \lstinline{'T [] -> int -> int -> 'T []}. Creates an array that contains the supplied subrange, which is specified by starting index and length.
-%  \fsOutput{arraySub}{\lstinline{Array.sub}}\idxss{Array.sub@\lstinline{Array.sub}}
-\item[\texttt{Array.toList}:] \lstinline{arr:'T [] -> 'T list}. Creates a new list whose elements are copied from \lstinline{arr}.
-  \fsOutput{arrayTolist}{\lstinline{Array.toList}}\idxss{Array.toList@\lstinline{Array.toList}}
-\item[\texttt{Array.unzip}:] \lstinline{arr:('T1 * 'T2) [] -> 'T1 [] * 'T2 []}. Returns a pair of arrays of all the first elements and all the second elements of \lstinline{arr}, respectively.
-  \fsOutput{arrayUnzip}{\lstinline{Array.unzip}}\idxss{Array.unzip@\lstinline{Array.unzip}}
-%\item[\texttt{Array.zeroCreate}:] \lstinline{int -> 'T []}. Creates an array whose elements are initially set to the default value \lstinline{Unchecked.defaultof<'T>}.
-%  \fsOutput{arrayZerocreate}{\lstinline{Array.zeroCreate}}\idxss{Array.zeroCreate@\lstinline{Array.zeroCreate}}
-\item[\texttt{Array.zip}:] \lstinline{arr1:'T1 [] -> arr2:'T2 [] -> ('T1 * 'T2) []}. Returns a list of pairs, where elements in \lstinline{arr1} and \lstinline{arr2} are iteratively paired.
-  \fsOutput{arrayZip}{\lstinline{Array.zip}}\idxss{Array.zip@\lstinline{Array.zip}}
+  \fsOutputNF{arrayFoldback}{\lstinline{Array.foldBack}}\idxss{Array.foldBack@\lstinline{Array.foldBack}}
+\item[\texttt{Array.forall}:] \lstinline{f:('T -> bool) -> arr:'T [] -> bool}.~\\
+  Returns true if \lstinline{f} evaluates to true for every element in \lstinline{arr}.
+  \fsOutputNF{arrayForall}{\lstinline{Array.forall}}\idxss{Array.forall@\lstinline{Array.forall}}
+  % \item[\texttt{Array.get}:] \lstinline{'T [] -> int -> 'T}.~\\
+  %Gets an element from an array.
+%  \fsOutputNF{arrayGet}{\lstinline{Array.get}}\idxss{Array.get@\lstinline{Array.get}}
+\item[\texttt{Array.init}:] \lstinline{m:int -> f:(int -> 'T) -> 'T []}.~\\
+  Create an array with \lstinline{m} elements and whose value is the result of applying \lstinline{f} to the index of the element.
+  \fsOutputNF{arrayInit}{\lstinline{Array.init}}\idxss{Array.init@\lstinline{Array.init}}
+\item[\texttt{Array.isEmpty}:] \lstinline{arr:'T [] -> bool}.~\\
+  Returns true if \lstinline{arr} is empty.
+  \fsOutputNF{arrayIsempty}{\lstinline{Array.isEmpty}}\idxss{Array.isEmpty@\lstinline{Array.isEmpty}}
+\item[\texttt{Array.iter}:] \lstinline{f:('T -> unit) -> arr:'T [] -> unit}.~\\
+  Applies \lstinline{f} to each element of \lstinline{arr}.
+  \fsOutputNF{arrayIter}{\lstinline{Array.iter}}\idxss{Array.iter@\lstinline{Array.iter}}
+  % \item[\texttt{Array.length}:] \lstinline{'T [] -> int}.~\\
+  %Returns the length of an array. The \lstinline{System.Array.Length} property does the same thing.
+%  \fsOutputNF{arrayLength}{\lstinline{Array.length}}\idxss{Array.length@\lstinline{Array.length}}
+\item[\texttt{Array.map}:] \lstinline{f:('T -> 'U) -> arr:'T [] -> 'U []}.~\\
+  Creates an new array whose elements are the results of applying \lstinline{f} to each of the elements of \lstinline{arr}.
+  \fsOutputNF{arrayMap}{\lstinline{Array.map}}\idxss{Array.map@\lstinline{Array.map}}
+\item[\texttt{Array.ofList}:] \lstinline{lst:'T list -> 'T []}.~\\
+  Creates an array whose elements are copied from \lstinline{lst}.
+  \fsOutputNF{arrayOflist}{\lstinline{Array.ofList}}\idxss{Array.ofList@\lstinline{Array.ofList}}
+\item[\texttt{Array.rev}:] \lstinline{arr:'T [] -> 'T []}.~\\
+  Creates a new array whose elements are identical to \lstinline{arr} but in reverse order.
+  \fsOutputNF{arrayRev}{\lstinline{Array.rev}}\idxss{Array.rev@\lstinline{Array.rev}}
+  % \item[\texttt{Array.set}:] \lstinline{'T [] -> int -> 'T -> unit}.~\\
+  %Sets an element of an array.
+%  \fsOutputNF{arraySet}{\lstinline{Array.set}}\idxss{Array.set@\lstinline{Array.set}}
+\item[\texttt{Array.sort}:] \lstinline{arr:'T[] -> 'T []}.~\\
+  Creates a new array with the same elements as in \lstinline{arr} but in sorted order %Sorts the elements of an array and returns a new array. \lstinline{Operators.compare} is used to compare the elements.
+  \fsOutputNF{arraySort}{\lstinline{Array.sort}}\idxss{Array.sort@\lstinline{Array.sort}}
+  % \item[\texttt{Array.sub}:] \lstinline{'T [] -> int -> int -> 'T []}.~\\
+  %Creates an array that contains the supplied subrange, which is specified by starting index and length.
+%  \fsOutputNF{arraySub}{\lstinline{Array.sub}}\idxss{Array.sub@\lstinline{Array.sub}}
+\item[\texttt{Array.toList}:] \lstinline{arr:'T [] -> 'T list}.~\\
+  Creates a new list whose elements are copied from \lstinline{arr}.
+  \fsOutputNF{arrayTolist}{\lstinline{Array.toList}}\idxss{Array.toList@\lstinline{Array.toList}}
+\item[\texttt{Array.unzip}:] \lstinline{arr:('T1 * 'T2) [] -> 'T1 [] * 'T2 []}.~\\
+  Returns a pair of arrays of all the first elements and all the second elements of \lstinline{arr}, respectively.
+  \fsOutputNF{arrayUnzip}{\lstinline{Array.unzip}}\idxss{Array.unzip@\lstinline{Array.unzip}}
+  % \item[\texttt{Array.zeroCreate}:] \lstinline{int -> 'T []}.~\\
+  %Creates an array whose elements are initially set to the default value \lstinline{Unchecked.defaultof<'T>}.
+%  \fsOutputNF{arrayZerocreate}{\lstinline{Array.zeroCreate}}\idxss{Array.zeroCreate@\lstinline{Array.zeroCreate}}
+\item[\texttt{Array.zip}:] \lstinline{arr1:'T1 [] -> arr2:'T2 [] -> ('T1 * 'T2) []}.~\\
+  Returns a list of pairs, where elements in \lstinline{arr1} and \lstinline{arr2} are iteratively paired.
+  \fsOutputNF{arrayZip}{\lstinline{Array.zip}}\idxss{Array.zip@\lstinline{Array.zip}}
 \end{description}
 
 \section{Multidimensional Arrays}
@@ -366,28 +451,38 @@ Note that in almost all cases, slicing produces a sub-rectangular 2 dimensional 
 %\jon{Array2D.ToString produces \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion.}
 
 Multidimensional arrays have the same properties and methods as arrays, see \Cref{sec:arrayMethods}.
+\clearpage
 
 \subsection{The Array2D Module}
 There are quite a number of built-in procedures for arrays in the \lstinline{Array2D} namespace, some of which are summarized below.\jon{rewrite description}
 \begin{description}
-\item[\texttt{copy}:] \lstinline{arr:'T [,] -> 'T [,]}. Creates a new array whose elements are copied from \lstinline{arr}.
-  \fsOutput{array2DCopy}{\lstinline{Array2D.copy}}\idxss{Array2D.copy@\lstinline{Array2D.copy}}
-\item[\texttt{create}:] \lstinline{m:int -> n:int -> v:'T -> 'T [,]}. Creates an \lstinline{m} by \lstinline{n} array whose elements are set to \lstinline{v}.
-  \fsOutput{array2DCreate}{\lstinline{Array2D.create}}\idxss{Array2D.create@\lstinline{Array2D.create}}
-%\item[\texttt{get}:] \lstinline{'T [,] -> int -> int -> 'T}. Fetches an element from a 2D array. You can also use the syntax \lstinline{array.[index1,index2]}.
-%  \fsOutput{array2DGet}{\lstinline{Array2D.get}}\idxss{Array2D.get@\lstinline{Array2D.get}}
-\item[\texttt{init}:] \lstinline{m:int -> n:int -> f:(int -> int -> 'T) -> 'T [,]}. Creates an \lstinline{m} by \lstinline{n} array whose elements are the result of applying \lstinline{f} to the index of an element.
-  \fsOutput{array2DInit}{\lstinline{Array2D.init}}\idxss{Array2D.init@\lstinline{Array2D.init}}
-\item[\texttt{iter}:] \lstinline{f:('T -> unit) -> arr:'T [,] -> unit}. Applies \lstinline{f} to each element of \lstinline{arr}.
-  \fsOutput{array2DIter}{\lstinline{Array2D.iter}}\idxss{Array2D.iter@\lstinline{Array2D.iter}}
-\item[\texttt{length1}:] \lstinline{arr:'T [,] -> int}. Returns the length the first dimension of \lstinline{arr}.
-  \fsOutput{array2DLength1}{\lstinline{Array2D.length1}}\idxss{Array2D.length1@\lstinline{Array2D.length1}}
-\item[\texttt{length2}:] \lstinline{arr:'T [,] -> int}. Returns the length of the second dimension of \lstinline{arr}.
-  \fsOutput{array2DLength2}{\lstinline{Array2D.forall length2}}\idxss{Array2D.length2@\lstinline{Array2D.length2}}
-\item[\texttt{map}:] \lstinline{f:('T -> 'U) -> arr:'T [,] -> 'U [,]}. Creates a new array whose elements are the results of applying \lstinline{f} to each of the elements of \lstinline{arr}.
-  \fsOutput{array2DMap}{\lstinline{Array2D.map}}\idxss{Array2D.map@\lstinline{Array2D.map}}
-%\item[\texttt{set}:] \lstinline{'T [,] -> int -> int -> 'T -> unit}. Sets the value of an element in an array. You can also use the syntax \lstinline{array.[index1,index2] <- value}.
-%  \fsOutput{array2DSet}{\lstinline{Array2D.set}}\idxss{Array2D.set@\lstinline{Array2D.set}}
+\item[\texttt{copy}:] \lstinline{arr:'T [,] -> 'T [,]}.~\\
+  Creates a new array whose elements are copied from \lstinline{arr}.
+  \fsOutputNF{array2DCopy}{\lstinline{Array2D.copy}}\idxss{Array2D.copy@\lstinline{Array2D.copy}}
+\item[\texttt{create}:] \lstinline{m:int -> n:int -> v:'T -> 'T [,]}.~\\
+  Creates an \lstinline{m} by \lstinline{n} array whose elements are set to \lstinline{v}.
+  \fsOutputNF{array2DCreate}{\lstinline{Array2D.create}}\idxss{Array2D.create@\lstinline{Array2D.create}}
+  % \item[\texttt{get}:] \lstinline{'T [,] -> int -> int -> 'T}.~\\
+  %Fetches an element from a 2D array. You can also use the syntax \lstinline{array.[index1,index2]}.
+%  \fsOutputNF{array2DGet}{\lstinline{Array2D.get}}\idxss{Array2D.get@\lstinline{Array2D.get}}
+\item[\texttt{init}:] \lstinline{m:int -> n:int -> f:(int -> int -> 'T) -> 'T [,]}.~\\
+  Creates an \lstinline{m} by \lstinline{n} array whose elements are the result of applying \lstinline{f} to the index of an element.
+  \fsOutputNF{array2DInit}{\lstinline{Array2D.init}}\idxss{Array2D.init@\lstinline{Array2D.init}}
+\item[\texttt{iter}:] \lstinline{f:('T -> unit) -> arr:'T [,] -> unit}.~\\
+  Applies \lstinline{f} to each element of \lstinline{arr}.
+  \fsOutputNF{array2DIter}{\lstinline{Array2D.iter}}\idxss{Array2D.iter@\lstinline{Array2D.iter}}
+\item[\texttt{length1}:] \lstinline{arr:'T [,] -> int}.~\\
+  Returns the length the first dimension of \lstinline{arr}.
+  \fsOutputNF{array2DLength1}{\lstinline{Array2D.length1}}\idxss{Array2D.length1@\lstinline{Array2D.length1}}
+\item[\texttt{length2}:] \lstinline{arr:'T [,] -> int}.~\\
+  Returns the length of the second dimension of \lstinline{arr}.
+  \fsOutputNF{array2DLength2}{\lstinline{Array2D.forall length2}}\idxss{Array2D.length2@\lstinline{Array2D.length2}}
+\item[\texttt{map}:] \lstinline{f:('T -> 'U) -> arr:'T [,] -> 'U [,]}.~\\
+  Creates a new array whose elements are the results of applying \lstinline{f} to each of the elements of \lstinline{arr}.
+  \fsOutputNF{array2DMap}{\lstinline{Array2D.map}}\idxss{Array2D.map@\lstinline{Array2D.map}}
+  % \item[\texttt{set}:] \lstinline{'T [,] -> int -> int -> 'T -> unit}.~\\
+  %Sets the value of an element in an array. You can also use the syntax \lstinline{array.[index1,index2] <- value}.
+%  \fsOutputNF{array2DSet}{\lstinline{Array2D.set}}\idxss{Array2D.set@\lstinline{Array2D.set}}
 \end{description}
 
 \begin{comment}

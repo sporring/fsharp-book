@@ -61,19 +61,19 @@ Consider the example in \Cref{fig:instantiation}.
 \begin{figure}
   \centering
   \begin{tikzpicture} 
-      \begin{class}[text width=4cm]{car}{0,0} 
+      \begin{class}[text width=3.5cm]{car}{0,0} 
         \attribute{// A car has a color}
         \attribute{color : string}
       \end{class}
-      \begin{object}[text width=4cm]{sportsCar}{-5,-2.5}
+      \begin{object}[text width=3.5cm]{sportsCar}{-5,-2.5}
         \instanceOf{car}
         \attribute{color = ``red''}
       \end{object}
-      \begin{object}[text width=4cm]{stationWagon}{0,-2.5}
+      \begin{object}[text width=3.5cm]{stationWagon}{0,-2.5}
         \instanceOf{car}
         \attribute{color = ``green''}
       \end{object}
-      \begin{object}[text width=4cm]{miniBus}{5,-2.5}
+      \begin{object}[text width=3.5cm]{miniBus}{5,-2.5}
         \instanceOf{car}
         \attribute{color = ``blue''}
       \end{object}
@@ -114,7 +114,7 @@ Such functions are called \idx{accessors}.  Internal states with setters and get
 %
 \fs{classGetSet}{Members can act as variables with the built-in get and set functions.}
 % 
-The expression defining \lstinline{get: () -> 'a} and \lstinline{set: 'a -> ()}, where \lstinline{'a} is any type, can be any usual expression. The application calls the \lstinline{get} and \lstinline{set} as if the property were a mutable value. If \lstinline{set} is omitted, then the property acts as a value rather than a variable, and values cannot be assigned to it in the application program.
+The expression defining \mbox{\lstinline{get: () -> 'a}} and \mbox{\lstinline{set: 'a -> ()}}, where \lstinline{'a} is any type, can be any usual expression. The application calls the \lstinline{get} and \lstinline{set} as if the property were a mutable value. If \lstinline{set} is omitted, then the property acts as a value rather than a variable, and values cannot be assigned to it in the application program.
 
 Setters and getters are so common that F\# has a short-hand for this using \keyword{member val value = 0 with get, set}, which creates the internal mutable value \lstinline{value}, but this is discouraged in this text.
 
@@ -143,16 +143,18 @@ Combinations of non-static member definitions are shown in \Cref{classMemberDefi
 The \lstinline{val}-keyword in this context has not been discussed previously.\jon{maybe mention ``Explicit Field'', \url{https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/members/explicit-fields-the-val-keyword}.} \lstinline{staticMemberV} and \lstinline{staticMemberValV} have the same interface. The \lstinline{[<DefaultValue>] val mutable valMutableV : int} has not been discussed and is discouraged, but gives a mutable property that is initialized to the type's default value, e.g., \lstinline{Unchecked.defaultof<int>} in this case. \idx{\lstinline{[<DefaultValue>]}} is called an \idx{attribute}, but will not be discussed further.\jon{Should attributes be included \url{https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/attributes}?} Defining mutable properties is illegal, but allowed using explicit get and set functions. The definitions for \lstinline{valMutableV}, \lstinline{memberValGetSetV} and \lstinline{memberThisGetSetV} gives the same interface to a mutable variable, but with slight variation in how their initial value is set, and how get and set actions can be programmed. In general, \advice{minimize the use of constructions using the \keyword{val}-keyword in class definitions for brevity.}  All the above holds for static definitions except \lstinline{[<DefaultValue>] static val mutable staticValMutableV : int} is illegal.
 
 \end{comment}
+\clearpage
+
 \section{Objects are Reference Types}
 Objects are reference type values, implying that copying objects copies their references, not their values, and their content is stored on \idx{The Heap}, see \Cref{sec:referenceCells}. Consider the example in \Cref{classReference}.
+ Thus, the binding to \lstinline{b} in line~\ref{classReferenceAlias} is an alias to \lstinline{a}, not a copy, and changing object \lstinline{a} also changes \lstinline{b}! This is a common cause of error, and you should \advice{think of objects as arrays.} For this reason, it is often seen that classes implement a copy function returning a new object with copied values, as shown in \Cref{classCopy}.
+ In the example, we see that since \lstinline{b} now is a copy, we do not change it by changing \lstinline{a}. This is called a \idx{copy constructor}.
 %
 \fs{classReference}{Objects assignment can cause aliasing.}
 %
-Thus, the binding to \lstinline{b} in line~\ref{classReferenceAlias} is an alias to \lstinline{a}, not a copy, and changing object \lstinline{a} also changes \lstinline{b}! This is a common cause of error, and you should \advice{think of objects as arrays.} For this reason, it is often seen that classes implement a copy function returning a new object with copied values, e.g., \Cref{classCopy}.
 %
 \fs{classCopy}{A copy method is often needed. Compare with \Cref{classReference}.}
 %
-In the example, we see that since \lstinline{b} now is a copy, we do not change it by changing \lstinline{a}. This is called a \idx{copy constructor}.
 
 \section{Static Classes}
 Classes can act as modules and hold data which is identical for all objects of its type. These are defined using the \idx[static@\keyword{static}]{\keyword{static}}-keyword. And since they do not belong to a single object, but are shared between all objects, they are defined without the self-identifier and accessed using the class name, and they cannot refer to the arguments of the constructor. For example, consider a class whose objects each hold a unique identification number (id): When an object is instantiated, the object must be given the next available identification number. The next available id could be given as an argument to the constructor, however, this delegates the task of maintaining the uniqueness of ids to the application program. It is better to use a static field and delegate the administration of ids completely to the constructors, as demonstrated in \Cref{classStatic}.
@@ -201,7 +203,7 @@ Like methods, constructors can also be overloaded by using the \idx[new@\lstinli
 \highlight{\getrefnumber{classExtraConstructorPrimApp}}%
 }]{classExtraConstructor}{Extra constructors can be added, using \keyword{new}.}
 %
-The top constructor that does not use the \lstinline{new}-keyword is called the \idx{primary constructor}. The body of the additional constructor must call the primary constructor, and the body cannot extend the primary constructor's fields and functions. It is useful to \advice{think of the primary constructor as a superset of arguments and the additional ones as subsets or specializations.} As regular scope rules dictate, the additional constructor has access to the primary constructor's bindings. However, in order to access the object's members, the self identifier has to be explicitly declared, using the \keyword{as}-keyword in the header. E.g., writing \lstinline{new(x : float, y : float) as alsoThis = ...}. However beware. Even though the body of the additional constructor now may access the property \lstinline{alsoThis.x}, this value has first been created once the primary constructor has been called. E.g., calling the primary constructor in the additional constructor as \lstinline{new(x : float, y : float) as alsoThis = classExtraConstructor(fst alsoThis.x, y, defaultSeparator)} will cause an exception at runtime. Code may be executed in additional constructors: Before the call to the primary constructor, \keyword{let} and \keyword{do} statements are allowed. If code is to be executed after the primary constructor has been called, then it must be preceded by the \keyword{then} keyword, as shown in \Cref{classDoThen}.
+The top constructor that does not use the \lstinline{new}-keyword is called the \idx{primary constructor}. The body of the additional constructor must call the primary constructor, and the body cannot extend the primary constructor's fields and functions. It is useful to \advice{think of the primary constructor as a superset of arguments and the additional ones as subsets or specializations.} As regular scope rules dictate, the additional constructor has access to the primary constructor's bindings. However, in order to access the object's members, the self identifier has to be explicitly declared, using the \keyword{as}-keyword in the header. E.g., writing \lstinline{new(x : float, y : float) as alsoThis = ...}. However beware. Even though the body of the additional constructor now may access the property \lstinline{alsoThis.x}, this value has first been created once the primary constructor has been called. E.g., calling the primary constructor in the additional constructor as \lstinline{new(x : float, y : float) as alsoThis = classExtraConstructor(fst alsoThis.x, y, defaultSeparator)} will result in an exception at runtime. Code may be executed in additional constructors: Before the call to the primary constructor, \keyword{let} and \keyword{do} statements are allowed. If code is to be executed after the primary constructor has been called, then it must be preceded by the \keyword{then} keyword, as shown in \Cref{classDoThen}.
 %
 \fs[linebackgroundcolor={%
 \highlightRange{\getrefnumber{classDoThenDoStart}}{\getrefnumber{classDoThenDoEnd}}%
@@ -210,6 +212,7 @@ The top constructor that does not use the \lstinline{new}-keyword is called the 
 }]{classDoThen}{The optional \keyword{do}- and \keyword{then}-keywords allow for computations before and after the primary constructor is called.}
 %
 The \keyword{do}-keyword is often understood to be implied by F\#, e.g., in front of all \lstinline{printf}-statements, but in the above examples they are required where used. This may change in future releases of F\#. F\# allows for many additional constructors, but they must be distinguishable by type.
+\clearpage
 
 \section{Programming Intermezzo: Two Dimensional Vectors}
 Consider the following problem.
@@ -275,7 +278,3 @@ The output of our combined library and application is shown in \Cref{vectorApp}.
 %
 The output is as expected, and for the vector class, our solution seems to be a good compromise between versatility and syntactical bloating.
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
-

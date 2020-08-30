@@ -1,5 +1,5 @@
 let getAFileName () =
-  let mutable filename = Unchecked.defaultof<string>
+  let mutable filename = ""
   let mutable fileExists = false
   while not(fileExists) do
     System.Console.Write("Enter Filename: ")

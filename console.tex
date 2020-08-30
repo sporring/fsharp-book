@@ -14,7 +14,7 @@ When you open a \idx{directory} or \idx{folder} in your preferred operating syst
   \begin{center}
   \subfigure[Linux]{\Tree [.\framebox{/} [.\framebox{home} [. {\framebox{Username}} ] ] {\framebox{usr}} {\framebox{bin}} {\framebox{dev}} {\framebox{...}} ]}
   \subfigure[MacOS X]{\Tree [.\framebox{/} [.\framebox{Users} [. {\framebox{Username}} ] ] {\framebox{usr}} {\framebox{bin}} {\framebox{dev}} {\framebox{etc}} ]}
-  \subfigure[Windows]{\Tree [.\framebox{C:\textbackslash} [.\framebox{Users} [. {\framebox{Username}} ] ] {\framebox{Program Files}} {\framebox{Program Files (x86)}} {\framebox{Windows}} {\framebox{...}} ]}
+  \subfigure[Windows]{\Tree [.\framebox{C:\textbackslash} [.\framebox{Users} [. {\framebox{Username}} ] ] {\framebox{Program Files}} {\framebox{Program Files (x86)}} {\framebox{...}} ]}
     % \scalebox{0.23}
    % {\includegraphics[width=\textwidth]{filehira.png}}
   \end{center}
@@ -25,41 +25,46 @@ When you open a \idx{directory} or \idx{folder} in your preferred operating syst
 There are many predefined console commands, available in the console, and you can also make your own. In the following sections, we will review the most important commands in the three different operating systems. These are summarized in \Cref{tab:Kommandoer}.
 \begin{table}
   \centering
-  \begin{tabular}{|l|l||p{0.3\linewidth}|}
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+  \begin{tabularx}{\linewidth}{|l|l|>{\raggedright\arraybackslash}X|}
     \hline
     Windows & MacOS X/Linux & Description 
     \\ \hline\hline
-    {\lstinline[language=syntax]|dir|}
-            & {\lstinline[language=syntax]|ls|}
+    {\lstinline[language=syntax]!d!}
+            & {\lstinline[language=syntax]!ls!}
                             & Show content of present directory.
     \\ \hline
-    {\lstinline[language=syntax]|cd <*dir*>|} 
-            &{\lstinline[language=syntax]|cd <*dir*>|} 
-                          & Change present directory to {\lstinline[language=syntax]|<*dir*>|}. 
+    {\lstinline[language=syntax]!cd <*d*>!} 
+            &{\lstinline[language=syntax]!cd <*d*>!} 
+                          & Change present directory to {\lstinline[language=syntax]!<*d*>!}. 
     \\ \hline
-    % {\lstinline[language=syntax]|touch <*fil*>|} & opret en tom fil med navnet {\lstinline[language=syntax]|<*fil*>|}. \\ \hline
-    %{\lstinline[language=syntax]|emacs <*fil*>|}
-    %         & Åben {\lstinline[language=syntax]|<*fil*>|} i emacs hvis den findes i den nuværende mappe. Findes den ikke oprettes den her automatisk.   \\ \hline
-    {\lstinline[language=syntax]|mkdir <*dir*>|}
-            & {\lstinline[language=syntax]|mkdir <*dir*>|}
-                          & Create directory {\lstinline[language=syntax]|<*dir*>|}. \\ \hline
-    {\lstinline[language=syntax]|rmdir <*dir*>|}
-            & {\lstinline[language=syntax]|rmdir <*dir*>|}
-                          & Delete {\lstinline[language=syntax]|<*dir*>|} (Warning: cannot be reverted). \\ \hline
-    {\lstinline[language=syntax, keywords={}]|move <*file*> <*file or dir*>|\hspace*{5mm}}% The gobling of <**> causes spacing problems...
-            &{\lstinline[language=syntax, keywords={}]|mv <*file*> <*file or dir*>|}
-                          & Move {\lstinline[language=syntax]|<*fil*>|} to {\lstinline[language=syntax, keywords={}]|<*file or dir*>|}. \\ \hline
-    {\lstinline[language=syntax]|copy <*file1*> <*file2*>|}
-            &{\lstinline[language=syntax]|cp <*file1*> <*file2*>|}
-             & Create a new file called {\lstinline[language=syntax]|<*file2*>|} as a copy of {\lstinline[language=syntax]|<*file1*>|}. \\ \hline
-    {\lstinline[language=syntax]|del <*file*>|}
-            & {\lstinline[language=syntax]|rm <*file*>|}
-                          & delete {\lstinline[language=syntax]|<*file*>|} (Warning: cannot be reverted). \\ \hline
-    {\lstinline[language=syntax, keywords={}]|echo <*string or variable*>|\hspace*{5mm}}
-            & {\lstinline[language=syntax, keywords={}]|echo <*string or variable*>|\hspace*{5mm}}
+    % {\lstinline[language=syntax]!touch <*fil*>!} & opret en tom fil med navnet {\lstinline[language=syntax]!<*fil*>!}. \\ \hline
+    %{\lstinline[language=syntax]!emacs <*fil*>!}
+    %         & Åben {\lstinline[language=syntax]!<*fil*>!} i emacs hvis den findes i den nuværende mappe. Findes den ikke oprettes den her automatisk.   \\ \hline
+    {\lstinline[language=syntax]!mkdir <*d*>!}
+            & {\lstinline[language=syntax]!mkdir <*d*>!}
+                          & Create directory {\lstinline[language=syntax]!<*d*>!}. \\ \hline
+    {\lstinline[language=syntax]!rmdir <*d*>!}
+            & {\lstinline[language=syntax]!rmdir <*d*>!}
+                          & Delete {\lstinline[language=syntax]!<*d*>!} (Warning: cannot be reverted). \\ \hline
+    {\lstinline[language=syntax, keywords={}]!move <*f*> <*f | d*>!\hspace*{5mm}}% The gobling of <**> causes spacing problems...
+            &{\lstinline[language=syntax, keywords={}]!mv <*f*> <*f | d*>!}
+                          & Move {\lstinline[language=syntax]!<*fil*>!} to {\lstinline[language=syntax, keywords={}]!<*f | d*>!}. \\ \hline
+    {\lstinline[language=syntax]!copy <*f1*> <*f2*>!}
+            &{\lstinline[language=syntax]!cp <*f1*> <*f2*>!}
+             & Create a new file called {\lstinline[language=syntax]!<*f2*>!} as a copy of {\lstinline[language=syntax]!<*f1*>!}. \\ \hline
+    {\lstinline[language=syntax]!del <*f*>!}
+            & {\lstinline[language=syntax]!rm <*f*>!}
+                          & delete {\lstinline[language=syntax]!<*f*>!} (Warning: cannot be reverted). \\ \hline
+    {\lstinline[language=syntax, keywords={}]!echo <*s | v*>!\hspace*{5mm}}
+            & {\lstinline[language=syntax, keywords={}]!echo <*s | v*>!\hspace*{5mm}}
                           & Write a string or content of a variable to screen. \\ \hline
-  \end{tabular}\\
-  \caption{The most important console commands for Windows, MacOS X, and Linux.}
+  \end{tabularx}\\
+  \caption{The most important console commands for Windows, MacOS X,
+    and Linux. Here \lstinline[language=syntax]{<*f**>} is shorthand for any filename,
+  \lstinline[language=syntax]{<*d*>} for any directory name,
+\lstinline[language=syntax]{<*s*>} for any string, and
+\lstinline[language=syntax]{<*v*>} for any shell-variable.}
   \label{tab:Kommandoer}
 \end{table}
 
@@ -322,6 +327,3 @@ The search path can be changed by editing the setup file for Bash. On MacOS X it
 
 A useful feature of Bash is that the console can help you write commands. E.g., if you write \lstinline[language=console]{fs} followed by pressing the \lstinline[language=console]{tab}-key, and if Mono is in the search path, then Bash will typically respond by completing the line as \lstinline[language=console]{fsharp}, and by further pressing the \lstinline[language=console]{tab}-key some times, Bash will show the list of options, typically \lstinline[language=console]{fshpari} and \lstinline[language=console]{fsharpc}. Also, most commands have an extensive manual which can be accessed using the \lstinline[language=console]{man} command. E.g., the manual for \lstinline[language=console]{rm} is retrieved by \lstinline[language=console]{man rm}.
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:

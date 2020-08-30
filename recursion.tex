@@ -7,7 +7,7 @@
 Recursion is a central concept in F\# and is used to control flow in loops without the \keyword{for} and \keyword{while} constructions. \Cref{fig:foreverRecursion} illustrates the concept of an infinite loop with recursion. 
 \begin{figure} % We want the figure on the first page with the chapter title
   \centering
-  \includegraphics[width=0.6\textwidth]{recursion}
+  \includegraphics[width=0.6\textwidth]{recursion.png} % for some reason, it does not want to read the pdf-file
   \caption{An infinitely long string of "forever forever forever...", conceptually calculated by \mbox{\lstinline{let rec forever () = "forever " + (forever ()).}}}
   \label{fig:foreverRecursion}
 \end{figure}
@@ -231,6 +231,7 @@ In the example above, we used the \lstinline!even! and \lstinline!odd! function 
 \fsCode{parity}{parity}{A better way to test for parity without recursion.}{}
 %
 This is to be preferred anytime as the solution to the problem. \jon{Here it would be nice to have an intermezzo, giving examples of how to write a recursive program by thinking the problem has been solved.}
+\clearpage
 
 \section{Tracing Recursive Programs}
 \label{sec:recursiveTracing}

@@ -58,6 +58,7 @@ Even though derived classes are different from their base, the derived class inc
 \fs{upCasting}{Objects can be upcasted resulting in an object to appear to be of the base type. Implementations from the derived class are ignored.}
 %
 Here \lstinline{howdy} is derived from \lstinline{hello}, overshadows \lstinline{str}, and adds property \lstinline{altStr}. By upcasting object \lstinline{b}, we create object \lstinline{c} as a copy of \lstinline{b} with all its fields, functions, and members, as if it had been of type \lstinline{hello}. I.e., \lstinline{c} contains the base class version of \lstinline{str} and does not have property \lstinline{altStr}. Objects \lstinline{a} and \lstinline{c} are now of same type and can be put into, e.g., an array as \lstinline{let arr = [|a, c|]}. Previously upcasted objects can also be downcasted again using the \idx{downcast} operator \idx[:?>@\lstinline{:?>}]{\keyword{:?>}}, but the validity of the operation is checked at runtime. Thus, \advice{avoid downcasting when possible.}
+\clearpage
 
 \section{Interfacing with the \lstinline{printf} Family}
 In previous examples, we accessed the property in order to print the contents of objects. Luckily, a more elegant solution is available. Objects can be printed directly, but the result is most often not very useful, as can be seen in \Cref{classPrintf}.
@@ -113,6 +114,7 @@ Inheritance of an abstract base class allows an application to rely on the defin
 Here, two distinctly different classes are defined: \lstinline{house} and \lstinline{person}. These are not related by inheritance, since no sensible common structure seems available. However, they share structures in the sense that they both have an integer property and a \lstinline{float -> float} method. For each of the derived classes, these members have different meanings. Still, some treatment of these members by an application will only rely on their type and not their meaning. E.g., in \Cref{classInterface}, the \lstinline{printfn} function only needs to know the member's type, not its meaning. As a consequence, the application can upcast them both to the implicit abstract base class \lstinline{IValue}, put them in an array, and apply a function using the member definition of \lstinline{IValue} with the higher-order \lstinline{List.iter} function. Another example could be a higher-order function calculating average values: For average values of the number of floors and average value of the length of people's names, the higher-order function would only need to know that both of these classes implement the \lstinline{IValue} interfaces in order to calculate the average of list of either objects' types.
 
 As a final note, inheritance ties classes together in a class hierarchy. Abstract members enforce inheritance and impose constraints on the derived classes. Like abstract classes, interfaces impose constraints on derived classes, but without requiring a hierarchical structure.
+\clearpage
 
 \section{Programming Intermezzo: Chess}
 To demonstrate the use of hierarchies, consider the following problem.
@@ -161,6 +163,7 @@ Many pieces move in runs, e.g., the rook can move horizontally and vertically un
 %
 \fsImplementation{pieces}{pieces}{An extension of chess base.}{}
 %
+\afterpage{\clearpage}%
 The king has the simplest relative movement candidates, being the hypothetical eight neighboring squares. Rooks have a considerably longer list of candidates of relative moves, since it potentially can move to all 7 squares northward, eastward, southward, and westward. This could be hardcoded as 4 potential runs, \lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}. Each run will be based on the list \lstinline{[1..7]}, which gives us the idea to use \lstinline{List.map} to convert a list of single indices \lstinline{[1..7]} into lists of runs as required by \lstinline{candidateRelativeMoves}. Each run may be generated from \lstinline{[1..7]} as
 \begin{quote}
   \begin{tabular}{ll}
@@ -211,7 +214,11 @@ With swap we can write \lstinline{let altMap = swap List.map}. Thus, in \Cref{pi
 \begin{quote}
 \lstinline{swap List.map [1..7]}
 \end{quote}
-is the same as \lstinline{fun e -> List.map e [1..7]}, and thus, \lstinline{candidateRelativeMoves} correctly evaluates to \lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}.
+is the same as \lstinline{fun e -> List.map e [1..7]}, and thus, \lstinline{candidateRelativeMoves} correctly evaluates to
+\begin{quote}
+\lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}.
+\end{quote}
+
 
 The final step will be to design the \lstinline{Board} and \lstinline{chessPiece} classes. The Chess module implements discriminated unions for color and an integer tuple for a position. These are shown in \Cref{chessDiscriminatedUniont}.
 %
@@ -246,7 +253,3 @@ Compiling the library files with the application and executing gives the result 
 %
 We see that the program has correctly determined that initially, the white king has the white rook as its neighbors and due to its location in the corner only has two free positions to move to. The white rook has many and the black king as its neighbor. The black king is free to move to all its eight neighboring fields. After moving the white rook to (3,1) or b4 in regular chess notation, then the white king has no neighbors, and the white rook and the black king are now neighbors with an appropriate restriction on their respective vacant squares. These simple use-tests are in no way a thorough test of the quality of the code, but they give us a good indication that our library offers a tolerable interface for the application, and that at least major parts of the code function as expected. Thus, we conclude this intermezzo.
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
-

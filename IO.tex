@@ -439,6 +439,7 @@ In the \lstinline!System.IO.Directory! class there are a number of other frequen
   \caption{Some methods of the \lstinline!System.IO.Directory! class.}
   \label{tab:directory}
 \end{table}
+\clearpage
 
 In the \lstinline!System.IO.Path! class there are a number of other frequently used functions summarized in \Cref{tab:path}.%
 \idxss{\lstinline{System.IO.Path.Combine}}%
@@ -474,7 +475,32 @@ In the \lstinline!System.IO.Path! class there are a number of other frequently u
   \caption{Some methods of the \lstinline!System.IO.Path! class.}
   \label{tab:path}
 \end{table}
-\clearpage
+
+\section{Programming intermezzo: Name of Existing File Dialogue}
+A typical problem when working with files is
+\begin{problem}
+  Ask the user for the name of an existing file.
+\end{problem}
+Such dialogues often require the program to aid the user, e.g., by telling the user which files are available, and by checking that the filename entered is an existing file.
+
+We will limit our request to the present directory and use \lstinline{System.Console.ReadLine} to get input from the user. Our strategy will be twofold. Firstly we will query the filesystem for the existing files using \lstinline{System.IO.Directory.GetFiles}, and print these to the screen. Secondly, we will use \lstinline{System.IO.File.Exists} to ensure that a file exists with the entered filename. We use the \lstinline{Exists} function rather than examining the array obtained with \lstinline{GetFiles}, since files may have been added or removed, since the \lstinline{GetFiles} was called. A solution is shown in \Cref{filenamedialogue}.
+%
+\fsCode{filenamedialogue}{filenamedialogue}{Ask the user to input a name of an existing file.}{}
+%
+Note that it is programmed using a \lstinline{while}-loop and with a flag \lstinline{fileExists} used to exit the loop. The solution has a caveat: What should be done if the user decides not to enter a filename at all. \advice{Including a 'cancel'-option is a good style for any user interface, and should be offered when possible.} In a text-based dialogue, this would require us to use an input, which cannot be a filename, to ensure that all possible filenames and 'cancel'-option is available to the user. This problem has not been addressed in the code. 
+
+\begin{comment}
+A practice problem could be,
+\begin{problem}
+  Ask the user for the name of an existing file, read the file and print it in reverse order.
+\end{problem}
+This could be solved as,
+%
+\fsCode{reverseFile}{reverseFileCode}{Ask user to input a file, and print the file in reverse order.}{}
+%
+\fsOutput{reverseFile}{See \Cref{reverseFileCode}.}{}%
+%
+\end{comment}
 
 \section{Reading From the Internet}
 The internet is a global collection of computers that are connected in a network using the internet protocol suite TCP/IP. The internet is commonly used for transport of data such as emails and for offering services such as web pages on the World Wide Web. Web resources are identified by 
@@ -513,29 +539,6 @@ The higher-order function \idx[using@\lstinline{using}]{\lstinline{using}} takes
 \fsCode{using}{using}{The \lstinline{using} function executes a function on an object and releases its disposable resources. Compare with \Cref{useBinding}.}{}
 %
 The main difference between \keyword{use} and \lstinline{using} is that resources allocated using \keyword{use} are disposed at the end of its scope, while \lstinline{using} disposes the resources after the execution of the function in its argument. In spite of the added control of \lstinline{using}, we \advice{prefer \keyword{use} over \lstinline{using} due to its simpler structure.}
-
-\section{Programming intermezzo: Name of Existing File Dialogue}
-A typical problem when working with files is
-\begin{problem}
-  Ask the user for the name of an existing file.
-\end{problem}
-Such dialogues often require the program to aid the user, e.g., by telling the user which files are available, and by checking that the filename entered is an existing file. A solution could be,
-%
-\fsCode{filenamedialogue}{filenamedialogue}{Ask the user to input a name of an existing file.}{}
-%
-
-\begin{comment}
-A practice problem could be,
-\begin{problem}
-  Ask the user for the name of an existing file, read the file and print it in reverse order.
-\end{problem}
-This could be solved as,
-%
-\fsCode{reverseFile}{reverseFileCode}{Ask user to input a file, and print the file in reverse order.}{}
-%
-\fsOutput{reverseFile}{See \Cref{reverseFileCode}.}{}%
-%
-\end{comment}
 
 \end{document}
 

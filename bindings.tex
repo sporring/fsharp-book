@@ -180,6 +180,7 @@ Had we intended to print the two different values of \lstinline!p!, then we shou
 %
 %Here, the lexical scope of \lstinline!let p = 4! is for the nested scope, which ends at \lexeme{)}, returning to the lexical scope of \lstinline!let p = 3 in ...!. %Alternatively, the \keyword{begin} and \keyword{end} keywords could equally have been used.
 %\fs{letValueScopeBlockAlternative}{}
+\clearpage
 
 \section{Function Bindings}
 \label{sec:functions}
@@ -289,6 +290,7 @@ It defines two functions \lstinline{mul} and \lstinline{applyFactor}, where the 
   = &\left((\text{\lstinline{x}}, \text{\lstinline{fct}}), \left(\text{\lstinline{body}}\right),\left(\text{\lstinline{factor}} \rightarrow 2.0\right)\right)
 \end{align}
 where lazily write \lstinline{body} instead of the whole function's body.  The function \lstinline{mul} does not use its environment, and everything needed to evaluate its expression are values for its arguments. The function \lstinline{applyFactor} also takes two arguments, a function and a value. It uses \lstinline{factor} from the environment, thus this is stored in its closure. When \lstinline{mul} is given as an argument in \Cref{functionFirstClass} line~\ref{functionFirstClassApplyFactor}, then it is its closure which is given to \lstinline{applyFactor}, and the closure contains everything that \lstinline{applyFactor} requires to use \lstinline{mul}. Likewise, if \lstinline{applyFactor} is given as argument to yet another function, then its closure includes the relevant part of its environment at the time of definition, \lstinline{factor}, such that when \lstinline{applyFactor} is applied to two arguments, then its closure contains everything needed to evaluate its expression.
+\clearpage
 
 \section{Operators}
 \label{sec:operators}
@@ -438,11 +440,12 @@ The function \lstinline{System.Console.ReadLine} takes a unit value as an argume
 %
 and an example dialogue is shown in \Cref{userDialoguePrintf}.
 %
-\fsOutput{userDialoguePrintf}{An example dialogue of running \Cref{userDialoguePrintfCode}. What the user typed has been framed in red boxes.}{}%
-\FrameArea{userDialoguePrintf_1-tl}{userDialoguePrintf_1-br}%
-\FrameArea{userDialoguePrintf_2-tl}{userDialoguePrintf_2-br}%
+\fsOutput{userDialoguePrintf}{An example dialogue of running \Cref{userDialoguePrintfCode}. The user typed ``3.5'' and ``7.4''.}{}%
+%\FrameArea{userDialoguePrintf_1-tl}{userDialoguePrintf_1-br}%
+%\FrameArea{userDialoguePrintf_2-tl}{userDialoguePrintf_2-br}%
 %
 Note that the string is immediately cast to floats such that we can multiply the input using the float multiplication operator. This also implies that if the user inputs a non-number, then \lstinline[language=console]{mono} will halt with an error message.
+\clearpage
 
 \section{Variables}
 \label{sec:mutableValues}

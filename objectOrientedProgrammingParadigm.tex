@@ -123,32 +123,32 @@ Relations between classes and objects are indicated by lines and arrows. The mos
       % \draw[splitline] (0,3) --(8,3);
       \node [left] at (-2,5) {Associate:};
       \node (associateLeft) [left] at (0,5) {HostA};
-      \node (associateRight) [right] at (8,5) {HostB};
+      \node (associateRight) [right] at (6,5) {HostB};
       \association{associateLeft}{objectsAinB}{0..1}{associateRight}{objectsBinA}{0..*} ;
       
       \node [left] at (-2,4) {\parbox[r]{2.5cm}{\raggedleft Unidirectional associate:}};
       \node (uniAssociateLeft) [left] at (0,4) {Host};
-      \node (uniAssociateRight) [right] at (8,4) {Guest};
+      \node (uniAssociateRight) [right] at (6,4) {Guest};
       \unidirectionalAssociation{uniAssociateLeft}{guestObj}{0..*}{uniAssociateRight};
 
       \node [left] at (-2,3) {Aggregate:};
       \node (aggregateLeft) [left] at (0,3) {Host};
-      \node (aggregateRight) [right] at (8,3) {Guest};
+      \node (aggregateRight) [right] at (6,3) {Guest};
       \aggregation{aggregateLeft}{guestObj}{4}{aggregateRight};
       
       \node [left] at (-2,2) {Compose:};
       \node (composeLeft) [left] at (0,2) {Owner};
-      \node (composeRight) [right] at (8,2) {Dependent};
+      \node (composeRight) [right] at (6,2) {Dependent};
       \composition{composeLeft}{depObj}{1..*}{composeRight};
       
       \node [left] at (-2,1) {Implement:};
       \node (interfaceDerived) [left] at (0,1) {Derived};
-      \node (interfaceBase) [right] at (8,1) {Interface};
+      \node (interfaceBase) [right] at (6,1) {Interface};
       \draw[umlcd style implement line] (interfaceBase) -- (interfaceDerived);
       
       \node [left] at (-2,0) {Inherit:};
       \node (inheritDerived) [left] at (0,0) {Derived};
-      \node (inheritBase) [right] at (8,0) {Base};
+      \node (inheritBase) [right] at (6,0) {Base};
       \draw[umlcd style inherit line] (inheritBase) -- (inheritDerived);
     \end{tikzpicture}
   }
@@ -175,9 +175,9 @@ Bidirectional association means that classes know about each other. The UML nota
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \begin{class}{HostA}{0,0}
+    \begin{class}[text width=0.2\linewidth]{HostA}{0,0}
     \end{class}
-    \begin{class}{HostB}{11,0}
+    \begin{class}[text width=0.2\linewidth]{HostB}{9,0}
     \end{class} 
     \association{HostA}{objectsAinB}{0..1}{HostB}{objectsBinA}{0..*}
   \end{tikzpicture}
@@ -203,9 +203,9 @@ If the association is unidirectional, then an arrow is added for emphasis, as sh
   \centering
   \begin{tikzpicture}
     % \draw[help lines] (-7,-6) grid (6,0);
-    \begin{class}{Host}{0,0}
+    \begin{class}[text width=0.2\linewidth]{Host}{0,0}
     \end{class}
-    \begin{class}{Guest}{9,0}
+    \begin{class}[text width=0.2\linewidth]{Guest}{9,0}
     \end{class}
     \unidirectionalAssociation{Host}{guestObj}{1}{Guest}
   \end{tikzpicture}  
@@ -222,9 +222,9 @@ Here, the \lstinline{student} is unidirectionally associated with a \lstinline{t
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \begin{class}{student}{0,0}
+    \begin{class}[text width=0.2\linewidth]{student}{0,0}
     \end{class}
-    \begin{class}{teacher}{9,0}
+    \begin{class}[text width=0.2\linewidth]{teacher}{9,0}
     \end{class} 
     \unidirectionalAssociation{student}{}{}{teacher}
   \end{tikzpicture}
@@ -239,9 +239,9 @@ Aggregation is illustrated using a diamond tail and an open arrow, as shown in \
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \begin{class}{Host}{0,0}
+    \begin{class}[text width=0.2\linewidth]{Host}{0,0}
     \end{class}
-    \begin{class}{Guest}{9,0} 
+    \begin{class}[text width=0.2\linewidth]{Guest}{9,0} 
     \end{class}
     \aggregation{Host}{guestObj}{4}{Guest}
   \end{tikzpicture}
@@ -258,11 +258,11 @@ In aggregated relations, there is a sense of ownership, and in the example, the 
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \begin{class}{author}{0,0}
+    \begin{class}[text width=0.2\linewidth]{author}{0,0}
     \end{class}
-    \begin{class}{reader}{9,0} 
+    \begin{class}[text width=0.2\linewidth]{reader}{9,0} 
     \end{class}
-    \begin{class}{book}{4.5,2}
+    \begin{class}[text width=0.2\linewidth]{book}{4.5,2}
     \end{class}
     \aggregation{author}{}{}{book}
     \aggregation{reader}{}{}{book}
@@ -276,9 +276,9 @@ A compositional relationship is a specialization of aggregations. As an example,
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \begin{class}{Owner}{0,0} 
+    \begin{class}[text width=0.2\linewidth]{Owner}{0,0} 
     \end{class}
-    \begin{class}{Dependent}{9,0}
+    \begin{class}[text width=0.2\linewidth]{Dependent}{9,0}
     \end{class}
     \composition{Owner}{depObj}{1..*}{Dependent}
   \end{tikzpicture}
@@ -295,9 +295,9 @@ In \Cref{umlComposition}, a \lstinline{dog} object creates four \lstinline{leg} 
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \begin{class}{dog}{0,0} 
+    \begin{class}[text width=0.2\linewidth]{dog}{0,0} 
     \end{class}
-    \begin{class}{leg}{9,0}
+    \begin{class}[text width=0.2\linewidth]{leg}{9,0}
     \end{class}
     \composition{dog}{}{}{leg}
   \end{tikzpicture}
@@ -335,12 +335,12 @@ In \Cref{umlInheritance}, the \lstinline{student} and the \lstinline{teacher} cl
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \begin{class}{person}{4.5,2}
+    \begin{class}[text width=0.2\linewidth]{person}{4.5,2}
     \end{class}
-    \begin{class}{student}{0,0}
+    \begin{class}[text width=0.2\linewidth]{student}{0,0}
       \inherit{person}
     \end{class}
-    \begin{class}{teacher}{9,0} 
+    \begin{class}[text width=0.2\linewidth]{teacher}{9,0} 
       \inherit{person}
     \end{class}
   \end{tikzpicture}
@@ -374,12 +374,12 @@ In \Cref{umlInterface}, the \lstinline{television} and the \lstinline{car} class
 \begin{figure}
   \centering
   \begin{tikzpicture}
-    \begin{class}{button}{4.5,2}
+    \begin{class}[text width=0.2\linewidth]{button}{4.5,2}
     \end{class}
-    \begin{class}{television}{0,0}
+    \begin{class}[text width=0.2\linewidth]{television}{0,0}
       \implement{button}
     \end{class}
-    \begin{class}{car}{9,0} 
+    \begin{class}[text width=0.2\linewidth]{car}{9,0} 
       \implement{button}
     \end{class}
   \end{tikzpicture}
@@ -403,7 +403,7 @@ For visual flair, modules and namespaces are often visualized as \idx[package]{p
         \attribute{aString : string}
         \operation{writeMessage : () -> ()}
       \end{class}
-      \begin{class}[text width=6cm]{Derived}{4, -4}
+      \begin{class}[text width=5.1cm]{Derived}{4, -4}
         \inherit{Base} 
         \attribute{dictionary : string list}
         \operation{checkSpelling : string -> bool}
@@ -475,7 +475,8 @@ With this description, we see that 'start signal' can be included as a natural p
   \centering
   \begin{tikzpicture} 
     \begin{package}{Race}
-      \begin{class}[text width=6cm]{Game}{-4,0} 
+      \footnotesize
+      \begin{class}[text width=5.5cm]{Game}{-4,0} 
         \attribute{// Racing clock}
         \attribute{time : int = 0}
         \operation{// Setup game}
@@ -492,7 +493,7 @@ With this description, we see that 'start signal' can be included as a natural p
         \operation{// finish conditions are checked. }
         \operation{race:  () -> () }
       \end{class}
-      \begin{class}[text width=6.5cm]{Vehicle}{4.5,0} 
+      \begin{class}[text width=5.5cm]{Vehicle}{3.3,0} 
         \attribute{// size as a circle}
         \attribute{size : int}
         \attribute{// Present coordinate}
@@ -510,7 +511,7 @@ With this description, we see that 'start signal' can be included as a natural p
         \operation{// Perform crash action}
         \operation{crash :  () -> () }
       \end{class}
-      \begin{class}[text width=6cm]{Player}{4.5,-12.1} 
+      \begin{class}[text width=5.5cm]{Player}{3.3,-9.1} 
         \attribute{// Number of rounds remaining}
         \attribute{roundsLeft : int option = None}
         \attribute{// Human or computer player}
@@ -518,7 +519,7 @@ With this description, we see that 'start signal' can be included as a natural p
         \operation{// Query user for acceleration}
         \operation{getAction:  () -> (int * int) option}
       \end{class}
-      \begin{class}[text width=6cm]{Track}{-4,-11}
+      \begin{class}[text width=5.5cm]{Track}{-4,-8.2}
         \attribute{// A curve as by a list of}
         \attribute{// coordinates}
         \attribute{shape : (int * int) list}
@@ -547,7 +548,3 @@ In the present description, there will be a single Game object that initializes 
 
 Having created a design for a racing game, we are now ready to start coding (Step~\ref{item:objectMockup}--). It is not uncommon that transforming our design into code will reveal new structures and problems that possibly require our design to be updated. Nevertheless, a good design phase is almost always a sure course to avoid many problems once coding, since the design phase allows the programmer to think about the problem from a helicopter perspective before tackling details of specific sub-problems.
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
-

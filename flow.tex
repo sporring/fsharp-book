@@ -122,6 +122,7 @@ are invalid, since F\# is not smart enough to realize that the type of the expre
 \mbox{\lstinline!let a = if true then 3 else 4!}
 \end{quote}
 is the only valid expression of the 3. In practice, F\# assumes that the omitted branch returns \lexeme{()}, and thus it is fine to say \mbox{\lstinline!let a = if true then ()!} and \mbox{\lstinline!if true then printfn "hej"!}. Nevertheless, it is good practice in F\# to always include an \keyword{else} branch.
+\clearpage
 
 \section{Programming Intermezzo: Automatic Conversion of Decimal to Binary Numbers}
 Using loops and conditional expressions, we are now able to solve the following problem:

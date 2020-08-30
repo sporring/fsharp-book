@@ -131,6 +131,7 @@ Discriminated union patterns are similar. For discriminated unions with argument
 \fs{unionPattern}{Matching on discriminated union types.}
 %
 In the \lstinline{project}-function, three-dimensional vectors are projected to two dimensions by removing the third element. Two-dimensional vectors are unchanged. The example uses the wildcard pattern to emphasize that the third element of three-dimensional vectors is ignored. Named arguments can also be matched, in which case \lexeme{;} is used instead of \lexeme{,} to delimit the fields in the match.
+\clearpage
 
 \section{Disjunctive and Conjunctive Patterns}
 Patterns may be combined using the \idx[|@\lstinline{|}]{\lexeme{|}} and \idx[{&}@\lstinline{&}]{\lexeme{&}} lexemes. These patterns are called disjunctive and conjunctive patterns, respectively, and work similarly to their logical operator counter parts, \lexeme{||} and \lexeme{&&}.
@@ -183,6 +184,7 @@ In the example, we use the \lstinline[language=syntax]{(|<*caseName*>|_|])} vari
 \fs{activeMultiCasePattern}{Multi-case active patterns have a syntactical structure similar to discriminated unions.}
 %
 In this example, we define three cases in line~\ref{activeMultiCasePatternDef}. The result of the active pattern function must be one of these cases. For the \keyword{match}-expression, the match is based on the output of the active pattern function, hence in line~\ref{activeMultiCasePatternApp}, the case expression is executed when the result of applying the active pattern function to the input expression \lstinline{i} is \lstinline{Gold}. In this case, a solution based on discriminated unions would probably be clearer.
+\clearpage
 
 \section{Static and Dynamic Type Pattern}
 \label{sec:staticNDynamicTypePattern}
@@ -198,36 +200,36 @@ In contrast to static type matching, \idx[dynamic type pattern]{dynamic type mat
 %
 In F\#, all types are also objects whose type is denoted \lstinline{obj}. Thus, the example uses the generic type when defining the argument to \lstinline{isString}, and then dynamic type pattern matching for further processing. See \Cref{chap:oop} for more on objects. Dynamic type patterns are often used for analyzing exceptions, which is discussed in \Cref{sec:exceptions}. While dynamic type patterns are useful, they imply runtime checking, and \advice{it is almost always better to prefer compile time over runtime type checking.}
 
-\begin{comment} 
-\section{Programming intermezzo} 
+% \begin{comment} 
+% \section{Programming intermezzo} 
 
-Conditional expressions are so common that a short-hand notation called \idx{pattern matching} is available in F\#. For the Consider the task, 
-\begin{problem}
-  Write a function that given $n$ writes the sentence, ``I have n apple(s)'', where the plural 's' is added appropriately.
-\end{problem}
-For this we need to test on $n$'s size, and one option is to use conditional expressions like,
-%
-\fs{matchWith}{Using the \keyword{match} -- \keyword{with} programming construct to vary calculation based on the input value.}
-%
-Here the \keyword{match} -- \keyword{with} keywords starts a sequence of conditions separated by the \lexeme{|} lexeme, where the default operator is the \lexeme{=} comparison operator, but where others can be used with the \keyword{when}. The syntax of \keyword{match} expressions is, 
-\begin{lstlisting}[language=ebnf]
-  pat = const | "_" | ... guard = "when" expr rule = pat [guard] ->
-  expr rules = "|" rule | "|" rule rules (* first "|'' is optional' *)
-  expr = ...
-  | "match" expr "with" rules (* match expression *)
-  | "function" rules (* matching function expression *)
-  | ...
-\end{lstlisting}
-As for conditional expressions, the rules are treated sequentially from first to last, and the expression following the first rule with a true condition is the the result of the entire expression. The rules are versatile in their possible expression, e.g., the line \lstinline!| 1 -> "I have no apples"! is equivalent to \lstinline!elif n < 1 then "I have no apples"|, and the \lstinline!| \_ -> "I have " + (string n) + " apples"!, matches the \lstinline!else "I have " + (string n) + " apples"!, since the \lexeme{_} lexeme is a wildcard pattern matching anything. Finally, the first rule is a guarded rule indicated by the \keyword{when} keyword, \lstinline!i when i < 0 -> "I owe " + (string -i) + " apples"!. It uses the optional disregard of the \lexeme{|} lexeme and is equivalent to \lstinline!if n < 0 then "I owe " + (string -n) + " apples"!. Guarded rules can be any rules, and here we used the identifier \lstinline!i! meaning \lstinline!let i = n in if i < 0 then ...!, i.e., \lstinline!n! is renamed. One way to think of guarded expressions is that \lstinline!i when i < 0! is a set, and the condition is on \lstinline!n! being part of the set or not.
+% Conditional expressions are so common that a short-hand notation called \idx{pattern matching} is available in F\#. For the Consider the task, 
+% \begin{problem}
+%   Write a function that given $n$ writes the sentence, ``I have n apple(s)'', where the plural 's' is added appropriately.
+% \end{problem}
+% For this we need to test on $n$'s size, and one option is to use conditional expressions like,
+% %
+% \fs{matchWith}{Using the \keyword{match} -- \keyword{with} programming construct to vary calculation based on the input value.}
+% %
+% Here the \keyword{match} -- \keyword{with} keywords starts a sequence of conditions separated by the \lexeme{|} lexeme, where the default operator is the \lexeme{=} comparison operator, but where others can be used with the \keyword{when}. The syntax of \keyword{match} expressions is, 
+% \begin{lstlisting}[language=ebnf]
+%   pat = const | "_" | ... guard = "when" expr rule = pat [guard] ->
+%   expr rules = "|" rule | "|" rule rules (* first "|'' is optional' *)
+%   expr = ...
+%   | "match" expr "with" rules (* match expression *)
+%   | "function" rules (* matching function expression *)
+%   | ...
+% \end{lstlisting}
+% As for conditional expressions, the rules are treated sequentially from first to last, and the expression following the first rule with a true condition is the the result of the entire expression. The rules are versatile in their possible expression, e.g., the line \lstinline!| 1 -> "I have no apples"! is equivalent to \lstinline!elif n < 1 then "I have no apples"|, and the \lstinline!| \_ -> "I have " + (string n) + " apples"!, matches the \lstinline!else "I have " + (string n) + " apples"!, since the \lexeme{_} lexeme is a wildcard pattern matching anything. Finally, the first rule is a guarded rule indicated by the \keyword{when} keyword, \lstinline!i when i < 0 -> "I owe " + (string -i) + " apples"!. It uses the optional disregard of the \lexeme{|} lexeme and is equivalent to \lstinline!if n < 0 then "I owe " + (string -n) + " apples"!. Guarded rules can be any rules, and here we used the identifier \lstinline!i! meaning \lstinline!let i = n in if i < 0 then ...!, i.e., \lstinline!n! is renamed. One way to think of guarded expressions is that \lstinline!i when i < 0! is a set, and the condition is on \lstinline!n! being part of the set or not.
 
-Using lightweight syntax, the rules may be put on separate lines but must start in the column, where the \keyword{match} starts or greater.\spec{Spec-4.0 weirdness: Offside rule for matching is different for function.} Match with can only take one identifier, but this can be tuples for matching with combinations of identifiers, see \Cref{chap:lists} for more on tuples. A \keyword{match} expression is general but is most often seen as the initial part of a function definition. This is so common, that F\# has a special syntax integrating function definitions and match with expressions using the \idx[function@\lstinline{function}]{\keyword{function}} keyword,
-%
-\fs{functionKeyword}{Function definition and \keyword{match} expressions are integrated using the \keyword{function} keyword. Compare with \Cref{matchWith}}
-%
-Comparing with \Cref{matchWith} notice that the function definition does not explicitly name an argument but assumes one, following the \keyword{function} follows immediately the rules, and the wildcard pattern \lexeme{_} is replaced with an identifier without any guards, which thus matches everything. Replacing the wildcard pattern with a name has the advantage that this name can be used locally in the expression belonging to this rule, i.e., it acts as a \lstinline!let n = ! on the implicit argument of the function. Implicit arguments make the code hard to read and, thus \advice{the use of function
-  definitions with the keyword \keyword{function} should be
-  avoided.}\jon{Should we extend this with a more detail description
-  of possibilities from Spec-4.0 Chapter 7?}
- \end{comment}
+% Using lightweight syntax, the rules may be put on separate lines but must start in the column, where the \keyword{match} starts or greater.\spec{Spec-4.0 weirdness: Offside rule for matching is different for function.} Match with can only take one identifier, but this can be tuples for matching with combinations of identifiers, see \Cref{chap:lists} for more on tuples. A \keyword{match} expression is general but is most often seen as the initial part of a function definition. This is so common, that F\# has a special syntax integrating function definitions and match with expressions using the \idx[function@\lstinline{function}]{\keyword{function}} keyword,
+% %
+% \fs{functionKeyword}{Function definition and \keyword{match} expressions are integrated using the \keyword{function} keyword. Compare with \Cref{matchWith}}
+% %
+% Comparing with \Cref{matchWith} notice that the function definition does not explicitly name an argument but assumes one, following the \keyword{function} follows immediately the rules, and the wildcard pattern \lexeme{_} is replaced with an identifier without any guards, which thus matches everything. Replacing the wildcard pattern with a name has the advantage that this name can be used locally in the expression belonging to this rule, i.e., it acts as a \lstinline!let n = ! on the implicit argument of the function. Implicit arguments make the code hard to read and, thus \advice{the use of function
+%   definitions with the keyword \keyword{function} should be
+%   avoided.}\jon{Should we extend this with a more detail description
+%   of possibilities from Spec-4.0 Chapter 7?}
+%  \end{comment}
 \end{document}
 
