@@ -28,7 +28,7 @@ In lightweight syntax, this would be as shown in \Cref{countWhileLightweight}.
 %
 Notice that although the expression following the condition is preceded with a \keyword{do} keyword, and \lstinline[language=syntax]{do <*expr*>} is a \lstinline{do}-binding, the keyword \keyword{do} is mandatory. 
 
-Counters are so common that a special syntax has been reserved for loops using counters. These are called \idx[for@\lstinline{for}]{\keyword{for}}-loops. For-loops come in several variants, and here we will focus on the one using an explicit counter. Its syntax is:
+Counters are so common that a special syntax has been reserved for loops using counters. These are called \idx[for-to@\lstinline{for}-\lstinline{to}]{\keyword{for}-\keyword{to}}-loops. For-loops come in several variants, and here we will focus on the one using an explicit counter. Its syntax is:
 %
 \begin{verbatimwrite}{\ebnf/forLoop.ebnf}
 for <*ident*> = <*firstExpr*> to <*lastExpr*> do <*bodyExpr*> [*done*]
@@ -45,6 +45,12 @@ As this interactive script demonstrates, the identifier \lstinline!i! takes all 
 %
 \fs{countLightweight}{Counting from 1 to 10 using a \keyword{for}-loop using the lightweight syntax.}
 %
+
+Counting backwards is sufficiently common that F\# has a \idx[for-downto@\lstinline{for}-\lstinline{downto}]{\keyword{for}-\keyword{downto}} structure, which works exactly like a \keyword{for}-\keyword{to}-loop except that the counter is decreased by 1 in each iteration. An example of this is shown in \Cref{countLightweightBackwards}.
+%
+\fs{countLightweightBackwards}{Counting from 10 to 1 using a \keyword{for}-\keyword{downto}-loop using the lightweight syntax.}
+%
+
 
 To further compare for- and while-loops, consider the following problem.
 \begin{problem}
