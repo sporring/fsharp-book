@@ -50,10 +50,10 @@ and Board () =
   /// Produce string of board for, e.g., the printfn function.
   override this.ToString() =
     let mutable str = ""
-    for i = 0 to Array2D.length1 _board - 1 do
-      str <- str + string (7-i)
+    for i = Array2D.length1 _board - 1 downto 0 do
+      str <- str + string i
       for j = 0 to Array2D.length2 _board - 1 do
-        let p =  _board.[7-i,j]
+        let p =  _board.[i,j]
         let pieceStr =
             match p with
               None -> " "; 
