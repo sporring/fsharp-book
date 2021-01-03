@@ -161,9 +161,10 @@ For a piece on the board, its available moves depend on its type and the other p
 
 Many pieces move in runs, e.g., the rook can move horizontally and vertically until there is another piece. Vacant squares behind the blocking piece are unavailable. For a rook, we must analyze four runs: northward, eastward, southward, and westward. For each run, we must consult the board to see how many vacant fields there are in that direction, and which is the piece blocking, if any. Thus, we decide that the board must have a function that can analyze a list of runs, and that the result is concatenated into a single list of vacant squares and a single list of neighboring pieces, if any. This function we call \lstinline{getVacentNNeighbours}. And so we arrive at \Cref{pieces}.
 %
-\fsImplementation{pieces}{pieces}{An extension of chess base.}{}
+\fsImplementation{pieces}{pieces}{An extension of chess base.}{lastline=29}
 %
-\afterpage{\clearpage}%
+\clearpage%
+
 The king has the simplest relative movement candidates, being the hypothetical eight neighboring squares. Rooks have a considerably longer list of candidates of relative moves, since it potentially can move to all 7 squares northward, eastward, southward, and westward. This could be hardcoded as 4 potential runs, \lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}. Each run will be based on the list \lstinline{[1..7]}, which gives us the idea to use \lstinline{List.map} to convert a list of single indices \lstinline{[1..7]} into lists of runs as required by \lstinline{candidateRelativeMoves}. Each run may be generated from \lstinline{[1..7]} as
 \begin{quote}
   \begin{tabular}{ll}
@@ -175,11 +176,11 @@ The king has the simplest relative movement candidates, being the hypothetical e
 \end{quote}
 and which can be combined as a list of 4 lists of runs. Further, since functions are values, we can combine the 4 different anonymous functions into a list of functions and use a for-loop to iterate over the list of functions. This is shown in \Cref{imperativeRuns}.
 %
-\fsCode{imperativeRuns}{imperativeRuns}{Calculating the runs of a rook using imperative programming.}{}
+\fsCode{imperativeRuns}{imperativeRuns}{Calculating the runs of a rook using imperative programming.}{firstline=7,firstnumber=30}
 %
 However, this solution is imperative in nature and does not use the elegance of the functional programming paradigm. A direct translation into functional programming is given in \Cref{functionalRuns}.
 %
-\fsCode{functionalRuns}{functionalRuns}{Calculating the runs of a rook using functional programming.}{}
+\fsCode{functionalRuns}{functionalRuns}{Calculating the runs of a rook using functional programming.}{firstline=7,firstnumber=30}
 %
 The functional version is slightly longer, but avoids the mutable variable.
 
@@ -199,7 +200,7 @@ which produces \lstinline{[a1"; a2"; "a3"; "b1"; "b2"; "b3"]}.
 The code for \lstinline{candidateRelativeMoves}, shown in \Cref{pieces}, is similar in spirit to the letter and digit example above, but is further complicated by the fact that \lstinline{indToRel} is a list of functions.
 \end{comment}
 %
-\fsCode{ListMapRuns}{ListMapRuns}{Calculating the runs of a rook using double \lstinline{List.map}s.}{}
+\fsCode{ListMapRuns}{ListMapRuns}{Calculating the runs of a rook using double \lstinline{List.map}s.}{firstline=7,firstnumber=30}
 %
 % This produces the correct list of runs, \lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}.
 The anonumous function,
@@ -240,6 +241,7 @@ For ease of use in an application, \lstinline{Board} implements \lstinline{Item}
 \fsImplementation{chess}{chessBoardItem}{A chess base: Board header, constructor, and non-static members.}{firstnumber=44,firstline=44,lastline=73} % Absolute reference!
 %
 Note that for efficiency, location is also stored in each piece, so \lstinline{set} also needs to update the particular piece's position, as done in line~\ref{chessItemSet}. Note also that the board is printed with the first coordinate of the board being rows and second columns, and such that element (0,0) is at the bottom right complying with standard chess notation.
+\clearpage%
 
 The main computations are done in the static methods of the board, as shown in \Cref{chessBoardgetVacantNOccupied}. 
 %

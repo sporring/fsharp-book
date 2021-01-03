@@ -24,7 +24,7 @@ type chessPiece(color : Color) =
     board.getVacantNNeighbours this (*//§\label{chessPieceEnd}§*)
 /// A board §\label{chessBoardBegin}§
 and Board () =
-  let _array = Collections.Array2D.create<chessPiece option> 8 8 None
+  let _board = Collections.Array2D.create<chessPiece option> 8 8 None
   /// Wrap a position as option type
   let validPositionWrap (pos : Position) : Position option =
     let (rank, file) = pos // square coordinate
@@ -43,34 +43,25 @@ and Board () =
     |> List.choose validPositionWrap
   /// Board is indexed using .[,] notation
   member this.Item
-    with get(a : int, b : int) = _array.[a, b]
+    with get(a : int, b : int) = _board.[a, b]
     and set(a : int, b : int) (p : chessPiece option) = 
       if p.IsSome then p.Value.position <- Some (a,b)  (*//§\label{chessItemSet}§*)
-      _array.[a, b] <- p
+      _board.[a, b] <- p
   /// Produce string of board for, e.g., the printfn function.
   override this.ToString() =
-    let rec boardStr (i : int) (j : int) : string =
-      match (i,j) with 
-        (8,0) -> ""
-        | _ ->
-          let stripOption (p : chessPiece option) : string = 
+    let mutable str = ""
+    for i = 0 to Array2D.length1 _board - 1 do
+      str <- str + string (7-i)
+      for j = 0 to Array2D.length2 _board - 1 do
+        let p =  _board.[7-i,j]
+        let pieceStr =
             match p with
-              None -> ""
+              None -> " "; 
               | Some p -> p.ToString()
-          // print top to bottom row
-          let pieceStr = stripOption _array.[7-i,j]
-          let lineSep = " " + String.replicate (8*4-1) "-"
-          match (i,j) with 
-          (0,0) -> 
-            let str = sprintf "%s\n| %1s " lineSep pieceStr
-            str + boardStr 0 1
-          | (i,7) -> 
-            let str = sprintf "| %1s |\n%s\n" pieceStr lineSep
-            str + boardStr (i+1) 0 
-          | (i,j) -> 
-            let str = sprintf "| %1s " pieceStr
-            str + boardStr i (j+1)
-    boardStr 0 0
+        str <- str + " " + pieceStr
+      str <- str + "\n"
+    str + "  0 1 2 3 4 5 6 7"
+
   /// Move piece by specifying source and target coordinates
   member this.move (source : Position) (target : Position) : unit =
     this.[fst target, snd target] <- this.[fst source, snd source]

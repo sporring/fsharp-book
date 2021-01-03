@@ -105,7 +105,7 @@ A \idx{string} is a sequence of characters enclosed in double quotation marks.  
 Note that the response from \lstinline[language=console]{fsharpi} is shown in double quotation marks, but this is not part of the string. 
 
 F\# supports \idx[literal type]{literal types}, where the type of a literal is indicated as a prefix or suffix as shown in \Cref{tab:literalTypes}.\idxss{int32@\lstinline{int32}}\idxss{uint32@\lstinline{uint32}}\idxss{byte@\lstinline{byte}}\idxss{uint8@\lstinline{uint8}}\idxss{byte@\lstinline{byte[]}}\idxss{sbyte@\lstinline{sbyte}}\idxss{int8@\lstinline{int8}}\idxss{int16@\lstinline{int16}}\idxss{uint16@\lstinline{uint16}}\idxss{int64@\lstinline{int64}}\idxss{uint64@\lstinline{uint64}}\idxss{double@\lstinline{double}}\idxss{single@\lstinline{single}}\idxss{float32@\lstinline{float32}}\idxss{decimal@\lstinline{decimal}}
-\begin{table}[H]
+\begin{table}
   \centering
   %\begin{tabularx}{\linewidth}{|>{\hsize=.6\hsize}X|>{\hsize=1.4\hsize}X|>{\hsize=1\hsize}X|}
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -115,19 +115,19 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
     \rowcolor{headerRowColor} Type & syntax & Examples & Value \\
     \hline
     {\keyword{int}}, {\keyword{int32}}          
-                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!<*int | hex*>l!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | xint*>!}\newline
+                                     {\lstinline[language=syntax, keywords={}]!<*int | xint*>l!}
                                             & {\lstinline!3!}, {\lstinline!0x3!}\newline
                                               {\lstinline!3l!}, {\lstinline!0x3l!}
                                                        & 3\\
     {\keyword{uint32}}                                 
-                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>u!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!<*int | hex*>ul!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | xint*>u!}\newline
+                                     {\lstinline[language=syntax, keywords={}]!<*int | xint*>ul!}
                                             & {\lstinline!3u!}\newline
                                               {\lstinline!3ul!}
                                                        & 3 \\
     {\keyword{byte}}, {\keyword{uint8}}       
-                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>uy!}\newline
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | xint*>uy!}\newline
                                      {\lstinline[language=syntax, keywords={}]!'<*char*>'B!}
                                             & {\lstinline!97uy!}\newline
                                                        {\lstinline!'a'B!} 
@@ -140,24 +140,24 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
                                                        & [|97uy; 10uy|]\newline
                                                          [|97uy; 92uy; 110uy|] \\
     {\keyword{sbyte}}, {\keyword{int8}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>y!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | xint*>y!}
                                             & {\lstinline!3y!}
                                                        & 3 \\
     {\keyword{int16}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>s!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | xint*>s!}
                                             & {\lstinline!3s!}
                                                        & 3 \\
     {\keyword{uint16}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>us!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | xint*>us!}
                                             & {\lstinline!3us!}
                                                        & 3 \\
     {\keyword{int64}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>L!}
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | xint*>L!}
                                             & {\lstinline!3L!}
                                                        & 3 \\
     {\keyword{uint64}}
-                                   & {\lstinline[language=syntax, keywords={}]!<*int | hex*>UL!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!<*int | hex*>uL!}   
+                                   & {\lstinline[language=syntax, keywords={}]!<*int | xint*>UL!}\newline
+                                     {\lstinline[language=syntax, keywords={}]!<*int | xint*>uL!}   
                                             & {\lstinline!3UL!}\newline
                                               {\lstinline!3uL!}  
                                                        & 3 \\
@@ -166,26 +166,26 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
     % {\keyword{unativeint}}                          & {\lstinline[language=syntax, keywords={}]!(dInt | xInt) "un"!}                         & {\lstinline!3un!} & 3 \\
     {\keyword{float}}, {\keyword{double}}
                                    & {\lstinline[language=syntax, keywords={}]!<*float*>!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!<*hex*>LF!}
+                                     {\lstinline[language=syntax, keywords={}]!<*xint*>LF!}
                                             & {\lstinline!3.0!}\newline
-                                              {\lstinline!0x013fLF!} 
+                                              {\lstinline!0x013LF!} 
                                                        & 3.0\newline
                                                          9.387247271e-323 \\
     {\keyword{single}}, {\keyword{float32}} 
                                    & {\lstinline[language=syntax, keywords={}]!<*float*>F!}\newline
                                      {\lstinline[language=syntax, keywords={}]!<*float*>f!}\newline
-                                     {\lstinline[language=syntax, keywords={}]!<*hex*>lf!} 
+                                     {\lstinline[language=syntax, keywords={}]!<*xint*>lf!} 
                                    & {\lstinline!3.0F!}\newline
                                      {\lstinline!3.0f!}\newline
-                                     {\lstinline!0x013flf!}
+                                     {\lstinline!0x013lf!}
                                                        & 3.0\newline
                                                          3.0 \newline
                                                          4.4701421e-43f \\
     {\keyword{decimal}}  
                                    & {\lstinline[language=syntax, keywords={}]!<*float | int*>M!}\newline
                                      {\lstinline[language=syntax, keywords={}]!<*float | int*>m!}
-                                            & {\lstinline!3.0M!},{\lstinline!3M!}\newline
-                                              {\lstinline!3.0m!},{\lstinline!3m!} 
+                                            & {\lstinline!3.0M!}, {\lstinline!3M!}\newline
+                                              {\lstinline!3.0m!}, {\lstinline!3m!} 
                                                        & 3.0  \\
     {\keyword{string}} 
                                    & {\lstinline[language=syntax, keywords={}]!"<*string*>"!}\newline
@@ -200,12 +200,13 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
     \hline
   \end{tabular}
   % \end{tabularx}
-  \caption{List of literal types. The syntax notation {\lstinline[language=syntax, keywords={}]!<**>!} means that the programmer replaces the brackets and content with a value of the appropriate form. The \lstinline{[||]} notation means that the value is an array, see \Cref{sec:arrays} for details.
+  \caption{List of literal types. The syntax notation {\lstinline[language=syntax, keywords={}]!<**>!} means that the programmer replaces the brackets and content with a value of the appropriate form. The \lstinline[language=syntax, keywords={}]{<*xint*>} is one of the integers on hexadecimal, octal, or binary forms such as \lstinline{0x17}, \lstinline{0o21}, and \lstinline{0b10001}.  The \lstinline{[| |]} brackets means that the value is an array, see \Cref{sec:arrays} for details.
     % The \lstinline![]! notation is for lists, see \Cref{chap:lists}. $^*$\lstinline[language=ebnf]!bignum! is not a basic type and does not yet have an implementation for \lstinline[language=ebnf]!dInt ("Q"|"R"|"Z"|"N"|"G")! in Mono.
   }
   \label{tab:literalTypes}
 \end{table}
 %The table uses a simple syntax notation such that {\lstinline[language=syntax, keywords={}]!<*integer or hexadecimal*>UL!} means that the user supplies an integer or a hexadecimal number followed by the characters 'UL'.
+
 
 The literal type is closely connected to how the values are represented internally. For example, a value of type \keyword{int32} use 32 bits and can be both positive and negative, while a \keyword{uint32} value also use 32 bits, but is unsigned. A \keyword{byte} is an 8-bit number, and \keyword{sbyte} is a signed 8-bit number. Values of type \keyword{float} use 64 bits, while \keyword{float32} only uses 32 bits. The number of bits used to represent numbers directly relates to the range and precession these types can represent. This is summarized in \Cref{tab:primitiveTypes} and discussed in more detail in \Cref{app:numbers}. String literals may be \idx{verbatim} by the @-notation or triple double quotation marks, meaning that the escape sequences are not converted to their code point. The two types of string verbatim treat quotation marks differently, as illustrated in the table. Further examples are shown in \Cref{namedLiterals}.
 %
@@ -277,7 +278,7 @@ Here \lstinline[language=syntax]{<*expr*>} is any expression supplied by the pro
     \hline
     \lstinline!\&\&!& \checkmark & & & & & \lstinline!true \&\& false!&\lstinline!false!&boolean and\\
     \hline
-    \lstinline!||!& \checkmark & & & & & \lstinline!true || false!&\lstinline!false!&boolean or\\
+    \lstinline!||!& \checkmark & & & & & \lstinline!true || false!&\lstinline!true!&boolean or\\
     \hline
     \lstinline!not!& \checkmark & & & & &\lstinline!not true!&\lstinline!false!&boolean negation\\
     \hline

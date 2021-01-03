@@ -14,7 +14,7 @@ The \idx{American Standard Code for Information Interchange} (\idx{ASCII})~\cite
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabularx}{0.75\textwidth}{|*{17}{>{\centering\arraybackslash}X|}}
+  \begin{tabularx}{0.95\textwidth}{|*{17}{>{\centering\arraybackslash}X|}}
     \hline
     \rowcolor{headerRowColor} x0+0x & 00 & 10 & 20 & 30 & 40 & 50 & 60 & 70 \\
     \hline
@@ -109,7 +109,7 @@ The ISO/IEC 8859 report \url{http://www.iso.org/iso/catalogue_detail?csnumber=28
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
-  \begin{tabularx}{0.75\textwidth}{|*{17}{>{\centering\arraybackslash}X|}}
+  \begin{tabularx}{0.95\textwidth}{|*{17}{>{\centering\arraybackslash}X|}}
     \hline
     \rowcolor{headerRowColor} x0+0x & 80 & 90 & A0 & B0 & C0 & D0 & E0 & F0 \\
     \hline
@@ -166,7 +166,7 @@ The ISO/IEC 8859 report \url{http://www.iso.org/iso/catalogue_detail?csnumber=28
 
 \section{Unicode}
 \label{sec:unicode}
-Unicode is a character standard defined by the Unicode Consortium, \url{http://unicode.org}, as the \idx{Unicode Standard}. Unicode allows for 1,114,112 different codes. Each code is called a \idx{code point} which represents an abstract character. However, not all abstract characters require a unit of several code points to be specified. Code points are divided into 17 planes, each with $2^{16}=65,536$ code points. Planes are further subdivided into named \idx[unicode block]{blocks}. The first plane is called the \idx{Basic Multilingual plane} and its block of the first 128 code points is called the \idx{Basic Latin block} and is identical to ASCII, see \Cref{tab:ascii}, and code points 128-255 are called the \idx{Latin-1 Supplement block}, and are identical to the upper range of ISO 8859-1, see \Cref{tab:latin1}.  Each code-point has a number of attributes such as the \idx{Unicode general category}. Presently more than 128,000 code points are defined as covering 135 modern and historical writing systems, and obtained at \url{http://www.unicode.org/Public/UNIDATA/UnicodeData.txt}, which includes the code point, name, and general category.
+Unicode is a character standard defined by the Unicode Consortium, \url{http://unicode.org}, as the \idx{Unicode Standard}. Unicode allows for 1,114,112 different codes. Each code is called a \idx{code point} which represents an abstract character. Code points are divided into 17 planes, each with $2^{16}=65,536$ code points. Planes are further subdivided into named \idx[unicode block]{blocks}. The first plane is called the \idx{Basic Multilingual plane} and its block of the first 128 code points is called the \idx{Basic Latin block} and is identical to ASCII, see \Cref{tab:ascii}, and code points 128-255 are called the \idx{Latin-1 Supplement block}, and are identical to the upper range of ISO 8859-1, see \Cref{tab:latin1}.  Each code-point has a number of attributes such as the \idx{Unicode general category}. Presently more than 128,000 code points are defined as covering 135 modern and historical writing systems, and obtained at \url{http://www.unicode.org/Public/UNIDATA/UnicodeData.txt}, which includes the code point, name, and general category.
 
 A Unicode code point is an abstraction from the encoding and the graphical representation of a character. A code point is written as ``U+'' followed by its hexadecimal number, and for the Basic Multilingual plane, 4 digits are used, e.g., the code point with the unique name LATIN CAPITAL LETTER A has the Unicode code point ``U+0041'', and is in this text visualized as 'A'. More digits are used for code points of the remaining planes.
 
@@ -196,7 +196,3 @@ The general category is used to specify valid characters that do not necessarily
 
 To store and retrieve code points, they must be encoded and decoded. A common encoding is \idx{UTF-8}, which encodes code points as 1 to 4 bytes, and which is backward-compatible with ASCII and ISO 8859-1. Hence, in all 3 coding systems, the character with code 65 represents the character 'A'. Another popular encoding scheme is \idx{UTF-16}, which encodes characters as 2 or 4 bytes, but which is not backward-compatible with ASCII or ISO 8859-1. UTF-16 is used internally in many compilers, interpreters, and operating systems.
 \end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
-
