@@ -207,19 +207,19 @@ The anonumous function,
 \begin{quote}
 \lstinline{fun e -> List.map e [1..7]},
 \end{quote}
-is used to wrap the inner \lstinline{List.map} functional. As an alternative, consider the function, \lstinline{let altMap lst e = List.map e lst}, which reverses the arguments of \lstinline{List.map}. With this, the anonymous function can be written as \lstinline{fun e -> altMap [1..7] e} or simply replaced by currying as \lstinline{altMap [1..7]}. Reversing orders of arguments like this in combination with currrying is what the \idx{\lstinline{swap}} function is for,
+is used to wrap the inner \lstinline{List.map} functional. An alternative, sometimes seen is to use currying with argument swapping: Consider the function, \lstinline{let altMap lst e = List.map e lst}, which reverses the arguments of \lstinline{List.map}. With this, the anonymous function can be written as \lstinline{fun e -> altMap [1..7] e} or simply replaced by currying as \lstinline{altMap [1..7]}. Reversing orders of arguments like this in combination with currrying is what the \idx{\lstinline{swap}} function is for,
 \begin{quote}
 \lstinline{let swap f a b = f b a}.
 \end{quote}
-With swap we can write \lstinline{let altMap = swap List.map}. Thus, in \Cref{pieces},
+With swap we can write \lstinline{let altMap = swap List.map}. Thus,
 \begin{quote}
 \lstinline{swap List.map [1..7]}
 \end{quote}
-is the same as \lstinline{fun e -> List.map e [1..7]}, and thus, \lstinline{candidateRelativeMoves} correctly evaluates to
+is the same function as \lstinline{fun e -> List.map e [1..7]}, and in which case we could rewrite the solution in \Cref{ListMapRuns} as
 \begin{quote}
-\lstinline{[[(1,0); (2,0); ... (7,0)]; [(-1,0); (-2,0); ... (0,-7)]]}.
+\lstinline{List.map (swap List.map [1..7]) indToRel}
 \end{quote}
-
+if we wanted a very compact, but possible less readable solution.
 
 The final step will be to design the \lstinline{Board} and \lstinline{chessPiece} classes. The Chess module implements discriminated unions for color and an integer tuple for a position. These are shown in \Cref{chessDiscriminatedUniont}.
 %
