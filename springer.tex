@@ -1,0 +1,127 @@
+%%%%%%%%%%%%%%%%%%%% book.tex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% sample root file for the chapters of your "monograph"
+%
+% Use this file as a template for your own input.
+%
+%%%%%%%%%%%%%%%% Springer-Verlag %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% RECOMMENDED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[graybox,envcountchap,sectrefs]{svmono}
+
+% choose options for [] as required from the list
+% in the Reference Guide
+
+%\usepackage{mathptmx}
+%\usepackage{helvet}
+%\usepackage{courier}
+%
+\usepackage{type1cm}         
+
+\usepackage{makeidx}         % allows index generation
+\usepackage{graphicx}        % standard LaTeX graphics tool
+                             % when including figure files
+\usepackage{multicol}        % used for the two-column index
+\usepackage[bottom]{footmisc}% places footnotes at page bottom
+
+\usepackage{newtxtext}       % 
+\usepackage[varvw]{newtxmath}       % selects Times Roman as basic font
+
+% see the list of further useful packages
+% in the Reference Guide
+
+\input{springerSetup}
+
+\usepackage{subfiles}
+
+
+%\makeindex             % used for the subject index
+                       % please use the style svind.ist with
+                       % your makeindex program
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\author{Jon Sporring\\[1cm]Department of Computer Science,\\University of Copenhagen}
+\title{Learning to Program with F\#}
+%\subtitle{-- Monograph --}
+\maketitle
+
+\frontmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\include{dedication}
+%\include{foreword}
+%\include{preface}
+%\include{acknowledgement}
+\subfile{preface}
+
+\tableofcontents
+
+%\include{acronym}
+
+
+\mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subfile{introduction}
+
+\subfile{gettingStartedFsharp}
+\subfile{quickStartGuide}
+\subfile{numbersCharsNStrings}
+\subfile{bindings}
+\subfile{comments}
+\subfile{flow}
+\subfile{nameSpacesNModules}
+\subfile{testing}
+\subfile{collections}
+\subfile{imperativeProgrammingParadigm}
+\subfile{recursion}
+\subfile{types}
+\subfile{patterns}
+\subfile{higherOrderFunctions}
+\subfile{functionalProgrammingParadigm}
+\subfile{exceptions}
+\subfile{IO}
+%\subfile{sequences}
+%\subfile{typesNMeasures}
+\subfile{classes}
+\subfile{inheritance}
+\subfile{objectOrientedProgrammingParadigm}
+\subfile{windows}
+\subfile{eventDrivenProgrammingParadigm}
+\subfile{future}
+\appendix
+\subfile{console}
+\subfile{numberSystems}
+\subfile{characterSets}
+\subfile{commonLanguageInfrastructure}
+%\subfile{extendedBackusNaurForm}
+%\subfile{fflat}
+%\subfile{languageDetails}
+%\subfile{collection}
+%\subfile{todos}
+
+%\include{part}
+%\include{chapter}
+%\include{appendix}
+
+\backmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{plain}
+\bibliography{references}
+
+\clearpage
+\addcontentsline{toc}{chapter}{Index}
+%\include{glossary}
+%\include{solutions}
+\printindex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
+
+
+
+
