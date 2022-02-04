@@ -1,4 +1,4 @@
-\documentclass[fsharpnotes.tex]{subfiles}
+\documentclass[springer.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
@@ -34,7 +34,7 @@ To display a graphical user interface on the screen, the first thing to do is op
 %
 \begin{figure}
   \centering
-  \includegraphics[scale=0.3]{openWindow}
+  \includegraphics[scale=0.2]{openWindow}
   \caption{A window opened by \Cref{winforms/openWindow}.}
   \label{fig:openWindow}
 \end{figure}
@@ -46,7 +46,7 @@ The window form has a long list of methods and properties. E.g., the background 
 %
 \begin{figure}
   \centering
-  \includegraphics[scale=0.3]{windowProperty}
+  \includegraphics[scale=0.2]{windowProperty}
   \caption{A window with user-specified size and background color, see \Cref{winforms/windowProperty}.}
   \label{fig:windowProperty}
 \end{figure}
@@ -294,9 +294,9 @@ Since we are using WinForms primitives in the model, the connection layer is tri
 % \end{figure}
 
 % We now have a basis for solving the following problem:
-% \begin{problem}
+% \begin{task}
 %   Given a triangle produce a Mandela drawing, where $n$ rotated versions of the triangle is drawn around its center of mass.
-% \end{problem}
+% \end{task}
 % Reusing the top part of \filename{transformWindows.fsx} (\Cref{winforms/transformWindowsModel}) and replacing the bottom part with the code shown in \Cref{winforms/rotationalSymmetry}, we arrive a the solution illustrated in \Cref{fig:rotationalSymmetry}.
 % %
 % \fsCode{winforms/rotationalSymmetry}{winforms/rotationalSymmetry}{Create the window and changing its properties. Last part is ommitted, since it is identical to \Cref{winforms/transformWindowsBottom}.}{lastline=51}
@@ -374,7 +374,7 @@ Since we are using WinForms primitives in the model, the connection layer is tri
 
 \section{Programming Intermezzo: Hilbert Curve}
 A curve in 2 dimensions has a length but no width, and we can only visualize it by giving it a width. Thus, it came as a surprise to many when Giuseppe Peano in 1890 demonstrated that there exist curves which fill every point in a square. The method he used to achieve this was recursion:
-\begin{problem}
+\begin{task}
   Consider a curve consisting of piecewise straight lines all with the same length but with varying angles $0^{\circ}$, $90^{\circ}$, $180^{\circ}$, or $270^{\circ}$ w.r.t.\ the horizontal axis. To draw this curve, we need 3 basic operations: Move forward ($F$), turn right (R), and turn left (L). The turning is w.r.t.\ the present direction. A Hilbert Curve is a space-filling curve which can be expressed recursively as:
 \begin{align}
   A &\rightarrow LBFRAFARFBL,\label{eq:hilbertA}\\
@@ -400,7 +400,7 @@ Since $LR = RL = \emptyset$ the above simplifies to
   A_2 \rightarrow FLFLFRFFRFRFLFLFRFRFFRFLFLF
 \end{align*}
 Make a program that given an order produces an image of the Hilbert curve.
-\end{problem}
+\end{task}
 Our strategy to solve this problem will be first to define the curves in terms of movement commands $LRFL\ldots$. For this, we will define a discriminated union
 \lstinline{type Command = F | L | R}. The movement commands can then be defined as a \lstinline{Command list} type. The list for a specific order is a simple set of recursive functions in F\# which we will call \lstinline{A} and \lstinline{B}.
 

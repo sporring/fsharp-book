@@ -1,4 +1,4 @@
-\documentclass[fsharpnotes.tex]{subfiles}
+\documentclass[springer.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
@@ -6,12 +6,12 @@
 \label{chap:let}
 %
 In this chapter, we will see how we can bind expressions to identifiers either as new constants, functions, or operators, how this saves time when building large programs, and how this makes programs easier to read and debug. As an example, consider the following problem,
-\begin{problem}
+\begin{task}
   For given set constants $a$, $b$, and $c$, solve for $x$ in
   \begin{equation}
   a x^2+bx+c = 0
 \end{equation}
-\end{problem}
+\end{task}
 To solve for $x$ we use the quadratic formula from elementary algebra,
 \begin{equation}
   x = \frac{-b\pm\sqrt{b^2-4ac}}{2a},
@@ -335,7 +335,7 @@ The \lstinline[language=ebnf]!formatString! is a string (simple or verbatim) wit
 When executed, \lstinline{printf} will replace \lstinline!%d! %
 with the following argument, \lstinline{3}, and print the result to the console: \mbox{\lstinline!1 2 3!}.  There are specifiers for all the basic types, and more, as elaborated in \Cref{tab:printfPlaceholder}.
 % 
-\begin{table}[H]
+\begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabularx}{\linewidth}{|l|l|X|}

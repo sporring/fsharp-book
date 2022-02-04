@@ -1,4 +1,4 @@
-\documentclass[fsharpnotes.tex]{subfiles}
+\documentclass[springer.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
@@ -53,9 +53,9 @@ Counting backwards is sufficiently common that F\# has a \idx[for-downto@\lstinl
 
 
 To further compare for- and while-loops, consider the following problem.
-\begin{problem}
+\begin{task}
   Write a program that calculates the $n$'th Fibonacci number.
-\end{problem}
+\end{task}
 Fibonacci numbers is a sequence of numbers starting with $1, 1$, and where the next number is calculated as the sum of the previous two. Hence the first ten numbers are: $1, 1, 2, 3, 5, 8, 13, 21, 34, 55$. Fibonacci numbers are related to Golden spirals shown in \Cref{fig:goldenSpiral}.
 \begin{figure}
   \centering
@@ -132,9 +132,9 @@ is the only valid expression of the 3. In practice, F\# assumes that the omitted
 
 \section{Programming Intermezzo: Automatic Conversion of Decimal to Binary Numbers}
 Using loops and conditional expressions, we are now able to solve the following problem:
-\begin{problem}
+\begin{task}
   Given an integer on decimal form, write its equivalent value on the binary form.
-\end{problem}
+\end{task}
 To solve this problem, consider odd numbers: They all have the property that the least significant bit is 1, e.g., $1_2 = 1, 101_2 = 5$, in contrast to even numbers such as $110_2 = 6$. Division by 2 is equal to right-shifting by 1, e.g., $1_2/2 = 0.1_2 = 0.5, 101_2/2 = 10.1_2 = 2.5, 110_2/2 = 11_2 = 3$. Thus, through dividing by 2 and checking the remainder, we may sequentially read off the least significant bit. This leads to the algorithm shown in \Cref{dec2bin}.
 %
 \fs{dec2bin}{Using integer division and remainder to write any positive integer in binary form.}

@@ -32,11 +32,14 @@
 % \SetWatermarkLightness{.95}
 
 \renewcommand{\floatpagefraction}{.8}%
+\setlength{\textfloatsep}{5pt plus 1.0pt minus 1.0pt}
+\setlength{\floatsep}{5pt plus 1.0pt minus 1.0pt}
+\setlength{\intextsep}{5pt plus 1.0pt minus 1.0pt}
 
 % force floats to [H] - here definitely
-\usepackage{float}
-\floatplacement{figure}{!h}
-\floatplacement{table}{!h}
+%\usepackage{float}
+%\floatplacement{figure}{!h}
+%\floatplacement{table}{!h}
 
 % paragraph indentation is stupid
 \setlength\parindent{0pt}
@@ -175,16 +178,16 @@
   sharp corners=downhill,
   colback=black!5!white,
   left=1mm,
-  top=1mm,
+  top=0mm,
   right=1mm,
-  bottom=1mm,
+  bottom=0mm,
   middle=1mm,
   arc=2mm,
 }
-%\newtcolorbox[auto counter, number within=chapter]{problem}[1][]{% % removed for springer
-%  title=\textbf{Problem~\thetcbcounter},
-%  colframe=DeepSkyBlue1, %green!30!blue,
-%  #1}
+\newtcolorbox[auto counter, number within=chapter]{task}[1][]{% % removed for springer
+  title=\textbf{Problem~\thetcbcounter},
+  colframe=DeepSkyBlue1, %green!30!blue,
+  #1}
 \newcommand{\src}{src}
 \newtcolorbox[auto counter, number within=chapter]{codeNOutput}[2][]{%
   title=\textbf{Listing~\thetcbcounter#2},
@@ -264,7 +267,7 @@
   otherkeywords={ let!, return!, do!, yield!, use!},
   keywordstyle=\color{keywordsColor},
   % sensitive=true,
-  basicstyle=\ttfamily\lst@ifdisplaystyle\small\fi, % make font small for listings but not for lstinline
+  basicstyle=\ttfamily\lst@ifdisplaystyle\footnotesize\fi, % make font small for listings but not for lstinline
   breaklines=true,
   breakatwhitespace=true
   showstringspaces=false,
@@ -277,7 +280,7 @@
   stringstyle=\color{stringsColor},
   showspaces=true,
   numbers=left,
-  numbersep=6pt,
+  numbersep=1.5pt,
   numberstyle=\scriptsize\color{white},
   % aboveskip=0pt, 
   % belowskip=0pt,
@@ -296,7 +299,7 @@
   % keywordstyle=\color{syntaxColor},
   % classoffset=0,
   otherkeywords={},
-  basicstyle=\ttfamily\lst@ifdisplaystyle\small\fi, % make font small for listings but not for lstinline
+  basicstyle=\ttfamily\lst@ifdisplaystyle\footnotesize\fi, % make font small for listings but not for lstinline
   breaklines=true,
   breakatwhitespace=true
   showstringspaces=false,
@@ -306,7 +309,7 @@
   moredelim  = **[is][\processmydelims]{<*}{*>}, % delete delimiters, typeset keywords. Don't know how to avoid the last...
   showspaces=true,
   numbers=left,
-  numbersep=6pt,
+  numbersep=1.5pt,
   numberstyle=\scriptsize\color{white},
   backgroundcolor=\color{black!5!white},
 }
@@ -332,7 +335,7 @@
   otherkeywords={},
   keywordstyle=\color{keywordsColor},
   % sensitive=true,
-  basicstyle=\fontfamily{pcr}\selectfont\lst@ifdisplaystyle\small\fi, 
+  basicstyle=\fontfamily{pcr}\selectfont\lst@ifdisplaystyle\footnotesize\fi, 
   breaklines=true,
   breakatwhitespace=true
   morecomment=[s][\color{commentsColor}]{(*}{*)},
@@ -351,7 +354,7 @@
   keywords={},
   morekeywords={},
   otherkeywords={},
-  basicstyle=\ttfamily\lst@ifdisplaystyle\small\fi, 
+  basicstyle=\ttfamily\lst@ifdisplaystyle\footnotesize\fi, 
   breaklines=true,
   showstringspaces=false,
   % aboveskip=0pt,
@@ -371,11 +374,16 @@
 % #2 = filename without suffix, and label
 % #3 = caption
 \newtcbinputlisting[use counter from=codeNOutput]{\fs}[3][]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={src/#2.fsx},
   listing and comment,
   listing options={language=fsharp,escapechar=§,#1},
   float,
-  title=\textbf{Listing \thetcbcounter} {#2.fsx:\\#3},
+  %title=\textbf{Listing \thetcbcounter} {#2.fsx:\\#3},
+  title=\textbf{Listing \thetcbcounter} {#3},
   label={#2},
   comment={\lstinputlisting[language=console]{\src/#2.out}}
 }
@@ -386,11 +394,16 @@
 % #3 = label
 % #4 = caption
 \newtcbinputlisting[use counter from=codeNOutput]{\fsharp}[4][]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={\src/#2},
   listing only,
   listing options={language=fsharp,escapechar=§,#1},
   float,
-  title=\textbf{Listing \thetcbcounter} {#2:\\#4},
+  %title=\textbf{Listing \thetcbcounter} {#2:\\#4},
+  title=\textbf{Listing \thetcbcounter} {#4},
   label={#3},
 }
 
@@ -400,37 +413,57 @@
 % #3 = label
 % #4 = caption
 \newtcbinputlisting[use counter from=codeNOutput]{\console}[4][]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={\src/#2},
   listing only,
   listing options={language=console,escapechar=§,#1},
   float,
-  title=\textbf{Listing \thetcbcounter} {#2:\\#4},
+  %title=\textbf{Listing \thetcbcounter} {#2:\\#4},
+  title=\textbf{Listing \thetcbcounter} {#4},
   label={#3},
 }
 
 \newtcbinputlisting[use counter from=codeNOutput]{\fsCode}[4]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={src/#1.fsx},
   listing only,
   listing options={language=fsharp,escapechar=§,#4},
   float,
-  title=\textbf{Listing \thetcbcounter} {#1.fsx:\\#3},
+  %title=\textbf{Listing \thetcbcounter} {#1.fsx:\\#3},
+  title=\textbf{Listing \thetcbcounter} {#3},
   label={#2},
 }
 
 \newtcbinputlisting[use counter from=codeNOutput]{\fsSignature}[4]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={src/#1.fsi},
   listing only,
   listing options={language=fsharp,escapechar=§,#4},
   float,
-  title=\textbf{Listing \thetcbcounter} {#1.fsi:\\#3},
+  %title=\textbf{Listing \thetcbcounter} {#1.fsi:\\#3},
+  title=\textbf{Listing \thetcbcounter} {#3},
   label={#2},
 }
 \newtcbinputlisting[use counter from=codeNOutput]{\fsImplementation}[4]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={src/#1.fs},
   listing only,
   listing options={language=fsharp,escapechar=§,#4},
   float,
-  title=\textbf{Listing \thetcbcounter} {#1.fs:\\#3},
+  %title=\textbf{Listing \thetcbcounter} {#1.fs:\\#3},
+  title=\textbf{Listing \thetcbcounter} {#3},
   label={#2},
 }
 
@@ -439,6 +472,10 @@
 % #2 = filename without suffix, and label
 % #3 = caption
 \newtcbinputlisting[use counter from=codeNOutput]{\fsOutput}[3][]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={src/#2.out},
   listing only,
   listing options={language=console,escapechar=§,#1},
@@ -452,6 +489,10 @@
 % #2 = filename without suffix, and label
 % #3 = caption
 \newtcbinputlisting[use counter from=codeNOutput]{\fsOutputNF}[3][]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={src/#2.out},
   listing only,
   listing options={language=console,escapechar=§,#1},
@@ -465,6 +506,10 @@
 % #2 = filename without suffix, and label
 % #3 = caption
 \newtcbinputlisting[use counter from=codeNOutput]{\fsOutputTabx}[3][]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={src/#2.out},
   listing only,
   width=\hsize,
@@ -480,6 +525,10 @@
 % #2 = filename
 % #3 = caption
 \newtcbinputlisting[use counter from=codeNOutput]{\ebnf}[3][]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={#2},
   listing only,
   colframe=black!50!white,
@@ -492,6 +541,10 @@
 % #2 = filename without suffix, and label
 % #3 = caption
 \newtcbinputlisting[use counter from=codeNOutput]{\syntax}[3][]{%
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
   listing file={#2},
   listing only,
   colframe=black!50!white,

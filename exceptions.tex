@@ -1,4 +1,4 @@
-\documentclass[fsharpnotes.tex]{subfiles}
+\documentclass[springer.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
@@ -197,9 +197,9 @@ The \lstinline{Option.bind} is a useful tool for cascading functions that evalua
 
 \section{Programming Intermezzo: Sequential Division of Floats}
 The following problem illustrates cascading error handling:
-\begin{problem}
+\begin{task}
   Given a list of floats such as \lstinline{[1.0; 2.0; 3.0]}, calculate the sequential division \lstinline{1.0/2.0/3.0}. 
-\end{problem}
+\end{task}
 A sequential division is safe if the list does not contain zero values. However, if any element in the list is zero, then error handling must be performed. An example using \lstinline{failwith} is given in \Cref{seqDiv}.
 %
 \fs{seqDiv}{Sequentially dividing a list of numbers.}

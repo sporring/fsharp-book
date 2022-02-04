@@ -1,4 +1,4 @@
-\documentclass[fsharpnotes.tex]{subfiles}
+\documentclass[springer.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
@@ -53,11 +53,11 @@ For large programs, the design principle is often similar to other paradigms, wh
 
 \begin{comment}
   Let's consider such a smaller subtask as an example
-  \begin{problem}
+  \begin{task}
     Given a string as input consisting of a simple algebraic
     expression, consisting of numbers and the operators '+', '-', and
     '*', parse the string and return the result.
-  \end{problem}
+  \end{task}
 \end{comment}
 
 \begin{comment}
@@ -70,9 +70,9 @@ Lists are well suited for recursive functions and pattern matching with, e.g., \
 The pattern \lstinline!l::rest! is the pattern for the first element followed by a list of the rest of the list. This pattern matches all lists except an empty list, hence \lstinline!rest! may be empty. Thus the wildcard pattern matching anything including the empty list will be used only when \lstinline!lst! is empty.
 
 \idx[pattern matching]{Pattern matching} with lists is quite powerful, consider the following problem:
-\begin{problem}
+\begin{task}
   Given a list of pairs of course names and course grades, calculate the average grade.
-\end{problem}
+\end{task}
 A list of course names and grades is \lstinline![("name1", grade1); ("name2", grade2); ...]!. Let's take a recursive solution. The first problem will be to iterate through the list. For this we can use pattern matching similarly to \Cref{listPatternMatching} with \lstinline!(name, grade)::rest!. The second problem will be to calculate the average. The average grade is the sum of all grades divided by the number of grades. Assume that we already have made a function, which calculates the \lstinline!sum! and \lstinline!n!, the sum and number of elements, for \lstinline!rest! then all we need is to add \lstinline!grade! to the \lstinline!sum! and \lstinline!1! to \lstinline!n!. For an empty list, \lstinline!sum! and \lstinline!n! should be \lstinline!0!. Thus, we arrive at the following solution,
 % However, an elegant alternative is available as
 % \fs{flowForLists}{}

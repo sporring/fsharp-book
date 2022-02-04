@@ -1,4 +1,4 @@
-\documentclass[fsharpnotes.tex]{subfiles}
+\documentclass[springer.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
@@ -55,7 +55,12 @@ is a special notation to control how the value is printed. In this case, it is p
 
 An interactive session is obtained by starting the console, typing the \lstinline[language=console]{fsharpi} command, typing the lines of the program, and ending the script-fragment with \lexeme{;;}. The dialogue in \Cref{interactiveSession} demonstrates the workflow. What the user types has been highlighted by a \tikzmark{tl}box\tikzmark{br}\FrameArea{tl}{br}.
 %
-\begin{codeNOutput}[label=interactiveSession]{: An interactive session.}
+\begin{codeNOutput}[label=interactiveSession,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: An interactive session.}
   \begin{lstlisting}[language=console,escapechar=§]
 $ §\tikzmark{lst1_5-tl}§fsharpi§\tikzmark{lst1_5-br}§
 
@@ -100,7 +105,12 @@ The interactive session results in extra output on the \idx{type inference} perf
 
 Instead of running \lstinline[language=console]{fsharpi} interactively, we can write the script-fragment from \Cref{gettingStartedStump} into a file, here called \lstinline[language=console]{gettingStartedStump.fsx}. This file can be interpreted directly by \lstinline[language=console]{fsharpi} as shown in \Cref{commandlineInterpreter}.
 %
-\begin{codeNOutput}[label=commandlineInterpreter]{: Using the interpreter to execute a script.}
+\begin{codeNOutput}[label=commandlineInterpreter,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Using the interpreter to execute a script.}
 \begin{lstlisting}[language=console,escapechar=§]
 $ §\tikzmark{lst2_1-tl}§fsharpi gettingStartedStump.fsx§\tikzmark{lst2_1-br}§
 3
@@ -112,7 +122,12 @@ Notice that in the file, \lexeme{;;} is optional. We see that the interpreter ex
 
 Finally, the file containing \Cref{gettingStartedStump} may be compiled into an executable file with the program \lstinline[language=console]{fsharpc}, and run using the program \lstinline[language=console]{mono} from the console. This is demonstrated in \Cref{compiler}.
 %
-\begin{codeNOutput}[label=compiler]{: Compiling and executing a script.}
+\begin{codeNOutput}[label=compiler,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Compiling and executing a script.}
 \begin{lstlisting}[language=console,escapechar=§]
 $ §\tikzmark{lst3_1-tl}§fsharpc gettingStartedStump.fsx §\tikzmark{lst3_1-br}§
 F# Compiler for F# 4.1 (Open Source Edition)

@@ -1,4 +1,4 @@
-\documentclass[fsharpnotes.tex]{subfiles}
+\documentclass[springer.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
@@ -118,11 +118,11 @@ As a final note, inheritance ties classes together in a class hierarchy. Abstrac
 
 \section{Programming Intermezzo: Chess}
 To demonstrate the use of hierarchies, consider the following problem.
-\begin{problem}
+\begin{task}
   The game of chess is a turn-based game for two which consists of a board of $8\times 8$ squares, and a set of 16 black and 16 white pieces. A piece can be either a king, queen, rook, bishop, knight or pawn, and each piece has a specific movement pattern on the board. Pieces are added to, moved on, and removed from the board during the game, and there can be at most one piece per square. A piece strikes another piece of opposing color by moving to its square and the piece of opposing color is removed from the game. The game starts with the configuration shown in \Cref{fig:chessNewGame}.\\[\parskip]
 
   Make a program that allows two humans to play simple chess using only kings and rooks. The king must be able to move to all neighboring squares not occupied by a piece of the same color and cannot move onto a square where it can be struck in the next turn. The rook must be able to move in horizontal and vertical lines until a piece of the same color or up to and including a piece of opposing color.
-\end{problem}
+\end{task}
 \begin{figure}
   \centering
   \newgame

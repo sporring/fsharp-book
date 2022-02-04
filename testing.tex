@@ -1,4 +1,4 @@
-\documentclass[fsharpnotes.tex]{subfiles}
+\documentclass[springer.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
@@ -29,9 +29,9 @@ The purpose of \idx{software testing} is to find bugs. When errors are found, th
 In this chapter, we will focus on two approaches to software testing which emphasize functionality: \idx[white-box testing]{white-box} and \idx{black-box testing}. An important concept in this context is \idx{unit testing}, where the program is considered in smaller pieces, called units, and for which accompanying programs for testing can be made which test these units automatically. Black-box testing considers the problem formulation and the program interface, and can typically be written early in the software design phase. In contrast, white-box testing considers the program text, and thus requires the program to be available. Thus, there is a tendency for black-box test programs to be more stable, while white-box testing typically is developed incrementally alongside the software development.
 
 To illustrate software testing, we'll start with a problem:
-\begin{problem}
+\begin{task}
   Given any date in the Gregorian calendar, calculate the day of the week.
-\end{problem}
+\end{task}
 Facts about dates in the Gregorian calendar are:
 \begin{itemize}
 \item Combinations of dates and weekdays repeat themselves every 400 years.

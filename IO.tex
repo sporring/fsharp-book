@@ -1,4 +1,4 @@
-\documentclass[fsharpnotes.tex]{subfiles}
+\documentclass[springer.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
@@ -478,9 +478,9 @@ In the \lstinline!System.IO.Path! class there are a number of other frequently u
 
 \section{Programming intermezzo: Name of Existing File Dialogue}
 A typical problem when working with files is
-\begin{problem}
+\begin{task}
   Ask the user for the name of an existing file.
-\end{problem}
+\end{task}
 Such dialogues often require the program to aid the user, e.g., by telling the user which files are available, and by checking that the filename entered is an existing file.
 
 We will limit our request to the present directory and use \lstinline{System.Console.ReadLine} to get input from the user. Our strategy will be twofold. Firstly we will query the filesystem for the existing files using \lstinline{System.IO.Directory.GetFiles}, and print these to the screen. Secondly, we will use \lstinline{System.IO.File.Exists} to ensure that a file exists with the entered filename. We use the \lstinline{Exists} function rather than examining the array obtained with \lstinline{GetFiles}, since files may have been added or removed, since the \lstinline{GetFiles} was called. A solution is shown in \Cref{filenamedialogue}.
@@ -491,9 +491,9 @@ Note that it is programmed using a \lstinline{while}-loop and with a flag \lstin
 
 \begin{comment}
 A practice problem could be,
-\begin{problem}
+\begin{task}
   Ask the user for the name of an existing file, read the file and print it in reverse order.
-\end{problem}
+\end{task}
 This could be solved as,
 %
 \fsCode{reverseFile}{reverseFileCode}{Ask user to input a file, and print the file in reverse order.}{}
