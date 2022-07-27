@@ -1,4 +1,3 @@
 $ fsharpc --nologo -a letValueScopeNestedScope.fsx
 
-letValueScopeNestedScope.fsx(6,22): error FS0039: The value or constructor 'q' is not defined. Maybe you want one of the following:
-   p
+letValueScopeNestedScope.fsx(6,22): error FS0039: The value or constructor 'q' is not defined.

@@ -1,5 +1,0 @@
-$ fsharpc --nologo squares.fsx && mono squares.exe
-
-squares.fsx(1,10): error FS0010: Unexpected symbol ':' in implementation file
-
-squares.fsx(2,1): warning FS0058: Possible incorrect indentation: this token is offside of context started at position (1:1). Try indenting this token further or using standard formatting conventions.

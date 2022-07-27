@@ -1,0 +1,12 @@
+#!/bin/bash
+files=($(ls -d *.out))
+max=${#files[@]}
+for ((idxA=0; idxA<max; idxA++)); do
+  out=${files[$idxA]}
+  base=${out%".out"}
+  bckp=$base".bckp"
+  if [ -f $bckp ]; then
+     ls $base"."*
+     #diff $out $bckp
+  fi
+done

@@ -1,9 +1,0 @@
-$ fsharpc --nologo MetaUseHash.fsx && mono MetaUseHash.exe
-
-MetaUseHash.fsx(1,1): error FS0078: Unable to find the file 'MetaExplicitModuleDefinition.dll' in any of
- /Library/Frameworks/Mono.framework/Versions/5.4.1/lib/mono/4.5
- /Library/Frameworks/Mono.framework/Versions/5.4.1/lib/mono/4.5/Facades
- /Library/Frameworks/Mono.framework/Versions/5.4.1/lib/mono/4.5-api
- /Library/Frameworks/Mono.framework/Versions/5.4.1/lib/mono/4.5-api/Facades
- /Users/sporring/repositories/fsharpNotes/src
- /Library/Frameworks/Mono.framework/Versions/5.4.1/lib/mono/fsharp/

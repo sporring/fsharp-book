@@ -1,5 +1,4 @@
-$ fsharpc --nologo arrayJaggedCompExpr.fsx
-$ mono arrayJaggedCompExpr.exe
+$ fsharpc --nologo arrayJaggedCompExpr.fsx && mono arrayJaggedCompExpr.exe
 1 
 1 2 
 1 2 3 

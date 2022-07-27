@@ -1,4 +1,3 @@
-$ fsharpc --nologo memberOvershadowing.fsx
-$ mono memberOvershadowing.exe
+$ fsharpc --nologo memberOvershadowing.fsx && mono memberOvershadowing.exe
 c1: 0 1
 c2: 1 3 4

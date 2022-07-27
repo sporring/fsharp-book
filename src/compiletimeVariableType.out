@@ -1,3 +1,2 @@
-$ fsharpc --nologo compiletimeVariableType.fsx
-$ mono compiletimeVariableType.exe
+$ fsharpc --nologo compiletimeVariableType.fsx && mono compiletimeVariableType.exe
 3 3.0

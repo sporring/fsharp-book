@@ -1,4 +1,3 @@
-$ fsharpc --nologo letFunctionAlterantive2.fsx
+$ fsharpc --nologo letFunctionAlterantive2.fsx && mono letFunctionAlterantive2.exe
 
 letFunctionAlterantive2.fsx(1,30): warning FS0988: Main module of program is empty: nothing will happen when it is run
-$ mono letFunctionAlterantive2.exe

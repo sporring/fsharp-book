@@ -1,8 +1,0 @@
-$ fsharpc --nologo MetaUseWOpen.fsx && mono MetaUseWOpen.exe
-
-MetaUseWOpen.fsx(1,6): error FS0039: The namespace or module 'Meta' is not defined.
-
-MetaUseWOpen.fsx(2,11): error FS0039: The type 'floatFunction' is not defined. Maybe you want one of the following:
-   float
-
-MetaUseWOpen.fsx(3,14): error FS0039: The value or constructor 'apply' is not defined.

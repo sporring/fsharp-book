@@ -2,6 +2,6 @@ $ fsharpc --nologo exceptionFailwith.fsx && mono exceptionFailwith.exe
 
 Unhandled Exception:
 System.Exception: hej
-  at <StartupCode$exceptionFailwith>. $ExceptionFailwith$fsx.main@ () [0x0000b] in <599574c21515099da7450383c2749559>:0 
+  at <StartupCode$exceptionFailwith>.$ExceptionFailwith$fsx.main@ () [0x0000b] in <62028a4fddd05a03a74503834f8a0262>:0 
 [ERROR] FATAL UNHANDLED EXCEPTION: System.Exception: hej
-  at <StartupCode$exceptionFailwith>. $ExceptionFailwith$fsx.main@ () [0x0000b] in <599574c21515099da7450383c2749559>:0 
+  at <StartupCode$exceptionFailwith>.$ExceptionFailwith$fsx.main@ () [0x0000b] in <62028a4fddd05a03a74503834f8a0262>:0 

@@ -1,1 +1,2 @@
+$ fsharpc --nologo mutableAssignReturnWithoutSideEffect.fsx && mono mutableAssignReturnWithoutSideEffect.exe
 6

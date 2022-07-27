@@ -1,9 +1,9 @@
 $ fsharpc --nologo finalizeAggregated.fsx && mono finalizeAggregated.exe
 Creating a scope
 Instantiated example-object
-This instance has been in existence for 00:00:00.0111453
+This instance has been in existence for 00:00:00.0271079
 Finalizing example-object
-This instance has been in existence for 00:00:00.0384593
+This instance has been in existence for 00:00:00.0836051
 Scope deleted
-00:00:00.0384593
+00:00:00.0836051
 Program done

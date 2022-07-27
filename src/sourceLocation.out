@@ -1,4 +1,4 @@
 $ fsharpc --nologo sourceLocation.fsx && mono sourceLocation.exe
 Line: 2
-Source Directory: /Users/sporring/repositories/fsharpNotes/src
+Source Directory: /Users/jrh630/repositories/fsharp-book/src
 Source File: sourceLocation.fsx

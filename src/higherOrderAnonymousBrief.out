@@ -1,3 +1,2 @@
-$ fsharpc --nologo higherOrderAnonymousBrief.fsx
-$ mono higherOrderAnonymousBrief.exe
+$ fsharpc --nologo higherOrderAnonymousBrief.fsx && mono higherOrderAnonymousBrief.exe
 [3; 4; 6]

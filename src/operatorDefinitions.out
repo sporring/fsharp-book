@@ -1,5 +1,4 @@
-$ fsharpc --nologo operatorDefinitions.fsx
-$ mono operatorDefinitions.exe
+$ fsharpc --nologo operatorDefinitions.fsx && mono operatorDefinitions.exe
 13
 16
 true

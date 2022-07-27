@@ -1,5 +1,5 @@
 $ fsharpc --nologo records.fsx && mono records.exe
-{name = "Jon";
- age = 50;
- height = 1.75;}
+{ name = "Jon"
+  age = 50
+  height = 1.75 }
 name = Jon

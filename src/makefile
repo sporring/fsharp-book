@@ -1,7 +1,7 @@
 .SUFFIXES: # turn off implicit rules for easier debugging
 
+FS := $(wildcard *.fs)
 FSCRIPT := $(wildcard *.fsscript)
-#FSX := $(wildcard *.fsx)
 FSX := $(wildcard *.fsx)
 FSX := $(filter-out filenamedialogue.fsx, $(FSX))
 FSX := $(filter-out nestedRecModules.fsx, $(FSX))
@@ -24,24 +24,33 @@ FSX := $(filter-out commandLineArgs.fsx, $(FSX))
 FSX := $(filter-out commandLineArgsFail.fsx, $(FSX))
 FSX := $(filter-out commandLineArgsSuccess.fsx, $(FSX))
 FSX := $(filter-out readKey.fsx, $(FSX))
+OS := $(patsubst %.fs,%.out,$(FSCRIPT))
 OSCRIPT := $(patsubst %.fsscript,%.out,$(FSCRIPT))
-OSX := $(patsubst %.fsx,%.out,$(FSX)) MetaExplicitApp.out MetaAppWOpen.out namespaceApp.out namespaceExtensionApp.out MetaExplicit.dll MetaExplicitDLLApp.out MetaExplicit.out MetaWAdd.fsi MetaWAddSig.out MetaWAdd.dll MetaWAdd.out MetaWAddRemoved.out vecPolar2DApp.out baseUpcastApp.out baseUpcastBoardApp.out commandLineArgs.out commandLineArgsSuccess.out commandLineArgsFail.out
+OSX := $(patsubst %.fsx,%.out,$(FSX)) MetaExplicitApp.out MetaAppWOpen.out namespaceApp.out namespaceExtensionApp.out MetaExplicit.dll MetaExplicitDLLApp.out MetaExplicit.out MetaWAdd.fsi MetaWAddSig.out MetaWAdd.dll MetaWAdd.out MetaWAddRemoved.out baseUpcastApp.out baseUpcastBoardApp.out commandLineArgs.out commandLineArgsSuccess.out commandLineArgsFail.out MetaWOAddApp.out
 
-all: $(OSX) $(OSCRIPT)
+all: $(OS) $(OSX) $(OSCRIPT)
 
 # Default implicit rules.
 %.out: %.fsscript
 	./fsscript2out $<
 
 %.out: %.fsx
-	str="fsharpc --nologo $^ && mono $*.exe"; \
-if [ $${#str} -le 70 ];\
-then ./fsxeval2out $@ "" "$$str";\
-else ./fsxeval2out $@ "" "fsharpc --nologo $^" "mono $*.exe";\
-fi
+	./fsxeval2out $@ "" "fsharpc --nologo $^ && mono $*.exe";
+
+%.out: %.fs
+	fsharpc --nologo -a $^
+
+#	str="fsharpc --nologo $^ && mono $*.exe"; \
+#	if [ $${#str} -le 70 ];\
+#		then ./fsxeval2out $@ "" "$$str";\
+#		else ./fsxeval2out $@ "" "fsharpc --nologo $^" "mono $*.exe";\
+#	fi
+#	str="dotnet fsi $^"; \
 #	./fsx2out $<
 
 # Regular compile into exe of last filename. Since .out is not a standard ending, $* does not work
+MetaExplicitModuleDefinition.out: MetaExplicitModuleDefinition.fs MetaExplicitModuleDefinition.fsx
+	./fsxeval2out $@ "" "fsharpc --nologo $^ && mono MetaApp.exe"
 MetaApp.out: Meta.fsx MetaApp.fsx
 	./fsxeval2out $@ "" "fsharpc --nologo $^ && mono MetaApp.exe"
 MetaAppWOpen.out: MetaExplicit.fsx MetaAppWOpen.fsx
@@ -64,8 +73,6 @@ MetaExplicitApp.out: MetaExplicit.fsx MetaApp.fsx
 	./fsxvar2out $@ "$$ fsharpc --nologo $^ && mono MetaApp.exe" $^
 namespaceExtensionApp.out: namespace.fsx namespaceExtension.fsx namespaceApp.fsx
 	./fsxvar2out $@ "$$ fsharpc --nologo $^ && mono namespaceApp.exe" $^
-vecPolar2DApp.out: vecPolar2D.fs vecCartesian2DApp.fsx
-	./fsxvar2out $@ "$$ fsharpc --nologo $^ && mono vecPolar2DApp.exe" $^
 
 # Irregular compile
 letValueScopeNestedScope.out: letValueScopeNestedScope.fsx
@@ -79,13 +86,13 @@ MetaExplicit.out MetaExplicit.dll: MetaExplicit.fsx
 MetaExplicitDLLApp.out: MetaExplicit.dll MetaApp.fsx
 	./fsxeval2out $@ "" "fsharpc --nologo -r $^ && mono MetaApp.exe"
 #MetaHashApp.out: MetaExplicit.dll MetaHashApp.fsx
-MetaHashApp.out: MetaHashApp.fsx
+MetaHashApp.out: MetaExplicit.dll MetaHashApp.fsx
 	./fsxeval2out $@ "" "fsharpc --nologo MetaHashApp.fsx && mono MetaHashApp.exe"
 MetaWAddSig.out MetaWAdd.fsi: MetaWAdd.fs
-	./fsxeval2out MetaWAddSig.out "" "fsharpc --nologo --sig:MetaWAdd.fsi $^"
-MetaWAdd.dll MetaWAdd.out: MetaWAddRemoved.fsi MetaWAdd.fs
+	./fsxeval2out MetaWAddSig.out "" "fsharpc --nologo --sig:MetaWAdd.fsi -a $^"
+MetaWAdd.dll MetaWAdd.out: MetaWAdd.fsi MetaWAdd.fs
 	./fsxeval2out MetaWAdd.out "" "fsharpc --nologo -a $^"
-MetaWAddRemoved.out: MetaWAdd.dll MetaWOAddApp.fsx
+MetaWAddRemoved.out: MetaWAdd.dll MetaWAddRemoved.fsi MetaWOAddApp.fsx
 	./fsxeval2out $@ "" "fsharpc --nologo -r $^"
 commandLineArgs.out: commandLineArgs.fsx
 	./fsxeval2out $@ "" "fsharpc --nologo commandLineArgs.fsx" "mono commandLineArgs.exe Hello World"
@@ -99,3 +106,7 @@ cleanfscript:
 
 cleanfsx:
 	rm $(OSX)
+
+# Do something about userDialoguePrintf !
+# Do something about userDialogue !
+# Do something about readKey !

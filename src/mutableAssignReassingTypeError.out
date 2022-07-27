@@ -1,8 +1,6 @@
-$ fsharpc --nologo mutableAssignReassingTypeError.fsx
+$ fsharpc --nologo mutableAssignReassingTypeError.fsx && mono mutableAssignReassingTypeError.exe
 
 mutableAssignReassingTypeError.fsx(3,6): error FS0001: This expression was expected to have type
     'int'    
 but here has type
     'float'    
-$ mono mutableAssignReassingTypeError.exe
-Cannot open assembly 'mutableAssignReassingTypeError.exe': No such file or directory.

@@ -1,4 +1,3 @@
-$ fsharpc --nologo letValueSequenceLightWeight.fsx
-$ mono letValueSequenceLightWeight.exe
+$ fsharpc --nologo letValueSequenceLightWeight.fsx && mono letValueSequenceLightWeight.exe
 2.0
 9.0

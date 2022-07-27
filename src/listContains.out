@@ -1,3 +1,0 @@
-> List.contains 3 [1; 2; 3];;
-val it : bool = true
-

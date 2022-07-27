@@ -1,5 +1,4 @@
-$ fsharpc --nologo listMultidimensional.fsx
-$ mono listMultidimensional.exe
+$ fsharpc --nologo listMultidimensional.fsx && mono listMultidimensional.exe
 [1; 2]
 2
 2

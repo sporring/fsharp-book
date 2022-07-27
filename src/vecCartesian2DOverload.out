@@ -1,5 +1,4 @@
-$ fsharpc --nologo vecCartesian2DOverload.fsx
-$ mono vecCartesian2DOverload.exe
+$ fsharpc --nologo vecCartesian2DOverload.fsx && mono vecCartesian2DOverload.exe
 1.5 * (1.0, 2.0) = (1.5, 3.0)
 (1.0, 2.0) * 1.5 = (1.5, 3.0)
 (1.0, 2.0) + (3.2, -1.8) = (4.2, 0.2)

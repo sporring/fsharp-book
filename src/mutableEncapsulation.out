@@ -1,5 +1,4 @@
-$ fsharpc --nologo mutableEncapsulation.fsx
-$ mono mutableEncapsulation.exe
+$ fsharpc --nologo mutableEncapsulation.fsx && mono mutableEncapsulation.exe
 1
 2
 3

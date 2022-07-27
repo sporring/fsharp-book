@@ -1,6 +1,6 @@
 > 3 / 0;;
 System.DivideByZeroException: Attempted to divide by zero.
-  at <StartupCode$FSI_0002>.$FSI_0002.main@ () [0x00001] in <0e5b9fd12a6649c598d7fa8c09a58dd3>:0 
-  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[], System.Exception&)
-  at System.Reflection.MonoMethod.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00032] in <c9f8153c41de4f8cbafd0e32f9bf6b28>:0 
+  at <StartupCode$FSI_0002>.$FSI_0002.main@ () [0x00000] in <32e12432747247dcb696ff61fd980cd3>:0 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <e068e2227ab74c1bb3d724ebaab0e3ff>:0 
 Stopped due to error

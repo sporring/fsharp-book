@@ -1,3 +1,2 @@
-$ fsharpc --nologo refWithoutSideEffect.fsx
-$ mono refWithoutSideEffect.exe
+$ fsharpc --nologo refWithoutSideEffect.fsx && mono refWithoutSideEffect.exe
 6

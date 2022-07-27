@@ -5,6 +5,7 @@ val a : int = 357
 val b : float = 863.4
 
 > let c = a + b;;
+
   let c = a + b;;
   ------------^
 

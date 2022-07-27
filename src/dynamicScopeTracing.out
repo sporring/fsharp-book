@@ -1,3 +1,2 @@
-$ fsharpc --nologo dynamicScopeTracing.fsx
-$ mono dynamicScopeTracing.exe
+$ fsharpc --nologo dynamicScopeTracing.fsx && mono dynamicScopeTracing.exe
 8.0

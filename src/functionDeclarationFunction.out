@@ -1,3 +1,2 @@
-$ fsharpc --nologo functionDeclarationFunction.fsx
-$ mono functionDeclarationFunction.exe
+$ fsharpc --nologo functionDeclarationFunction.fsx && mono functionDeclarationFunction.exe
 120

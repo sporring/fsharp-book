@@ -1,10 +1,10 @@
 $ fsharpc --nologo recordsDominance.fsx && mono recordsDominance.exe
-{name = "Jon";
- age = 50;
- height = 1.75;} : RecordsDominance+teacher
-{name = "Jon";
- age = 50;
- height = 1.75;} : RecordsDominance+person
-{name = "Jon";
- age = 50;
- height = 1.75;} : RecordsDominance+person
+{ name = "Jon"
+  age = 50
+  height = 1.75 } : RecordsDominance+teacher
+{ name = "Jon"
+  age = 50
+  height = 1.75 } : RecordsDominance+person
+{ name = "Jon"
+  age = 50
+  height = 1.75 } : RecordsDominance+person

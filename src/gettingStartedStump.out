@@ -1,3 +1,2 @@
-$ fsharpc --nologo gettingStartedStump.fsx
-$ mono gettingStartedStump.exe
+$ fsharpc --nologo gettingStartedStump.fsx && mono gettingStartedStump.exe
 3

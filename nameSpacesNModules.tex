@@ -118,7 +118,7 @@ The order matters:\filename{namespaceExtension.fsx} uses the definition of \lsti
 Namespaces may also be nested. In contrast to modules, nesting is defined using the \lexeme{.} notation. That is, to create a child namespace \lstinline{more} of \lstinline{Utilities}, we must use initially write \mbox{\lstinline{namespace Utilities.more}}. Indentation is ignored in the \lstinline{namespace} line, thus left-most indentation is almost always used. Namespaces follow lexical scope rules, and identically to modules, namespaces containing mutually dependent children can be declared using the \keyword{rec} keyword, e.g., \mbox{\lstinline{namespace rec Utilities}}.
 
 \section{Compiled Libraries}
-Libraries may be distributed in compiled form as \filename{.dll} files. This saves the user from having to recompile a possibly large library every time library functions needs to be compiled with an application program. In order to produce a library file from \filename{MetaExplicitModuleDefinition.fsx} and then compile an application program, we first use the compiler's \filename{-a} option to produce the \filename{.dll}. A demonstration is given in \Cref{MetaExplicit}.
+Libraries may be distributed in compiled form as \filename{.dll} files. This saves the user from having to recompile a possibly large library every time library functions needs to be compiled with an application program. In order to produce a library file from \filename{MetaExplicit.fsx} and then compile an application program, we first use the compiler's \filename{-a} option to produce the \filename{.dll}. A demonstration is given in \Cref{MetaExplicit}.
 %
 \fsOutput{MetaExplicit}{A stand-alone \filename{.dll} file is created and used with special compile commands.}
 %

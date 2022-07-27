@@ -1,5 +1,4 @@
-$ fsharpc --nologo mutuallyRecursiveAlt.fsx
-$ mono mutuallyRecursiveAlt.exe
+$ fsharpc --nologo mutuallyRecursiveAlt.fsx && mono mutuallyRecursiveAlt.exe
     i  Even   Odd
     1 false  true
     2  true false

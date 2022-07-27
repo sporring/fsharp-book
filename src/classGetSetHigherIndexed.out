@@ -1,5 +1,4 @@
-$ fsharpc --nologo classGetSetHigherIndexed.fsx
-$ mono classGetSetHigherIndexed.exe
+$ fsharpc --nologo classGetSetHigherIndexed.fsx && mono classGetSetHigherIndexed.exe
 ClassGetSetHigherIndexed+aClass
 0 0 0
 0 3 0

@@ -1,8 +1,8 @@
 $ fsharpc --nologo exceptionFinally.fsx && mono exceptionFinally.exe
+Finally expression will always be executed.
 
 Unhandled Exception:
 System.Exception: True
-  at <StartupCode$exceptionFinally>.$ExceptionFinally$fsx.main@ () [0x00000] in <599574c6a7dcbe4da7450383c6749559>:0 
-Finally expression will always be executed.
+  at <StartupCode$exceptionFinally>.$ExceptionFinally$fsx.main@ () [0x00000] in <62028a5303af6ab5a7450383538a0262>:0 
 [ERROR] FATAL UNHANDLED EXCEPTION: System.Exception: True
-  at <StartupCode$exceptionFinally>.$ExceptionFinally$fsx.main@ () [0x00000] in <599574c6a7dcbe4da7450383c6749559>:0 
+  at <StartupCode$exceptionFinally>.$ExceptionFinally$fsx.main@ () [0x00000] in <62028a5303af6ab5a7450383538a0262>:0 

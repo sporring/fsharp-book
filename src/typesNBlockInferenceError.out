@@ -1,6 +1,8 @@
+> let sum x y = x + y;;
 val sum : x:int -> y:int -> int
 
 > let c = sum 357.6 863.4;;
+
   let c = sum 357.6 863.4;;
   ------------^^^^^
 

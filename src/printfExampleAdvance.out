@@ -1,5 +1,4 @@
-$ fsharpc --nologo printfExampleAdvance.fsx
-$ mono printfExampleAdvance.exe
+$ fsharpc --nologo printfExampleAdvance.fsx && mono printfExampleAdvance.exe
 Print examples: 3.0M, 3uy, "a string"
 Print function with no arguments: I will not print anything
 Print function with 1 argument: Custom formatter got: "3.0"

@@ -1,3 +1,2 @@
-$ fsharpc --nologo functionDeclarationMul.fsx
-$ mono functionDeclarationMul.exe
+$ fsharpc --nologo functionDeclarationMul.fsx && mono functionDeclarationMul.exe
 15

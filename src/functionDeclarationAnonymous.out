@@ -1,3 +1,2 @@
-$ fsharpc --nologo functionDeclarationAnonymous.fsx
-$ mono functionDeclarationAnonymous.exe
+$ fsharpc --nologo functionDeclarationAnonymous.fsx && mono functionDeclarationAnonymous.exe
 5

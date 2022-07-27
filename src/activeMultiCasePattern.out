@@ -1,5 +1,4 @@
-$ fsharpc --nologo activeMultiCasePattern.fsx
-$ mono activeMultiCasePattern.exe
+$ fsharpc --nologo activeMultiCasePattern.fsx && mono activeMultiCasePattern.exe
 0: It's gold!
 1: It's silver.
 2: It's no more than bronze.

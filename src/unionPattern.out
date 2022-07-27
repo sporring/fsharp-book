@@ -1,2 +1,2 @@
 $ fsharpc --nologo unionPattern.fsx && mono unionPattern.exe
-Vec3D (1.0,-1.2,0.9) -> Vec2D (1.0,-1.2)
+Vec3D (1.0, -1.2, 0.9) -> Vec2D (1.0, -1.2)

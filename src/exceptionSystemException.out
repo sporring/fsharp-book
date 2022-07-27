@@ -1,7 +1,6 @@
-$ fsharpc --nologo exceptionSystemException.fsx
+$ fsharpc --nologo exceptionSystemException.fsx && mono exceptionSystemException.exe
 
 exceptionSystemException.fsx(5,5): warning FS0067: This type test or downcast will always hold
 
 exceptionSystemException.fsx(5,5): warning FS0067: This type test or downcast will always hold
-$ mono exceptionSystemException.exe
 So failed

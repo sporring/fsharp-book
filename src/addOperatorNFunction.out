@@ -1,3 +1,2 @@
-$ fsharpc --nologo addOperatorNFunction.fsx
-$ mono addOperatorNFunction.exe
+$ fsharpc --nologo addOperatorNFunction.fsx && mono addOperatorNFunction.exe
 3.0 plus 4.0 is 7.0 and 7.0

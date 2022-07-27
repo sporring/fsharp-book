@@ -1,4 +1,3 @@
-$ fsharpc --nologo baseInheritanceDownCast.fsx
-$ mono baseInheritanceDownCast.exe
+$ fsharpc --nologo baseInheritanceDownCast.fsx && mono baseInheritanceDownCast.exe
 [|King at (0, 0); Rook at (2, 0)|]
 [|King at (1, 0); Rook at (2, 0)|]

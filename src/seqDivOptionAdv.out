@@ -1,3 +1,3 @@
 $ fsharpc --nologo seqDivOptionAdv.fsx && mono seqDivOptionAdv.exe
 Some 0.1666666667
-<null>; isNone: true
+None; isNone: true

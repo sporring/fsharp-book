@@ -1,2 +1,3 @@
+$ fsharpc --nologo functionDeclarationTupleCurrying.fsx && mono functionDeclarationTupleCurrying.exe
 15
 6

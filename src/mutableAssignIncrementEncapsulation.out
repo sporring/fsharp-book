@@ -1,3 +1,4 @@
+$ fsharpc --nologo mutableAssignIncrementEncapsulation.fsx && mono mutableAssignIncrementEncapsulation.exe
 1
 2
 3

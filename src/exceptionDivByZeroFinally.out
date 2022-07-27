@@ -1,5 +1,4 @@
-$ fsharpc --nologo exceptionDivByZeroFinally.fsx
-$ mono exceptionDivByZeroFinally.exe
+$ fsharpc --nologo exceptionDivByZeroFinally.fsx && mono exceptionDivByZeroFinally.exe
 Doing division: 3 1. Division finished.
 3 / 1 = 3
 Doing division: 3 0. Division finished.

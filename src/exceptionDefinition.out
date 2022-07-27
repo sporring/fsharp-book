@@ -1,4 +1,3 @@
-$ fsharpc --nologo exceptionDefinition.fsx
-$ mono exceptionDefinition.exe
+$ fsharpc --nologo exceptionDefinition.fsx && mono exceptionDefinition.exe
 picky 3 = "3"
 picky 5 = "Exception of type 'ExceptionDefinition+DontLikeFive' was thrown."
