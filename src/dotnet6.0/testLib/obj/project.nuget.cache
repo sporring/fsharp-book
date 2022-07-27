@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "sgZ+q7k7bYClj9lTdDq99jD23rRnp3qRJORBzuPCvl+2HnwpVV3tRXDSAjmRWfgxSKPgdKADbs7kZmYQV7OSYw==",
+  "success": true,
+  "projectFilePath": "/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/testLib/testLib.fsproj",
+  "expectedPackageFiles": [
+    "/Users/jrh630/.nuget/packages/fsharp.core/6.0.1/fsharp.core.6.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

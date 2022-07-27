@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "wee/cAO3J4kSITrB5OIoATNNlkoIZI8YDJFzr3Vv58H1c0Y/G8OXxx486WsMrupEqRworPGbpCon/dMGFao3yQ==",
+  "success": true,
+  "projectFilePath": "/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/test/test.fsproj",
+  "expectedPackageFiles": [
+    "/Users/jrh630/.nuget/packages/fsharp.core/6.0.1/fsharp.core.6.0.1.nupkg.sha512",
+    "/Users/jrh630/.nuget/packages/microsoft.netcore.app.runtime.osx-x64/6.0.1/microsoft.netcore.app.runtime.osx-x64.6.0.1.nupkg.sha512",
+    "/Users/jrh630/.nuget/packages/microsoft.aspnetcore.app.runtime.osx-x64/6.0.1/microsoft.aspnetcore.app.runtime.osx-x64.6.0.1.nupkg.sha512",
+    "/Users/jrh630/.nuget/packages/microsoft.netcore.app.host.osx-x64/6.0.1/microsoft.netcore.app.host.osx-x64.6.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

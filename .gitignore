@@ -1,3 +1,5 @@
+.DS_Store
+*~
 *.log
 *.out
 *.idx
@@ -14,3 +16,4 @@
 *.toc
 *.rel
 *.bck
+*.bckp

@@ -1,0 +1,2 @@
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/test/bin/Release/net6.0/osx-x64/publish/test.pdb
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/test/bin/Release/net6.0/osx-x64/publish/test
