@@ -1,2 +1,2 @@
-$ fsharpc --nologo quickStartSumFct.fsx && mono quickStartSumFct.exe
+$ dotnet fsi quickStartSumFct.fsx
 1221

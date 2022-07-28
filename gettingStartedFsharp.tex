@@ -160,4 +160,128 @@ I.e., executing the script with \lstinline[language=console]|fsharpi| is slightl
 
 Executing programs with the interpreted directly from a file and compiling and executing the program is much preferred for programming complete programs, since the starting state is well defined, and since this better supports \idx{unit testing}, which is a method for debugging programs. Thus, \advice{prefer compiling over interpretation.}% This comments corrects wrongly placed margin note: https://tex.stackexchange.com/questions/147827/why-does-marginpar-sometimes-add-an-unnecessary-newline
 
+\section{The Printf Function}
+\label{sec:printf}
+A common way to output information to the console is to use one of the family of \idx[printf@\lstinline{printf}]{\lstinline{printf}} commands. These functions are special, since they take a variable number of arguments, and the number is decided by the first argument - the format string. The syntax for the \lstinline{printf} commands are as follows:
+%
+\begin{verbatimwrite}{\ebnf/printf.ebnf}
+printf <*format-string*> {*<*ident*>*}
+\end{verbatimwrite}
+\syntax{\ebnf/printf.ebnf}{\lstinline{printf} statement.}
+%
+The \lstinline[language=ebnf]!formatString! is a string (simple or verbatim) with placeholders. The function \lstinline[language=ebnf]!printf! prints \lstinline[language=ebnf]!formatString! to the console, where all \lstinline[language=ebnf]!placeholder! have been replaced by the values of the corresponding arguments formatted as specified. For example, in \mbox{\lstinline!printfn "1 2 \%d" 3!}, the \lstinline[language=ebnf]!formatString! is \mbox{\lstinline!"1 2 \%d"!} and the placeholder is \lstinline!%d!. %
+When executed, \lstinline{printf} will replace \lstinline!%d! %
+with the following argument, \lstinline{3}, and print the result to the console: \mbox{\lstinline!1 2 3!}.  There are specifiers for all the basic types, and more, as elaborated in \Cref{tab:printfPlaceholder}.
+% 
+\begin{table}
+  \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+  \begin{tabularx}{\linewidth}{|l|l|X|}
+    \hline
+    \rowcolor{headerRowColor} Specifier& Type&Comment\\
+    \hline
+    \lstinline!\%b!&\lstinline!bool!&formatted as ``true'' or ``false''\\
+    \hline
+    \lstinline!\%s!&\lstinline!string!&\\
+    \hline
+    \lstinline!\%c!&\lstinline!char!&\\
+    \hline
+    \mbox{\lstinline!\%d!,} \mbox{\lstinline!\%i!}&basic integer&\\
+    \hline
+    \lstinline!\%u!&basic unsigned integers&\\
+    \hline
+    \lstinline!\%x!&basic integer&formatted as unsigned hexadecimal with lower case letters\\
+    \hline
+    \lstinline!\%X!&basic integer&formatted as unsigned hexadecimal with upper case letters\\
+    \hline
+    \lstinline!\%o!&basic integer&formatted as unsigned octal integer\\
+    \hline
+    \mbox{\lstinline!\%f!,} \mbox{\lstinline!\%F!,} &basic floats&formatted on decimal form\\
+    \hline
+    \mbox{\lstinline!\%e!,} \mbox{\lstinline!\%E!,} &basic floats&formatted on scientific form. Lower case uses "e" while upper case uses "E'' in the formatting.\\
+    \hline
+    \mbox{\lstinline!\%g!,} \mbox{\lstinline!\%G!,} &basic floats&formatted on the shortest of the corresponding decimal or scientific form.\\
+    \hline
+%    \lstinline!\%M!&decimal&\\
+%    \hline
+    \lstinline!\%A!, \lstinline!\%O!&any value&formatted as a basic type or using the object's \lstinline!ToString! method\\
+    \hline
+%    \lstinline!\%A!&any value&formatted as a basic type or using its \lstinline!ToString! method\\
+%    \hline
+%    \lstinline!\%a!&\lstinline[language=ebnf]!Printf.TextWriterFormat ->'a -> ()!&\\
+%    \hline
+%    \lstinline!\%t!&\lstinline[language=ebnf]!(Printf.TextWriterFormat -> ()!&\\
+%    \hline
+  \end{tabularx}
+  \caption{Some printf placeholder strings.}
+  \label{tab:printfPlaceholder}
+\end{table}
+The placeholder can be parametrized, e.g.,  the placeholder string \lstinline{%8s} %
+will print a right-aligned string which that is eight characters wide and padded with spaces, as needed. For floating point numbers, \lstinline{%8f} %
+will print a number that is exactly seven digits and a decimal point, making eight characters in total. Zeros are added after the decimal point, as needed. Alternatively, we may specify the number of digits after the decimal point, such that \lstinline{%8.1f} %
+will print a floating point number, aligned to the right, with one digit after the decimal point padded with spaces, as needed. The default is for the value to be right justified in the field, but left justification can be specified by the \lstinline!-! character. For number types, you can specify their format by \lstinline!"0"! for padding the number with zeros to the left when right justifying the number; \lstinline!"+"! to explicitly show a plus sign for positive numbers; \lstinline!SP! to enforce a space, where there otherwise would be a plus sign for positive numbers. The placeholder parameter may also be given as an argument to \lstinline{printf} which case the placeholder should use the \lstinline!*! character instead of an integer.
+
+Examples of placeholder parametrization are shown in \Cref{printfExample}.
+%
+\fs{printfExample}{Examples of printf and some of its formatting options.}
+%
+Not all combinations of flags and identifier types are supported, e.g., strings cannot have the number of integers after the decimal point specified.\spec{Mono seems to have a bug, \lstinline{printfn "\%.1g"   3.13;;} and \lstinline{printfn "\%.1f"   3.13;;} produces different number of digits.}\spec{Spec-4.0 \lstinline{\%s} and \lstinline{\%b} are missing in Section 3.1.16.}
+The placeholder types \lstinline{"%A"}, %
+\lstinline{"%a"}, %
+and \lstinline{"%t"} %
+are special for F\#, examples of their use are shown in \Cref{printfExampleAdvance}.
+%
+\fs{printfExampleAdvance}{Custom format functions may be used to specialise output.}
+%
+The \lstinline!%A! %
+is special in that all built-in types, including tuples, lists, and arrays to be discussed in \Cref{chap:lists}, can be printed using this formatting string, but notice that the formatting performed includes the named literal string. The two formatting strings \lstinline!%t! %
+and \lstinline!%a! %
+are options for user-customizing the formatting and will not be discussed further.
+
+Beware, \lstinline[language=ebnf]!formatString! is not a \lstinline!string! but a \lstinline!Printf.TextWriterFormat!, so to predefine a \lstinline[language=ebnf]!formatString! as, e.g., \mbox{\lstinline{let str = "hello \%s" in printf str "world"}}, will be a type error.
+
+The family of \lstinline!printf! is shown in \Cref{tab:printfFamily}.\idxss{stdout@\lstinline{stdout}}\idxss{stderr@\lstinline{stderr}}\idxss{printf@\lstinline{printf}}\idxss{printfn@\lstinline{printfn}}\idxss{fprintf@\lstinline{fprintf}}\idxss{fprintfn@\lstinline{fprintfn}}\idxss{eprintf@\lstinline{eprintf}}\idxss{eprintfn@\lstinline{eprintfn}}\idxss{sprintf@\lstinline{sprintf}}\idxss{failwith@\lstinline{failwithf}}
+\begin{table}
+  \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+  \begin{tabularx}{\linewidth}{|l|l|X|}
+    \hline
+    \rowcolor{headerRowColor} Function & Example & Description\\
+    \hline
+    \lstinline!printf! & \lstinline!printf "\%d apples" 3! & Prints to the console, i.e., \lstinline!stdout!\\
+    \lstinline!printfn! &  & As \lstinline!printf! and adds a newline.\\
+    \hline
+    \lstinline!fprintf! & \lstinline!fprintf stream "\%d apples" 3! & Prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, which would be the same as \lstinline!printf! and \lstinline!eprintf!.\\
+    \lstinline!fprintfn! & & As \lstinline!fprintf! but with added newline.\\
+    \hline
+    \lstinline!eprintf! & \lstinline!eprintf "\%d apples" 3! & Prints to \lstinline!stderr!\\
+    \lstinline!eprintfn! & & As \lstinline!eprintf! but with added newline.\\
+    \hline
+    \lstinline!sprintf! & \lstinline!sprintf "\%d apples" 3! & Return printed string\\
+    \hline
+    \lstinline!failwithf! & \lstinline!failwithf "\%d failed apples" 3! & Prints to a string and used for raising an exception.\\
+    \hline
+  \end{tabularx}
+  \caption{The family of printf functions.}
+  \label{tab:printfFamily}
+\end{table}
+The function \lstinline!fprintf! prints to a stream, e.g., \lstinline!stderr! and \lstinline!stdout!, of type \lstinline!System.IO.TextWriter!. For the moment it is sufficient to think of both \lstinline!stderr! and \lstinline!stdout! to be the console. Streams will be discussed in further detail in \Cref{chap:IO}. The function \lstinline!failwithf! is used with exceptions, see \Cref{chap:errors} for more details. The function has a number of possible return value types, and for testing, the \idx[ignore@\lstinline{ignore}]{\lstinline{ignore}} function ignores it all, e.g., \mbox{\lstinline!ignore (failwithf "\%d failed apples" 3)!}.
+\spec{Mono: \lstinline{bprintf} and \lstinline{kprintf} are undefined.}
+
+\section{Reading from the Console}
+\label{sec:readline}
+The \lstinline{printf} and \lstinline{printfn} functions allow us to write text on the screen. A program often needs to ask a user to input data, e.g., by typing text on a keyboard. Text typed on the keyboard is accessible through the \lstinline{stdin} stream, and F\# provides several library functions for capturing text typed on the keyboard. In the following section, we will briefly discuss the \lstinline{System.Console.ReadLine} function. For more details and other methods of input see \Cref{chap:IO,chap:windows}.
+
+The function \lstinline{System.Console.ReadLine} takes a unit value as an argument and returns the string the user typed. The program will not advance until the user presses newline. An example of a program that multiplies two floating point numbers supplied by a user is given in \Cref{userDialoguePrintfCode},
+%
+\fsCode{userDialoguePrintf}{userDialoguePrintfCode}{Interacting with a user using \lstinline!ReadLine!.}{}
+%
+and an example dialogue is shown in \Cref{userDialoguePrintf}.
+%
+\fsOutput{userDialoguePrintf}{An example dialogue of running \Cref{userDialoguePrintfCode}. The user typed ``3.5'' and ``7.4''.}{}%
+%\FrameArea{userDialoguePrintf_1-tl}{userDialoguePrintf_1-br}%
+%\FrameArea{userDialoguePrintf_2-tl}{userDialoguePrintf_2-br}%
+%
+Note that the string is immediately cast to floats such that we can multiply the input using the float multiplication operator. This also implies that if the user inputs a non-number, then \lstinline[language=console]{mono} will halt with an error message.
+
 \end{document}

@@ -19,6 +19,10 @@
 \usepackage[T1]{fontenc} % ensure that all the characters in characterSets.tex prints
 \usepackage{upquote} % \textcent
 \usepackage{pifont} % add \ding, http://ctan.org/pkg/pifont
+\renewcommand{\Re}{\mathbb{R}}
+\newcommand{\Nat}[0]{\mathbb{N}}
+\newcommand{\Int}[0]{\mathbb{Z}}
+
 
 % Figures
 \usepackage{graphicx}
@@ -211,6 +215,10 @@
   middle=1mm,
   arc=2mm,
 }
+\newtcolorbox[auto counter, number within=chapter]{task}[1][]{%
+  title=\textbf{Task~\thetcbcounter},
+  colframe=DeepSkyBlue1, %green!30!blue,
+  #1}
 \newtcolorbox[auto counter, number within=chapter]{problem}[1][]{%
   title=\textbf{Problem~\thetcbcounter},
   colframe=DeepSkyBlue1, %green!30!blue,

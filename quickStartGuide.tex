@@ -2,79 +2,260 @@
 \graphicspath{ {./figures/} }
 
 \begin{document}
-\chapter{Quick-start Guide}
+\chapter{Solving problems by writing a program}
+\begin{overview}{Chapter points}
+  In this chapter, you will find a quick introduction to several essential programming constructs with several examples that you can try on your computer using the \lstinline[language=console]{dotnet} command in your console. All constructs will be discussed in further detail in the following chapters. In this chapter, you will get a peek at:
+  \begin{itemize}
+  \item How to execute an F\# program
+  \item How to perform simple arithmetic using F\#
+  \item What types are and why they are important
+  \item How to write to and obtain written input from the user
+  \item How to perform conditional execution of code
+  \item How to define functions
+  \item How to repeat code without having to rewrite them
+  \item How to add textual comments to help yourself and other programmers understand your programs.
+  \end{itemize}
+\end{overview}
+
 Programming is the art of solving problems by writing a program to be executed by a computer. For example, to solve the following problem,
 %
-\begin{task}
+\begin{task}{probl:sumInteger}
   What is the sum of 357 and 864?
-  \label{probl:sumInteger}
 \end{task}
 %
 we have written the program shown in \Cref{quickStartSum}.
 %
 \fs{quickStartSum}{A script to add 2 numbers and print the result to the console.}
 %
-In the box the above, we see our program was saved as a script in a file called \lstinline[language=console]{quickStartSum.fsx}, and in the console we executed the program by typing the command \lstinline[language=console]|fsharpc --nologo quickStartSum.fsx && mono quickStartSum.exe|. The result is then printed in the console to be \lstinline{1221}. Here, as in the rest of this book, we have used the optional flag \lstinline[language=console]{--nologo}, which informs \lstinline|fsharpc| not to print information about its version etc., thus making the output shorter. The \lstinline[language=console]{&&} notation tells the console to first run the command on the left, and if that did not report any errors, then run the command on the right. This could also have been performed as two separate commands to the console, and throughout this book we will use the above shorthand when convenient.
+In this book, we will show many programs, and for most, we will also show the result of executing the programs on a computer. \Cref{quickStartSum} shows both our program, and how this program is executed on a computer. In the listing, we see our program was saved as a script in a file called \lstinline[language=console]{quickStartSum.fsx}, and in the console (also known as the terminal and the command-line) we executed the program by typing the command \lstinline[language=console]|dotnet fsi quickStartSum.fsx|. The result is then printed by the computer to the console as \lstinline{1221}. The colors are not part of the program but have been added to make it easier for us to identify different syntactical elements of the program.
 
-To solve the problem, we made program consisting of several lines, where each line was an \idx[expression]{expressions}. The first expression, \lstinline|let a = 357|, in line~\ref{quickStartSumA} used the \idx[let@\lstinline{let}]{\keyword{let}} \idx{keyword} to \idx[binding]{bind} the value 357 to the name \lstinline|a|. This is called a \idx{let-binding} and makes the name synonymous with the value. Another notable point is that F\# identifies 357 as an \idx{integer number}, which is F\#'s preferred number type, since computations on integers are very efficient, and since integers are very easy to communicate to other programs. In line~\ref{quickStartSumB} we bound the value 864 to the name \lstinline|b|, and to the name \lstinline|c| we bound the result of evaluating the sum \lstinline|a + b| in line~\ref{quickStartSumC}. Line~\ref{quickStartSumPrintfn} is a \idx{do-binding}, as noted by the keyword \idx[do@\lstinline{do}]{\keyword{do}}. The \lstinline{do}-bindings are also sometimes called \idx[statement]{statements}, and the \keyword{do} keyword is optional in F\#. Here the value of \lstinline|c| was printed to the console followed by a newline
-%(LF possibly preceded by CR, see Appendix~\ref{sec:ascii})
-with the \idx[printfn@\lstinline{printfn}]{\lstinline{printfn}} \idx{function}. A function in F\# is an entity that takes zero or more arguments and returns a value. The function \lstinline|printfn| is very special, since it can take any number of arguments and returns the special value \idx[{()}@\lstinline{()}]{\lexeme{()}} which has type \idx[unit@\lstinline{unit}]{\keyword{unit}}. The \keyword{do} tells F\# to ignore this value. Here \lstinline{printfn} has been used with 2 arguments: \lstinline|"%A"| %
-and \lstinline|c|. Notice that in contrast to many other languages, F\# does not use parentheses to frame the list of arguments, nor does it use commas to separate them. In general, the \lstinline|printfn| function always has 1 or more arguments, and the first is a \idx{format string}. A \idx{string} is a sequence of characters starting and ending with double quotation marks. E.g., \lstinline|let s = "this is a string of characters"| binds the string \lstinline|"this is..."| to the name \lstinline|s|. For the \lstinline|printfn| function, the format string may be any string, but if it contains format character sequences, such as \lstinline|%A|,
- then format character sequence are replaced by the arguments to \lstinline{printfn} which follows the format string. The format string must match the value \idx{type}, that is, here \lstinline|c| is of type integer, whereas the format string \lstinline|%A| %
-matches many types.
+The program consists of a number of lines. Our listing shows line-numbers to the left. These are not part of the program but added for ease of discussion, since the order in which the lines appear the program matters. In this program, each line contans \idx[expression]{expressions}, and this program has \keyword{let}-, \keyword{do}-expressions, and an addition. \keyword{let}-expressions defines aliases, and \keyword{do}-expressions defines computations. \keyword{let} and \keyword{do} are examples of keywords.
 
-Types are a central concept in F\#. In the script \ref{quickStartSum} we bound values of integer type to names. There are several different integer types in F\#, here we used the one called \lstinline|int|. The values were not \idx[type declaration]{declared} to have these types, instead the types were \idx[type inference]{inferred} by F\#. Typing these bindings line by line in an interactive session, we see the inferred types as shown in \Cref{typeInference}.
+Reading the program from line~\ref{quickStartSumA}, the first expression we encounter is \lstinline|let a = 357|. This is known as a \idx{let-binding} in F\# and defines the equivalence between the name \lstinline{a} and the value \lstinline{357}. F\# does not accepts a keyword as a name in a \keyword{let}-bindings. The consequence of this line is that in later lines there is no difference between writing the name \lstinline{a} and the value \lstinline{357}.
+%Another notable point is that F\# identifies 357 as an \idx{integer number}, which is F\#'s preferred number type, since computations on integers are very efficient, and since integers are very easy to communicate to other programs.
+Similarly in line~\ref{quickStartSumB} the value 864 is bound to the name \lstinline|b|. In contrast, line~\ref{quickStartSumC} contains an addition and a \keyword{let}-expression. It is at times useful to simulation the execution the computer does in a step-by-step manner by replacement:
+\begin{quote}
+  \lstinline{let c = a + b} $\quad\rightarrow\quad$  \lstinline{let c = 357 + 864}  $\quad\rightarrow\quad$  \lstinline{let c = 1221}
+\end{quote}
+Thus, since the expression on the right-hand-side of the equal-sign is evaluated, the result of line~\ref{quickStartSumC} is that the name \lstinline{c} is bound to the value \lstinline{1221}.
+
+Line~\ref{quickStartSumPrintfn} has a \keyword{do}-expression is also called a \idx{do-binding} or a \idx[statement]{statements}. In this \keyword{do}-binding, the  \idx[printfn@\lstinline{printfn}]{\lstinline{printfn}} \idx{function} \lstinline{printfn} is called with 2 arguments, \lstinline{"%A"}%
+  and \lstinline{c}. All functions return values, and \lstinline|printfn| the value 'nothing', which is denoted \idx[{()}@\lstinline{()}]{\lexeme{()}}. This function is very commonly used but also very special, since it can take any number of arguments and produces output to the console. We say that ``the output is printed to the screen''. The first argument is called the \idx{formating string} and describes, what should be printed and how the remaining arguments, if any, should be formatted. In this case, the value \lstinline{c} is printed as an integer followed by a newline. Notice that in contrast to many other languages, F\# does not use parentheses to frame the list of function-arguments, nor does it use commas to separate them.
+
+%  In general, the \lstinline|printfn| function always has 1 or more arguments, and the first is a \idx{format string}. A \idx{string} is a sequence of characters starting and ending with double quotation marks. E.g., \lstinline|let s = "this is a string of characters"| binds the string \lstinline|"this is..."| to the name \lstinline|s|. For the \lstinline|printfn| function, the format string may be any string, but if it contains format character sequences, such as \lstinline|%A|, then format character sequence are replaced by the arguments to \lstinline{printfn} which follows the format string. The format string must match the value \idx{type}, that is, here \lstinline|c| is of type integer, whereas the format string \lstinline|%A| % matches many types.
+
+
+\section{Executing F\# programs on a computer}
+%F\# is a functional first programming language, meaning that it has strong support for functional programming, but also supports imperative and object-oriented programming.
+%Furthermore, it has strong support for parallel programming. It was originally developed for Microsoft's .Net platform, but is available as open source for many operating systems through Mono. In this text, we consider F\# \fsharpVersion and its Mono implementation, which is different from .Net mainly in terms of the number of libraries accessible. The complete language specification is described in \url{http://fsharp.org/specs/language-spec/}. 
+
+F\# has two modes of execution, \idx[interactive mode]{interactive} and \idx[compile mode]{compiled}. Interactive mode allows the user to interact with F\# as a dialogue: The user writes statements, and F\# responds immediately. If a program has been saved as a file as in \Cref{quickStartSum} we do not need to rewrite the complete program everytime we wish to execute it, but can give the file as input to the F\#'s interactive mode as demonstrated in \Cref{quickStartSum}. Interactive mode is well suited for small experiments or back-of-an-envelope calculations, but not for programming in general, since each line is interpreted anew every time the program is run. In contranst, in compile mode, dotnet interprets the content of a source file once, and writes the result to disk, such that every when the user wishes to run the program, the interpretation step is not performed. For large programs, this can save considerable time. In the first chapters of this book, we will use interactive mode, and compile mode will be discussed in further detail in \Cref{assemblies}.
+%the user writes a complete program, which is translated or compiled using the F\# compiler into a compiled file. The compiled file can be run or executed as a stand-alone program using a virtual machine called \lstinline[language=console]{mono}. In both the interactive and compile mode, F\# statements are translated into something that can be executed on the computer. A major difference is that in interactive mode, the translation is performed everytime the program is executed, while in compiled mode the translation is performed only once.
+
+%Both interactive and compile modes can be accessed via the \idx{console}, see \Cref{chap:console} for more information on the console.  The interactive system is started by calling \lstinline[language=console]{fsharpi} at the command prompt in the console, while compilation is performed with \lstinline[language=console]{fsharpc}, and execution of the compiled code is performed using the \lstinline[language=console]{mono} command. 
+
+An interactive session is obtained by starting the console, typing the \lstinline[language=console]{fsharpi} command, typing the lines of the program, and ending the script-fragment with \lexeme{;;}. The dialogue in \Cref{interactiveSession} demonstrates the workflow. What the user types has been highlighted by a \tikzmark{tl}box\tikzmark{br}\FrameArea{tl}{br}.
+%
+\begin{codeNOutput}[label=interactiveSession,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: An interactive session.}
+  \begin{lstlisting}[language=console,escapechar=§]
+$ §\tikzmark{lst1_5-tl}§dotnet fsi§\tikzmark{lst1_5-br}§
+
+Microsoft (R) F# Interactive version 12.0.0.0 for F# 6.0
+Copyright (c) Microsoft Corporation. All Rights Reserved.
+
+For help type #help;;
+
+> §\tikzmark{lst1_4-tl}§let a = 3.0§\tikzmark{lst1_1-start}§
+- do printfn "%A" a;;§\tikzmark{lst1_4-br}§§\tikzmark{lst1_1-end}§
+3.0§\tikzmark{lst1_2-start}§
+val a : float = 3.0 §\tikzmark{lst1_2-align}§
+val it : unit = ()
+§\tikzmark{lst1_2-end}§
+> §\tikzmark{lst1_6-tl}§#quit;;§\tikzmark{end_3}§§\tikzmark{lst1_6-br}§
+\end{lstlisting}%$
+\end{codeNOutput}%
+\FrameArea{lst1_4-tl}{lst1_4-br}%
+\FrameArea{lst1_5-tl}{lst1_5-br}%
+\FrameArea{lst1_6-tl}{lst1_6-br}%
+%
+We see that after typing \lstinline[language=console]{fsharpi}, the program starts by stating details about itself. Then F\# writes \lstinline{>} indicating that it is ready to receive commands. The user types \lstinline{let a = 3.0} and presses \lstinline[language=console]{enter}, to which the interpreter responds with \lstinline{-}. This indicates that the line has been received, that the script-fragment is not yet completed, and that it is ready to receive more input. When the user types \lstinline{do printfn "%A" a;;} %
+followed by \lstinline[language=console]{enter}, then by \lexeme{;;} the interpreter knows that the script-fragment is completed, it interprets the script-fragment, responds with \lstinline{3.0} and some extra information about the entered code, and with \lstinline{>} to indicate that it is ready for more script-fragments. The interpreter is stopped when the user types \lstinline[language=console]{#quit;;}. It is also possible to stop the interpreter by typing \lstinline[language=console]{ctrl-d}.
+
+The interactive session results in extra output on the \idx{type inference} performed. In \Cref{interactiveSession}, F\# states that the name \lstinline{a} has \idx{type} \keyword{float} and the value \lstinline{3.0}. Likewise, the \keyword{do} statement F\# refers to by the name \lstinline{it}, and it has the type \keyword{unit} and value \lexeme{()}. Types are very important to F\# since they define how different program pieces fit together like lego bricks. They are a key ingrediens for finding errors in programs, also known as \idx{debugging}, and much of the rest of this book is concerned with types.
+
+Instead of running \lstinline[language=console]{fsharpi} interactively, we can write the script-fragment from \Cref{interactiveSession} into a file, here called \lstinline[language=console]{gettingStartedStump.fsx}. This file can be interpreted directly by \lstinline[language=console]{dotnet fsi} as shown in \Cref{commandlineInterpreter}.
+%
+\begin{codeNOutput}[label=commandlineInterpreter,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Using the interpreter to execute a script.}
+\begin{lstlisting}[language=console,escapechar=§]
+$ §\tikzmark{lst2_1-tl}§dotnet fsi gettingStartedStump.fsx§\tikzmark{lst2_1-br}§
+3.0
+\end{lstlisting}%$
+\end{codeNOutput}
+\FrameArea{lst2_1-tl}{lst2_1-br}%
+%
+Notice that in the file, \lexeme{;;} is optional. In comparison to \Cref{interactiveSession}, we see that the interpreter executes the code and prints the result on screen without the extra type information.
+
+Files are important, when programming, and F\# and the console interprets files differently by the filename's suffix. A filename's suffix is the last letters after the period. Generally there are two types of files: \idx{source code} and compiled programs. Until \Cref{assemblies}, we will concentrate on script files, which are source code, written in human-readable form using an editor, and has \texttt{.fsx} or \texttt{.fsscript} as suffix. In \Cref{tab:suffix} is a complete list of possible suffixes used by F\#.
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|l|}
+    \hline
+    Suffix & Human readable & Description\\
+    \hline
+    \lstinline[language=console]|.fs| & Yes & An \idx{implementation file}, e.g., \lstinline[language=console]|myModule.fs|\\
+    \lstinline[language=console]|.fsi| & Yes & A \idx{signature file}, e.g., \lstinline[language=console]|myModule.fsi|\\
+    \lstinline[language=console]|.fsx| & Yes & A \idx{script file}, e.g., \lstinline[language=console]|gettingStartedStump.fsx|\\
+    \lstinline[language=console]|.fsscript| & Yes & Same as \lstinline[language=console]|.fsx|, e.g., \lstinline[language=console]|gettingStartedStump.fsscript|\\
+    \hline
+    \lstinline[language=console]|.dll| & No & A \idx{library file}, e.g., \lstinline[language=console]|myModule.dll|\\
+    \lstinline[language=console]|.exe| & No & A stand-alone \idx{executable file}, e.g., \lstinline[language=console]|gettingStartedStump.exe|\\
+    \hline
+  \end{tabular}
+  \caption{Suffixes used, when programming F\#.}
+  \label{tab:suffix}
+\end{table}
+
+\section{Values have types and types reduce risk of programming errors}
+Types are a central concept in F\#. In the script \ref{quickStartSum} we bound values of integer type to names. There are several different integer types in F\#, here we used the one called \keyword|int|. The values were not \idx[type declaration]{declared} to have these types, instead the types were \idx[type inference]{inferred} by F\#. Typing these bindings line by line in an interactive session, we see the inferred types as shown in \Cref{typeInference}.
 %
 \fsOutput{typeInference}{Inferred types are given as part of the response from the interpreter.}
 %
-The interactive session displays the type using the \idx[val@\lstinline{val}]{\keyword{val}} keyword followed by the name used in the binding, its type, and its value. Since the value is also responded, the last \lstinline|printfn| statement is superfluous. However, \advice{it is ill-advised to design programs to be run in an interactive session, since the scripts need to be manually copied every time it is to be run, and since the starting state may be unclear.} Notice that \lstinline{printfn} is automatically bound to the name \idx[it@\lstinline{it}]{\lstinline{it}} of type \keyword{unit} and value \idx[{()}@\lstinline{()}]{\lexeme{()}}. F\# insists on binding all statements to values, and in lack of an explicit name, it will use \lstinline{it}. Rumor has it that \lstinline{it} is an abbreviation for "irrelevant".
+The interactive session displays the type using the \idx[val@\keyword{val}]{\keyword{val}} keyword followed by the name used in the binding, its type, and its value. Since the value is also responded, the last \lstinline|printfn| statement is superfluous. Notice that \lstinline{printfn} is automatically bound to the name \idx[it@\lstinline{it}]{\lstinline{it}} of type \keyword{unit} and value \idx[{()}@\lstinline{()}]{\lexeme{()}}. F\# insists on binding all statements to values, and in lack of an explicit name, it will use \lstinline{it}. Rumor has it that \lstinline{it} is an abbreviation for "irrelevant".
 
-The following problem,
+In mathematics, types are also an important concept. For example, a number may belong to the set of natural $\Nat$, integer $\Int$, or real numbers, where all 3 sets are infinitely large and $\Nat\subset\Int\subset\Re$ as illustrated in \Cref{fig:numbers}.
+\begin{figure} % We want the figure on the first page with the chapter title
+  \centering
+  \includegraphics[width=0.6\textwidth]{numbers}
+  \caption{In mathematics, the sets of natural, integer, and real numbers is are each infinitely large, and real contains integers which in turn contains the set of natural numbers.}
+  \label{fig:numbers}
+\end{figure}
+For many problems, working with infinite sets is impractical, and instead a lot of work in the early days of the computer's history was spent on designing finite sets of numbers, which have many of the properties of their mathematical equivalent, but which also are efficient for performing calculations on a computer. For example, the set of integers in F\# is called \keyword{int} and is the set $[\numprint{-2147483648} \ldots \numprint{2147483647}]$. The most commonly used type to represent numbers with properties similar to reals is called \keyword{float} and is a clever selection of $2^{64}$ rational numbers. Since the computer representation of, e.g., \keyword{int} and \keyword{float} differs substantially, algorithms used to perform arithmetic also differs, and this limits how such types can be mixed.
+
+Consider a slight modification of Problem~\ref{probl:sumInteger} to the domain of reals,
 %
-\begin{task}
+\begin{task}{}
   What is the sum of 357.6 and 863.4?
 \end{task}
 %
-uses \idx{decimal point} numbers instead of integers. These numbers are called \idx[floating point number]{floating point numbers}, and their internal representation is quite different to integer numbers used previously. Likewise, algorithms used to perform arithmetic are quite different from integers. Now the program would look like \Cref{quickStartSumFloat}.
+To solve this problem on a computer we can use the \keyword{float} type, in which case the program would look like \Cref{quickStartSumFloat}.
 %
 \fs{quickStartSumFloat}{Floating point types and arithmetic.}
 %
-On the surface, this could appear as an almost negligible change, but the set of integers and the set of real numbers (floats) require quite different representations in order to be effective on a computer, and as a consequence, the implementation of their operations, such as addition, are very different. Thus, although the response is an integer, it has type \lstinline|float| which is indicated by \lstinline|1221.0| and which is not the same as \lstinline|1221|. F\# is very picky about types, and generally does not allow types to be mixed, as demonstrated in the interactive session in \Cref{typeInferenceError}.
+On the surface, this could appear as a negligible change, but the set of integers and the set of real numbers (floats) require quite different representations in order to be effective on a computer, and as a consequence, the implementation of their operations, such as addition, are very different. Thus, although the response is an integer, it has type \keyword|float| which is indicated by \lstinline|1221.0| and which is not the same as \lstinline|1221|. F\# is very picky about types, and generally does not allow types to be mixed, as demonstrated in the interactive session in \Cref{typeInferenceError}.
 %
 \fsOutput{typeInferenceError}{Mixing types is often not allowed.}
 %
 We see that binding a name to a number without a decimal point is inferred to be an integer, while when binding to a number with a decimal point the type is inferred to be a float, and that our attempt of adding an integer and floating point value gives an error. The \idx{error message} contains much information. First, it states that the error is in \lstinline[language=console]{stdin(4,13)}, which means that the error was found on standard-input at line 4 and column 13. Since the program was executed using \lstinline[language=console]{fsharpi quickStartSumFloat.fsx}, here standard input means the file \lstinline[language=console]{quickStartSumFloat.fsx} shown in \Cref{quickStartSumFloat}. The corresponding line and column are also shown in \Cref{typeInferenceError}. After the file, line, and column number, F\# informs us of the error number and a description of the error. Error numbers are an underdeveloped feature in Mono and should be ignored. However, the verbal description often contains useful information for \idx{debugging}. In the example we are informed that there is a type mismatch in the expression, i.e., since \lstinline{a} is an integer, F\# expected \lstinline{b} to be one too. Debugging is the process of solving errors in programs, and here we can solve the error by either making \lstinline{a} into a float or \lstinline{b} into an int. The right solution depends on the application.
 
-F\# is a functional first programming language, and one implication of this is that names have a \idx{lexical scope}. A scope is the lines in a program where a binding is valid, and lexical scope means that to find the value of a name, F\# looks for the value in the above lines. Furthermore, at the outermost level, rebinding is not allowed. If attempted, then F\# will return an error as shown in \Cref{quickStartRebindError}.
+\section{Organizing often used code in functions}
+\label{sec:functions}
+\lstinline{printfn} is an example of a built-in function, and very often we wish to define our own. For example, in longer programs, some code needs to be used in several places, and defining functions to \idx{encapsulate} such code can be a great advantage for reducing the lenght of code, debugging, and for writing code, which is easier to understand by other programmers. A function is defined using a \keyword{let}-binding. For example, to define a function, which takes two integers as input and returns their sum, we write
 %
-\fs{quickStartRebindError}{A name cannot be rebound.}
+\begin{codeNOutput}[label=sumFunction,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Defining the function \lstinline{sum}}
+\begin{lstlisting}
+let sum x y =
+  x + y
+\end{lstlisting} 
+\end{codeNOutput}
 %
-However, if the same code is executed in an interactive session, then rebinding does not cause an error, as shown in \Cref{blocksNNames}.
+What this means is that we bind the name \lstinline{sum} as a function, which takes two arguments and adds them. Furhter, in the function, the arguments are locally refered to by the names \lstinline{x} and \lstinline{y}. Indentation determines which lines should be evaluated, when the function is called, and in this case there is only one. The value of the last expression evaluated in a function is its return value. Here there is only one expression \lstinline{x+y}, and thus, this function returns the value of the addition. This program does not do anything, since the function is neither called nor is its output used. However, we can modify \Cref{quickStartSum} to include it as shown in \Cref{quickStartSumFct}.
+% 
+\fs{quickStartSumFct}{Adding two integers with the use of a in-code defined function.}
 %
-\fsOutput{blocksNNames}{Names may be reused when separated by the lexeme \lexeme{;;}.}
-%
-The difference is that the \idx[{;;}@\lstinline{;;}]{\lexeme{;;}} \idx{lexeme} is used to specify the end of a \idx{script-fragment}.\spec{Language change: Spec 4.0 p. 15.1 talks about blocks instead of scopes.} A lexeme is a letter or word, which F\# considers as an atomic unit. Script-fragments may be defined both in scripts and in interactive mode, and rebinding is not allowed at the outermost level in script-fragments. Even with the \lexeme{;;} lexeme, rebinding is not allowed in compile-mode. In general, \advice{avoid rebinding of names.}
+The output is the same for the two programs, and the computation performed is almost the same. A step-by-step manner by replacement of the computation performed in line~\ref{quickStartSumFctA} is
+\begin{quote}
+  \lstinline{let c = sum 357 864} $\quad\rightarrow\quad$  \lstinline{let c = 357 + 864}  $\quad\rightarrow\quad$  \lstinline{let c = 1221}
+\end{quote}
+The main difference is that with the function \lstinline{sum} we have an independent unit, which can be reused elsewhere in the code.
 
-In F\#, \idx[function]{functions} are also values, and we may define a function \lstinline|sum| as part of the solution to the above program, as shown in \Cref{quickStartSumFct}.
-%
-\fs{quickStartSumFct}{A script to add 2 numbers using a user-defined function.}
-%
-Functions are useful to \idx[encapsulation]{encapsulate} code, such that we can focus on the transformation of data by a function while ignoring the details on how this is done. Functions are also useful for code reuse, i.e., instead of repeating a piece of code in several places, such code can be encapsulated in a function and replaced with function calls. This makes debugging and maintenance considerably simpler. Entering the function into an interactive session will illustrate the inferred type the function \lstinline|sum| has: \lstinline{val sum : x:int -> y:int -> int}. The \lexeme{->} is the mapping operator in the sense that functions are mappings between sets. The type of the function \lstinline{sum}, should be read as \lstinline{val sum : x:int -> (y:int -> int)}, that is, \lstinline|sum| takes an integer and returns a function, which takes an integer and returns an integer. This is an example of a higher-order function. 
 
-Type inference in F\# may cause problems, since the type of a function is inferred based on the context in which it is defined. E.g., in an interactive session, defining the sum in one scope on a single line will default the types to integers, F\#'s favorite type. Thus, if the next script-fragment uses the function with floats, then we will get an error message as shown in \Cref{typesNBlockInferenceError}.
+\section{Asking the user for input}
+\label{sec:readline}
+The \lstinline{printfn} function allow us to write to the screen, which is useful, but sometimes we wish to start a dialogue with the user. One way to get user input is to ask the user to type something on the keyboard. Technically, input from the keyboard is called an \idx[stdin]{\lstinline{stdin}} \idx{stream}. This terminology is intented to remind us of characters streaming from the keyboard like the flow of water in a stream. Computer streams are different than water streams in that characters (or other items) only flow, when we ask for them. F\# provides a number of libraries of prebuilt functions, and here we will use the \lstinline{System.Console.ReadLine} function. The \lexeme{.}-nomation is read as \lstinline{ReadLine} is a function which lies in \lstinline{Console} which in turn lies in \lstinline{System}. In the function documentation, we can read that \lstinline{System.Console.ReadLine} takes a unit value as an argument and returns the \idx[string]{\keyword{string}} the user typed. A string is a built-in type as integers and floats, and while values of the later types contains numbers, strings contains a sequence of characters. The program will not advance until the user presses newline. An example of a program that multiplies two floating point numbers supplied by a user is given in \Cref{quickStartSumInput},
+% 
+\fs{quickStartSumInput}{Asking the user to input two decimal numbers to be added. The user entered \lstinline{12.3}, pressed the return button, \lstinline{14}, and pressed return again.}
 %
-\fsOutput{typesNBlockInferenceError}{Types are inferred in blocks, and F\# tends to prefer integers.}
-%
-A remedy is to define the function in the same script-fragment as it is used, such as shown in \Cref{typesNBlockInference}.
-%
-\fsOutput{typesNBlockInference}{Type inference is per script-fragment.}
-%
-Alternatively, the types may be explicitly stated as shown in \Cref{typesAnnotation}.
-%
-\fsOutput{typesAnnotation}{Function argument and return types may be stated explicitly.}
-%
-The function \lstinline{sum} has two arguments and a return type, and in \Cref{typesAnnotation} we have specified all three. This is done using the \lexeme{:} lexeme, and to resolve confusion, we must use parentheses around the arguments, such as \lstinline{(y : float)}, otherwise F\# would not be able to understand whether the type annotation was for the argument or the return value. Often it is sufficient to specify just some of the types, since type inference will enforce the remaining types. E.g., in this example, the \lexeme{+} operator is defined for identical types, so specifying the return value of \lstinline{sum} to be a float implies that the result of the \lexeme{+} operator is a float, and therefore that its arguments must be floats, and finally then that the arguments for \lstinline{sum} must be floats. However, in this book we advocate the following advice: \advice{specify types unless explicitly working with generic functions.}
+In this program, we find a user dialogue, and we have designed it such that we assume that the user is unfamiliar with the inner workings of our program, and therefore helps the user understand the purpose of the input and the expected result. This is good programming practice. Here, we will not discuss the program line-to-line, but it is advised to the novice programmer to match what is printed on the screen and from where in the code, the output comes from. However, let us focus on line~\ref{quickStartSumInputA} and~\ref{quickStartSumInputA}, which introduce two new programming constructs. In each of these lines, 3 things happens: First the System.Console.ReadLine function is called with the \lexeme{()} value as argument. This reads all the characters, the user types, up until the user presses the return-key. The return value is a string of characters such as \lstinline{"14"}. This value is different from the number 14, and hence, to later be able to perform float-addition, we \idx{cast} the string value to \keyword{float}, meaning that we call the function \keyword{float} to convert the string-value to the corresponding float value. Finally, the result is bound to the names \lstinline{a} and \lstinline{b} respectively. Note that even though in the example execution the user first inputs both a decimal number and an integer, both string-representations of these are casted to floats, which is why the addition does not give a type error.
 
-In this chapter, we have scratched the surface of learning how to program by concentrating on a number of key programming concepts and how they are expressed in the F\# language. In the following chapters, we will expand the description of F\# with features used in all programming approaches.
+
+\section{Executing code only sometimes}
+Often problem requires code evaluated based on conditions, which only can be decided at \idx{runtime}, i.e., at the time, when the program is run. Consider a slight modification of our problem as,
+%
+\begin{task}{probl:divisionFloats}
+  Ask for two float-values from the user, $a$ and $b$, and print the result of the division $a/b$.
+\end{task}
+%
+To solve this problem, we must decide what to do, if the user inputs $b=0$, since division by zero is ill-defined. This is an example of a user input-error, and later, we will investigate many different methods for handling such errors, but here, we will simply write an error-message to the user, if the desired division is ill-defined. Thus, we need to decide at \idx{runtime}, whether to divide a and b or to write an error message. For this we will use the \keyword{if}-\keyword{then}-\keyword{else}\idxs{if@\keyword{if}}\idxs{then@\keyword{then}}\idxs{else@\keyword{else}} expression.   
+% 
+\fs{quickStartDivisionInput}{Conditionally divide two user-given vallues. First time the program is executed, the user enters 3 and 4, and second time the user inputs 3 and 0.}
+%
+In this program, the \keyword{if}-\keyword{then}-\keyword{else} expression covers line~\ref{quickStartDivisionInputA} to~\ref{quickStartDivisionInputB}, and when the computer executes these lines, it first evaluates the condition \lstinline{b = 0}. In contrast to \keyword{let}-bindings, the \lexeme{=}-sign does not define an equivalence of a name and a value, but tests if the equivalence holds. The result is a \keyword{true} or \keyword{false} value. The set $\{\text{\keyword{true}}, \text{\keyword{false}}\}$ is called the boolean set and is written as \keyword{bool} in F\#. If the condition evaluates to \keyword{true}, then the code following the \keyword{then}-keyword is executed, and otherwise, the code following the \keyword{else}-keyword is executed. The code belonging to the \keyword{then}- and the \keyword{else}-keywords respectively are called \idx[branch]{branches}, and which lines belongs to each branch is determined by \idx{indentation}. Hence, in this example there is one line in the \keyword{then}-branch and two lines in the \keyword{else}-branch. Assuming that the user enters the value 0, then the step-by-step simplification of \keyword{if}-\keyword{then}-\keyword{else} expression is, 
+\begin{quote}
+  \lstinline{if b = 0 ...}\\ $\quad\rightarrow\quad$  \lstinline{if true ...}\\  $\quad\rightarrow\quad$  \lstinline{do printfn "Input error: Cannot divide by zero"}
+\end{quote}
+
+\section{Executing code 0 or more times}
+Often code needs to be evaluated many times or looped. For example, in \Cref{probl:divisionFloats} we could repeat the question as many times as needed until the user inputs a non-zero value for $b$. This is called a loop, and there are several programming constructions for this purpose.
+
+Let us first consider recursion. A recursive function is one, which calls itself, e.g., $f(f(f(\dots(x))))$ is an example of a function $f$ which calls itself many times, possibly infinitely many. In the later case, we say that the recursion has entered an infinte loop, and we will experience that either the program runs forever or that the execution stops due to a memory error. If we had infinite memory. To avoid this, recursive functions must always have a stopping criterion. Thus, we can design a function for asking the user for a non-zero input value as shown in \Cref{quickStartRecursiveInput}.
+% 
+\fs{quickStartRecursiveInput}{Recursively call \lstinline{ReadLine} until a non-zero value is entered.}
+%
+The function \lstinline{readNonZeroValue} takes no input denoted by \lexeme{()}, and repeatedly calls itself until the $a\neq 0$ condition is met. It is recursive, since its body contains a call to itself. For techincal reasons, F\# requires recursive functions to be declared by the \idx[rec]{\keyword{rec}}-keyword as demonstrated. The function has been designed to stop if $a\neq 0$, and in F\#, this is tested with the \lexeme{<>} operator. Thus, if the stopping condition is satisfied, then the \keyword{then}-branch is executed, which does not call itself, and thus the recursion goes no deeper. If the condition is not met, then the \keyword{else}-branch is executed, and the function is eventually called anew. The example execution of the program demonstrates this for the case that the user first inputs the value 0 and then value 3.
+
+As an alternative to recursive functions, loops may also be implemented using the \idx[while]{\keyword{while}}-expression. In \Cref{quickStartRecursiveInput} is an example of a solution where the recursive loop has been replaced with \keyword{while}-loop.
+% 
+\fs{quickStartWhileInput}{Replacing recursion in \Cref{quickStartRecursiveInput} with a \keyword{while}-loop.}
+%
+As for other constructs, the lines to be repeated are indicated by indentation, in this case lines~\ref{quickStartWhileInputC} to~\ref{quickStartWhileInputD}, and that in the end, the result of the
+\lstinline{readNonZeroValueAlt} function is the last expression evaluated, which is the trivial expression \lstinline{a} in line~\ref{quickStartWhileInputE}. In comparison with the recursive version of the program, the \keyword{while}-loop has a continuation conditions (line~\ref{quickStartWhileInputB}), i.e., the content of the loop is repeated as long as \lstinline{a = 0} evaluates to \keyword{true}. Another difference is that in \Cref{quickStartRecursiveInput} we could simplify our program to only using \keyword{let} value-bindings, here we need a new concept: \idx[variable]{variables} also known as a \idx[mutable]{\keyword{mutable}} value. Mutable values allows us to update the value associated with a given name. Thus, the value associated with a name of mutable type depends on when it is accessed. This construction makes programs much more complicated and error-prone, and their use should be minimized. The syntax of mutable values is that first it should be defined with the \keyword{mutable}-keyword as shown in line~\ref{quickStartWhileInputA}, and when its value is to be updated then the \lexeme{<-}-notation must be used as demonstraed in line~\ref{quickStartWhileInputD}. Note that the execution of the two programs \Cref{quickStartRecursiveInput} and \Cref{quickStartWhileInput}, gives identical output, when presented with identical input. Hence, they solve the same problem by two quite different means. This is a common property of solutions to problems as a program: Often several different solutions exists, which are identical on the surface, but where the quality of the solution depends on how quality is defined and which programming constructions have been used. Here, the main difference is that the recursive solution avoids the use of mutable values, which turns out to be better for proving correctness of programs and adapting programs super-computer architectures. However, recursive solutions may be very memory intensive, if the recursive call is anywhere but the last line of the function. 
+
+\section{Programming as a form of communication}
+When programming it is important to consider the time-dimension a program. Some usually very small programs are only used for a short while, e.g., to test a construction or an idea. Others small as well as large may be used again and again over a long period of time, and possibly given to other programmers to use, maintain, and extend. In this case, programming is an act of communication, where what is being communicated is the solution to a problem as well as the thoughts behind the chosen solution. Common experiences amoung programmers are that it is difficult to fully understand the thoughts behind a program written by a fellow programmer from its source code alone, and for code written perhaps just weeks earlier by the same programmer, said programmer can find it difficult to remember the reasons for specific programming choices. To support this communication, programmers use code-\idx{comments}. As a general concept, this is also called in-code documentation. Documentation may also be an accompanying manual or report. Documentation serves several purposes:
+\begin{enumerate}
+\item Communicate what the code should be doing, e.g., describe functions in terms of its input-output relation.
+\item Highlight big insights essential for the code.
+\item Highlight possible conflicts and/or areas where the code could be changed later.
+\end{enumerate}
+F\# has two different syntaxes for comments. A block comment is everything bracketed by \lstinline{(* *)}, and an line comment, which is everything between \lexeme{//} and end of the line. For example, adding comments to \Cref{quickStartRecursiveInput} could look like \Cref{quickStartRecursiveInputComments}
+% 
+\fsCode{quickStartRecursiveInputComments}{quickStartRecursiveInputComments}{Adding comments to \Cref{quickStartRecursiveInput}.}{}
+%
+Comments are ignored by the computer, and serve solely as a programmer-to-programmer communication, there are no or few rules for specifying, what is good and bad documentation of a program. The essential point is that coding is a journey in problem-solving, and proper documentation is an aid in understanding the solution and the journey that lead to it.
+
+\section{Key terms from this chapter}
+\begin{itemize}
+\item F\# has two modes of operation: \textbf{Interactive} and \textbf{compile} mode. The first chapters of this book will focus on interactive mode. 
+\item F\# is access through the \textbf{console/terminal/command-line}, which is another program, in which text commands can be given such as starting the dotnet program in interactive mode.
+\item Programs are written in human-readable form called the \textbf{source-code}.
+\item Source code consists of several syntactical elements such as \textbf{lexemes} such as "*" and "<-", \textbf{keywords} such as "let" and "while", \textbf{values} such as 1.2 and the string "hello world", and \textbf{user-defined names} such as "a" and "str".
+\item A program consists of a sequence of \textbf{expressions}, which comes in two types: \textbf{let} and \textbf{do}.
+\item Values have \textbf{types} such as \textbf{int}, \textbf{float}, \textbf{string}, and \textbf{bool}. When performing calculations, the type defines which calculations can be done.
+\item Finding errors in programs is called \textbf{debugging}, and \textbf{unit-testing} is a form of debugging. 
+\item \textbf{Functions} are a type of value and defined using a let-binding. They are used to encapsulated code to make the code easier to read and understand and to make code reusable.
+\item The \textbf{conditional} \textbf{if-then-else} expression is used to control what code is to be executed at \textbf{runtime}
+\item \textbf{Recursion} and \textbf{while}-loops are programming structure to execute the same code several times.
+\item \textbf{Mutable values} are in contrast to \textbf{immutable values} may change value over time, and makes programmer harder to understand.
+\item \textbf{Comments} are \textbf{in-code documentation} and are ignored by the computer but serve as an important tool for communication between programmers.
+\end{itemize}
+
 \end{document}
+
+
 

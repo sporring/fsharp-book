@@ -1,2 +1,2 @@
-$ fsharpc --nologo quickStartSumFloat.fsx && mono quickStartSumFloat.exe
+$ dotnet fsi quickStartSumFloat.fsx
 1221.0

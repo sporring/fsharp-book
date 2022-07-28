@@ -7,6 +7,11 @@ FSX := $(filter-out filenamedialogue.fsx, $(FSX))
 FSX := $(filter-out nestedRecModules.fsx, $(FSX))
 FSX := $(filter-out userDialogue.fsx, $(FSX))
 FSX := $(filter-out userDialoguePrintf.fsx, $(FSX))
+FSX := $(filter-out quickStartSumInput.fsx, $(FSX))
+FSX := $(filter-out quickStartDivisionInput.fsx, $(FSX))
+FSX := $(filter-out quickStartRecursiveInput.fsx, $(FSX))
+FSX := $(filter-out quickStartRecursiveInputComments.fsx, $(FSX))
+FSX := $(filter-out quickStartWhileInput.fsx, $(FSX))
 FSX := $(filter-out nestedModules.fsx, $(FSX))
 FSX := $(filter-out nestedModulesApp.fsx, $(FSX))
 FSX := $(filter-out Meta.fsx, $(FSX))
@@ -35,7 +40,7 @@ all: $(OS) $(OSX) $(OSCRIPT)
 	./fsscript2out $<
 
 %.out: %.fsx
-	./fsxeval2out $@ "" "fsharpc --nologo $^ && mono $*.exe";
+	./fsxeval2out $@ "" "dotnet fsi $^";
 
 %.out: %.fs
 	fsharpc --nologo -a $^

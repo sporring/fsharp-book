@@ -19,6 +19,14 @@
 \usepackage[T1]{fontenc} % ensure that all the characters in characterSets.tex prints
 \usepackage{upquote} % \textcent
 \usepackage{pifont} % add \ding, http://ctan.org/pkg/pifont
+\renewcommand{\Re}{\mathbb{R}}
+\newcommand{\Nat}[0]{\mathbb{N}}
+\newcommand{\Int}[0]{\mathbb{Z}}
+
+% for formatting (large) numbers
+\usepackage{numprint}
+\npthousandsep{\,}
+
 
 % Figures
 %\usepackage{graphicx} % springer has it
@@ -184,9 +192,23 @@
   middle=1mm,
   arc=2mm,
 }
-\newtcolorbox[auto counter, number within=chapter]{task}[1][]{% % removed for springer
+%\newtcolorbox[auto counter, number within=chapter]{task}[1][]{% % removed for springer
+%  title=\textbf{Problem~\thetcbcounter},
+%  colframe=DeepSkyBlue1, %green!30!blue,
+%  #1}
+
+\newenvironment{objectives}
+{
+    \par\noindent\rule{\textwidth}{0.4pt}
+}{ 
+    \par\noindent\rule{\textwidth}{0.4pt}
+}
+
+
+\newtcolorbox[auto counter, number within=chapter]{task}[2][]{% % removed for springer
   title=\textbf{Problem~\thetcbcounter},
   colframe=DeepSkyBlue1, %green!30!blue,
+  label=#2,
   #1}
 \newcommand{\src}{src}
 \newtcolorbox[auto counter, number within=chapter]{codeNOutput}[2][]{%

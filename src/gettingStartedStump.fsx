@@ -1,2 +1,2 @@
 let a = 3.0
-do printfn "%g" a
+do printfn "%A" a

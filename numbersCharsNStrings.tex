@@ -590,6 +590,52 @@ The \idx{dot notation} is an example of Structured programming, where technicall
 
 Strings are compared letter by letter. For two strings to be equal, they must have the same length and all the letters must be identical. E.g., \mbox{\lstinline!"abs" = "absalon"!} is false, while \lstinline!"abs" = "abs"! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator, e.g., \lstinline!"abs" <> "absalon"! is true, while \lstinline!"abs" <> "abs"! is false. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered alphabetically, such that \lstinline!"abs" < "absalon" && "absalon" < "milk"! is true, that is, the \lexeme{<} operator on two strings is true if the left operand should come before the right when sorting alphabetically. The algorithm for deciding the boolean value of \lstinline!leftOp < rightOp! is as follows: we start by examining the first character, and if \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are different, then \lstinline!leftOp < rightOp! is equal to \lstinline!leftOp.[0] < rightOp.[0]!. E.g., \lstinline!"milk" < "abs"! is the same as \lstinline!'m' < 'a'!, which is false, since the letter 'm' does not come before the letter 'a' in the alphabet, or more precisely, the codepoint of 'm' is not less than the codepoint of 'a'. If \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are equal, then we move on to the next letter and repeat the investigation, e.g., \lstinline!"abe" < "abs"! is true, since \lstinline!"ab" = "ab"! is true and \lstinline!'e' < 's'! is true. If we reach the end of either of the two strings, then the shorter word is smaller than the longer word, e.g., \lstinline!"abs" < "absalon"! is true, while \lstinline!"abs" < "abs"! is false. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined in a similar manner.
 
+\clearpage
+
+\section{Tuples}
+\idx[tuple]{Tuples} are a direct extension of constants. They are immutable and have neither concatenations nor indexing operations. Tuples are unions of immutable types and have the following syntax:
+%
+\begin{verbatimwrite}{\ebnf/tuples.ebnf}
+<*expr*>{*, <*expr*>*}
+\end{verbatimwrite}
+\syntax{\ebnf/tuples.ebnf}{Tuples are list of expressions separated by commas.}
+%
+Tuples are identified by the \lexeme{,} lexeme and often enclosed in parentheses, but that is not required. An example is a triple, also known as a 3-tuple, \lstinline!(2,true,"hello")!. In interactive mode, the type of tuples is demonstrated in \Cref{tuple}.
+%
+\fsOutput{tuple}{Tuple types are products of sets.}
+%
+The values \lstinline!2!, \lstinline!true!, and \lstinline!"hello"! are \idx[member]{members}, and the number of elements of a tuple is its \idx{length}. From the response of F\#, we see that the tuple is inferred to have the type \lstinline!int * bool * string!. The \lexeme{*} denotes the Cartesian product between sets.  Tuples can be products of any types and follow the lexical scope rules like value and function bindings. Notice also that a tuple may be printed as a single entity by the \lstinline!%A! %
+placeholder. In the example we bound \lstinline!tp! to the tuple. The opposite is also possible, as demonstrated in \Cref{tupleDeconstruction}.
+%
+\fsOutput{tupleDeconstruction}{Definition of a tuple.}
+%
+In this example, a function is defined that takes 1 argument, a 3-tuple. If we wanted a function with 3 arguments, then the function binding should have been \lstinline{let deconstructNPrint a b c = ...}. The value binding \lstinline{let (a, b, c) = tp}, binds a tuple with 3 named members to a value, thus deconstructing it in terms of its members. This is called pattern matching and will be discussed in further details in \Cref{chap:patterns}. Since we used the \lstinline!\%A! placeholder in the \lstinline!printfn! function, the function can be called with 3-tuples of different types. F\# informs us that the tuple type is variable by writing \lstinline{'a * 'b * 'c}. The \lexeme{'} notation means that the type can be decided at run-time, see \Cref{sec:variableTypes} for more on variable types. 
+
+Pairs or 2-tuples are so common that F\# includes two built-in functions,\idx[fst@\lstinline{fst}]{\keyword{fst}} and \idx[snd@\lstinline{snd}]{\keyword{snd}}, to extract the first and second element of a pair. This is demonstrated in \Cref{pair}.
+%
+\fs{pair}{Deconstruction of pairs with the built-in functions \keyword{fst} and \keyword{snd}.}
+%
+
+Tuples of equal lengths can be compared, and the  comparison is defined similarly to string comparison. Tuples of equal length are compared element by element. E.g., \lstinline!(1,2) = (1,3)! is false, while \lstinline!(1,2) = (1,2)! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered lexicographically, such that \lstinline!('a', 'b', 'c') < ('a', 'b', 's') && ('a', 'b', 's') <  ('c', 'o', 's')! is true, that is, the \lexeme{<} operator on two tuples is true if and only if the left operand should come before the right when sorting alphabetically. See \Cref{tupleCompare} for an example.
+%
+\fs{tupleCompare}{Tuples comparison is similar to string comparison.}
+%
+The algorithm for deciding the boolean value of \lstinline!(a1, a2) < (b1, b2)! is as follows: we start by examining the first elements, and if \lstinline!a1! and \lstinline!b1! are different, then the result of \lstinline!(a1, a2) < (b1, b2)! is equal to the result of \lstinline!a1 < b1!. If \lstinline!a1! and \lstinline!b1! are equal, then we move on to the next letter and repeat the investigation. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined similarly.
+
+Binding tuples to mutables does not make the tuple mutable. This is demonstrated in \Cref{tupleOfMutables}.
+%
+\fs{tupleOfMutables}{A mutable changes value, but the tuple defined by it does not refer to the new value.}
+%
+However, it is possible to define a mutable variable of type tuple such that new tuple values can be assigned to it, as shown in \Cref{mutableTuple}.
+%
+\fs{mutableTuple}{A mutable tuple can be assigned a new value.}
+%
+Mutable tuples are value types, meaning that binding to new names makes copies, not aliases, as demonstrated in \Cref{mutableTupleValue}.
+%
+\fs{mutableTupleValue}{A mutable tuple is a value type.}
+%
+The use of tuples shortens code and highlights semantic content at a higher level, e.g., instead of focusing on the elements, tuples focus on their union. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, where an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
+
 \section{Programming Intermezzo: Hand Conversion Between Decimal and Binary Numbers}
 Conversion of integers between decimal and binary form is a key concept one must grasp in order to understand some of the basic properties of calculations on the computer. Converting from binary to decimal is straightforward if using the power-of-two algorithm, i.e., given a sequence of $n+1$ binary digits $b_i$ written as $b_n b_{n-1}\dots b_0$, and where $b_n$ and $b_0$ are the most and least significant bits respectively, then the decimal value is calculated as,
 \begin{align}
