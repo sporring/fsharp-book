@@ -3,8 +3,10 @@ TEX := $(wildcard *.tex)
 
 always:
 	make -C src
-	latexmk -pdf springer
+	latexmk -pdf fsharpNotes
 
-fsharpNotes.pdf: $(TEX) $(FSCRIPT)
-	pdflatex fsharpNotes
+#fsharpNotes.pdf: $(TEX) $(FSCRIPT)
+#	pdflatex fsharpNotes
 
+clean:
+	latexmk -c
