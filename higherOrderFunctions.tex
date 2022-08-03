@@ -4,6 +4,14 @@
 \begin{document}
 \chapter{Higher-Order Functions}
 \label{chap:higherOrderFunctions}
+
+\abstract{
+  Introductory text about the objectivs of this chapter
+  \begin{itemize}
+  \item \dots
+  \end{itemize}
+}
+
 A \idx{higher-order function} is a function that takes a function as an argument and/or returns a function. higher-order functions are also sometimes called functionals or functors. F\# is a functions-first programming language with strong support for working with functions as values: Functions evaluate as \idx[closure]{closures}, see \Cref{sec:functions}, which can be passed to and from functions as any other value. An example of a higher-order function is \lstinline{List.map} which takes a function and a list and produces a list, demonstrated in \Cref{higherOrderMap}.
 %
 \fs{higherOrderMap}{\lstinline{List.map} is a higher-order function, since it takes a function as argument.}
@@ -64,8 +72,10 @@ Conversion between multiple and tuple arguments is easily done with higher-order
 Conversion between multiple and tuple arguments are useful when working with higher-order functions such as \lstinline{Lst.map}. E.g., if \lstinline{let mul (x, y) = x * y} as in \Cref{higherOrderTuples}, then \lstinline{curry mul} has the type \lstinline{x:'a -> y:'b -> 'c} as can be seen in \Cref{curryNUncurry}, and thus is equal to the anonymous function \lstinline{fun x y -> x * y}. Hence, \lstinline{curry mul 2.0} is equal to \lstinline{fun y -> 2.0 * y}, since the precedence of function calls is \lstinline{(curry mul) 2.0}. 
 
 Currying makes elegant programs and is often used in functional programming. Nevertheless, currying may lead to obfuscation, and in general, \advice{currying should be used with care and be well documented for proper readability of code.}
-\end{document}
-%%% Local Variables:
-%%% TeX-master: "fsharpNotes"
-%%% End:
 
+\section{Key concepts and terms in this chapter}
+Summary text about the key concepts from this chapter
+\begin{itemize}
+\item \ldots
+\end{itemize}
+\end{document}

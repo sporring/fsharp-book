@@ -5,12 +5,12 @@
 \chapter{Using F\# as a Calculator}
 \label{chap:calculator}
 
-\begin{objectives}
+\abstract{
   Introductory text about the objectivs of this chapter
   \begin{itemize}
   \item \dots
   \end{itemize}
-\end{objectives}
+}
 
 %Talking about programs and programming languages we make a distinction between the language's \idx{syntax}, which describes what are legal expressions and statements, and the \idx{semantics} of an expression and a statement, which describes what is meant. This is analog to human languages, where how nouns, verbs, etc. may be placed in relation to each describes the syntax of a sentence, while the meaning of a sentence is its semantics. Basic elements of F\#'s syntax are literals, which is a fixed value like the number 3.
 In this chapter, we will exclusively use the interactive mode to illustrate basic types and operations in F\#.
@@ -644,47 +644,6 @@ Mutable tuples are value types, meaning that binding to new names makes copies, 
 %
 The use of tuples shortens code and highlights semantic content at a higher level, e.g., instead of focusing on the elements, tuples focus on their union. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, where an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
 
-\section{Programming Intermezzo: Hand Conversion Between Decimal and Binary Numbers}
-Conversion of integers between decimal and binary form is a key concept one must grasp in order to understand some of the basic properties of calculations on the computer. Converting from binary to decimal is straightforward if using the power-of-two algorithm, i.e., given a sequence of $n+1$ binary digits $b_i$ written as $b_n b_{n-1}\dots b_0$, and where $b_n$ and $b_0$ are the most and least significant bits respectively, then the decimal value is calculated as,
-\begin{align}
-  v = \sum_{i=0}^nb_i2^i
-\end{align}
-For example, $10011_2 = 1+2+16 = 19$. Converting from decimal to binary is a little more complex, but a simple divide-by-two algorithm exists. The key to understanding the divide-by-two algorithm is to realize that dividing a number by two is equivalent to shifting its binary representation one position to the right. E.g., $10 = 1010_2$ and $10/2 = 5 = 101_2$. Odd numbers have $b_0=1$, e.g., $11_{10} = 1011_2$ and $11_{10}/2 = 5.5 = 101.1_2$. Hence, if we divide any number by two and get a non-integer number, then its least significant bit was $1$. Another way to express this is to say that the least significant bit is the remainder after integer division by two. Sequential application of this idea leads directly to the divide-by-two algorithm. E.g., if we were to convert the number $11_{10}$ in decimal form to binary form, we would perform the following steps:
-\begin{align*}
-  11\tikzmark{a1} \text{ div } 2 = \tikzmark{a2}5\tikzmark{a3},\;   \tikzmark{a4}11  \text{ rem }  2 & =\tikzmark{a5}1\tikzmark{a6}\\
-  \nonumber \\
-  5\tikzmark{b1} \text{ div }  2 = \tikzmark{b2}2\tikzmark{b3},\;  \tikzmark{b4}5  \text{ rem } 2 & =\tikzmark{b5}1\tikzmark{b6}\\
-  \\\nonumber
-  2\tikzmark{c1}  \text{ div }  2 = \tikzmark{c2}1\tikzmark{c3},\;   \tikzmark{c4}2 \text{ rem }  2 & =\tikzmark{c5}0\tikzmark{c6} \\
-  \\\nonumber
-  1\tikzmark{d1}  \text{ div }  2 = \tikzmark{d2}0\tikzmark{d3},\;   \tikzmark{d4}1  \text{ rem }  2 & =\tikzmark{d5}1\tikzmark{d6}\\
-\end{align*}%
-\DrawArrow[]{a2}{b1}%
-\DrawArrow[]{a3}{b4}%
-\DrawArrow[]{b2}{c1}%
-\DrawArrow[]{b3}{c4}%
-\DrawArrow[]{c2}{d1}%
-\DrawArrow[]{c3}{d4}%
-\FrameArea{a5}{d6}%
-\hspace*{-0.6mm}Here we used div and rem to signify the integer division and remainder operators. The algorithm stops when the result of integer division is zero. Reading off the remainder from below and up, we find the sequence $1011_2$, which is the binary form of the decimal number $11_{10}$. Using the interactive mode, we can perform the same calculation, as shown in \Cref{conversionByHand}.
-\begin{codeNOutput}[label=conversionByHand]{: Converting the number $11_{10}$ to binary form.}
-\begin{lstlisting}[language=console]
-> printfn "(%d, %d)" (11 / 2) (11 % 2);;
-(5, 1)
-val it : unit = ()
-> printfn "(%d, %d)" (5 / 2) (5 % 2);;  
-(2, 1)
-val it : unit = ()
-> printfn "(%d, %d)" (2 / 2) (2 % 2);;  
-(1, 0)
-val it : unit = ()
-> printfn "(%d, %d)" (1 / 2) (1 % 2);;
-(0, 1)
-val it : unit = ()
-\end{lstlisting}
-\end{codeNOutput}
-Thus, by reading the second integer-response from \lstinline!printfn! from below and up, we again obtain the binary form of $11_{10}$ to be $1011_2$. For integers with a fractional part, the divide-by-two algorithm may be used on the whole part, while multiply-by-two may be used in a similar manner on the fractional part.
-
 \section{Strings}
 \label{sec:strings}
 Strings have been discussed in \Cref{chap:calculator}, the content of which will be briefly revisited here followed by a description of some of the many supporting built-in functions in F\# on strings.
@@ -763,6 +722,48 @@ The \lstinline{String} module offers many functions for working with strings. So
 % \item[\texttt{String.replicate}:] \lstinline{int -> string -> string}. Returns a string by concatenating a specified number of instances of a string.
 % \fsOutputNF{stringReplicate}{\lstinline{String.replicate}}\idxss{String.replicate@\lstinline{String.replicate}}
 \end{description}
+
+\section{Programming Intermezzo: Hand Conversion Between Decimal and Binary Numbers}
+Conversion of integers between decimal and binary form is a key concept one must grasp in order to understand some of the basic properties of calculations on the computer. Converting from binary to decimal is straightforward if using the power-of-two algorithm, i.e., given a sequence of $n+1$ binary digits $b_i$ written as $b_n b_{n-1}\dots b_0$, and where $b_n$ and $b_0$ are the most and least significant bits respectively, then the decimal value is calculated as,
+\begin{align}
+  v = \sum_{i=0}^nb_i2^i
+\end{align}
+For example, $10011_2 = 1+2+16 = 19$. Converting from decimal to binary is a little more complex, but a simple divide-by-two algorithm exists. The key to understanding the divide-by-two algorithm is to realize that dividing a number by two is equivalent to shifting its binary representation one position to the right. E.g., $10 = 1010_2$ and $10/2 = 5 = 101_2$. Odd numbers have $b_0=1$, e.g., $11_{10} = 1011_2$ and $11_{10}/2 = 5.5 = 101.1_2$. Hence, if we divide any number by two and get a non-integer number, then its least significant bit was $1$. Another way to express this is to say that the least significant bit is the remainder after integer division by two. Sequential application of this idea leads directly to the divide-by-two algorithm. E.g., if we were to convert the number $11_{10}$ in decimal form to binary form, we would perform the following steps:
+\begin{align*}
+  11\tikzmark{a1} \text{ div } 2 = \tikzmark{a2}5\tikzmark{a3},\;   \tikzmark{a4}11  \text{ rem }  2 & =\tikzmark{a5}1\tikzmark{a6}\\
+  \nonumber \\
+  5\tikzmark{b1} \text{ div }  2 = \tikzmark{b2}2\tikzmark{b3},\;  \tikzmark{b4}5  \text{ rem } 2 & =\tikzmark{b5}1\tikzmark{b6}\\
+  \\\nonumber
+  2\tikzmark{c1}  \text{ div }  2 = \tikzmark{c2}1\tikzmark{c3},\;   \tikzmark{c4}2 \text{ rem }  2 & =\tikzmark{c5}0\tikzmark{c6} \\
+  \\\nonumber
+  1\tikzmark{d1}  \text{ div }  2 = \tikzmark{d2}0\tikzmark{d3},\;   \tikzmark{d4}1  \text{ rem }  2 & =\tikzmark{d5}1\tikzmark{d6}\\
+\end{align*}%
+\DrawArrow[]{a2}{b1}%
+\DrawArrow[]{a3}{b4}%
+\DrawArrow[]{b2}{c1}%
+\DrawArrow[]{b3}{c4}%
+\DrawArrow[]{c2}{d1}%
+\DrawArrow[]{c3}{d4}%
+\FrameArea{a5}{d6}%
+\hspace*{-0.6mm}Here we used div and rem to signify the integer division and remainder operators. The algorithm stops when the result of integer division is zero. Reading off the remainder from below and up, we find the sequence $1011_2$, which is the binary form of the decimal number $11_{10}$. Using the interactive mode, we can perform the same calculation, as shown in \Cref{conversionByHand}.
+\begin{codeNOutput}[label=conversionByHand]{: Converting the number $11_{10}$ to binary form.}
+\begin{lstlisting}[language=console]
+> printfn "(%d, %d)" (11 / 2) (11 % 2);;
+(5, 1)
+val it : unit = ()
+> printfn "(%d, %d)" (5 / 2) (5 % 2);;  
+(2, 1)
+val it : unit = ()
+> printfn "(%d, %d)" (2 / 2) (2 % 2);;  
+(1, 0)
+val it : unit = ()
+> printfn "(%d, %d)" (1 / 2) (1 % 2);;
+(0, 1)
+val it : unit = ()
+\end{lstlisting}
+\end{codeNOutput}
+Thus, by reading the second integer-response from \lstinline!printfn! from below and up, we again obtain the binary form of $11_{10}$ to be $1011_2$. For integers with a fractional part, the divide-by-two algorithm may be used on the whole part, while multiply-by-two may be used in a similar manner on the fractional part.
+
 
 \section{Key concepts and terms in this chapter}
 Summary text about the key concepts from this chapter

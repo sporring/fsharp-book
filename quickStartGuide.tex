@@ -1,11 +1,11 @@
-\documentclass[springer.tex]{subfiles}
+\documentclass[fsharpNotes.tex]{subfiles}
 \graphicspath{ {./figures/} }
 
 \begin{document}
 \chapter{Solving problems by writing a program}
 \label{chap:quickStartGuide}
 
-\begin{objectives}
+\abstract{
   In this chapter, you will find a quick introduction to several essential programming constructs with several examples that you can try on your computer using the \lstinline[language=console]{dotnet} command in your console. All constructs will be discussed in further detail in the following chapters. In this chapter, you will get a peek at:
   \begin{itemize}
   \item How to execute an F\# program
@@ -17,7 +17,7 @@
   \item How to repeat code without having to rewrite them
   \item How to add textual comments to help yourself and other programmers understand your programs.
   \end{itemize}
-\end{objectives}
+}
 
 Programming is the art of solving problems by writing a program to be executed by a computer. For example, to solve the following problem,
 %
@@ -35,7 +35,7 @@ The program consists of several lines. Our listing shows line numbers to the lef
 
 Reading the program from line~\ref{quickStartSumA}, the first expression we encounter is \lstinline|let a = 357|. This is known as a \idx{let-binding} in F\# and defines the equivalence between the name \lstinline{a} and the value \lstinline{357}. F\# does not accept a keyword as a name in a \keyword{let}-bindings. The consequence of this line is that in later lines there is no difference between writing the name \lstinline{a} and the value \lstinline{357}. Similarly in line~\ref{quickStartSumB} the value 864 is bound to the name \lstinline|b|. In contrast, line~\ref{quickStartSumC} contains an addition and a \keyword{let}-expression. It is at times useful to simulate the execution the computer does in a step-by-step manner by replacement:
 \begin{quote}
-  \lstinline{let c = a + b} $\quad\rightarrow\quad$  \lstinline{let c = 357 + 864}  $\quad\rightarrow\quad$  \lstinline{let c = 1221}
+  \lstinline{let c = a + b} $\quad\rightsquigarrow\quad$  \lstinline{let c = 357 + 864}  $\quad\rightsquigarrow\quad$  \lstinline{let c = 1221}
 \end{quote}
 Thus, since the expression on the right-hand side of the equal sign is evaluated, the result of line~\ref{quickStartSumC} is that the name \lstinline{c} is bound to the value \lstinline{1221}.
 
@@ -170,7 +170,7 @@ What this means is that we bind the name \lstinline{sum} as a function, which ta
 %
 The output is the same for the two programs, and the computation performed is almost the same. A step-by-step manner by replacement of the computation performed in line~\ref{quickStartSumFctA} is
 \begin{quote}
-  \lstinline{let c = sum 357 864} $\quad\rightarrow\quad$  \lstinline{let c = 357 + 864}  $\quad\rightarrow\quad$  \lstinline{let c = 1221}
+  \lstinline{let c = sum 357 864} $\quad\rightsquigarrow\quad$  \lstinline{let c = 357 + 864}  $\quad\rightsquigarrow\quad$  \lstinline{let c = 1221}
 \end{quote}
 The main difference is that with the function \lstinline{sum} we have an independent unit, which can be reused elsewhere in the code.
 
@@ -196,7 +196,7 @@ To solve this problem, we must decide what to do, if the user inputs $b=0$, sinc
 %
 In this program, the \keyword{if}-\keyword{then}-\keyword{else} expression covers line~\ref{quickStartDivisionInputA} to~\ref{quickStartDivisionInputB}, and when the computer executes these lines, it first evaluates the condition \lstinline{b = 0}. In contrast to \keyword{let}-bindings, the \lexeme{=}-sign does not define the equivalence of a name and a value but tests if the equivalence holds. The result is a \keyword{true} or \keyword{false} value. The set $\{\text{\keyword{true}}, \text{\keyword{false}}\}$ is called the boolean set and is written as \keyword{bool} in F\#. If the condition evaluates to \keyword{true}, then the code following the \keyword{then}-keyword is executed, and otherwise, the code following the \keyword{else}-keyword is executed. The code belonging to the \keyword{then}- and the \keyword{else}-keywords respectively are called \idx[branch]{branches}, and which lines belongs to each branch is determined by \idx{indentation}. Hence, in this example, there is one line in the \keyword{then}-branch and two lines in the \keyword{else}-branch. Assuming that the user enters the value 0, then the step-by-step simplification of \keyword{if}-\keyword{then}-\keyword{else} expression is, 
 \begin{quote}
-  \lstinline{if b = 0 ...}\\ $\quad\rightarrow\quad$  \lstinline{if true ...}\\  $\quad\rightarrow\quad$  \lstinline{do printfn "Input error: Cannot divide by zero"}
+  \lstinline{if b = 0 ...}\\ $\quad\rightsquigarrow\quad$  \lstinline{if true ...}\\  $\quad\rightsquigarrow\quad$  \lstinline{do printfn "Input error: Cannot divide by zero"}
 \end{quote}
 
 \section{Repeatedly execute code}

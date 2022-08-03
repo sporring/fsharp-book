@@ -1,3 +1,13 @@
+% modify svmono
+\makeatletter
+\DeclareRobustCommand\abstract{\@ifstar\@abstgobl\@abstract}
+\def\@abstract#1{\noindent\textbf{\abstractname} #1\par\begin{center}\rule{0.8\textwidth}{0.5pt}\end{center}
+%\@afterindentfalse
+%\@afterheading
+}
+\makeatother
+
+
 % KOMA setup
 \usepackage{scrlayer-scrpage}
 \pagestyle{scrheadings}
@@ -196,16 +206,6 @@
 %  title=\textbf{Problem~\thetcbcounter},
 %  colframe=DeepSkyBlue1, %green!30!blue,
 %  #1}
-
-\newenvironment{objectives}
-{
-   \begin{overview}{Chapter points}%
-   %\par\noindent\rule{\textwidth}{0.4pt}
-}{ 
-   \end{overview}%
-%   \par\noindent\rule{\textwidth}{0.4pt}
-}
-
 
 \newtcolorbox[auto counter, number within=chapter]{task}[2][]{% % removed for springer
   title=\textbf{Problem~\thetcbcounter},

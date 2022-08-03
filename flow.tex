@@ -2,11 +2,10 @@
 \graphicspath{ {./figures/} }
 
 \begin{document}
-\chapter{Controlling Program Flow}
+\chapter{While and For Loops}
 \label{chap:flow}
 Non-recursive functions encapsulate code and allow for control of execution flow. That is, if a piece of code needs to be executed many times, then we can encapsulate it in the body of a function and call this function several times. In this chapter, we will look at more general control of flow via loops and conditional execution. Recursion is another mechanism for controlling flow, but this is deferred to \Cref{sec:recursion}.
 
-\section{While and For Loops}
 Many programming constructs need to be repeated, and F\# contains many structures for repetition. A \idx[while@\lstinline{while}]{\keyword{while}}-loop has the following syntax:
 %
 \begin{verbatimwrite}{\ebnf/whileLoop.ebnf}
@@ -91,43 +90,6 @@ While-loops also allow for logical structures other than for-loops, such as the 
 %
 The strategy here is to iteratively calculate Fibonacci numbers until we've found one larger than the argument \lstinline{n}, and then return the previous. This could not be calculated with a for-loop.
 
-\section{Conditional Expressions}
-Programs often contain code which should only be executed under certain conditions. This can be expressed with \keyword{if}-expressions, whose syntax is as follows.\idxs{if@\lstinline{if}}\idxs{then@\lstinline{then}}\idxs{elif@\lstinline{elif}}\idxs{else@\lstinline{else}}
-%
-\begin{verbatimwrite}{\ebnf/conditional.ebnf}
-if <*cond*> then <*expr*> {*elif <*cond*> then <*expr*>*} [*else <*expr*>*]
-\end{verbatimwrite}
-\syntax{\ebnf/conditional.ebnf}{Conditional expressions.}
-%
-The condition \lstinline[language=syntax]{<*con*>} is an expression resulting in a Boolean value, and there can be zero or more \keyword{elif} conditions, as indicated by \lstinline[language=syntax]{{**}}. Each expression \lstinline[language=syntax]{<*expr*>}  is called a \idx{branch}, and all branches must have the same type, such that regardless of which branch is chosen, the type of the result of the conditional expression is the same. Then the expression of the first if-branch, whose condition is true, is evaluate. If all conditions are false then the \keyword{else}-branch is evaluated. If no \keyword{else} expression is present, then \lexeme{()} will be returned. See \Cref{condition} for a simple example.
-%
-\fs{condition}{Conditions evaluate their branches depending on the value of the condition.}
-%
-The lightweight syntax allows for newlines entered everywhere, but indentation must be used to express scope. 
-
-To demonstrate conditional expressions, let us write a program which writes the sentence ``I have n apple(s)'', where the plural 's' is added appropriately for various $n$'s. This is done in \Cref{conditionalLightweight}, using the lightweight syntax.
-%
-\fs{conditionalLightweight}{Using conditional expression to generate different strings.}
-%
-The sentence structure and its variants give rise to a more compact solution, since the language to be returned to the user is a variant of "I have/owe no/number apple(s)", i.e., certain conditions determine whether the sentence should use ``have'' and ``owe'' and so forth. So, we could instead make decisions on each of these sentence parts, and then built the final sentence from its parts. This is accomplished in the following example:
-%
-\fs{conditionalLightweightAlt}{Using sentence parts to construct the final sentence.}
-%
-While arguably shorter, this solution is also denser, and most likely more difficult to debug and maintain.
-
-Note that both \keyword{elif} and \keyword{else} branches are optional, which may cause problems. For example, both
-\begin{quote}
-\mbox{\lstinline!let a = if true then 3!}
-\end{quote}
-and
-\begin{quote}
-\mbox{\lstinline!let a = if true then 3 elif false then 4!}
-\end{quote}
-are invalid, since F\# is not smart enough to realize that the type of the expression is uniquely determined. Instead, F\# looks for the \keyword{else} to ensure all cases have been covered, and that \lstinline!a! always will be given a unique value of the same type regardless of the branch taken in the conditional statement. Hence,
-\begin{quote}
-\mbox{\lstinline!let a = if true then 3 else 4!}
-\end{quote}
-is the only valid expression of the 3. In practice, F\# assumes that the omitted branch returns \lexeme{()}, and thus it is fine to say \mbox{\lstinline!let a = if true then ()!} and \mbox{\lstinline!if true then printfn "hej"!}. Nevertheless, it is good practice in F\# to always include an \keyword{else} branch.
 \clearpage
 
 \section{Programming Intermezzo: Automatic Conversion of Decimal to Binary Numbers}

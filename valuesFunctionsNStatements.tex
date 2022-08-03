@@ -5,6 +5,13 @@
 \chapter{Values, Functions, and Statements}
 \label{chap:let}
 %
+\abstract{
+  Introductory text about the objectivs of this chapter
+  \begin{itemize}
+  \item \dots
+  \end{itemize}
+}
+
 In this chapter, we will see how we can bind expressions to identifiers either as new constants, functions, or operators, how this saves time when building large programs, and how this makes programs easier to read and debug. As an example, consider the following problem,
 \begin{task}
   For given set constants $a$, $b$, and $c$, solve for $x$ in
@@ -322,6 +329,44 @@ Aside from \keyword{let}-bindings that binds names with values or functions, som
 %
 The expression \lstinline[language=syntax]{<*expr*>} must return \keyword{unit}. The keyword \keyword{do} is optional in most cases, but using it emphasizes that the expression is not a function that returns a useful value. Procedures are examples of such expressions, and a very useful family of procedures are the \lstinline{printf} family described below. In the remainder of this book, we will refrain from using the \keyword{do} keyword.
 
+\section{Conditional Expressions}
+Programs often contain code which should only be executed under certain conditions. This can be expressed with \keyword{if}-expressions, whose syntax is as follows.\idxs{if@\lstinline{if}}\idxs{then@\lstinline{then}}\idxs{elif@\lstinline{elif}}\idxs{else@\lstinline{else}}
+%
+\begin{verbatimwrite}{\ebnf/conditional.ebnf}
+if <*cond*> then <*expr*> {*elif <*cond*> then <*expr*>*} [*else <*expr*>*]
+\end{verbatimwrite}
+\syntax{\ebnf/conditional.ebnf}{Conditional expressions.}
+%
+The condition \lstinline[language=syntax]{<*con*>} is an expression resulting in a Boolean value, and there can be zero or more \keyword{elif} conditions, as indicated by \lstinline[language=syntax]{{**}}. Each expression \lstinline[language=syntax]{<*expr*>}  is called a \idx{branch}, and all branches must have the same type, such that regardless of which branch is chosen, the type of the result of the conditional expression is the same. Then the expression of the first if-branch, whose condition is true, is evaluate. If all conditions are false then the \keyword{else}-branch is evaluated. If no \keyword{else} expression is present, then \lexeme{()} will be returned. See \Cref{condition} for a simple example.
+%
+\fs{condition}{Conditions evaluate their branches depending on the value of the condition.}
+%
+The lightweight syntax allows for newlines entered everywhere, but indentation must be used to express scope. 
+
+To demonstrate conditional expressions, let us write a program which writes the sentence ``I have n apple(s)'', where the plural 's' is added appropriately for various $n$'s. This is done in \Cref{conditionalLightweight}, using the lightweight syntax.
+%
+\fs{conditionalLightweight}{Using conditional expression to generate different strings.}
+%
+The sentence structure and its variants give rise to a more compact solution, since the language to be returned to the user is a variant of "I have/owe no/number apple(s)", i.e., certain conditions determine whether the sentence should use ``have'' and ``owe'' and so forth. So, we could instead make decisions on each of these sentence parts, and then built the final sentence from its parts. This is accomplished in the following example:
+%
+\fs{conditionalLightweightAlt}{Using sentence parts to construct the final sentence.}
+%
+While arguably shorter, this solution is also denser, and most likely more difficult to debug and maintain.
+
+Note that both \keyword{elif} and \keyword{else} branches are optional, which may cause problems. For example, both
+\begin{quote}
+\mbox{\lstinline!let a = if true then 3!}
+\end{quote}
+and
+\begin{quote}
+\mbox{\lstinline!let a = if true then 3 elif false then 4!}
+\end{quote}
+are invalid, since F\# is not smart enough to realize that the type of the expression is uniquely determined. Instead, F\# looks for the \keyword{else} to ensure all cases have been covered, and that \lstinline!a! always will be given a unique value of the same type regardless of the branch taken in the conditional statement. Hence,
+\begin{quote}
+\mbox{\lstinline!let a = if true then 3 else 4!}
+\end{quote}
+is the only valid expression of the 3. In practice, F\# assumes that the omitted branch returns \lexeme{()}, and thus it is fine to say \mbox{\lstinline!let a = if true then ()!} and \mbox{\lstinline!if true then printfn "hej"!}. Nevertheless, it is good practice in F\# to always include an \keyword{else} branch.
+
 \section{Tracing code by hand}
 The concept of Tracing by hand, will be developed throughout this book. Here we will concentrate in the basics, and as we introduce more complicated programming structures, we will develop the Tracing by hand accordingly. Tracing may seem tedious in the beginning, but in conjunction with strategically placed debugging \lstinline!printfn! statements, it is a very valuable tool for debugging.
 
@@ -438,4 +483,9 @@ Hence, we conclude that the program outputs the value \lstinline{6.0}, since the
 \fs{lexicalScopeTracingCorrected}{Tracing the code in \Cref{lexicalScopeTracing} by hand produced the table in \Cref{tab:tracingFunctions}, and to get the desired output, we correct the code as shown here.}
 %
 
+\section{Key concepts and terms in this chapter}
+Summary text about the key concepts from this chapter
+\begin{itemize}
+\item \ldots
+\end{itemize}
 \end{document}

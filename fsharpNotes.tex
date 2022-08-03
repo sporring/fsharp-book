@@ -8,12 +8,14 @@
 
 
 % RECOMMENDED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[graybox,envcountchap,sectrefs]{svmono}
+\documentclass[graybox,envcountchap]{svmono}
 
 % choose options for [] as required from the list
 % in the Reference Guide
 
-%\usepackage{mathptmx}
+\usepackage{amssymb} % Must come early for blackbox font not to clash with springer stuff
+
+% \usepackage{mathptmx}
 %\usepackage{helvet}
 %\usepackage{courier}
 %
@@ -51,11 +53,10 @@
 
 \frontmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\include{dedication}
-%\include{foreword}
-%\include{preface}
-%\include{acknowledgement}
-\subfile{preface}
+\include{dedication}
+\include{foreword}
+\include{preface}
+\include{acknowledgement}
 
 \tableofcontents
 
@@ -64,30 +65,27 @@
 
 \mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subfile{introduction}
-
 \subfile{quickStartGuide}
 \subfile{numbersCharsNStrings}
 \subfile{valuesFunctionsNStatements}
 \subfile{makingPrograms}
 \subfile{lists}
 \subfile{recursion}
-\subfile{patterns}
 \subfile{higherOrderFunctions}
 \subfile{collections}
 \subfile{functionalProgrammingParadigm}
+\subfile{patterns}
 \subfile{types}
+\subfile{exceptions}
+\subfile{IO}
+\subfile{windows}
+\subfile{eventDrivenProgrammingParadigm}
 \subfile{assemblies}
 \subfile{nameSpacesNModules}
 \subfile{testing}
 \subfile{mutableValues}
 \subfile{flow}
 \subfile{imperativeProgrammingParadigm}
-\subfile{exceptions}
-\subfile{IO}
-\subfile{windows}
-\subfile{eventDrivenProgrammingParadigm}
-%\subfile{sequences}
-%\subfile{typesNMeasures}
 \subfile{classes}
 \subfile{inheritance}
 \subfile{objectOrientedProgrammingParadigm}
@@ -97,26 +95,14 @@
 \subfile{numberSystems}
 \subfile{characterSets}
 \subfile{commonLanguageInfrastructure}
-%\subfile{extendedBackusNaurForm}
-%\subfile{fflat}
-%\subfile{languageDetails}
-%\subfile{collection}
 %\subfile{todos}
 
-%\include{part}
-%\include{chapter}
-%\include{appendix}
-
 \backmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\clearpage
-\addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{plain}
-\bibliography{references}
+%\clearpage
+\bibliographystyle{plain} 
+\bibliography{references} 
 
-\clearpage
-\addcontentsline{toc}{chapter}{Index}
-%\include{glossary}
-%\include{solutions}
+%\clearpage
 \printindex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
