@@ -1,8 +1,8 @@
-> let g () =
--   let mutable y = 0
--   y
-- printfn "%d" (g ());;
-0
-val g : unit -> int
-val it : unit = ()
 
+> let g () =
+  let mutable y = 0
+  y
+printfn "%d" (g ());;
+0
+val g: unit -> int
+val it: unit = ()

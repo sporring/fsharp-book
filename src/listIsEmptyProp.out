@@ -1,3 +1,2 @@
 > [1; 2; 3].IsEmpty;;
-val it : bool = false
-
+val it: bool = false

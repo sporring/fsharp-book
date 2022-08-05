@@ -1,18 +1,17 @@
 > 4.0 * 3.0 * 2.0;;
-val it : float = 24.0
+val it: float = 24.0
 
 > (4.0 * 3.0) * 2.0;;
-val it : float = 24.0
+val it: float = 24.0
 
 > 4.0 * (3.0 * 2.0);;
-val it : float = 24.0
+val it: float = 24.0
 
 > 4.0 ** 3.0 ** 2.0;;
-val it : float = 262144.0
+val it: float = 262144.0
 
 > (4.0 ** 3.0) ** 2.0;;
-val it : float = 4096.0
+val it: float = 4096.0
 
 > 4.0 ** (3.0 ** 2.0);;
-val it : float = 262144.0
-
+val it: float = 262144.0

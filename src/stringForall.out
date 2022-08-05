@@ -1,3 +1,0 @@
-> String.forall (fun c -> c < 'd') "abc";;
-val it : bool = true
-

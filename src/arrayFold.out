@@ -1,5 +1,4 @@
 > let addSquares acc elm = acc + elm*elm
-- Array.fold addSquares 0 [|0 .. 9|];;
-val addSquares : acc:int -> elm:int -> int
-val it : int = 285
-
+Array.fold addSquares 0 [|0 .. 9|];;
+val addSquares: acc: int -> elm: int -> int
+val it: int = 285

@@ -1,3 +1,2 @@
 > String.replicate 4 "abc, ";;
-val it : string = "abc, abc, abc, abc, "
-
+val it: string = "abc, abc, abc, abc, "

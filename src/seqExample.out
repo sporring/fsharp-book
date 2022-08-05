@@ -1,17 +1,17 @@
+
 > #nowarn "40"
-- let a = { 1 .. 10 };;
-val a : seq<int>
+let a = { 1 .. 10 };;
+val a: seq<int>
 
 > let b = seq { 1 .. 10 };;
-val b : seq<int>
+val b: seq<int>
 
 > let c = seq {for i = 1 to 10 do yield i*i done};;
-val c : seq<int>
+val c: seq<int>
 
 > let rec d =
--   seq {
--     for i = 0 to 59 do yield (float i)*2.0*3.1415/60.0 done;
--     yield! d
--     };;
-val d : seq<float>
-
+  seq {
+    for i = 0 to 59 do yield (float i)*2.0*3.1415/60.0 done;
+    yield! d
+    };;
+val d: seq<float>

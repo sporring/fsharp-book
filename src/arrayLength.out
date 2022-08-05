@@ -1,3 +1,2 @@
 > let a = [|1; 2; 3|] in a.Length;;
-val it : int = 3
-
+val it: int = 3

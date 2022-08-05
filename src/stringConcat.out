@@ -1,3 +1,2 @@
 > String.concat ", " ["abc"; "def"; "ghi"];;
-val it : string = "abc, def, ghi"
-
+val it: string = "abc, def, ghi"

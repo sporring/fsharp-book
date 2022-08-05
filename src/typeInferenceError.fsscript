@@ -1,3 +1,3 @@
 let a = 357;;
-let b = 863.4;;
+let b = "863";;
 let c = a + b;;

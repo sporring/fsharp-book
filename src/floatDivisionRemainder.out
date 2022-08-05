@@ -1,6 +1,6 @@
+
 > 7.0 / 2.5;;
-val it : float = 2.8
+val it: float = 2.8
 
 > 7.0 % 2.5;;
-val it : float = 2.0
-
+val it: float = 2.0

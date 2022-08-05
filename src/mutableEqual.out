@@ -1,5 +1,5 @@
-> let mutable a = 0
-- a = 3;;
-val mutable a : int = 0
-val it : bool = false
 
+> let mutable a = 0
+a = 3;;
+val mutable a: int = 0
+val it: bool = false

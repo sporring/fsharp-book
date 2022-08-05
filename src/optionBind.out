@@ -1,3 +1,2 @@
 > Option.bind (fun x -> Some (2*x)) (Some 3);;
-val it : int option = Some 6
-
+val it: int option = Some 6

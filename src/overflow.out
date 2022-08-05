@@ -1,9 +1,8 @@
 > 100y;;
-val it : sbyte = 100y
+val it: sbyte = 100y
 
 > 30y;;
-val it : sbyte = 30y
+val it: sbyte = 30y
 
 > 100y + 30y;;
-val it : sbyte = -126y
-
+val it: sbyte = -126y

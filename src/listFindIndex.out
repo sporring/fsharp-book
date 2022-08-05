@@ -1,3 +1,0 @@
-> List.findIndex (fun x -> x = 'k') ['a' .. 'z'];;
-val it : int = 10
-

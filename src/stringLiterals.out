@@ -1,16 +1,15 @@
 > "abcde";;
-val it : string = "abcde"
+val it: string = "abcde"
 
 > "abc
--   de";;
-val it : string = "abc
+  de";;
+val it: string = "abc
   de"
 
 > "abc\
--   de";;
-val it : string = "abcde"
+  de";;
+val it: string = "abcde"
 
 > "abc\nde";;
-val it : string = "abc
+val it: string = "abc
 de"
-

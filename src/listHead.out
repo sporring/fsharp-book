@@ -1,3 +1,2 @@
 > let a = [1; -3; 0] in a.Head;;
-val it : int = 1
-
+val it: int = 1

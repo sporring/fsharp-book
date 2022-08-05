@@ -1,3 +1,2 @@
 > Array.find (fun x -> x % 2 = 1) [|0 .. 9|];;
-val it : int = 1
-
+val it: int = 1

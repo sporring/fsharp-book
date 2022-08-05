@@ -1,26 +1,32 @@
 #!/usr/bin/expect -f
 
-set timeout 5
+# Multiline scripts gets not response, so we use the timeout function to decide when to send another line.
+set timeout 1 
+set prompt "> $"
 set script [lindex $argv 0];
 
 # Get the commands to run, one per line
 set f [open $script]
 set commands [split [read $f] "\n"]
 close $f
-#puts $commands
 
-spawn fsharpi
-expect "> "
-send ";;\n"
+# Start fsharp - for some reason, this does not work with dotnet fsi
+#spawn fsharpi
+spawn dotnet fsi --readline- --consolecolors-
+#expect -re $prompt
+#send -- ";;\n"
+
 # Iterate over the commands
 foreach cmd $commands {
-    expect "* "
-    send -- "$cmd\n"
-    sleep 1
+    if {$cmd != ""} {
+	expect -re $prompt
+	sleep .1
+	send -- "$cmd\n"
+    }
 }
 
 # Tidy up
-expect "* "
-close
-#expect "> "
-#send "#quit;;\n"
+expect -re $prompt
+sleep .1
+send -- "#quit;;\n"
+expect eof

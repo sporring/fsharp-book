@@ -1,3 +1,2 @@
 > List.head [1; -2; 0];;
-val it : int = 1
-
+val it: int = 1

@@ -1,3 +1,2 @@
 > [1; 2; 3].Head;;
-val it : int = 1
-
+val it: int = 1

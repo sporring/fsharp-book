@@ -1,4 +1,2 @@
 > List.unzip [(1, 'a'); (2, 'b'); (3, 'c')];;
-val it : int list * char list = ([1; 2; 3], ['a'; 'b'; 'c'])
-
-> 
+val it: int list * char list = ([1; 2; 3], ['a'; 'b'; 'c'])

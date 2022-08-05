@@ -1,7 +1,6 @@
 > let arr = [|1; 2; 3|]
-- Array.set arr 2 10
-- printfn "%A" arr;;
+Array.set arr 2 10
+printfn "%A" arr;;
 [|1; 2; 10|]
-val arr : int [] = [|1; 2; 10|]
-val it : unit = ()
-
+val arr: int[] = [|1; 2; 10|]
+val it: unit = ()

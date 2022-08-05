@@ -1,3 +1,0 @@
-> let a = [1; 2; 3] in a.IsEmpty;;
-val it : bool = false
-

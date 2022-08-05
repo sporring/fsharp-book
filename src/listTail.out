@@ -1,3 +1,0 @@
-> let a = [1; -2; 0] in a.Tail;;
-val it : int list = [-2; 0]
-

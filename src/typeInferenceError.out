@@ -1,13 +1,12 @@
 > let a = 357;;
-val a : int = 357
+val a: int = 357
 
-> let b = 863.4;;
-val b : float = 863.4
+> let b = "863";;
+val b: string = "863"
 
 > let c = a + b;;
 
   let c = a + b;;
   ------------^
 
-stdin(4,13): error FS0001: The type 'float' does not match the type 'int'
-
+/Users/jrh630/repositories/fsharp-book/src/stdin(3,13): error FS0001: The type 'string' does not match the type 'int'

@@ -1,5 +1,4 @@
 > let a = [|1; 2; 3|]
-- let b = Array.copy a;;
-val a : int [] = [|1; 2; 3|]
-val b : int [] = [|1; 2; 3|]
-
+let b = Array.copy a;;
+val a: int[] = [|1; 2; 3|]
+val b: int[] = [|1; 2; 3|]

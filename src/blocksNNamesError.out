@@ -1,8 +1,7 @@
 > let a = 357
-- let a = 864;;
+let a = 864;;
 
   let a = 864;;
   ----^
 
-stdin(3,5): error FS0037: Duplicate definition of value 'a'
-
+/Users/jrh630/repositories/fsharp-book/src/stdin(2,5): error FS0037: Duplicate definition of value 'a'

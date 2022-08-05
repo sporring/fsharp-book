@@ -1,9 +1,9 @@
+
 > let sq = seq { 1 .. 10 };; (* make a sequence *)
-val sq : seq<int>
+val sq: seq<int>
 
 > let itm = Seq.item 0 sq;; (* take firste element *)
-val itm : int = 1
+val itm: int = 1
 
 > let sbsq = Seq.take 3 sq;; (* make new sequence of first 3 elements *)
-val sbsq : seq<int>
-
+val sbsq: seq<int>

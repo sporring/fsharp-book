@@ -1,12 +1,13 @@
+
 > let a = System.Reflection.Assembly.LoadFrom @"/Library/Frameworks/Mono.framework/Versions/4.4.1/lib/mono/4.0-api/System.Windows.Forms.dll"
-- let ts = a.GetExportedTypes ()
-- let tm = ts |> Array.filter (fun t -> t.Namespace.StartsWith "System.Windows.Form")
-- tm.[0].GetMethods ();;
-System.IO.FileNotFoundException: Invalid Image
+let ts = a.GetExportedTypes ()
+let tm = ts |> Array.filter (fun t -> t.Namespace.StartsWith "System.Windows.Form")
+tm.[0].GetMethods ();;
+System.IO.FileNotFoundException: Could not load file or assembly '/Library/Frameworks/Mono.framework/Versions/4.4.1/lib/mono/4.0-api/System.Windows.Forms.dll'. The system cannot find the file specified.
+
 File name: '/Library/Frameworks/Mono.framework/Versions/4.4.1/lib/mono/4.0-api/System.Windows.Forms.dll'
-  at (wrapper managed-to-native) System.Reflection.Assembly.LoadFrom(string,bool,System.Threading.StackCrawlMark&)
-  at System.Reflection.Assembly.LoadFrom (System.String assemblyFile) [0x00002] in <e068e2227ab74c1bb3d724ebaab0e3ff>:0 
-  at <StartupCode$FSI_0002>.$FSI_0002.main@ () [0x00000] in <33987e5b180a466cb5063008e01c6fce>:0 
-  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
-  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <e068e2227ab74c1bb3d724ebaab0e3ff>:0 
-Stopped due to error
+   at System.Runtime.Loader.AssemblyLoadContext.LoadFromPath(IntPtr ptrNativeAssemblyLoadContext, String ilPath, String niPath, ObjectHandleOnStack retAssembly)
+   at System.Runtime.Loader.AssemblyLoadContext.InternalLoadFromPath(String assemblyPath, String nativeImagePath)
+   at System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(String assemblyPath)
+   at System.Reflection.Assembly.LoadFrom(String assemblyFile)
+   at <StartupCode$FSI_0002>.$FSI_0002.main@()

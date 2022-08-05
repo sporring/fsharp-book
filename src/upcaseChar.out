@@ -1,3 +1,2 @@
 > char (int 'z' - int 'a' + int 'A');;
-val it : char = 'Z'
-
+val it: char = 'Z'

@@ -1,3 +1,2 @@
 > "Hello World".Split();;
-val it : string [] = [|"Hello"; "World"|]
-
+val it: string[] = [|"Hello"; "World"|]

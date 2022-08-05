@@ -1,6 +1,6 @@
+
 > 7 / 3;;
-val it : int = 2
+val it: int = 2
 
 > 7 % 3;;
-val it : int = 1
-
+val it: int = 1

@@ -1,3 +1,2 @@
 > let a : int [] = Array.empty;;
-val a : int [] = [||]
-
+val a: int[] = [||]

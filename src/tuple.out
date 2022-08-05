@@ -1,6 +1,5 @@
 > let tp = (2, true, "hello")
-- printfn "%A" tp;;
+printfn "%A" tp;;
 (2, true, "hello")
-val tp : int * bool * string = (2, true, "hello")
-val it : unit = ()
-
+val tp: int * bool * string = (2, true, "hello")
+val it: unit = ()

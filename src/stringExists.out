@@ -1,3 +1,0 @@
-> String.exists (fun c -> c = 'd') "abc";;
-val it : bool = false
-

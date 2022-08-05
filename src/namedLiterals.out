@@ -1,24 +1,24 @@
+
 > 3;;
-val it : int = 3
+val it: int = 3
 
 > 4u;; 
-val it : uint32 = 4u
+val it: uint32 = 4u
 
 > 5.6;;
-val it : float = 5.6
+val it: float = 5.6
 
 > 7.9f;;
-val it : float32 = 7.9000001f
+val it: float32 = 7.900000095f
 
 > 'A';;
-val it : char = 'A'
+val it: char = 'A'
 
 > 'B'B;;
-val it : byte = 66uy
+val it: byte = 66uy
 
 > "ABC";;
-val it : string = "ABC"
+val it: string = "ABC"
 
 > @"abc\nde";;
-val it : string = "abc\nde"
-
+val it: string = "abc\nde"

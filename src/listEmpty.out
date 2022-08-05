@@ -1,3 +1,0 @@
-> let a : int list = List.empty;;
-val a : int list = []
-

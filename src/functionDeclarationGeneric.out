@@ -1,12 +1,11 @@
 > let second x y = y
-- let a = second 3 5
-- do printfn "%A" a
-- let b = second "horse" 5.0
-- do printfn "%A" b;;
+let a = second 3 5
+do printfn "%A" a
+let b = second "horse" 5.0
+do printfn "%A" b;;
 5
 5.0
-val second : x:'a -> y:'b -> 'b
-val a : int = 5
-val b : float = 5.0
-val it : unit = ()
-
+val second: x: 'a -> y: 'b -> 'b
+val a: int = 5
+val b: float = 5.0
+val it: unit = ()

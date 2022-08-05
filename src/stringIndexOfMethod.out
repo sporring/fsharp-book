@@ -1,3 +1,2 @@
 > "Hello World".IndexOf("World");;
-val it : int = 6
-
+val it: int = 6

@@ -1,3 +1,2 @@
 > List.ofArray [|1; 2; 3|];;
-val it : int list = [1; 2; 3]
-
+val it: int list = [1; 2; 3]

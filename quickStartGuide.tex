@@ -69,10 +69,10 @@ val it : unit = ()
 §\tikzmark{lst1_2-end}§
 > §\tikzmark{lst1_6-tl}§#quit;;§\tikzmark{end_3}§§\tikzmark{lst1_6-br}§
 \end{lstlisting}%$
-\end{codeNOutput}%
 \FrameArea{lst1_4-tl}{lst1_4-br}%
 \FrameArea{lst1_5-tl}{lst1_5-br}%
 \FrameArea{lst1_6-tl}{lst1_6-br}%
+\end{codeNOutput}%
 %
 We see that after typing \lstinline[language=console]{fsharpi}, the program starts by stating details about itself. Then F\# writes \lstinline{>} indicating that it is ready to receive commands. The user types \lstinline{let a = 3.0} and presses \lstinline[language=console]{enter}, to which the interpreter responds with \lstinline{-}. This indicates that the line has been received, that the script fragment is not yet completed, and that it is ready to receive more input. When the user types \lstinline{do printfn "%A" a;;} %
 followed by \lstinline[language=console]{enter}, then by \lexeme{;;} the interpreter knows that the script-fragment is completed, it interprets the script-fragment, responds with \lstinline{3.0} and some extra information about the entered code, and with \lstinline{>} to indicate that it is ready for more script-fragments. The interpreter is stopped when the user types \lstinline[language=console]{#quit;;}. It is also possible to stop the interpreter by typing \lstinline[language=console]{ctrl-d}.
@@ -91,8 +91,8 @@ Instead of running \lstinline[language=console]{fsharpi} interactively, we can w
 $ §\tikzmark{lst2_1-tl}§dotnet fsi gettingStartedStump.fsx§\tikzmark{lst2_1-br}§
 3.0
 \end{lstlisting}%$
-\end{codeNOutput}
 \FrameArea{lst2_1-tl}{lst2_1-br}%
+\end{codeNOutput}
 %
 Notice that in the file, \lexeme{;;} is optional. In comparison to \Cref{interactiveSession}, we see that the interpreter executes the code and prints the result on screen without the extra type information.
 
@@ -131,7 +131,10 @@ In mathematics, types are also an important concept. For example, a number may b
   \caption{In mathematics, the sets of natural, integer, and real numbers are each infinitely large, and real contains integers which in turn contains the set of natural numbers.}
   \label{fig:numbers}
 \end{figure}
-For many problems, working with infinite sets is impractical, and instead, a lot of work in the early days of the computer's history was spent on designing finite sets of numbers, which have many of the properties of their mathematical equivalent, but which also are efficient for performing calculations on a computer. For example, the set of integers in F\# is called \keyword{int} and is the set $[\numprint{-2147483648} \ldots \numprint{2147483647}]$. The most commonly used type to represent numbers with properties similar to reals is called \keyword{float} and is a clever selection of $2^{64}$ rational numbers. Since the computer representation of, e.g., \keyword{int} and \keyword{float} differ substantially, algorithms used to perform arithmetic also differ, and this limits how such types can be mixed.
+For many problems, working with infinite sets is impractical, and instead, a lot of work in the early days of the computer's history was spent on designing finite sets of numbers, which have many of the properties of their mathematical equivalent, but which also are efficient for performing calculations on a computer. For example, the set of integers in F\# is called \keyword{int} and is the set $[\numprint{-2147483648} \ldots \numprint{2147483647}]$.
+
+
+The most commonly used type to represent numbers with properties similar to reals is called \keyword{float} and is a clever selection of $2^{64}$ rational numbers. Since the computer representation of, e.g., \keyword{int} and \keyword{float} differ substantially, algorithms used to perform arithmetic also differ, and this limits how such types can be mixed.
 
 Consider a slight modification of Problem~\ref{probl:sumInteger} to the domain of reals,
 %

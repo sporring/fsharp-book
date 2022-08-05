@@ -1,6 +1,5 @@
 > 0b10000010uy;;
-val it : byte = 130uy
+val it: byte = 130uy
 
 > 0b10000010y;;
-val it : sbyte = -126y
-
+val it: sbyte = -126y

@@ -1,3 +1,2 @@
 > String.collect (fun c -> (string c) + ", ") "abc";;
-val it : string = "a, b, c, "
-
+val it: string = "a, b, c, "
