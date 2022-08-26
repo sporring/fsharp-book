@@ -1,1 +1,1 @@
-let <*valueIdent*> = <*bodyExpr*> [*in <*expr*>*]
+let <*valueIdent*> = <*bodyExpr*>

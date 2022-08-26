@@ -9,7 +9,7 @@ let januaryFirstDay (y : int) =
 let rec sum (lst : int list) j =
   (* WB: 1 *)
   if 0 <= j && j < lst.Length then
-    lst.[0] + sum lst.[1..] (j - 1)
+    lst[0] + sum lst[1..] (j - 1)
   else
     0
   
@@ -23,7 +23,7 @@ let date2Day d m y =
   let dayOne = januaryFirstDay y
   let daysSince = (sum daysInMonth (m - 2)) + d - 1
   let weekday = (dayOne + daysSince) % 7;
-  dayPrefix.[weekday] + "day"
+  dayPrefix[weekday] + "day"
 
 let testCases = [
   ("A complete week",
@@ -54,9 +54,9 @@ let testCases = [
 
 printfn "Black-box testing of date2Day.fsx"
 for i = 0 to testCases.Length - 1 do
-  let (setName, testSet) = testCases.[i]
+  let (setName, testSet) = testCases[i]
   printfn "  %d. %s" (i+1) setName
   for j = 0 to testSet.Length - 1 do
-    let (d, m, y, expected) = testSet.[j]
+    let (d, m, y, expected) = testSet[j]
     let day = date2Day d m y
     printfn "    test %d - %b" (j+1) (day = expected)

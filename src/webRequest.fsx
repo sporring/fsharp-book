@@ -15,4 +15,4 @@ let url = "http://fsharp.org"
 let a = 40
 
 let html = readUrl url
-printfn "Downloaded %A. First %d characters are: %A" url a html.[0..a]
+printfn "Downloaded %A. First %d characters are: %A" url a html[0..a]

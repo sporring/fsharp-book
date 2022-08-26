@@ -1,4 +1,3 @@
-
 > #nowarn "40"
 let a = { 1 .. 10 };;
 val a: seq<int>

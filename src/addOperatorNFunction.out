@@ -1,2 +1,2 @@
-$ fsharpc --nologo addOperatorNFunction.fsx && mono addOperatorNFunction.exe
+$ dotnet fsi addOperatorNFunction.fsx
 3.0 plus 4.0 is 7.0 and 7.0

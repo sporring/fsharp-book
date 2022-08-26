@@ -1,4 +1,3 @@
-
 > let sq = seq { 1 .. 10 };; (* make a sequence *)
 val sq: seq<int>
 

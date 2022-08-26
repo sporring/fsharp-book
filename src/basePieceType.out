@@ -1,3 +1,3 @@
-$ fsharpc --nologo basePieceType.fsx && mono basePieceType.exe
+$ dotnet fsi basePieceType.fsx
 [|King at (0, 0); Rook at (2, 0)|]
 [|King at (1, 0); Rook at (2, 0)|]

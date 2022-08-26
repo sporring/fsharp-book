@@ -1,2 +1,2 @@
-$ fsharpc --nologo functionDeclarationAnonymousAdvanced.fsx && mono functionDeclarationAnonymousAdvanced.exe
+$ dotnet fsi functionDeclarationAnonymousAdvanced.fsx
 18

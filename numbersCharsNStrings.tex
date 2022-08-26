@@ -6,14 +6,21 @@
 \label{chap:calculator}
 
 \abstract{
-  Introductory text about the objectivs of this chapter
+  In the previous chapter, we introduced some key F\# programming tools and concepts without going into depth on opportunities and limitations. In the following chapters, we will dive deeper into methods for solving problems by writing programs, and what facilities are available in F\# to express these solutions. As a first step, we must acquaint ourselves with the basic building blocks of basic types, constants, and operators:
   \begin{itemize}
-  \item \dots
+  \item an introduction to the basic types and how to write constants of those types
+  \item arithmetic of basic operations
+  \end{itemize}
+  with these tools, you will be able to evaluate expressions as if F\# was a simple calculator. Examples of problems, you will be able to solve after reading this chapter, is:
+  \begin{itemize}
+  \item What is the result of $3\cos(4*\pi/180)+4\sin(4*\pi/180)$.
+  \item Calculate how many characters are there in the text string ``Hello World!''.
+  \item What is the ASCII value of the character 'J'.
+  \item How to convert between whole and binary numbers.
   \end{itemize}
 }
 
 %Talking about programs and programming languages we make a distinction between the language's \idx{syntax}, which describes what are legal expressions and statements, and the \idx{semantics} of an expression and a statement, which describes what is meant. This is analog to human languages, where how nouns, verbs, etc. may be placed in relation to each describes the syntax of a sentence, while the meaning of a sentence is its semantics. Basic elements of F\#'s syntax are literals, which is a fixed value like the number 3.
-In this chapter, we will exclusively use the interactive mode to illustrate basic types and operations in F\#.
 
 \section{Literals and Basic Types}
 All programs rely on processing of data, and an essential property of data is its \idx{type}. A \idx{literal} is a fixed value like the number 3, and if we type the number \lstinline!3! in an interactive session at the input prompt, then F\# responds as shown in \Cref{firstType}.
@@ -582,7 +589,7 @@ A large collection of operators and functions exist for \lstinline{string}. The 
 %
 \fsOutput{stringConcatenation}{Example of string concatenation.}
 %
-Characters and strings cannot be concatenated, which is why the above example used the string of a space \lstinline|" "| instead of the space character \lstinline|' '|. The characters of a string may be indexed as using the \idx[{.[]}@\lstinline{.[]}]{\lstinline{.[]}} notation. This is demonstrated in \Cref{stringIndexing}.
+Characters and strings cannot be concatenated, which is why the above example used the string of a space \lstinline|" "| instead of the space character \lstinline|' '|. The characters of a string may be indexed as using the \idx[{[]}@\lstinline{[]}]{\lstinline{[]}} notation. This is demonstrated in \Cref{stringIndexing}.
 %
 \fsOutput{stringIndexing}{String indexing using square brackets.}
 %
@@ -591,137 +598,14 @@ Notice that the first character has index 0, and to get the last character in a 
 \fsOutput{stringIndexingLength}{String length attribute and string indexing.}
 %
 Since index counting starts at 0, and since the string length is 7, the index of the last character is 6. 
-%An alternative notation for indexing is to use the property \lstinline|Char|, and in the example \lstinline|''abcdefg''.[3]| is the same as \lstinline|a.Char 3|. 
+%An alternative notation for indexing is to use the property \lstinline|Char|, and in the example \lstinline|''abcdefg''[3]| is the same as \lstinline|a.Char 3|. 
 There is a long list of built-in functions in \lstinline|System.String| for working with strings, some of which will be discussed in \Cref{sec:strings}.
  
 The \idx{dot notation} is an example of Structured programming, where technically speaking, the string \mbox{\lstinline|"abcdefg"|} is an immutable \idx{object} of \idx{class} \lstinline|string|, \lstinline|[]| is an object \idx{method}, and \lstinline|Length| is a property. For more on objects, classes, and methods, see \Cref{chap:oop}.  
 
-Strings are compared letter by letter. For two strings to be equal, they must have the same length and all the letters must be identical. E.g., \mbox{\lstinline!"abs" = "absalon"!} is false, while \lstinline!"abs" = "abs"! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator, e.g., \lstinline!"abs" <> "absalon"! is true, while \lstinline!"abs" <> "abs"! is false. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered alphabetically, such that \lstinline!"abs" < "absalon" && "absalon" < "milk"! is true, that is, the \lexeme{<} operator on two strings is true if the left operand should come before the right when sorting alphabetically. The algorithm for deciding the boolean value of \lstinline!leftOp < rightOp! is as follows: we start by examining the first character, and if \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are different, then \lstinline!leftOp < rightOp! is equal to \lstinline!leftOp.[0] < rightOp.[0]!. E.g., \lstinline!"milk" < "abs"! is the same as \lstinline!'m' < 'a'!, which is false, since the letter 'm' does not come before the letter 'a' in the alphabet, or more precisely, the codepoint of 'm' is not less than the codepoint of 'a'. If \lstinline!leftOp.[0]! and \lstinline!rightOp.[0]! are equal, then we move on to the next letter and repeat the investigation, e.g., \lstinline!"abe" < "abs"! is true, since \lstinline!"ab" = "ab"! is true and \lstinline!'e' < 's'! is true. If we reach the end of either of the two strings, then the shorter word is smaller than the longer word, e.g., \lstinline!"abs" < "absalon"! is true, while \lstinline!"abs" < "abs"! is false. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined in a similar manner.
+Strings are compared letter by letter. For two strings to be equal, they must have the same length and all the letters must be identical. E.g., \mbox{\lstinline!"abs" = "absalon"!} is false, while \lstinline!"abs" = "abs"! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator, e.g., \lstinline!"abs" <> "absalon"! is true, while \lstinline!"abs" <> "abs"! is false. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered alphabetically, such that \lstinline!"abs" < "absalon" && "absalon" < "milk"! is true, that is, the \lexeme{<} operator on two strings is true if the left operand should come before the right when sorting alphabetically. The algorithm for deciding the boolean value of \lstinline!leftOp < rightOp! is as follows: we start by examining the first character, and if \lstinline!leftOp[0]! and \lstinline!rightOp[0]! are different, then \lstinline!leftOp < rightOp! is equal to \lstinline!leftOp[0] < rightOp[0]!. E.g., \lstinline!"milk" < "abs"! is the same as \lstinline!'m' < 'a'!, which is false, since the letter 'm' does not come before the letter 'a' in the alphabet, or more precisely, the codepoint of 'm' is not less than the codepoint of 'a'. If \lstinline!leftOp[0]! and \lstinline!rightOp[0]! are equal, then we move on to the next letter and repeat the investigation, e.g., \lstinline!"abe" < "abs"! is true, since \lstinline!"ab" = "ab"! is true and \lstinline!'e' < 's'! is true. If we reach the end of either of the two strings, then the shorter word is smaller than the longer word, e.g., \lstinline!"abs" < "absalon"! is true, while \lstinline!"abs" < "abs"! is false. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined in a similar manner.
 
 \clearpage
-
-\section{Tuples}
-\idx[tuple]{Tuples} are a direct extension of constants. They are immutable and have neither concatenations nor indexing operations. Tuples are unions of immutable types and have the following syntax:
-%
-\begin{verbatimwrite}{\ebnf/tuples.ebnf}
-<*expr*>{*, <*expr*>*}
-\end{verbatimwrite}
-\syntax{\ebnf/tuples.ebnf}{Tuples are list of expressions separated by commas.}
-%
-Tuples are identified by the \lexeme{,} lexeme and often enclosed in parentheses, but that is not required. An example is a triple, also known as a 3-tuple, \lstinline!(2,true,"hello")!. In interactive mode, the type of tuples is demonstrated in \Cref{tuple}.
-%
-\fsOutput{tuple}{Tuple types are products of sets.}
-%
-The values \lstinline!2!, \lstinline!true!, and \lstinline!"hello"! are \idx[member]{members}, and the number of elements of a tuple is its \idx{length}. From the response of F\#, we see that the tuple is inferred to have the type \lstinline!int * bool * string!. The \lexeme{*} denotes the Cartesian product between sets.  Tuples can be products of any types and follow the lexical scope rules like value and function bindings. Notice also that a tuple may be printed as a single entity by the \lstinline!%A! %
-placeholder. In the example we bound \lstinline!tp! to the tuple. The opposite is also possible, as demonstrated in \Cref{tupleDeconstruction}.
-%
-\fsOutput{tupleDeconstruction}{Definition of a tuple.}
-%
-In this example, a function is defined that takes 1 argument, a 3-tuple. If we wanted a function with 3 arguments, then the function binding should have been \lstinline{let deconstructNPrint a b c = ...}. The value binding \lstinline{let (a, b, c) = tp}, binds a tuple with 3 named members to a value, thus deconstructing it in terms of its members. This is called pattern matching and will be discussed in further details in \Cref{chap:patterns}. Since we used the \lstinline!\%A! placeholder in the \lstinline!printfn! function, the function can be called with 3-tuples of different types. F\# informs us that the tuple type is variable by writing \lstinline{'a * 'b * 'c}. The \lexeme{'} notation means that the type can be decided at run-time, see \Cref{sec:variableTypes} for more on variable types. 
-
-Pairs or 2-tuples are so common that F\# includes two built-in functions,\idx[fst@\lstinline{fst}]{\keyword{fst}} and \idx[snd@\lstinline{snd}]{\keyword{snd}}, to extract the first and second element of a pair. This is demonstrated in \Cref{pair}.
-%
-\fs{pair}{Deconstruction of pairs with the built-in functions \keyword{fst} and \keyword{snd}.}
-%
-
-Tuples of equal lengths can be compared, and the  comparison is defined similarly to string comparison. Tuples of equal length are compared element by element. E.g., \lstinline!(1,2) = (1,3)! is false, while \lstinline!(1,2) = (1,2)! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered lexicographically, such that \lstinline!('a', 'b', 'c') < ('a', 'b', 's') && ('a', 'b', 's') <  ('c', 'o', 's')! is true, that is, the \lexeme{<} operator on two tuples is true if and only if the left operand should come before the right when sorting alphabetically. See \Cref{tupleCompare} for an example.
-%
-\fs{tupleCompare}{Tuples comparison is similar to string comparison.}
-%
-The algorithm for deciding the boolean value of \lstinline!(a1, a2) < (b1, b2)! is as follows: we start by examining the first elements, and if \lstinline!a1! and \lstinline!b1! are different, then the result of \lstinline!(a1, a2) < (b1, b2)! is equal to the result of \lstinline!a1 < b1!. If \lstinline!a1! and \lstinline!b1! are equal, then we move on to the next letter and repeat the investigation. The \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators are defined similarly.
-
-Binding tuples to mutables does not make the tuple mutable. This is demonstrated in \Cref{tupleOfMutables}.
-%
-\fs{tupleOfMutables}{A mutable changes value, but the tuple defined by it does not refer to the new value.}
-%
-However, it is possible to define a mutable variable of type tuple such that new tuple values can be assigned to it, as shown in \Cref{mutableTuple}.
-%
-\fs{mutableTuple}{A mutable tuple can be assigned a new value.}
-%
-Mutable tuples are value types, meaning that binding to new names makes copies, not aliases, as demonstrated in \Cref{mutableTupleValue}.
-%
-\fs{mutableTupleValue}{A mutable tuple is a value type.}
-%
-The use of tuples shortens code and highlights semantic content at a higher level, e.g., instead of focusing on the elements, tuples focus on their union. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, where an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
-
-\section{Strings}
-\label{sec:strings}
-Strings have been discussed in \Cref{chap:calculator}, the content of which will be briefly revisited here followed by a description of some of the many supporting built-in functions in F\# on strings.
-
-A \idx{string} is a sequence of characters. Each character is represented using UTF-16, see \Cref{sec:characterSets} for further details on the unicode standard. The type \lstinline{string} is an alias for \idx[System.string@\lstinline{System.string}]{\lstinline{System.string}}. String literals are delimited by double quotation marks \lexeme{"} and inside the delimiters, character escape sequences are allowed (see \Cref{tab:escapeChar}), which are replaced by the corresponding character code. Examples are \lstinline{"This is a string"}, \lstinline{"\tTabulated string"}, \lstinline{"A \"quoted\" string"}, and \lstinline{""}. Strings may span several lines, and new lines inside strings are part of the string unless the line is ended with a backslash. Strings may be \idx[verbatim string]{verbatim} by preceding the string with \lexeme{@}, in which case escape sequences are not replaced, but two double quotation marks are an escape sequence which is replaced by a one double quotation mark. Examples of \lexeme{@}-verbatim strings are:
-\begin{itemize}
-\item \lstinline{@"This is a string"}, 
-\item \lstinline{@"\tNon-tabulated string"},
-\item \lstinline{@"A ""quoted"" string"}, and
-\item \lstinline{@""}.
-\end{itemize}
-Alternatively, a verbatim string may be delimited by three double quotation marks. Examples of \lexeme{"""}-verbatim strings are:
-\begin{itemize}
-\item \lstinline{"""This is a string"""},
-\item \lstinline{"""\tNon-tabulated string"""},
-\item \lstinline{"""A "quoted" string"""}, and
-\item  \lstinline{""""""}.
-\end{itemize}
-Strings may be indexed using the \lstinline{.[]} notation, as demonstrated in \Cref{stringIndexing}.
-
-\subsection{String Properties and Methods}
-Strings have a few properties which are values attached to each string and accessed using the \lexeme{.} notation. The only to be mentioned here is:
-\begin{description}
-\item[\texttt{IndexOf()}:] \lstinline{str:string -> int}.~\\
-  Returns the index of the first occurence of \lstinline{s} or $-1$, if \lstinline{str} does not appear in the string.
-  \fsOutputNF{stringIndexOfMethod}{\lstinline{IndexOf()}}\idxss{IndexOf@\lstinline{IndexOf}}
-\item[\texttt{Length}:] \lstinline{int}.~\\
-  Returns the length of the string.
-  \fsOutputNF{stringLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
-\item[\texttt{ToLower()}:] \lstinline{unit -> string}.~\\
-  Returns a copy of the string where each letter has been converted to lower case.
-  \fsOutputNF{stringToLowerMethod}{\lstinline{ToLower()}}\idxss{ToLower@\lstinline{ToLower}}
-\item[\texttt{ToUpper()}:] \lstinline{unit -> string}.~\\
-  Returns a copy of the string where each letter has been converted to upper case.
-  \fsOutputNF{stringToUpperMethod}{\lstinline{ToUpper()}}\idxss{ToUpper@\lstinline{ToUpper}}
-\item[\texttt{Trim()}:] \lstinline{unit -> string}.~\\
-  Returns a copy of the string where leading and trailing whitespaces have been removed.
-  \fsOutputNF{stringTrimMethod}{\lstinline{Trim()}}\idxss{Trim@\lstinline{Trim}}
-\item[\texttt{Split()}:] \lstinline{unit -> string []}.~\\
-  Splits a string of words separated by spaces into an array of words. See \Cref{sec:arrays} for more information about arrays.
-  \fsOutputNF{stringSplitMethod}{\lstinline{Split()}}\idxss{Split@\lstinline{Split}}
-\end{description}
-
-\subsection{The String Module}
-The \lstinline{String} module offers many functions for working with strings. Some of the most powerful ones are listed below, and they are all higher-order functions.
-\begin{description}
-\item[\texttt{String.collect}:] \lstinline{f:(char -> string) -> str:string -> string}.~\\
-  Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{str} and concatenating the resulting strings.
-   \fsOutputNF{stringCollect}{\lstinline{String.collect}}\idxss{String.collect@\lstinline{String.collect}}
-   % \item[\texttt{String.concat}:] \lstinline{string -> seq<string> -> string}.~\\
-   %Returns a new string made by concatenating the given strings with a separator. Here \lstinline{seq<string>} is a sequence but can also be a list or an array. 
-% \fsOutputNF{stringConcat}{\lstinline{String.concat}}\idxss{String.concat@\lstinline{String.concat}}
- \item[\texttt{String.exists}:] \lstinline{f:(char -> bool) -> str:string -> bool}.~\\
-   Returns true if any character in \lstinline{str} evaluates to true when using \lstinline{f}.
-  \fsOutputNF{stringExists}{\lstinline{String.exists}}\idxss{String.exists@\lstinline{String.exists}}
-\item[\texttt{String.forall}:] \lstinline{f:(char -> bool) -> str:string -> bool}.~\\
-  Returns true if all characters in \lstinline{str} evalutes to true when using \lstinline{f}.
- \fsOutputNF{stringForall}{\lstinline{String.forall}}\idxss{String.forall@\lstinline{String.forall}}
-\item[\texttt{String.init}:] \lstinline{n:int -> f:(int -> string) -> string}.~\\
-  Creates a new string with length \lstinline{n} and whose characters are the result of applying \lstinline{f} to each index of that string.
-\fsOutputNF{stringInit}{\lstinline{String.init}}\idxss{String.init@\lstinline{String.init}}
-\item[\texttt{String.iter}:] \lstinline{f:(char -> unit) -> str:string -> unit}.~\\
-  Applies \lstinline{f} to each character in \lstinline{str}.
-\fsOutputNF{stringIter}{\lstinline{String.iter}}\idxss{String.iter@\lstinline{String.iter}}
-% \item[\texttt{String.iteri}:] \lstinline{(int -> char -> unit) -> string -> unit}.~\\
-%Applies a specified function to the index of each character in the string and the character itself.
-% \fsOutputNF{stringIterI}{\lstinline{String.iteri}}\idxss{String.iteri@\lstinline{String.iteri}}
-% \item[\texttt{String.length}:] \lstinline{string -> int}. Returns the length of the string.
-% \fsOutputNF{stringLength}{\lstinline{String.length}}\idxss{String.length@\lstinline{String.length}}
-\item[\texttt{String.map}:] \lstinline{f:(char -> char) -> str:string -> string}.~\\
-  Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{str}.
- \fsOutputNF{stringMap}{\lstinline{String.map}}\idxss{String.map@\lstinline{String.map}}
- % \item[\texttt{String.mapi}:] \lstinline{(int -> char -> char) -> string -> string}.~\\
- %Creates a new string whose characters are the results of applying a specified function to each character and index of the input string.
-% \fsOutputNF{stringMapI}{\lstinline{String.mapi}}\idxss{String.mapi@\lstinline{String.mapi}}
-% \item[\texttt{String.replicate}:] \lstinline{int -> string -> string}. Returns a string by concatenating a specified number of instances of a string.
-% \fsOutputNF{stringReplicate}{\lstinline{String.replicate}}\idxss{String.replicate@\lstinline{String.replicate}}
-\end{description}
 
 \section{Programming Intermezzo: Hand Conversion Between Decimal and Binary Numbers}
 Conversion of integers between decimal and binary form is a key concept one must grasp in order to understand some of the basic properties of calculations on the computer. Converting from binary to decimal is straightforward if using the power-of-two algorithm, i.e., given a sequence of $n+1$ binary digits $b_i$ written as $b_n b_{n-1}\dots b_0$, and where $b_n$ and $b_0$ are the most and least significant bits respectively, then the decimal value is calculated as,
@@ -766,8 +650,13 @@ Thus, by reading the second integer-response from \lstinline!printfn! from below
 
 
 \section{Key concepts and terms in this chapter}
-Summary text about the key concepts from this chapter
+In this chapter you have learned about:
 \begin{itemize}
-\item \ldots
+\item the \textbf{basic types}: \textbf{int} of various kinds which are all a subset of integers, \textbf{float} of various kinds which are all subsets of reals, \textbf{bool} which captures the notion of true and false, and \textbf{char} and \textbf{string} which holds characters and sequences of characters;
+\item how to write constants of the basic types, which are called \textbf{literals};
+\item \textbf{operators} such as \lexeme{+} and \lexeme{-} and whose arguments are called \textbf{operands};
+\item \textbf{unary} and \textbf{binary} operators;
+\item \textbf{escape sequences} for characters and strings;
+\item how to get the \textbf{length} of a string using the \textbf{dot} notation, and how to extract substrings using the \textbf{slice} notation.
 \end{itemize}
 \end{document}

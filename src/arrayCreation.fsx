@@ -5,7 +5,7 @@ let printArray (arr : int array) =
 
 let printArrayAlt (arr : int array) =
   for i = 0 to arr.Length - 1 do
-    printf "%A " arr.[i]
+    printf "%A " arr[i]
   printfn ""
 
 let a = [|1; 2;|]

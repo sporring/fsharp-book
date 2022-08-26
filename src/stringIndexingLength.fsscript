@@ -1,2 +1,2 @@
 "abcdefg".Length;;
-"abcdefg".[7-1];;
+"abcdefg"[7-1];;

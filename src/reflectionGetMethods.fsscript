@@ -1,4 +1,4 @@
 let a = System.Reflection.Assembly.LoadFrom @"/Library/Frameworks/Mono.framework/Versions/4.4.1/lib/mono/4.0-api/System.Windows.Forms.dll"
 let ts = a.GetExportedTypes ()
 let tm = ts |> Array.filter (fun t -> t.Namespace.StartsWith "System.Windows.Form")
-tm.[0].GetMethods ();;
+tm[0].GetMethods ();;

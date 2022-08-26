@@ -7,6 +7,6 @@ let board : Board =
 let printPieceNMoves (elm : chessPiece) : unit = 
     printfn "%A, moves: %A" elm (elm.availableMoves board)
 Array.iter printPieceNMoves board
-printfn "Moving %A" board.[1]
-board.[1].position <- Some (5,2)
+printfn "Moving %A" board[1]
+board[1].position <- Some (5,2)
 Array.iter printPieceNMoves board

@@ -1,2 +1,2 @@
-$ fsharpc --nologo functionComposition.fsx && mono functionComposition.exe
+$ dotnet fsi functionComposition.fsx
 a = 3, b = 9, c = 9

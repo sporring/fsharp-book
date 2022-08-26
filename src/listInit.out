@@ -1,0 +1,2 @@
+> List.init 10 (fun i -> i * i);;
+val it: int list = [0; 1; 4; 9; 16; 25; 36; 49; 64; 81]

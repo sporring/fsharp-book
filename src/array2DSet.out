@@ -1,3 +1,4 @@
+
 > let arr = Array2D.init 3 4 (fun i j -> i + 10 * j)
 Array2D.set arr 1 2 100
 printfn "%A" arr;;

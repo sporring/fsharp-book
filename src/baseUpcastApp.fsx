@@ -7,5 +7,5 @@ let pieces =
 let printPieceNMoves (elm : chessPiece) : unit = 
     printfn "%A, moves: %A" elm elm.availableMoves
 Array.iter printPieceNMoves pieces
-pieces.[1].position <- Some (6,2)
-printPieceNMoves pieces.[1]
+pieces[1].position <- Some (6,2)
+printPieceNMoves pieces[1]

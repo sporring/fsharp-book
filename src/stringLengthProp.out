@@ -1,0 +1,2 @@
+> "abcd".Length;;
+val it: int = 4

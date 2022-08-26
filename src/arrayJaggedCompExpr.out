@@ -1,4 +1,13 @@
-$ fsharpc --nologo arrayJaggedCompExpr.fsx && mono arrayJaggedCompExpr.exe
-1 
-1 2 
-1 2 3 
+$ dotnet fsi arrayJaggedCompExpr.fsx
+
+
+arrayJaggedCompExpr.fsx(6,20): warning FS3369: The syntax 'expr1[expr2]' is ambiguous when used as an argument. See https://aka.ms/fsharp-index-notation. If you intend indexing or slicing then you must use 'expr1.[expr2]' in argument position. If calling a function with multiple curried arguments, add a space between them, e.g. 'someFunction expr1 [expr2]'.
+
+
+
+arrayJaggedCompExpr.fsx(6,14): error FS0001: Type mismatch. Expecting a
+    ''a -> 'b -> 'c'    
+but given a
+    ''a -> unit'    
+The type ''a -> 'b' does not match the type 'unit'
+

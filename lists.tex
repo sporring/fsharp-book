@@ -27,7 +27,7 @@ For example, \mbox{\lstinline![1; 2; 3]!} is a list of integers, \mbox{\lstinlin
 %
 where \lstinline[language=syntax]{<*expr*>} in \idx{range expressions} must be of integers, floats, or characters. Examples are \mbox{\lstinline![1 .. 5]!}, \mbox{\lstinline![-3.0 .. 2.0]!}, and \mbox{\lstinline!['a' .. 'z']!}. Range expressions may include a step size, thus, \mbox{\lstinline![1 .. 2 .. 10]!} evaluates to \mbox{\lstinline![1; 3; 5; 7; 9]!}.
 
-A list type is identified with the \idx[list@\keyword{list}]{\keyword{list}} keyword, such that a list of integers has the type \lstinline!int list!. Like strings, lists may be indexed using the \idx[{.[]}@\lstinline{.[]}]{\lexeme{.[]}} notation, the lengths of lists is retrieved using the \idx[Length@\lstinline{Length}]{\lstinline{Length}} property, and we may test whether a list is empty by using the \idx[IsEmpty@\lstinline{IsEmpty}]{\lstinline{IsEmpty}} property. These features are demonstrated in \Cref{listIndexing}.
+A list type is identified with the \idx[list@\keyword{list}]{\keyword{list}} keyword, such that a list of integers has the type \lstinline!int list!. Like strings, lists may be indexed using the \idx[{[]}@\lstinline{[]}]{\lexeme{[]}} notation, the lengths of lists is retrieved using the \idx[Length@\lstinline{Length}]{\lstinline{Length}} property, and we may test whether a list is empty by using the \idx[IsEmpty@\lstinline{IsEmpty}]{\lstinline{IsEmpty}} property. These features are demonstrated in \Cref{listIndexing}.
 %
 \fs{listIndexing}{Lists are indexed as strings and has a \lstinline{Length} property.}
 %
@@ -128,7 +128,7 @@ briefly summarized below:
   % \lstinline{[x}$_0$\lstinline{; x}$_1$\lstinline{; x}$_2$\lstinline{;} $\ldots$\lstinline{; x}$_n$\lstinline{]}, a supplied function \lstinline{f}, and an initial value for the accumulator \lstinline{elm},
   \lstinline{List.fold} calculates:
   \begin{quote}
-    \lstinline{f (}$\ldots$ \lstinline{(f (f elm lst.[0]) lst.[1])} $\ldots$\lstinline{) lst.[n]}.
+    \lstinline{f (}$\ldots$ \lstinline{(f (f elm lst[0]) lst[1])} $\ldots$\lstinline{) lst[n]}.
   \end{quote}
   \fsOutputNF{listFold}{\lstinline{List.fold}}\idxss{List.fold@\lstinline{List.fold}}
 \item[\texttt{List.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> lst:'T list -> elm:'S -> 'S}.~\\
@@ -136,7 +136,7 @@ briefly summarized below:
   %function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{List.foldBack} calculates $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
   \lstinline{List.foldBack} calculates:
   \begin{quote}
-    \lstinline{f lst.[0] (f lst.[1]} ($\ldots$\lstinline{(f lst.[n] elm)} $\ldots$\lstinline{))}.
+    \lstinline{f lst[0] (f lst[1]} ($\ldots$\lstinline{(f lst[n] elm)} $\ldots$\lstinline{))}.
   \end{quote}
   \fsOutputNF{listFoldBack}{\lstinline{List.foldBack}}\idxss{List.foldBack@\lstinline{List.foldBack}}
 \item[\texttt{List.forall}:] \lstinline{f:('T -> bool) -> lst:'T list -> bool}.~\\

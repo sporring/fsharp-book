@@ -1,0 +1,2 @@
+> Array.forall (fun x -> (x % 2 = 1)) [|0 .. 9|];;
+val it: bool = false

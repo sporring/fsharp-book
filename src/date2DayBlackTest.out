@@ -1,4 +1,4 @@
-$ fsharpc --nologo date2DayBlackTest.fsx && mono date2DayBlackTest.exe
+$ dotnet fsi date2DayBlackTest.fsx
 Black-box testing of date2Day.fsx
   1. A complete week
     test 1 - true

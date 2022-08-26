@@ -1,4 +1,8 @@
-$ fsharpc --nologo webRequest.fsx && mono webRequest.exe
+$ dotnet fsi webRequest.fsx
+
+
+webRequest.fsx(4,19): warning FS0044: This construct is deprecated. WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead.
+
 Downloaded "http://fsharp.org". First 40 characters are: "<!DOCTYPE html>
 <html lang="en">
 <head>"

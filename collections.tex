@@ -25,6 +25,85 @@ In the following, a brief overview of many properties, methods, and functions is
 
 See the F\# Language Reference at \url{https://docs.microsoft.com/en-us/dotnet/fsharp/} for a full description of all available functionality including variants of those included here.
 
+\section{Strings}
+\label{sec:strings}
+Strings have been discussed in \Cref{chap:calculator}, the content of which will be briefly revisited here followed by a description of some of the many supporting built-in functions in F\# on strings.
+
+A \idx{string} is a sequence of characters. Each character is represented using UTF-16, see \Cref{sec:characterSets} for further details on the unicode standard. The type \lstinline{string} is an alias for \idx[System.string@\lstinline{System.string}]{\lstinline{System.string}}. String literals are delimited by double quotation marks \lexeme{"} and inside the delimiters, character escape sequences are allowed (see \Cref{tab:escapeChar}), which are replaced by the corresponding character code. Examples are \lstinline{"This is a string"}, \lstinline{"\tTabulated string"}, \lstinline{"A \"quoted\" string"}, and \lstinline{""}. Strings may span several lines, and new lines inside strings are part of the string unless the line is ended with a backslash. Strings may be \idx[verbatim string]{verbatim} by preceding the string with \lexeme{@}, in which case escape sequences are not replaced, but two double quotation marks are an escape sequence which is replaced by a one double quotation mark. Examples of \lexeme{@}-verbatim strings are:
+\begin{itemize}
+\item \lstinline{@"This is a string"}, 
+\item \lstinline{@"\tNon-tabulated string"},
+\item \lstinline{@"A ""quoted"" string"}, and
+\item \lstinline{@""}.
+\end{itemize}
+Alternatively, a verbatim string may be delimited by three double quotation marks. Examples of \lexeme{"""}-verbatim strings are:
+\begin{itemize}
+\item \lstinline{"""This is a string"""},
+\item \lstinline{"""\tNon-tabulated string"""},
+\item \lstinline{"""A "quoted" string"""}, and
+\item  \lstinline{""""""}.
+\end{itemize}
+Strings may be indexed using the \lstinline{[]} notation, as demonstrated in \Cref{stringIndexing}.
+
+\subsection{String Properties and Methods}
+Strings have a few properties which are values attached to each string and accessed using the \lexeme{.} notation. The only to be mentioned here is:
+\begin{description}
+\item[\texttt{IndexOf()}:] \lstinline{str:string -> int}.~\\
+  Returns the index of the first occurence of \lstinline{s} or $-1$, if \lstinline{str} does not appear in the string.
+  \fsOutputNF{stringIndexOfMethod}{\lstinline{IndexOf()}}\idxss{IndexOf@\lstinline{IndexOf}}
+\item[\texttt{Length}:] \lstinline{int}.~\\
+  Returns the length of the string.
+  \fsOutputNF{stringLengthProp}{\lstinline{Length}}\idxss{Length@\lstinline{Length}}
+\item[\texttt{ToLower()}:] \lstinline{unit -> string}.~\\
+  Returns a copy of the string where each letter has been converted to lower case.
+  \fsOutputNF{stringToLowerMethod}{\lstinline{ToLower()}}\idxss{ToLower@\lstinline{ToLower}}
+\item[\texttt{ToUpper()}:] \lstinline{unit -> string}.~\\
+  Returns a copy of the string where each letter has been converted to upper case.
+  \fsOutputNF{stringToUpperMethod}{\lstinline{ToUpper()}}\idxss{ToUpper@\lstinline{ToUpper}}
+\item[\texttt{Trim()}:] \lstinline{unit -> string}.~\\
+  Returns a copy of the string where leading and trailing whitespaces have been removed.
+  \fsOutputNF{stringTrimMethod}{\lstinline{Trim()}}\idxss{Trim@\lstinline{Trim}}
+\item[\texttt{Split()}:] \lstinline{unit -> string []}.~\\
+  Splits a string of words separated by spaces into an array of words. See \Cref{sec:arrays} for more information about arrays.
+  \fsOutputNF{stringSplitMethod}{\lstinline{Split()}}\idxss{Split@\lstinline{Split}}
+\end{description}
+
+\subsection{The String Module}
+The \lstinline{String} module offers many functions for working with strings. Some of the most powerful ones are listed below, and they are all higher-order functions.
+\begin{description}
+\item[\texttt{String.collect}:] \lstinline{f:(char -> string) -> str:string -> string}.~\\
+  Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{str} and concatenating the resulting strings.
+   \fsOutputNF{stringCollect}{\lstinline{String.collect}}\idxss{String.collect@\lstinline{String.collect}}
+   % \item[\texttt{String.concat}:] \lstinline{string -> seq<string> -> string}.~\\
+   %Returns a new string made by concatenating the given strings with a separator. Here \lstinline{seq<string>} is a sequence but can also be a list or an array. 
+% \fsOutputNF{stringConcat}{\lstinline{String.concat}}\idxss{String.concat@\lstinline{String.concat}}
+ \item[\texttt{String.exists}:] \lstinline{f:(char -> bool) -> str:string -> bool}.~\\
+   Returns true if any character in \lstinline{str} evaluates to true when using \lstinline{f}.
+  \fsOutputNF{stringExists}{\lstinline{String.exists}}\idxss{String.exists@\lstinline{String.exists}}
+\item[\texttt{String.forall}:] \lstinline{f:(char -> bool) -> str:string -> bool}.~\\
+  Returns true if all characters in \lstinline{str} evalutes to true when using \lstinline{f}.
+ \fsOutputNF{stringForall}{\lstinline{String.forall}}\idxss{String.forall@\lstinline{String.forall}}
+\item[\texttt{String.init}:] \lstinline{n:int -> f:(int -> string) -> string}.~\\
+  Creates a new string with length \lstinline{n} and whose characters are the result of applying \lstinline{f} to each index of that string.
+\fsOutputNF{stringInit}{\lstinline{String.init}}\idxss{String.init@\lstinline{String.init}}
+\item[\texttt{String.iter}:] \lstinline{f:(char -> unit) -> str:string -> unit}.~\\
+  Applies \lstinline{f} to each character in \lstinline{str}.
+\fsOutputNF{stringIter}{\lstinline{String.iter}}\idxss{String.iter@\lstinline{String.iter}}
+% \item[\texttt{String.iteri}:] \lstinline{(int -> char -> unit) -> string -> unit}.~\\
+%Applies a specified function to the index of each character in the string and the character itself.
+% \fsOutputNF{stringIterI}{\lstinline{String.iteri}}\idxss{String.iteri@\lstinline{String.iteri}}
+% \item[\texttt{String.length}:] \lstinline{string -> int}. Returns the length of the string.
+% \fsOutputNF{stringLength}{\lstinline{String.length}}\idxss{String.length@\lstinline{String.length}}
+\item[\texttt{String.map}:] \lstinline{f:(char -> char) -> str:string -> string}.~\\
+  Creates a new string whose characters are the results of applying \lstinline{f} to each of the characters of \lstinline{str}.
+ \fsOutputNF{stringMap}{\lstinline{String.map}}\idxss{String.map@\lstinline{String.map}}
+ % \item[\texttt{String.mapi}:] \lstinline{(int -> char -> char) -> string -> string}.~\\
+ %Creates a new string whose characters are the results of applying a specified function to each character and index of the input string.
+% \fsOutputNF{stringMapI}{\lstinline{String.mapi}}\idxss{String.mapi@\lstinline{String.mapi}}
+% \item[\texttt{String.replicate}:] \lstinline{int -> string -> string}. Returns a string by concatenating a specified number of instances of a string.
+% \fsOutputNF{stringReplicate}{\lstinline{String.replicate}}\idxss{String.replicate@\lstinline{String.replicate}}
+\end{description}
+
 \section{Maps}
 
 \section{Sets}

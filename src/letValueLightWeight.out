@@ -1,2 +1,2 @@
-$ fsharpc --nologo letValueLightWeight.fsx && mono letValueLightWeight.exe
+$ dotnet fsi letValueLightWeight.fsx
 9.0

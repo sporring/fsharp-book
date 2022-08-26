@@ -126,7 +126,7 @@ E.g., \mbox{\lstinline![|1; 2; 3|]!} is an array of integers, \mbox{\lstinline![
 %
 but arrays of \idx{range expressions} must be of \lstinline[language=syntax]{<*expr*>} integers, floats, or characters. Examples are \mbox{\lstinline![|1 .. 5|]!}, \mbox{\lstinline![|-3.0 .. 2.0|]!}, and \mbox{\lstinline![|'a' .. 'z'|]!}. Range expressions may include a step size, thus, \mbox{\lstinline![|1 .. 2 .. 10|]!} evaluates to \mbox{\lstinline![|1; 3; 5; 7; 9|]!}.
 
-The array type is defined using the \keyword{array} keyword or alternatively the \lexeme{[]} lexeme.  Like strings and lists, arrays may be indexed using the \idx[{.[]}@\lstinline{.[]}]{\lexeme{.[]}} notation. Arrays cannot be resized, but are mutable, as shown in \Cref{arrayReassign}.
+The array type is defined using the \keyword{array} keyword or alternatively the \lexeme{[]} lexeme.  Like strings and lists, arrays may be indexed using the \idx[{[]}@\lstinline{[]}]{\lexeme{[]}} notation. Arrays cannot be resized, but are mutable, as shown in \Cref{arrayReassign}.
 %
 \fs{arrayReassign}{Arrays are mutable in spite of the missing \keyword{mutable} keyword.}
 %
@@ -200,7 +200,7 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
   Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{arr} consists of \lstinline{n+1} elements
   \lstinline{Array.fold} calculates:
   \begin{quote}
-    \lstinline{f (}$\ldots$ \lstinline{(f (f elm arr.[0]) arr.[1])} $\ldots$\lstinline{) arr.[n]}.
+    \lstinline{f (}$\ldots$ \lstinline{(f (f elm arr[0]) arr[1])} $\ldots$\lstinline{) arr[n]}.
   \end{quote}
   \fsOutputNF{arrayFold}{\lstinline{Array.fold}}\idxss{Array.fold@\lstinline{Array.fold}}
 \item[\texttt{Array.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> arr:'T [] -> elm:'S -> 'S}.~\\
@@ -208,7 +208,7 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
   %function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{Array.foldBack} calculates $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
   \lstinline{Array.foldBack} calculates:
   \begin{quote}
-    \lstinline{f arr.[0] (f arr.[1]} ($\ldots$\lstinline{(f arr.[n] elm)} $\ldots$\lstinline{))}.
+    \lstinline{f arr[0] (f arr[1]} ($\ldots$\lstinline{(f arr[n] elm)} $\ldots$\lstinline{))}.
   \end{quote}
   \fsOutputNF{arrayFoldback}{\lstinline{Array.foldBack}}\idxss{Array.foldBack@\lstinline{Array.foldBack}}
 \item[\texttt{Array.forall}:] \lstinline{f:('T -> bool) -> arr:'T [] -> bool}.~\\
@@ -266,7 +266,7 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
 %
 \fs{arrayJagged}{An array of arrays. When row lengths are of non-equal elements, then it is a jagged array.}
 %
-Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \lstinline|a.Length|,  \lstinline|a.[i]| is the i'th array, the length of the i'th array is \lstinline|a.[i].Length|, and the j'th element of the i'th array is thus \lstinline|a.[i].[j]|. Often 2-dimensional rectangular arrays are used, which can be implemented as a jagged array, as shown in \Cref{arrayJaggedSquare}.
+Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \lstinline|a.Length|,  \lstinline|a[i]| is the i'th array, the length of the i'th array is \lstinline|a[i].Length|, and the j'th element of the i'th array is thus \lstinline|a[i][j]|. Often 2-dimensional rectangular arrays are used, which can be implemented as a jagged array, as shown in \Cref{arrayJaggedSquare}.
 %
 \fs{arrayJaggedSquare}{A rectangular array.} 
 %
@@ -284,7 +284,7 @@ Note that the \lstinline!printf! supports direct printing of the 2-dimensional a
 %
 \fsOutput{array2DSlicing}{Examples of Array2D slicing. Compare with \Cref{array2D}.}
 %
-Note that in almost all cases, slicing produces a sub-rectangular 2 dimensional array, except for \lstinline{arr.[1,*]}, which is an array, as can be seen by the single \lexeme{[}. In contrast, \lstinline{A.[1..1,*]} is an Array2D. Note also that \lstinline!printfn! typesets 2 dimensional arrays as \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion with lists of lists.
+Note that in almost all cases, slicing produces a sub-rectangular 2 dimensional array, except for \lstinline{arr[1,*]}, which is an array, as can be seen by the single \lexeme{[}. In contrast, \lstinline{A[1..1,*]} is an Array2D. Note also that \lstinline!printfn! typesets 2 dimensional arrays as \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion with lists of lists.
 %\jon{Array2D.ToString produces \lstinline{[[ ... ]]} and not \lstinline{[|[| ... |]|]}, which can cause confusion.}
 
 Multidimensional arrays have the same properties and methods as arrays, see \Cref{sec:arrayMethods}.
@@ -300,7 +300,7 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
   Creates an \lstinline{m} by \lstinline{n} array whose elements are set to \lstinline{v}.
   \fsOutputNF{array2DCreate}{\lstinline{Array2D.create}}\idxss{Array2D.create@\lstinline{Array2D.create}}
   % \item[\texttt{get}:] \lstinline{'T [,] -> int -> int -> 'T}.~\\
-  %Fetches an element from a 2D array. You can also use the syntax \lstinline{array.[index1,index2]}.
+  %Fetches an element from a 2D array. You can also use the syntax \lstinline{array[index1,index2]}.
 %  \fsOutputNF{array2DGet}{\lstinline{Array2D.get}}\idxss{Array2D.get@\lstinline{Array2D.get}}
 \item[\texttt{init}:] \lstinline{m:int -> n:int -> f:(int -> int -> 'T) -> 'T [,]}.~\\
   Creates an \lstinline{m} by \lstinline{n} array whose elements are the result of applying \lstinline{f} to the index of an element.
@@ -318,7 +318,7 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
   Creates a new array whose elements are the results of applying \lstinline{f} to each of the elements of \lstinline{arr}.
   \fsOutputNF{array2DMap}{\lstinline{Array2D.map}}\idxss{Array2D.map@\lstinline{Array2D.map}}
   % \item[\texttt{set}:] \lstinline{'T [,] -> int -> int -> 'T -> unit}.~\\
-  %Sets the value of an element in an array. You can also use the syntax \lstinline{array.[index1,index2] <- value}.
+  %Sets the value of an element in an array. You can also use the syntax \lstinline{array[index1,index2] <- value}.
 %  \fsOutputNF{array2DSet}{\lstinline{Array2D.set}}\idxss{Array2D.set@\lstinline{Array2D.set}}
 \end{description}
 

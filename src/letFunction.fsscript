@@ -1,3 +1,3 @@
-let sum (x : float) (y : float) : float = x + y in
-let c = sum 357.6 863.4 in
+let sum (x : float) (y : float) : float = x + y
+let c = sum 357.6 863.4
 do printfn "%A" c;;

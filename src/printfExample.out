@@ -1,4 +1,4 @@
-$ fsharpc --nologo printfExample.fsx && mono printfExample.exe
+$ dotnet fsi printfExample.fsx
 An integer: 3
 A float 3.141519 on decimal form and on 3.141519e+000 scientific form
 A char 'h' and a string "hello"

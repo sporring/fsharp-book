@@ -6,7 +6,7 @@ let januaryFirstDay (y : int) =
 
 let rec sum (lst : int list) j =
   if 0 <= j && j < lst.Length then
-    lst.[0] + sum lst.[1..] (j - 1)
+    lst[0] + sum lst[1..] (j - 1)
   else
     0
   
@@ -17,7 +17,7 @@ let date2Day d m y =
   let dayOne = januaryFirstDay y
   let daysSince = (sum daysInMonth (m - 2)) + d - 1
   let weekday = (dayOne + daysSince) % 7;
-  dayPrefix.[weekday] + "day"
+  dayPrefix[weekday] + "day"
 
 printfn "White-box testing of date2Day.fsx"
 printfn "  Unit: januaryFirstDay"

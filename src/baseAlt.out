@@ -1,4 +1,4 @@
-$ fsharpc --nologo baseAlt.fsx && mono baseAlt.exe
+$ dotnet fsi baseAlt.fsx
 King at (0, 0)
 Rook not on board
 King moved to (1, 0)

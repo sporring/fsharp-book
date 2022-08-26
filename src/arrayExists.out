@@ -1,0 +1,2 @@
+> Array.exists (fun x -> x % 2 = 1) [|0 .. 2 .. 4|];;
+val it: bool = false

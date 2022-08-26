@@ -21,5 +21,5 @@ type rook(color : Color, position : int * int) =
 
 let pieces = [| king(White, (0,0)) :> chessPiece; rook(White, (2,0))  :> chessPiece|]
 printfn "%A" pieces
-pieces.[0].position <- (1,0)
+pieces[0].position <- (1,0)
 printfn "%A" pieces

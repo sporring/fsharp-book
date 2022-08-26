@@ -5,10 +5,18 @@
 \chapter{Values, Functions, and Statements}
 \label{chap:let}
 %
-\abstract{
-  Introductory text about the objectivs of this chapter
+\abstract{ In the previous chapter, you got an introduction to the fundamental concepts of booleans, numbers, characters, and strings, how to perform calculations with them, and some of the limitations they have on the computer. This allows us to perform simple calculations as if the computer was an advanced pocket calculator. In this chapter, we will look at how we can:
   \begin{itemize}
-  \item \dots
+  \item make assign values to names to make programs that are easier to read and write
+  \item organise lines of code in functions, to make the same line reusable, and to make programs shorter, easier to understand.
+  \item use operators as functions
+  \item conditionally execute code
+  \item how we can simulate the computer's execution of code by tracing-by-hand, to improve our understanding of, how it interprets the code, we write, and find errors.
+  \end{itemize}
+  Examples of problems, you can solve, after having read this chapter is:
+  \begin{itemize}
+  \item Write a function that given the parameters $a$ and $b$ in $f(x) = ax+b$, find the value of $x$ when $f(x)=0$.
+  \item 
   \end{itemize}
 }
 
@@ -90,34 +98,26 @@ Expressions are the main workhorse of F\# and have an enormous variety in how th
   \end{itemize}
 \end{description}
 
-Before we begin a deeper discussion on bindings, note that F\#  adheres to two different syntaxes: \idx[verbose syntax]{verbose} and \idx[lightweight syntax]{lightweight}. In the verbose syntax, newlines and whitespaces are generally ignored, while in lightweight syntax, certain keywords and lexemes may be replaced by newlines and whitespaces. The lightweight syntax is the most common, but the syntaxes may be mixed, and we will highlight the options, when relevant.
+Before we begin a deeper discussion on bindings, note that F\#  adheres to two different syntaxes: \idx[verbose syntax]{verbose} and \idx[lightweight syntax]{lightweight}. In the verbose syntax, newlines and whitespaces are generally ignored, while in lightweight syntax, certain keywords and lexemes may be replaced by newlines and whitespaces. The lightweight syntax is the most common and will be used in this book.
 
 \section{Value Bindings}
 \label{sec:values}
 Binding identifiers to literals, or expressions that are evaluated to be values, is called \idx{value-binding}, and examples are \lstinline!let a = 3.0! and \lstinline!let b = cos 0.9!. Value bindings have the following syntax:
 %
 \begin{verbatimwrite}{\ebnf/valueBindings.ebnf}
-let <*valueIdent*> = <*bodyExpr*> [*in <*expr*>*]
+let <*valueIdent*> = <*bodyExpr*>
 \end{verbatimwrite}
 \syntax{\ebnf/valueBindings.ebnf}{Value binding expression.}
 %
-The \idx[let@\lstinline{let}]{\keyword{let}} keyword binds a value-identifier with an expression. The above notation means that \lstinline[language=syntax]{<*valueIdent*>} is to be replaced with a name and \lstinline[language=syntax]{<*bodyExpr*>} with an expression that evaluates to a value. The following square bracket notation \lstinline[language=syntax]{[**]} means that the enclosed is optional, and F\# is able to identify whether or not the optional part is used as signified by the optional presence of the \idx[in@\lstinline{in}]{\keyword{in}} keyword. If the \keyword{in} keyword is used, then the value-identifier is a local definition in the \lstinline[language=syntax]{<*expr*>} expression, and it is not available in later lines. For lightweight syntax, the \keyword{in} keyword is replaced with a newline, and the binding \emph{is} available in later lines until the end of the scope it is defined in.
+The \idx[let@\lstinline{let}]{\keyword{let}} keyword binds a value-identifier with an expression. The above notation means that \lstinline[language=syntax]{<*valueIdent*>} is to be replaced with a name and \lstinline[language=syntax]{<*bodyExpr*>} with an expression that evaluates to a value. The binding \emph{is} available in later lines until the end of the scope it is defined in.
 
 The value identifier annotated with a type by using the \idx[:@\lstinline{:}]{\lexeme{:}} lexeme followed by the name of a type, e.g., \lstinline{int}. The \idx[\_@\lstinline{_}]{\lexeme{\_}} lexeme may be used as a value-identifier. This lexeme is called the \idx{wildcard pattern}, and for value-bindings it means that \lstinline[language=syntax]{<*bodyExpr*>} is evaluated, but the result is discarded. See \Cref{chap:patterns} for more details on patterns.
 
-For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as shown in \Cref{letValue}.
-%
-\fs{letValue}{The identifier \lstinline!p! is used in the expression following the \keyword{in} keyword.}
-%
-F\# will ignore most newlines between lexemes, i.e., the above is equivalent to writing as shown in \Cref{letValueLF}.
-%
-\fs{letValueLF}{Newlines after \keyword{in} make the program easier to read.}
-%
-F\# also allows for an alternative notation called \idx{lightweight syntax}, where e.g., the \keyword{in} keyword is replaced with a newline, and the expression starts on the next line at the same column as \keyword{let} starts in, i.e., the above is equivalent to \Cref{letValueLightWeight}.
+For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as shown in \Cref{letValueLightWeight}.
 %
 \fs{letValueLightWeight}{Lightweight syntax does not require the \keyword{in} keyword, but the expression must be aligned with the \keyword{let} keyword.}
 %
-The same expression in interactive mode will also show with the inferred types, as shown in \Cref{letValueLightWeightTypes}.
+Note that the expression \lstinline{3.0 ** p} must be put in parantheses here, to force F\# to \emph{first} calculate the result of the expression and \emph{then} give it to \lstinline{printfn} to be printed on the screen. The same expression in interactive mode will also show with the inferred types, as shown in \Cref{letValueLightWeightTypes}.
 %
 \fsOutput{letValueLightWeightTypes}{Interactive mode also outputs inferred types.}
 %
@@ -137,20 +137,22 @@ By the \keyword{val} keyword in the line \lstinline!val p : float = 2.0!, we see
 % \end{lstlisting}
 Here, the left-hand-side is defined to be an identifier of type float, while the right-hand-side is a literal of type integer.
 
-An expression can be a sequence of expressions separated by the lexeme \lexeme{;}, see \Cref{letValueSequence}.
-%
-\fs{letValueSequence}{A value-binding for a sequence of expressions.}
-%
-The lightweight syntax automatically inserts the \lexeme{;} lexeme at newlines, hence using the lightweight syntax, the above is the same as shown in \Cref{letValueSequenceLightWeight}.
-%
-\fs{letValueSequenceLightWeight}{A value-binding for a sequence using lightweight syntax.}
-%
+%An expression can be a sequence of expressions separated by the lexeme \lexeme{;}, see \Cref{letValueSequence}.
+%%
+%\fs{letValueSequence}{A value-binding for a sequence of expressions.}
+%%
+%The lightweight syntax automatically inserts the \lexeme{;} lexeme at newlines, hence using the lightweight syntax, the above is the same as shown in \Cref{letValueSequenceLightWeight}.
+%%
+%\fs{letValueSequenceLightWeight}{A value-binding for a sequence using lightweight syntax.}
+%%
 
-A key concept of programming is \idx{scope}. When F\# seeks the value bound to a name, it looks left and upward in the program text for its \keyword{let}-binding in the present or higher scopes, see \Cref{letValueScopeLower} for an example. This is called \idx{lexical scope}.
-%
-\fs{letValueScopeLower}{Redefining identifiers is allowed in lower scopes.}
-%
-Some special bindings are mutable, in which case F\# uses the \idx{dynamic scope}, that is, the value of a binding is defined by when it is used. This will be discussed in \Cref{sec:mutableValues}.
+A key concept of programming is \idx{scope}. When F\# seeks the value bound to a name, it looks left and upward in the program text for its \keyword{let}-binding in the present or higher scopes.
+% , see \Cref{letValueScopeLower} for an example.
+This is called \idx{lexical scope}.
+%%
+%\fs{letValueScopeLower}{Redefining identifiers is allowed in lower scopes.}
+%%
+Some special bindings are mutable, that is, they can change over time in which case F\# uses the \idx{dynamic scope}. This will be discussed in \Cref{sec:mutableValues}.
 
 Scopes are given levels, and scopes may be nested, where the nested scope has a level one lower than its parent.\jon{Drawings would be good to describe scope} F\# distinguishes between the top and lower levels, and at the top level in the lightweight syntax, redefining values is not allowed, as shown in \Cref{letValueScopeLowerError}.
 %
@@ -162,46 +164,52 @@ Scopes are given levels, and scopes may be nested, where the nested scope has a 
 % %
 % It is said that the second binding \idx{overshadows} the first.
 % Alternatively, we may use parentheses to create a block, e.g.,
-However, using parentheses, we create a \idx{code block}, i.e., a \idx{nested scope}, and then redefining is allowed, as demonstrated in \Cref{letValueScopeBlockAlternative3}.
+However, using parentheses, we create a \idx{code block}, i.e., a \idx{nested scope}, as demonstrated in \Cref{letValueScopeBlockAlternative3}.
 %
 \fs{letValueScopeBlockAlternative3}{A block may be created using parentheses.}
 %
-Nevertheless, \advice{avoid reusing names unless it's in a deeper scope.}
+In lower scope-levels, redefining is allowed but \advice{avoid reusing names unless it's in a deeper scope.} Inside the block in \Cref{letValueScopeBlockAlternative3} we used indentation, which is good practice, but not required here.
 
-Inside the block in \Cref{letValueScopeBlockAlternative3} we used indentation, which is good practice, but not required here.
-
-Bindings inside a nested scope are not available outside, as shown in \Cref{letValueScopeNestedScope}.
+Defining blocks is used for controlling the extent of a lexical scope of bindings. For example, bindings inside a nested scope are not available outside, as shown in \Cref{letValueScopeNestedScope}.
 %
 \fs{letValueScopeNestedScope}{Bindings inside a scope are not available outside.}
 %
 Nesting is a natural part of structuring code, e.g., through function definitions to be discussed in \Cref{sec:functions} and flow control structures to be discussed in \Cref{chap:flow}. Blocking code by nesting is a key concept for making robust code that is easy to use by others, without the user necessarily needing to know the details of the inner workings of a block of code.
 
-Defining blocks is used for controlling the extent of a lexical scope of bindings. For example, adding a second \lstinline!printfn! statement, as in \Cref{letValueScopeBlockProblem},
-will print the value 4, last bound to the identifier \lstinline!p!, since F\# interprets the above as \lstinline!let p = 3 in let p = 4 in (printfn "%A" p; printfn "%A" p)!. %
-%
-\fs{letValueScopeBlockProblem}{Overshadowing hides the first binding.}
-%
-Had we intended to print the two different values of \lstinline!p!, then we should have created a block as in \Cref{letValueScopeBlock}.
-%
-\fs{letValueScopeBlock}{Blocks allow for the return to the previous scope.}
-%
-%Here, the lexical scope of \lstinline!let p = 4! is for the nested scope, which ends at \lexeme{)}, returning to the lexical scope of \lstinline!let p = 3 in ...!. %Alternatively, the \keyword{begin} and \keyword{end} keywords could equally have been used.
+
+%adding a second \lstinline!printfn! statement, as in \Cref{letValueScopeBlockProblem},
+%will print the value 4, last bound to the identifier \lstinline!p!, since F\# interprets the above as \lstinline!let p = 3 in let p = 4 in (printfn "%A" p; printfn "%A" p)!. %
+%%
+%\fs{letValueScopeBlockProblem}{Overshadowing hides the first binding.}
+%%
+%Had we intended to print the two different values of \lstinline!p!, then we should have created a block as in \Cref{letValueScopeBlock}.
+%%
+%\fs{letValueScopeBlock}{Blocks allow for the return to the previous scope.}
+%%
+%%Here, the lexical scope of \lstinline!let p = 4! is for the nested scope, which ends at \lexeme{)}, returning to the lexical scope of \lstinline!let p = 3 in ...!. %Alternatively, the \keyword{begin} and \keyword{end} keywords could equally have been used.
 %\fs{letValueScopeBlockAlternative}{}
 \clearpage
 
 \section{Function Bindings}
 \label{sec:functions}
-A function is a mapping between an input and output domain. A key advantage of using functions when programming is that they encapsulate\idxss{encapsulation} code into smaller units, that are easier to debug and may be reused. F\# is a functional first programming language and offers a number of alternative methods for specifying parameters, which will be discussed in this section. Binding identifiers to functions follows a syntax similar to value-binding,
+A function is a mapping between an input and output domain, as illustrated in Figure~\Cref{fig:functions}.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\linewidth]{functions}
+  \caption{A function $f:X\rightarrow Y$ is a mapping between two domains, such that $f(x)=y,\, x\in X,\, y\in Y$.}
+  \label{fig:functions}
+\end{figure}
+A key advantage of using functions when programming is that they encapsulate\idxss{encapsulation} code into smaller units, that may be reused and are easier to find errors in. F\# is a functional first programming language and offers a number of alternative methods for specifying parameters, which will be discussed in this section. Binding identifiers to functions follows a syntax similar to value-binding,
 %
 \begin{verbatimwrite}{\ebnf/functionBindings.ebnf}
-let <*funcIdent*> <*arg*> {*<*arg*>*} |* () = <*bodyExpr*> [*in <*expr*>*]
+let <*funcIdent*> (*<*arg*> {*<*arg*>*} |* () = <*bodyExpr*>*)
 \end{verbatimwrite}
 \syntax{\ebnf/functionBindings.ebnf}{Function binding expression}
 %
-Here \lstinline[language=syntax]{<*funcIdent*>} is an identifier and is the name of the function, \lstinline[language=syntax]{<*arg*>} is zero or more identifiers, that bind to the value used when calling the function, and which is to be used in the body of the function, the expression \lstinline[language=syntax]{<*bodyExpr*>}. The \lstinline[language=syntax]{|*} notation denotes a choice, i.e., either that on the left-hand-side or that on the right-hand-side. Thus \lstinline{let f x = x * x} and \lstinline{let f () = 3} are valid function bindings, but \lstinline{let f = 3} would be a value binding, not a function binding. The arguments and the function may be annotated with a type, in which case for arguments we write
+Here \lstinline[language=syntax]{<*funcIdent*>} is an identifier and is the name of the function, \lstinline[language=syntax]{<*arg*>} is zero or more identifiers, that bind to the value used when calling the function, and which is to be used in the \idx[function body]{body} of the function, the expression \lstinline[language=syntax]{<*bodyExpr*>}. The \lstinline[language=syntax]{|*} notation denotes a choice, i.e., either that on the left-hand-side or that on the right-hand-side. Thus \lstinline{let f x = x * x} and \lstinline{let f () = 3} are valid function bindings, but \lstinline{let f = 3} would be a value binding, not a function binding. The arguments and the function may be annotated with a type, in which case for arguments we write
 %
 \begin{verbatimwrite}{\ebnf/functionBindingsAnnotated.ebnf}
-let <*funcIdent*> (<*arg*> : <*type*>) {*(<*arg*> : <*type*>)*} : <*type*> |* () : <*type*> = <*bodyExpr*> [*in <*expr*>*]
+let <*funcIdent*> (*(<*arg*> : <*type*>) {*(<*arg*> : <*type*>)*} : <*type*> |* () : <*type*>*) = <*bodyExpr*>
 \end{verbatimwrite}
 \syntax{\ebnf/functionBindingsAnnotated.ebnf}{Function binding expression}
 %
@@ -209,7 +217,7 @@ where \lstinline[language=syntax]{<*type*>} is a name of an existing type. The a
 
 Functions are a key concept in F\#, and in this chapter we will discuss the very basics. Recursive functions will be discussed in \Cref{chap:flow} and higher-order functions in \Cref{chap:higherOrderFunctions}.
 
-An example of defining a function and using it in interactive mode is shown in \Cref{letFunction}.
+The function's body can be placed either on the same line as the \keyword{let}-keyword or on the following lines using indentation. An example of defining a function and using it in interactive mode is shown in \Cref{letFunction}.
 %
 \fsOutput{letFunction}{An example of a binding of an identifier and a function.}
 %
@@ -224,10 +232,11 @@ Or even just one of the arguments, as in \Cref{letFunctionAlterantive2}.
 %
 \fsCode{letFunctionAlterantive2}{letFunctionAlterantive2}{Just one type is often enough for F\# to infer the rest.}{}
 %
-In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx[operand]{operands} of the same type, declaring the type of either arguments or result implies the type of the remainder.  As for values, lightweight syntax automatically inserts the keyword \keyword{in} and the lexeme \lexeme{;}, as shown in \Cref{letFunctionLightWeight}.
-%
-\fs{letFunctionLightWeight}{Lightweight syntax for function definitions.}
-%
+In both cases, since the \lstinline|+| \idx{operator} is only defined for \idx[operand]{operands} of the same type, declaring the type of either arguments or result implies the type of the remainder.
+% As for values, lightweight syntax automatically inserts the keyword \keyword{in} and the lexeme \lexeme{;}, as shown in \Cref{letFunctionLightWeight}.
+% %
+% \fs{letFunctionLightWeight}{Lightweight syntax for function definitions.}
+% %
 
 Arguments need not always be inferred to types, but may be of the generic type when \idx{type safety} is ensured, as shown in \Cref{functionDeclarationGeneric}.
 %
@@ -239,7 +248,7 @@ A function may contain a sequence of expressions but must return a value. E.g., 
 %
 \fs{identifiersExampleAdvance}{A function may contain sequences of expressions.}
 %
-Here, we used the lightweight syntax, where the \lexeme{=} identifies the start of a nested scope, and F\# identifies the scope by indentation. The amount of space used for indentation does not matter, but all lines in the same scope must use the same amount. The scope ends before the first line with the previous indentation or none. Notice how the last expression is not bound to an identifier, but is the result of the function, i.e., in contrast to many other languages, F\# does not have an explicit keyword for returning values, but requires a final expression, which will be returned to the caller of the function. Note also that since the function \lstinline!discriminant! is defined in the nested scope of \lstinline!solution!, and becausethe scope ends before \lstinline!let a = 1.0!, \lstinline!discriminant! cannot be called outside \lstinline!solution!.
+Here, we use a set of nested scopes. In the scope of the function \lstinline{solution} there are further two functions defined, each with their own scope, which F\# identifies by the level of indentation. The amount of space used for indentation does not matter, but all lines in the same scope must use the same amount. The scope ends before the first line with the previous indentation or none. Notice how the last expression is not bound to an identifier, but is the result of the function, i.e., in contrast to many other languages, F\# does not have an explicit keyword for returning values, but requires a final expression, which will be returned to the caller of the function. Note also that since the function \lstinline!discriminant! is defined in the nested scope of \lstinline!solution!, and becausethe scope ends before \lstinline!let a = 1.0!, the function \lstinline!discriminant! cannot be called outside \lstinline!solution!.
 
 \idx[lexical scope]{Lexical scope} and function definitions can be a cause of confusion, as the following example in \Cref{lexicalScopeNFunction} shows.\jon{Add a drawing or possibly a spell-out of lexical scope here.}
 %
@@ -265,11 +274,14 @@ In the example we combine two functions \lstinline{f} and \lstinline{g} by stori
 %
 \fs{functionPiping}{Composing functions by piping.}
 %
-The example shows regular composition, left-to-right, and right-to-left piping. The word piping is a picturial description of data as if it were flowing through pipes, where functions are connection points of pipes distributing data in a network. The three expressions in \Cref{functionPiping} perform the same calculation. The left-to-right piping in line~\ref{functionPipingLeftToRight} corresponds to the left-to-right reading direction, i.e., the value \lstinline{2} is used as argument to \lstinline{f}, and the result is used as argument to \lstinline{g}. In contrast, right-to-left piping in line~\ref{functionPipingRightToLeft} has the order of arithmetic composition as line~\ref{functionPipingComposition}. Unfortunately, since the piping operators are left-associatitve, without the parenthesis in line~\ref{functionPipingRightToLeft} \mbox{\lstinline{g <| f <| 2}}, F\# would read the expression as \lstinline{(g <| f) <| 2}. That would have been an error, since \lstinline{g} takes an integer as argument, not a function. F\# can also define composition on a function level. Further discussion on this is deferred to \Cref{chap:higherOrderFunctions}. The piping operator comes in four variants: \lexeme{||>}, \lexeme{<||}, \lexeme{|||>}, and \lexeme{<|||}. These allow for piping between pairs and triples to functions of 2 and 3 arguments, see \Cref{functionTuplePiping} for an example.
-%
-\fs{functionTuplePiping}{Tuples can be piped to functions of more than one argument.}
-%
-The example demonstrates right-to-left piping, left-to-right works analogously.\jon{Tuples have not yet been introduced!}
+The example shows regular composition, left-to-right, and right-to-left piping. The word piping is a picturial description of data as if it were flowing through pipes, where functions are connection points of pipes distributing data in a network. The three expressions in \Cref{functionPiping} perform the same calculation. The left-to-right piping in line~\ref{functionPipingLeftToRight} corresponds to the left-to-right reading direction, i.e., the value \lstinline{2} is used as argument to \lstinline{f}, and the result is used as argument to \lstinline{g}. In contrast, right-to-left piping in line~\ref{functionPipingRightToLeft} has the order of arithmetic composition as line~\ref{functionPipingComposition}. Unfortunately, since the piping operators are left-associatitve, without the parenthesis in line~\ref{functionPipingRightToLeft} \mbox{\lstinline{g <| f <| 2}}, F\# would read the expression as \lstinline{(g <| f) <| 2}. That would have been an error, since \lstinline{g} takes an integer as argument, not a function. F\# can also define composition on a function level. Further discussion on this is deferred to \Cref{chap:higherOrderFunctions}.
+
+%% Jon 20220828: Tuple piping, should it be introduced later?
+%The piping operator comes in four variants: \lexeme{||>}, \lexeme{<||}, \lexeme{|||>}, and \lexeme{<|||}. These allow for piping between pairs and triples to functions of 2 an%d 3 arguments, see \Cref{functionTuplePiping} for an example.
+%%
+%\fs{functionTuplePiping}{Tuples can be piped to functions of more than one argument.}
+%%
+%The example demonstrates right-to-left piping, left-to-right works analogously.\jon{Tuples have not yet been introduced!}
 
 A \idx{procedure} is a generalization of the concept of functions, and in contrast to functions, procedures need not return values. This is demonstrated in \Cref{procedure}.
 %
@@ -299,6 +311,8 @@ It defines two functions \lstinline{mul} and \lstinline{applyFactor}, where the 
 where lazily write \lstinline{body} instead of the whole function's body.  The function \lstinline{mul} does not use its environment, and everything needed to evaluate its expression are values for its arguments. The function \lstinline{applyFactor} also takes two arguments, a function and a value. It uses \lstinline{factor} from the environment, thus this is stored in its closure. When \lstinline{mul} is given as an argument in \Cref{functionFirstClass} line~\ref{functionFirstClassApplyFactor}, then it is its closure which is given to \lstinline{applyFactor}, and the closure contains everything that \lstinline{applyFactor} requires to use \lstinline{mul}. Likewise, if \lstinline{applyFactor} is given as argument to yet another function, then its closure includes the relevant part of its environment at the time of definition, \lstinline{factor}, such that when \lstinline{applyFactor} is applied to two arguments, then its closure contains everything needed to evaluate its expression.
 \clearpage
 
+%% Jon 20220826: I don't think this is necesssary, and the type system does not support it well, except for classes
+\begin{comment}
 \section{Operators}
 \label{sec:operators}
 Operators are functions, and in F\#, the infix multiplication operator \lstinline!+! is equivalent to the function \lstinline!(+)!, as shown in \Cref{addOperatorNFunction}.
@@ -318,6 +332,7 @@ For example, \lstinline!.*!, \lstinline!+++!, and \lstinline!<+! are valid opera
 Operators beginning with \lstinline!*! must use a space in its definition. For example, without a space \lstinline!( *! would be confused with the beginning of a comment \lstinline!(*!, see \Cref{chap:documentation} for more on comments in the code.
 
 Beware, redefining existing operators lexically redefines all future uses of the operators for all types, hence \advice{it is not a good idea to redefine operators, but better to define new ones.}\spec{It seems there is a bug in mono: \lstinline{let (~+) x = x+1 in printfn "\%A" +1;;} prints 1 and not 2.} In \Cref{chap:oop} we will discuss how to define type-specific operators, including prefix operators. 
+\end{comment}
 
 \section{Do-Bindings}
 Aside from \keyword{let}-bindings that binds names with values or functions, sometimes we just need to execute code. This is called a \idx[do@\lstinline{do}]{\keyword{do}}-binding\idxs{do-binding} or, alternatively, a \idx{statement}. The syntax is as follows:
@@ -330,30 +345,56 @@ Aside from \keyword{let}-bindings that binds names with values or functions, som
 The expression \lstinline[language=syntax]{<*expr*>} must return \keyword{unit}. The keyword \keyword{do} is optional in most cases, but using it emphasizes that the expression is not a function that returns a useful value. Procedures are examples of such expressions, and a very useful family of procedures are the \lstinline{printf} family described below. In the remainder of this book, we will refrain from using the \keyword{do} keyword.
 
 \section{Conditional Expressions}
-Programs often contain code which should only be executed under certain conditions. This can be expressed with \keyword{if}-expressions, whose syntax is as follows.\idxs{if@\lstinline{if}}\idxs{then@\lstinline{then}}\idxs{elif@\lstinline{elif}}\idxs{else@\lstinline{else}}
+Programs often contain code which should only be executed under certain conditions. The \keyword{match} -- \keyword{with} expressions allows us to write such expressions, and its syntax is as follows:
+%
+\begin{verbatimwrite}{\ebnf/match.ebnf}
+match <*inputExpr*> with 
+ [*| *]<*pat*> [*when <*guardExpr*>*] -> <*caseExpr*> 
+ | <*pat*> [*when <*guardExpr*>*] -> <*caseExpr*> 
+ | <*pat*> [*when <*guardExpr*>*] -> <*caseExpr*> 
+ ...
+\end{verbatimwrite}
+\syntax{\ebnf/match.ebnf}{Syntax for \keyword{match}-expressions.}
+%
+where \lstinline[language=syntax]{<*inputExpr*>} is the \idx{input pattern} to find matches of, \lstinline[language=syntax]{<*pat*>} is a pattern to match with, \lstinline[language=syntax]{<*guardExpr*>} is an optional guard expression, and \lstinline[language=syntax]{<*caseExpr*>} is the resulting expression. Each set starting with \lstinline[language=syntax]{<*pat*>} is called a case.  The indentation must be equal to or higher than the indentation of \keyword{match}. All cases must return a value of the same type, and F\# reports an error when the complete domain of the input pattern is not covered by cases in \keyword{match}-expressions.
+
+For example, a calendar program may need to highlight weekends, and thus highlighting code should be called, if and only if the day of the week is either Saturday og Sunday, as shown in the following. 
+%
+\fs{weekdayPatternSimple}{Using \keyword{match} -- \keyword{with} to print discriminated unions.}
+%
+Remember that \keyword{match} -- \keyword{with} is the last expression in the function \lstinline{whatToDoToday}, hence the resulting string of \keyword{match} -- \keyword{with} is also the resulting string of the function. F\# examines each case from top to bottom, and as soon as a matching case is found, then the code following the \lexeme{->}-symbol is executed. This code is called the case's \idx{branch}. The \lexeme{_} pattern is a \idx{wildcard} and matches everything.
+
+In the above code, each day has its own return string associated to it, which is great, if we want to return different messages for different days. However, in this code, we only return two different strings, and if, e.g., choose the one for weekdays, then we need to make 5 identical changes to the code. This is wastefull and risks introducing new errors. So instead, we may compact this code by concattenating the \lexeme{|}'s as shown in \Cref{weekdayPatternSum}.
+% 
+\fs{weekdayPatternSum}{Concatenating cases. Compare with \Cref{weekdayPatternSimple}.}
+%
+It still seems unnecessarily clumsy to have to meantion the number of each weekday explicitely, and to avoid this, we may use \idx[guard]{guards} as illustrated in \Cref{weekdayPatternGuard}.
+% 
+\fs{weekdayPatternGuard}{Using guards. Compare with \Cref{weekdayPatternSum}.}
+%
+In the guard expression, we match \lstinline{d} with the name \lstinline{n} as long as the condition is fulfilled, i.e., as long $0\leq n <5$ or as it is written in F\#, \lstinline{0 <= n && n < 5}. The logical and-operator (\lexeme{&&}) is needed in F\#, since both \lstinline{0 <= n} and \lstinline{n < 5} needs to be true, and F\# can only evaluate them individually.
+
+Note that \keyword{match} -- \keyword{with} expressions will give a warning, if there are not cases for the full domain of what is being match. I.e., if we don't end with the wildcard pattern, when matching for integers, we would be missing cases for all other patterns
+%
+\fs{weekdayPatternError}{Using \keyword{match} -- \keyword{with} to print discriminated unions.}
+%
+
+An alternative to \keyword{match} -- \keyword{with} is the \keyword{if} -- \keyword{then}\idxs{if@\lstinline{if}}\idxs{then@\lstinline{then}}\idxs{elif@\lstinline{elif}}\idxs{else@\lstinline{else}} expressions.
 %
 \begin{verbatimwrite}{\ebnf/conditional.ebnf}
 if <*cond*> then <*expr*> {*elif <*cond*> then <*expr*>*} [*else <*expr*>*]
 \end{verbatimwrite}
 \syntax{\ebnf/conditional.ebnf}{Conditional expressions.}
 %
-The condition \lstinline[language=syntax]{<*con*>} is an expression resulting in a Boolean value, and there can be zero or more \keyword{elif} conditions, as indicated by \lstinline[language=syntax]{{**}}. Each expression \lstinline[language=syntax]{<*expr*>}  is called a \idx{branch}, and all branches must have the same type, such that regardless of which branch is chosen, the type of the result of the conditional expression is the same. Then the expression of the first if-branch, whose condition is true, is evaluate. If all conditions are false then the \keyword{else}-branch is evaluated. If no \keyword{else} expression is present, then \lexeme{()} will be returned. See \Cref{condition} for a simple example.
+The condition \lstinline[language=syntax]{<*con*>} is an expression resulting in a Boolean value, and there can be zero or more \keyword{elif} conditions, as indicated by \lstinline[language=syntax]{{**}}. Each expression \lstinline[language=syntax]{<*expr*>}  is called a \idx{branch}, and all branches must have the same type, such that regardless of which branch is chosen, the type of the result of the conditional expression is the same. Then the expression of the first if-branch, whose condition is true, is evaluate. If all conditions are false then the \keyword{else}-branch is evaluated. If no \keyword{else} expression is present, then \lexeme{()} will be returned. See \Cref{weekdayIfThenElse} for a simple example.
 %
-\fs{condition}{Conditions evaluate their branches depending on the value of the condition.}
+\fs{weekdayIfThenElse}{Conditional computation with \keyword{if} -- \keyword{then}. Compare with \Cref{weekdayPatternGuard}.}
 %
-The lightweight syntax allows for newlines entered everywhere, but indentation must be used to express scope. 
-
-To demonstrate conditional expressions, let us write a program which writes the sentence ``I have n apple(s)'', where the plural 's' is added appropriately for various $n$'s. This is done in \Cref{conditionalLightweight}, using the lightweight syntax.
+The branches are often several lines of code, in which case it is more useful to write them indendet, below the keywords, which may also make the code easier to read. The identical \lstinline{whatToDoToday} function with indendet branches is shown in \Cref{weekdayIfThenElseIndentation}.
 %
-\fs{conditionalLightweight}{Using conditional expression to generate different strings.}
+\fsCode{weekdayIfThenElseIndentation}{weekdayIfThenElseIndentation}{Conditional computation with \keyword{if} -- \keyword{then}. Compare with \Cref{weekdayPatternGuard}.}{}
 %
-The sentence structure and its variants give rise to a more compact solution, since the language to be returned to the user is a variant of "I have/owe no/number apple(s)", i.e., certain conditions determine whether the sentence should use ``have'' and ``owe'' and so forth. So, we could instead make decisions on each of these sentence parts, and then built the final sentence from its parts. This is accomplished in the following example:
-%
-\fs{conditionalLightweightAlt}{Using sentence parts to construct the final sentence.}
-%
-While arguably shorter, this solution is also denser, and most likely more difficult to debug and maintain.
-
-Note that both \keyword{elif} and \keyword{else} branches are optional, which may cause problems. For example, both
+In contrast to \keyword{match} -- \keyword{with}, the \keyword{if} -- \keyword{then} expression is not as thorough in investigating whether cases of the domain in question have been covered. For example, in both
 \begin{quote}
 \mbox{\lstinline!let a = if true then 3!}
 \end{quote}
@@ -361,7 +402,7 @@ and
 \begin{quote}
 \mbox{\lstinline!let a = if true then 3 elif false then 4!}
 \end{quote}
-are invalid, since F\# is not smart enough to realize that the type of the expression is uniquely determined. Instead, F\# looks for the \keyword{else} to ensure all cases have been covered, and that \lstinline!a! always will be given a unique value of the same type regardless of the branch taken in the conditional statement. Hence,
+the value of \lstinline{a} are unqiuely determined, but F\# finds them to be erroneous, since F\# looks for the \keyword{else} to ensure all cases have been covered, and thatthe branches have the identical type. Hence,
 \begin{quote}
 \mbox{\lstinline!let a = if true then 3 else 4!}
 \end{quote}
@@ -392,7 +433,7 @@ The code in \Cref{lexicalScopeTracing} contains a function definition and a call
     2 &\ref{lexicalScopeTracing:print} & $E_0$ & $\text{testScope } 2.0 = \text{?}$
   \end{tabular*}
 \end{quote}
-The elements of the table is to be understood as follows. Step~0 initializes the outer environment. In order for us to remember that the environment is empty, we write the unit value \lexeme{()}. Reading the code from top to bottom, the first nonempty and non-comment line we meet is line~\ref{lexicalScopeTracing:testScope}, hence, in Step~1, we update the enviroment with the binding of a function to the name \lstinline{testScope}. Since functions are values in F\#, we note their bindings by their closures: a tuple of argument names, the function-body, and the values lexically available at the place of binding. See \Cref{sec:functions} for more information on closures. Following the function-binding, the \lstinline{printfn} statement is called in line~\ref{lexicalScopeTracing:print} to print the result \lstinline{testScope 2.0}. However, before we can produce any output, we must first evaluate \lstinline{testScope 2.0}. Since we do not yet know what this function evaluates to, in Step~2 we simply write the call with a question mark. The call causes the creation of a new environment, and we continue our table as follows,
+The elements of the table is to be understood as follows. Step~0 initializes the outer environment. In order for us to remember that the environment is empty, we write the unit value \lexeme{()}. Reading the code from top to bottom, the first nonempty and non-comment line we meet is line~\ref{lexicalScopeTracing:testScope}, hence, in Step~1, we update the enviroment with the binding of a function to the name \lstinline{testScope}. Since functions are values in F\#, we note their bindings by their closures: a list of argument names, the function-body, and the values lexically available at the place of binding. See \Cref{sec:functions} for more information on closures. Following the function-binding, the \lstinline{printfn} statement is called in line~\ref{lexicalScopeTracing:print} to print the result \lstinline{testScope 2.0}. However, before we can produce any output, we must first evaluate \lstinline{testScope 2.0}. Since we do not yet know what this function evaluates to, in Step~2 we simply write the call with a question mark. The call causes the creation of a new environment, and we continue our table as follows,
 \begin{quote}
   \begin{tabular*}{0.9\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
@@ -484,8 +525,13 @@ Hence, we conclude that the program outputs the value \lstinline{6.0}, since the
 %
 
 \section{Key concepts and terms in this chapter}
-Summary text about the key concepts from this chapter
+This chapter we have taken a first look at organising code. Key concepts have been:
 \begin{itemize}
-\item \ldots
+\item \textbf{Binding} values and functions using the \textbf{let} statements.
+\item Function \textbf{closures}, which are the values bound in \textbf{let} statements of functions.
+\item Certain names are forbidden in particular \textbf{keywords}, which are reserved for other uses. 
+\item In contrast to \textbf{let} expressions, \textbf{do} statements do something, such as \lstinline{printfn} prints to the screen. They return the \lexeme{()} value.
+\item Conditional expressions using \textbf{match}--\textbf{with} and some \textbf{patterns} and \textbf{guards}. Alternatively, \textbf{if}--\textbf{then} expressions can be used to a similar effect.
+\item \textbf{Trace by hand} as a method for simulating execution and in particular keeping track of the \textbf{environments} defined by the code structure.
 \end{itemize}
 \end{document}

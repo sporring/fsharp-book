@@ -4,14 +4,14 @@ let histToCumulativeProbability hist =
       if acc.Length = 0 then
         float elem
       else
-        acc.[acc.Length-1] + (float elem)
+        acc[acc.Length-1] + (float elem)
     Array.append acc [| sum |]
 
   let normalizeProbability k v = v/k
 
   let cumSum = Array.fold appendSum Array.empty<float> hist
-  if cumSum.[cumSum.Length - 1] > 0.0 then
-    Array.map (normalizeProbability cumSum.[cumSum.Length - 1]) cumSum
+  if cumSum[cumSum.Length - 1] > 0.0 then
+    Array.map (normalizeProbability cumSum[cumSum.Length - 1]) cumSum
   else
     Array.create cumSum.Length (1.0 / (float cumSum.Length))
 
@@ -34,7 +34,7 @@ let analyzeFile (reader : System.IO.StreamReader) size pushForward =
   while not(reader.EndOfStream) do
     c <- pushForward (reader.Read ())
     if legalIndex size c then
-      hist.[c] <- hist.[c] + 1
+      hist[c] <- hist[c] + 1
   hist
 
 let sampleFromCumulativeProbability cumulative noSamples =

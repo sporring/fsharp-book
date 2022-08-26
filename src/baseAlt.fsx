@@ -7,7 +7,7 @@ type chessPiece(c : Color) =
         (-1, _) -> None
         | (rank, -1) -> find (rank - 1) 7
         | (rank, file) -> 
-          if board.[rank,file] = Some piece then 
+          if board[rank,file] = Some piece then 
             Some (rank,file)
           else
             find rank (file - 1)
@@ -19,8 +19,8 @@ type chessPiece(c : Color) =
 let board = Collections.Array2D.create<chessPiece option> 8 8 None
 let king = chessPiece(White)
 let rook = chessPiece(White)
-board.[0,0] <- Some king
+board[0,0] <- Some king
 match king.position(board) with Some _p -> printfn "King at %A" _p | None -> printfn "King not on board"
 match rook.position(board) with Some _p -> printfn "Rook at %A" _p | None -> printfn "Rook not on board"
-board.[1,0] <- Some king
+board[1,0] <- Some king
 match king.position(board) with Some _p -> printfn "King moved to %A" _p | None -> printfn "King not on board"

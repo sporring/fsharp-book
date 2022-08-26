@@ -19,5 +19,5 @@ let pieces = [|
   chessPiece(White, King, (0,0)); 
   chessPiece(White, Rook, (2,0)) |]
 printfn "%A" pieces
-pieces.[0].position <- (1,0)
+pieces[0].position <- (1,0)
 printfn "%A" pieces

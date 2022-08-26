@@ -26,6 +26,7 @@ foreach cmd $commands {
 }
 
 # Tidy up
+sleep .1
 expect -re $prompt
 sleep .1
 send -- "#quit;;\n"

@@ -1,4 +1,4 @@
-$ fsharpc --nologo array2D.fsx && mono array2D.exe
+$ dotnet fsi array2D.fsx
 [[0; 3; 6; 9]
  [1; 4; 7; 10]
  [2; 5; 8; 11]]

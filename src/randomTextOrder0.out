@@ -1,6 +1,6 @@
-$ fsharpc --nologo randomTextOrder0.fsx && mono randomTextOrder0.exe
+$ dotnet fsi randomTextOrder0.fsx
 [|(32, 339); (33, 3); (34, 8); (35, 0); (36, 0); (37, 4); (38, 2); (39, 4);
-  (40, 27); (41, 27); (42, 0); (43, 5); (44, 1); (45, 13); (46, 42); (47, 4);
+  (40, 27); (41, 27); (42, 0); (43, 5); (44, 1); (45, 13); (46, 37); (47, 4);
   (48, 11); (49, 9); (50, 3); (51, 1); (52, 0); (53, 0); (54, 1); (55, 0);
   (56, 0); (57, 0); (58, 5); (59, 0); (60, 6); (61, 31); (62, 9); (63, 0);
   (64, 0); (65, 19); (66, 0); (67, 8); (68, 1); (69, 3); (70, 7); (71, 0);
@@ -13,4 +13,4 @@ $ fsharpc --nologo randomTextOrder0.fsx && mono randomTextOrder0.exe
   (117, 55); (118, 18); (119, 3); (120, 21); (121, 31); (122, 12); (123, 0);
   (124, 2); (125, 0); (126, 0)|]
 29 zeros out of 95 elements
-" exe ntrSpeOautvde=icrnr o' iCb" f h Le! yai l..ntotfe0(n caer) a>-srPs y dcd raevaoffki>tryt lIoT.ndaaa itd rnlC shederliftet0rd l t u gvnul"he "lsN sLtb rset a zt lo( n enf e  nP(aeaCS.d  =  ihi%lCe"
+"s lpaAoenit lnpdh tr(= dnnoer< aa)ntfm hc.ieuptt dga=O  y6cp iee" .  namIdr rrdbotvb eratdht)mCiaseeipe ul e .b (i<n eg ma aeut=fgnlhmnerCttue (otetctsaT S eentxd. oam.rhr<tIatmel  e StSttr siarS)nest"

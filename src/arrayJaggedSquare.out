@@ -1,4 +1,9 @@
-$ fsharpc --nologo arrayJaggedSquare.fsx && mono arrayJaggedSquare.exe
-  1   2   3   4 
-  1   9  25  49 
-  1  16  49 100 
+$ dotnet fsi arrayJaggedSquare.fsx
+
+
+arrayJaggedSquare.fsx(4,25): warning FS3369: The syntax 'expr1[expr2]' is ambiguous when used as an argument. See https://aka.ms/fsharp-index-notation. If you intend indexing or slicing then you must use 'expr1.[expr2]' in argument position. If calling a function with multiple curried arguments, add a space between them, e.g. 'someFunction expr1 [expr2]'.
+
+
+
+arrayJaggedSquare.fsx(4,20): error FS0003: This value is not a function and cannot be applied.
+

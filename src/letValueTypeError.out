@@ -1,6 +1,5 @@
-$ fsharpc --nologo letValueTypeError.fsx && mono letValueTypeError.exe
+$ dotnet fsi letValueTypeError.fsx
 
-letValueTypeError.fsx(1,17): error FS0001: This expression was expected to have type
-    'float'    
-but here has type
-    'int'    
+
+letValueTypeError.fsx(2,18): error FS0001: The type 'int' does not support the operator 'Pow'
+

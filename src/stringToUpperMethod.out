@@ -1,0 +1,2 @@
+> "aBcD".ToUpper();;
+val it: string = "ABCD"
