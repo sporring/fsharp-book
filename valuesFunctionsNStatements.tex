@@ -309,7 +309,6 @@ It defines two functions \lstinline{mul} and \lstinline{applyFactor}, where the 
   = &\left((\text{\lstinline{x}}, \text{\lstinline{fct}}), \left(\text{\lstinline{body}}\right),\left(\text{\lstinline{factor}} \rightarrow 2.0\right)\right)
 \end{align}
 where lazily write \lstinline{body} instead of the whole function's body.  The function \lstinline{mul} does not use its environment, and everything needed to evaluate its expression are values for its arguments. The function \lstinline{applyFactor} also takes two arguments, a function and a value. It uses \lstinline{factor} from the environment, thus this is stored in its closure. When \lstinline{mul} is given as an argument in \Cref{functionFirstClass} line~\ref{functionFirstClassApplyFactor}, then it is its closure which is given to \lstinline{applyFactor}, and the closure contains everything that \lstinline{applyFactor} requires to use \lstinline{mul}. Likewise, if \lstinline{applyFactor} is given as argument to yet another function, then its closure includes the relevant part of its environment at the time of definition, \lstinline{factor}, such that when \lstinline{applyFactor} is applied to two arguments, then its closure contains everything needed to evaluate its expression.
-\clearpage
 
 %% Jon 20220826: I don't think this is necesssary, and the type system does not support it well, except for classes
 \begin{comment}

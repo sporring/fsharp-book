@@ -6,7 +6,7 @@
 \label{chap:type}
 F\# is a strongly typed language, meaning that types are known or inferred at compile time. In the previous chapters, we have used \idx{primitive types} such as \lstinline{float} and \lstinline{bool},  function types, and compound types implicitly defined by tuples. These types are used for simple programming tasks, and everything that can be programmed can be accomplished using these types. However, larger programs are often easier to read and write when using more complicated type structures. In this chapter, we will discuss type abbreviations, enumerated types, discriminated unions, records, and structs. Class types are discussed in depth in \Cref{chap:oop}.
 
-\section{Tuples}
+\section{Type products: Tuples}
 \idx[tuple]{Tuples} are a direct extension of constants. They are immutable and have neither concatenations nor indexing operations. Tuples are unions of immutable types and have the following syntax:
 %
 \begin{verbatimwrite}{\ebnf/tuples.ebnf}
@@ -50,24 +50,9 @@ Mutable tuples are value types, meaning that binding to new names makes copies, 
 %
 The use of tuples shortens code and highlights semantic content at a higher level, e.g., instead of focusing on the elements, tuples focus on their union. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, where an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
 
-\section{Type Abbreviations}
-\label{sec:typeAbbreviations}
-F\# allows for renaming of types, which is called \idx{type abbreviation} or \idx{type aliasing}. The syntax is:
-%
-\begin{verbatimwrite}{\ebnf/typeAbbreviation.ebnf}
-type <*ident*> = <*aType*>
-\end{verbatimwrite}
-\syntax{\ebnf/typeAbbreviation.ebnf}{Syntax for type abbreviation.}
-%
-where the identifier is a new name, and the type-name is an existing type or a compound of existing types. \Cref{typeAbbreviation} shows examples of the defintion of several type abbreviations.
-%
-\fs{typeAbbreviation}{Defining four type abbreviations, three of which are compound types.}
-%
-Here we define the abbreviations \lstinline{size}, \lstinline{position}, \lstinline{person}, and \lstinline{intToFloat}, and later make bindings enforcing the usage of these abbreviations.
-
-Type abbreviations are used as short abbreviations of longer types, and they add semantic content to the program text, thus making programs shorter and easier to read. Type abbreviations allow the programmer to focus on the intended structure at a higher level by, e.g., programming in terms of a type \lstinline{position} rather than \lstinline{float * float}. Thus, they often result in programs with fewer errors. Type abbreviations also make maintenance easier. For instance, if we at a later stage decide that positions can only have integer values, then we only need to change the definition of the type abbreviation, not every place a value of type \lstinline{position} is used.
-
-\section{Enumerations}
+%% Jon 20220826 These have implementational advantages, but discriminated unions is supperior for solving programming problems
+\begin{comment}
+  \section{Enumerations}
 \label{sec:enums}
 \idx[enumerations]{Enumerations} or \idx{enums} for short are types with named values. Names in enums are assigned to a subset of integer or char values. Their syntax is as follows:
 %
@@ -85,8 +70,9 @@ An example of using enumerations is given in \Cref{enum}.
 \fs{enum}{An enum type acts as a typed alias to a set of integers or chars.}
 %
 In this example, we define an enumerated type for medals, which allows us to work with the names rather than the values. Since the values most often are arbitrary, we can program using semantically meaningful names instead. Being able to refer to an underlying integer type allows us to interface with other -- typically low-level -- programs that require integers, and to perform arithmetic. E.g., for the medal example, we can typecast the enumerated types to integers and calculate an average medal harvest.
+\end{comment}
 
-\section{Discriminated Unions}
+\section{Type sums: Discriminated Unions}
 \label{sec:discriminatedUnions}
 A discriminated union is a union of a set of named cases. These cases can further be of specified types. The syntax for defining a discriminated union is as follows:
 %
@@ -165,8 +151,8 @@ Since records are per default reference types, binding creates aliases, not copi
 \fs{recordCopy}{Bindings are references. To copy and not make an alias, explicit copying must be performed.}
 %
 Here, \lstinline{age} is defined as a mutable value and can be changed using the usual \lexeme{<-} assignment operator. The example demonstrates two different ways to create records. Note that when the mutable value \lstinline{author.age} is changed in line~\ref{recordCopyAgeUpdate}, then \lstinline{authorAlias} also changes, since it is an alias of \lstinline{author}, but neither \lstinline{authorCopy} nor \lstinline{authorCopyAlt} changes, since they are copies. As illustrated, copying using \keyword{with} allows for easy copying and partial updates of another record value.
-\clearpage
 
+\begin{comment}
 \section{Structures}
 \label{sec:structs}
 \idx[structures]{Structures}, or \idx{structs} for short, have much in common with records. They specify a compound type with named fields, but they are value types, and they allow for some customization of what is to happen when a value of its type is created. Since they are value types, they are best used for small amounts of data. The syntax for defining struct types are:
@@ -196,6 +182,25 @@ Structs are small versions of classes and allows, e.g., for overloading\idxs{ove
 We defer further discussion of these concepts to \Cref{chap:oop}.
 
 The use of structs are generally discouraged, and instead, it is recommended to use enums, records, and discriminated unions, possibly with the \lstinline{[<Struct>]} attribute for the last two in order to make them value types.
+\end{comment}
+
+\section{Type Abbreviations}
+\label{sec:typeAbbreviations}
+F\# allows for renaming of types, which is called \idx{type abbreviation} or \idx{type aliasing}. The syntax is:
+%
+\begin{verbatimwrite}{\ebnf/typeAbbreviation.ebnf}
+type <*ident*> = <*aType*>
+\end{verbatimwrite}
+\syntax{\ebnf/typeAbbreviation.ebnf}{Syntax for type abbreviation.}
+%
+where the identifier is a new name, and the type-name is an existing type or a compound of existing types. \Cref{typeAbbreviation} shows examples of the defintion of several type abbreviations.
+%
+\fs{typeAbbreviation}{Defining four type abbreviations, three of which are compound types.}
+%
+Here we define the abbreviations \lstinline{size}, \lstinline{position}, \lstinline{person}, and \lstinline{intToFloat}, and later make bindings enforcing the usage of these abbreviations.
+
+Type abbreviations are used as short abbreviations of longer types, and they add semantic content to the program text, thus making programs shorter and easier to read. Type abbreviations allow the programmer to focus on the intended structure at a higher level by, e.g., programming in terms of a type \lstinline{position} rather than \lstinline{float * float}. Thus, they often result in programs with fewer errors. Type abbreviations also make maintenance easier. For instance, if we at a later stage decide that positions can only have integer values, then we only need to change the definition of the type abbreviation, not every place a value of type \lstinline{position} is used.
+
 
 \section{Variable Types}
 \label{sec:variableTypes}
