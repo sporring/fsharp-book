@@ -5,24 +5,101 @@
 \chapter{Making programs and documenting them}
 
 \abstract{
-  Introductory text about the objectivs of this chapter
+  Programs are more than a set of instructions, which when executed pro- duces the desired result. Programming is an activity, and a program is the result of a process, in which a problem has been expressed, analyzed, subdivided, implemented, tested, and possibly rephrased. And often the process and its result are to be wrapped and documented for it to be useful by the programmer or others. In this chapter, we will zoom out, and focus on some of these surrounding processes. The chapter will describe: 
   \begin{itemize}
-  \item \dots
+  \item How to design functions.
+  \item How and why to document programs using in-code documentation.
   \end{itemize}
 }
 
-\section{7 step guide to making programs}
-\dots
+\section{The 7-step guide to writing function}
+Pólya's problem solving technique described in \Cref{sec:howToSolveProblems} is a useful starting point for solving problems, and for the object-oriented programming paradign to be discussed in later chapters \Cref{chap:oopp}, approaches such as Pólya's have been put into systems. Regardless of the origin, there is always a point, where a programmer has to focus on small scale problems such as: Which functions, should be used, and how should the functions be designed? This is not an area heavily investigated in the literature, but often a skill that programmers pick up by activily engaging in programming alone or with other programmers. However, here I will venture a recipes for designing functions, which me and my collagues call The 7-step guide to writing functions. It is not meant as the ultimate guide or as required steps, but it is our experience that these steps contain essential elements that consiously or perhaps unconsioulsy always take part in designing useful and resuable functions.
+
+To decide which functions to write and how to write them:
+\begin{enumerate}
+\item Note: Write a short note on what a function should do.
+\item Name: Invent a name for the function. Semantically meaningful names should be preferred.
+\item External test: Write a small test-program, which uses the yet to be written function.
+\item Type: Decide what type, the function should have, e.g., by how you used it in your test-program.
+\item Implement: Write the function and possibly its helper functions.
+\item Internal test: Extend your test-program with more examples, where you use the function and based on its implementation.
+\item Run: Run the test-program
+\item Document: Write a brief in-code documentation of the function, see \Cref{chap:documentation}.
+\end{enumerate}
+
+As an example, let us revisit the problem of solving a quadratic equation: The task is to find the zero-crossings of a second degree polynomial, i.e., $f(x)=ax^2+bx+c=0$. The process could be as follows:
+\begin{enumerate}
+\item Note: We decide to stick to the mathematical description:
+  \begin{quote}
+    Given parameters $a$, $b$, and $c$, the function should return the 0, 1, or possibly 2 locations $x$, where $f(x)=0$.
+  \end{quote}
+\item Name: This function may be used together with solvers for other equations, so we decide to give it the rather long name
+  \begin{quote}
+    \lstinline{solveQuadraticEquation}.
+  \end{quote}
+\item External test: We decide to a single tests to get a feeling of how the function is to be used:
+\begin{codeNOutput}[label=solveQuadraticEquationTest,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Defining the function \lstinline{sum}}
+\begin{lstlisting}
+let p = solveQuadraticEquation 1.0 0.3 -1.0
+printfn "0=1.0x^2+0.3x-1.0 => x = %1" p;;
+\end{lstlisting} 
+\end{codeNOutput}
+\item Type: Since there may be 0-2 points $x$, where $f(x)=0$, the output answers could be a tuple. Furhter, since $a,b,c,x\in\Re$, we will use floats. Hence,
+  \begin{quote}
+    \lstinline{solveQuadraticEquation -> float -> float -> float -> float*float}.
+  \end{quote}
+\item Implement: Thinking about how to write  \lstinline{solveQuadraticEquation}, we decide that since the calculation of the discriminant is done twice, we will add it as a helper function. Our resulting code is:
+\begin{codeNOutput}[label=solveQuadraticEquationImplementation,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Defining the function \lstinline{sum}}
+\begin{lstlisting}
+let discriminant a b c = b ** 2.0 - 4.0 * a * c
+
+let solveQuadraticEquation a b c =
+  let d = discriminant a b c
+  ((-b + sqrt d) / (2.0 * a),
+   (-b - sqrt d) / (2.0 * a))
+\end{lstlisting}
+\end{codeNOutput}
+\item Internal test: Working with the code, we realize that it is unclear, what happens, when there are 0 og 1 solutions, so we update the external test and add more tests:
+\begin{codeNOutput}[label=solveQuadraticEquationTest,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Defining the function \lstinline{sum}}
+\begin{lstlisting}
+let p1 = solveQuadraticEquation 1.0 0.3 -1.0
+printfn "0=1.0x^2+0.3x-1.0 => x = %A" p1
+let p2 = solveQuadraticEquation 1.0 0.0 0.0
+printfn "0=1.0x^2+0.3x-1.0 => x = %A" p2
+let p3 = solveQuadraticEquation 1.0 0.0 1.0
+printfn "0=1.0x^2+0.3x-1.0 => x = %A" p3
+\end{lstlisting} 
+\end{codeNOutput}
+\item Run: The compelete code with examples and its output, when executed is shown in \Cref{solveQuadraticEquation}
+  \fs{solveQuadraticEquation}{Solving quadratic equations}
+\item Document: The following section will discuss how to perform in-code documentation and use \Cref{solveQuadraticEquation} as an example.
+\end{enumerate}
+
 
 \section{Programming as a commication activity}
 \label{chap:documentation}
 Documentation is a very important part of writing programs, since it is most unlikely that you will be writing really obvious code. Moreover, what seems obvious at the point of writing may be mystifying months later to the author and to others. Documentation serves several purposes:
 \begin{enumerate}
-\item Communicate what the code should be doing.
-\item Highlight big insights essential for the code.
-\item Highlight possible conflicts and/or areas where the code could be changed later.
+\item Communicate to the user of the code, what it does and how to use it. In this book, we will emphasize the XML-standard for this purpose.
+\item Highlight big insights essential for the code, which is important for other programmers to understand and maintain the code.
+\item Highlight possible conflicts and/or areas where the code could be changed later, which is also targeted programmers rather than users of the code.
 \end{enumerate}
-The essential point is that coding is a journey in problem-solving, and proper documentation is an aid in understanding the solution and the journey that lead to it. Documentation is most often a mixture of in-code documentation and accompanying documents. Here, we will focus on in-code documentation which arguably causes problems in multi-language environments and run the risk of bloating code.
+The essential point is that coding is a journey in problem-solving, and proper documentation is an aid in understanding the solution and the journey that lead to it. Documentation is most often a mixture of in-code documentation and accompanying documents. Here, we will focus on in-code documentation which arguably causes problems in multi-language environments and run the risk of bloating code. Since documentation is about human-to-human communication, there is no correct documentation. However, as in all things the documentation can both be too little and too much, and the ability to produce documentation is best learned by example and by doing.
 
 F\# has two different syntaxes for comments. Comments can be block
 comments: \jon{color of '*' is wrong.}
@@ -43,7 +120,9 @@ Alternatively, comments may also be line comments,
 %
 where the comment text ends after the first newline.
 
-The F\# compiler has an option for generating \idx{Extensible Markup Language} (\idx{XML}) files from scripts using the C\# documentation comments tags\footnote{For specification of C\# documentations comments see ECMA-334: \url{http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-334.pdf}}. The XML documentation starts with a triple-slash \lstinline{///}, i.e., a lineComment and a slash, which serve as comments for the code construct that follows immediately after. XML consists of tags which always appear in pairs, e.g., the tag ``tag'' would look like \lstinline[language=xml]!<tag> ... </tag>!. F\# accept any tags, but recommends those listed in \Cref{tab:xmlTags}.
+The block and line comments are used principally for communicating insights and comments into the code between programmers which want to understand and/or maintain the code. 
+
+Users of the code, are most likely also programmers but have an outside perspective. They are more interested in what the code does, and how it is to be used. For this we recommend the \idx{Extensible Markup Language} documentation standard (\idx{XML-standard}) \footnote{For specification of C\# documentations comments see ECMA-334: \url{http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-334.pdf}}. All lines of the XML-standard starts with a triple-slash \lstinline{///}. Thus, it is a line-comment, where an extra slash has been added for visual flair. XML consists of tags which always appear in pairs, e.g., the tag ``tag'' would look like \lstinline[language=xml]!<tag> ... </tag>!. A subset of tags are listed in \Cref{tab:xmlTags}.
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -95,6 +174,7 @@ is:
 \fsCode{commentExample}{commentExample}{Code with XML comments.}{}
 %
 
+\begin{comment}
 Mono's \lstinline[language=console]{fsharpc} command may be used to extract the comments into an XML file, as demonstrated in \Cref{convertingToXML}.
 \begin{codeNOutput}[label=convertingToXML]{, Converting in-code comments to XML.}
   \begin{lstlisting}[language=console]
@@ -145,11 +225,20 @@ $ mdoc export-html -out commentExampleHTML commentExample
   \label{fig:htmlDocumentExample}
 \end{figure}
 A full description of how to use \lstinline[language=console]{mdoc} is found here\footnote{\url{http://www.mono-project.com/docs/tools+libraries/tools/monodoc/generating-documentation/}}.
+\end{comment}
+
+Several tools exists which extracts the comments from source code and reorder the comments into manual type structures, such as Doxygen. Popular output from such tools are both HTML and \LaTeX. However, for this text, the usage of the XML-standard as a way to standardize comments will suffice.
 
 \section{Key concepts and terms in this chapter}
-Summary text about the key concepts from this chapter
+This chapter has considered elements that are an important part of the activity of programming, but to some extent complement the specific act of writing source code. You have seen:
 \begin{itemize}
-\item \ldots
+\item How to use the \textbf{7-step guide} to design functions, which emphasizes writing examples of function usage before implementing the function itself.
+\item Write \textbf{in-code} documentation to support the understanding of the code. 
+\item Documentation is written for programmers and there are at least two different types: \textbf{users} and \textbf{maintainers}. 
+\item The \textbf{XML standard} uses \lstinline{///}, is for both types of programmers, and documents what a program does and how it is to be used.
+\item The \textbf{line} and \textbf{block} comments are for implementation-specific details and intented to be read by programmers who seek to understand and maintain the code. 
+\item There is no such thing as the correct documentation, but you are well advised to follow the XML standard and to improve your skill by writing documentation and sharing it with others.
 \end{itemize}
+
 \end{document}
 

@@ -7,25 +7,23 @@ let discriminant a b c = b ** 2.0 - 4.0 * a * c
 /// <example>
 ///   The following code:
 ///   <code>
-///     let a = 1.0
-///     let b = 0.0
-///     let c = -1.0
-///     let xp = (solution a b c +1.0)
-///     printfn "0=%.1fx^2+%.1fx+%.1f => x_+=%.1f" a b c xp
+//      let p = solveQuadraticEquation 1.0 0.3 -1.0
+///     printfn "0=1.0x^2+0.3x-1.0 => x = %A" p
 ///   </code>
-///   prints <c>0=1.0x^2+0.0x+-1.0 => x_+=0.7</c>.
+///   prints <c>0=1.0x^2+0.3x-1.0 => x = (0.9, -1.2)</c>.
 /// </example>
 /// <param name="a">Quadratic coefficient.</param>
 /// <param name="b">Linear coefficient.</param>
 /// <param name="c">Constant coefficient.</param>
-/// <param name="sgn">+1 or -1 determines the solution.</param>
-/// <returns>The solution to x.</returns>
-let solution a b c sgn =
+/// <returns>The solution to x as a tuple.</returns>
+let solveQuadraticEquation a b c =
   let d = discriminant a b c
-  (-b + sgn * sqrt d) / (2.0 * a)
+  ((-b + sqrt d) / (2.0 * a),
+   (-b - sqrt d) / (2.0 * a))
 
-let a = 1.0
-let b = 0.0
-let c = -1.0
-let xp = (solution a b c +1.0)
-printfn "0 = %.1fx^2 + %.1fx + %.1f => x_+ = %.1f" a b c xp
+let p1 = solveQuadraticEquation 1.0 0.3 -1.0
+printfn "0=1.0x^2+0.3x-1.0 => x = %A" p1
+let p2 = solveQuadraticEquation 1.0 0.0 0.0
+printfn "0=1.0x^2+0.3x-1.0 => x = %A" p2
+let p3 = solveQuadraticEquation 1.0 0.0 1.0
+printfn "0=1.0x^2+0.3x-1.0 => x = %A" p3

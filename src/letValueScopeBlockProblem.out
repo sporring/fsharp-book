@@ -1,3 +1,5 @@
-$ fsharpc --nologo letValueScopeBlockProblem.fsx && mono letValueScopeBlockProblem.exe
-4
-4
+$ dotnet fsi letValueScopeBlockProblem.fsx
+
+
+letValueScopeBlockProblem.fsx(1,11): error FS0010: Unexpected keyword 'let' or 'use' in binding. Expected incomplete structured construct at or before this point or other token.
+

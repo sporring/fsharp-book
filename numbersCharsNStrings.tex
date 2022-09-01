@@ -1,17 +1,22 @@
 \documentclass[fsharpNotes.tex]{subfiles}
-\graphicspath{ {./figures/} }
+\graphicspath{ {figures/} }
 
 \begin{document}
 \chapter{Using F\# as a Calculator}
 \label{chap:calculator}
 
-\abstract{
-  In the previous chapter, we introduced some key F\# programming tools and concepts without going into depth on opportunities and limitations. In the following chapters, we will dive deeper into methods for solving problems by writing programs, and what facilities are available in F\# to express these solutions. As a first step, we must acquaint ourselves with the basic building blocks of basic types, constants, and operators:
+%\begin{minipage}{\linewidth}
+%  \centering
+ % \includegraphics[width=\linewidth]{constantsNOperators}
+%\end{minipage}
+%\newpage
+\abstract[figures/numbersCharsNStrings]{
+In the previous chapter, we introduced some key F\# programming tools and concepts without going into depth on opportunities and limitations. In the following chapters, we will dive deeper into methods for solving problems by writing programs, and what facilities are available in F\# to express these solutions. As a first step, we must acquaint ourselves with the basic building blocks of basic types, constants, and operators, and this chapter includes
   \begin{itemize}
-  \item an introduction to the basic types and how to write constants of those types
-  \item arithmetic of basic operations
+  \item An introduction to the basic types and how to write constants of those types.
+  \item Arithmetic of basic operations.
   \end{itemize}
-  with these tools, you will be able to evaluate expressions as if F\# was a simple calculator. Examples of problems, you will be able to solve after reading this chapter, is:
+  with these tools, you will be able to evaluate expressions as if F\# were a simple calculator. Examples of problems, you will be able to solve after reading this chapter, is:
   \begin{itemize}
   \item What is the result of $3\cos(4*\pi/180)+4\sin(4*\pi/180)$.
   \item Calculate how many characters are there in the text string ``Hello World!''.
@@ -19,7 +24,6 @@
   \item How to convert between whole and binary numbers.
   \end{itemize}
 }
-
 %Talking about programs and programming languages we make a distinction between the language's \idx{syntax}, which describes what are legal expressions and statements, and the \idx{semantics} of an expression and a statement, which describes what is meant. This is analog to human languages, where how nouns, verbs, etc. may be placed in relation to each describes the syntax of a sentence, while the meaning of a sentence is its semantics. Basic elements of F\#'s syntax are literals, which is a fixed value like the number 3.
 
 \section{Literals and Basic Types}

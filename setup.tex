@@ -1,12 +1,13 @@
 % modify svmono
-\makeatletter
-\DeclareRobustCommand\abstract{\@ifstar\@abstgobl\@abstract}
-\def\@abstract#1{\noindent\textbf{\abstractname} #1\par\begin{center}\rule{0.8\textwidth}{0.5pt}\end{center}
-%\@afterindentfalse
-%\@afterheading
-}
-\makeatother
+%\newcommand{\idxs}[1]{\marginnote{%$\cdot$~\parbox[t]{\linewidth}{\raggedright \expandarg\IfSubStr{#1}{@}{\StrBehind{#1}{@}}{#1}}
+%\makeatletter
+%\def\idx{\@ifnextchar[{\@with}{\@without}}
+%\def\@with[#1]#2{\emph{#2}\idxs{#1}}
+%\def\@without#1{\emph{#1}\idxs{#1}}
+%\makeatother
 
+
+\usepackage{wrapfig}
 
 % KOMA setup
 \usepackage{scrlayer-scrpage}
@@ -41,6 +42,23 @@
 % Figures
 %\usepackage{graphicx} % springer has it
 \graphicspath{ {./figures/} {../figures/} }
+
+\makeatletter
+%\DeclareRobustCommand\abstract{\@ifstar\@abstgobl\@abstract}
+%\def\@abstract#1{\noindent\textbf{\abstractname} #1\par\begin{center}\rule{0.8\textwidth}{0.5pt}\end{center}}
+\DeclareRobustCommand\abstract{\@ifstar\@abstgobl\@abstract}
+\def\abstract{\@ifnextchar[{\@abstractWith}{\@abstractWithout}}
+\def\@abstractWithout#1{%
+  \noindent\textbf{\abstractname} #1\newpage%\par\begin{center}\rule{0.8\textwidth}{0.5pt}\end{center}
+}
+\def\@abstractWith[#1]#2{%
+%  \begin{minipage}{\linewidth} \centering \includegraphics[width=\linewidth]{#1}\end{minipage}\newpage%
+  \@abstractWithout{#2}%
+}
+\makeatother
+
+
+
 
 % % % A background text to prevent wide distribution
 % \usepackage{draftwatermark}
