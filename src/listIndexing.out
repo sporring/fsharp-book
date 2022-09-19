@@ -1,4 +1,6 @@
 $ dotnet fsi listIndexing.fsx
-lst = [3; 4; 5], lst[1] = 4
-lst.Length = 3, lst.isEmpty = false
-3 4 5 
+lst = [3; 4; 5; 6; 7; 8; 9], lst[1] = 4
+First 2 elments of lst = [3; 4]
+Last 3 elements of lst = [7; 8; 9]
+Element number 3 to 5 = [5; 6; 7]
+All elements = [3; 4; 5; 6; 7; 8; 9]

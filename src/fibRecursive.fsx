@@ -1,10 +1,7 @@
-let rec fib n =
-  if n < 1 then
-    0
-  elif n = 1 then
-    1
-  else
-    fib (n - 1) + fib (n - 2)
+let rec fib (n: uint) =
+  match n with 
+    0u -> 0u
+    | 1u -> 1u
+    | _ -> fib (n - 1u) + fib (n - 2u)
 
-for i = 0 to 10 do
-  printfn "fib(%d) = %d" i (fib i)
+printfn "%A" (List.map fib [0u .. 10u])

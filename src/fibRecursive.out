@@ -1,12 +1,2 @@
-$ fsharpc --nologo fibRecursive.fsx && mono fibRecursive.exe
-fib(0) = 0
-fib(1) = 1
-fib(2) = 1
-fib(3) = 2
-fib(4) = 3
-fib(5) = 5
-fib(6) = 8
-fib(7) = 13
-fib(8) = 21
-fib(9) = 34
-fib(10) = 55
+$ dotnet fsi fibRecursive.fsx
+[0u; 1u; 1u; 2u; 3u; 5u; 8u; 13u; 21u; 34u; 55u]

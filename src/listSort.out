@@ -1,0 +1,2 @@
+> List.sort [3; 1; 2];;
+val it: int list = [1; 2; 3]

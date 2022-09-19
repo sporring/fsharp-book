@@ -1,8 +1,9 @@
-let rec prt a b =
-  if a > b then
-    printf "\n"
-  else
-    printf "%d " a
-    prt (a + 1) b
+let rec count a b =
+  match a with
+    i when i > b ->
+      printfn ""
+    | _ -> 
+      printf "%d " a
+      count (a + 1) b
 
-prt 1 10 (*//§\label{countRecursiveCall}§*)
+count 1 10 (*//§\label{countRecursiveCall}§*)

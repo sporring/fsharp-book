@@ -3,60 +3,71 @@
 
 \begin{document}
 
+\chapter{Recursion}
+\label{sec:recursion}
 \abstract{
-  Introductory text about the objectivs of this chapter
+  Recursion is a central concept in functional programming and is used to control flow. A recursive function must obey the 3 laws of recursion:
+  \begin{enumerate}
+  \item The function must call itself.
+  \item It must be a base case.
+  \item The base case must be reached at some point, in order to avoid an infinite loop
+  \end{enumerate}     
+  In \Cref{fig:foreverRecursion} is an illustration the concept of an infinite loop with recursion.
+  \begin{figure} % We want the figure on the first page with the chapter title
+    \centering
+    \includegraphics[width=0.7\textwidth]{recursiveForever} % for some reason, it does not want to read the pdf-file
+    \caption{An infinitely long string of "forever forever forever...", conceptually calculated by \mbox{\lstinline{let rec forever () = "forever " + (forever ()).}}}
+    \label{fig:foreverRecursion}
+  \end{figure}
+  In this chapter, you will learn
   \begin{itemize}
-  \item \dots
+  \item How to define recursive functions and types
+  \item About the concept of the Call stack and tail recursion
+  \item How to trace-by-hand recursive functions
   \end{itemize}
 }
 
-\chapter{Recursion}
-\label{sec:recursion}
-Recursion is a central concept in F\# and is used to control flow in loops without the \keyword{for} and \keyword{while} constructions. \Cref{fig:foreverRecursion} illustrates the concept of an infinite loop with recursion. 
-\begin{figure} % We want the figure on the first page with the chapter title
-  \centering
-  \includegraphics[width=0.6\textwidth]{recursion.png} % for some reason, it does not want to read the pdf-file
-  \caption{An infinitely long string of "forever forever forever...", conceptually calculated by \mbox{\lstinline{let rec forever () = "forever " + (forever ()).}}}
-  \label{fig:foreverRecursion}
-\end{figure}
 
 \section{Recursive Functions}
 A \idx{recursive function} is a function which calls itself, and the syntax for defining recursive functions is an extension of that for regular functions:
 %
 \begin{verbatimwrite}{\ebnf/recursive.ebnf}
-let rec <*ident*> = <*expr*> {*and <*ident*> = <*expr*>*} [*in*] <*expr*>
+let rec <*ident*> (*<*arg*> {*<*arg*>*}*) |* () =
+  <*expr*>
+{*and let <*ident*> (*<*arg*> {*<*arg*>*}*) |* () =
+  <*expr*>*}
 \end{verbatimwrite}
 \syntax{\ebnf/recursive.ebnf}{Syntax for defining one or more mutually dependent recursive functions.}
 %
-From a compiler point of view, the \idx[rec@\lstinline{rec}]{\keyword{rec}} is necessary, since the function is used before the compiler has completed its analysis. If two functions are mutually recursive, then they must be defined jointly using the \idx[and@\lstinline{and}]{\keyword{and}} keyword.
+From a compiler point of view, the \idx[rec@\lstinline{rec}]{\keyword{rec}} is necessary, since the function is used before the compiler has completed its analysis. If two functions are mutually recursive, i.e., they call each other, then they must be defined jointly using the \idx[and@\lstinline{and}]{\keyword{and}} keyword.
 
-An example of a recursive function that counts from 1 to 10 similarly to \Cref{count} is given in \Cref{countRecursive}.
+An example of a recursive function that counts from 1 to 10 is given in \Cref{countRecursive}.
 %
 \fs{countRecursive}{Counting to 10 using recursion.}
 %
-Here the \lstinline!prt! function calls itself repeatedly, such that the first call is \lstinline!prt 1 10!, which calls \lstinline!prt 2 10!, and so on until the last call \lstinline!prt 11 10!. Each time \lstinline{prt} is called, new bindings named \lstinline{a} and \lstinline{b} are made to new values. This is illustrated in \Cref{fig:countRecursiveScopes}.
+Here the \lstinline!count! function calls itself repeatedly, such that the first call is \lstinline!count 1 10!, which calls \lstinline!count 2 10!, and so on until the last call \lstinline!count 11 10!. Each time \lstinline{count} is called, new bindings named \lstinline{a} and \lstinline{b} are made to new values. This is illustrated in \Cref{fig:countRecursiveScopes}.
 \begin{figure} % make sure figure is printed after the countRecursive
   \begin{tcolorbox}[reset,valign lower=bottom,right=0.01\linewidth,squeezed title={\lstinline[language=console]{\$ fsharpc countRecursive.fsx \&\& mono countRecursive.exe}}]
-    \lstinline{prt 1 10}
+    \lstinline{count 1 10}
     \begin{tcbraster}[raster columns=1,raster equal height,raster halign=right]
-      \begin{tcolorbox}[valign lower=bottom,right=0.01\linewidth,squeezed title={\lstinline{prt}$_1$: \lstinline{a}$_1$\lstinline{ = 1}, \lstinline{b}$_1$\lstinline{ = 10}}]
+      \begin{tcolorbox}[valign lower=bottom,right=0.01\linewidth,squeezed title={\lstinline{count}$_1$: \lstinline{a}$_1$\lstinline{ = 1}, \lstinline{b}$_1$\lstinline{ = 10}}]
         \lstinline{1 > 10:} \xmark\\
         \hspace*{0.03\linewidth}\lstinline{printf "1 "}\\
-        \hspace*{0.03\linewidth}\lstinline{prt 2 10}
+        \hspace*{0.03\linewidth}\lstinline{count 2 10}
         \begin{tcbraster}[raster width=0.97\linewidth]
-          \begin{tcolorbox}[valign lower=bottom,right=0.01\linewidth,squeezed title={\lstinline{prt}$_2$: \lstinline{a}$_2$\lstinline{ = 2}, \lstinline{b}$_2$\lstinline{ = 10}}]
+          \begin{tcolorbox}[valign lower=bottom,right=0.01\linewidth,squeezed title={\lstinline{count}$_2$: \lstinline{a}$_2$\lstinline{ = 2}, \lstinline{b}$_2$\lstinline{ = 10}}]
             \lstinline{2 > 10:} \xmark\\
             \hspace*{0.03\linewidth}\lstinline{printf "2 "}\\
-            \hspace*{0.03\linewidth}\lstinline{prt 3 10}
+            \hspace*{0.03\linewidth}\lstinline{count 3 10}
             \begin{tcbraster}[raster width=0.97\linewidth]
-              \begin{tcolorbox}[valign lower=bottom,right=0.01\linewidth,squeezed title={\lstinline{prt}$_3$: \lstinline{a}$_3$\lstinline{ = 3}, \lstinline{b}$_3$\lstinline{ = 10}}]
+              \begin{tcolorbox}[valign lower=bottom,right=0.01\linewidth,squeezed title={\lstinline{count}$_3$: \lstinline{a}$_3$\lstinline{ = 3}, \lstinline{b}$_3$\lstinline{ = 10}}]
                 \lstinline{3 > 10:} \xmark\\
                 \hspace*{0.03\linewidth}\lstinline{printf "3 "}\\
-                \hspace*{0.03\linewidth}\lstinline{prt 4 10}\\
+                \hspace*{0.03\linewidth}\lstinline{count 4 10}\\
                 \hspace*{0.06\linewidth}$\ddots$\\
-                \hspace*{0.09\linewidth}\lstinline{prt 11 10}
+                \hspace*{0.09\linewidth}\lstinline{count 11 10}
                 \begin{tcbraster}[,raster width=0.91\linewidth]
-                  \begin{tcolorbox}[valign lower=bottom,right=0.01\linewidth,squeezed title={\lstinline{prt}$_{11}$: \lstinline{a}$_{11}$\lstinline{ = 1}, \lstinline{b}$_{11}$\lstinline{ = 10}}]
+                  \begin{tcolorbox}[valign lower=bottom,right=0.01\linewidth,squeezed title={\lstinline{count}$_{11}$: \lstinline{a}$_{11}$\lstinline{ = 1}, \lstinline{b}$_{11}$\lstinline{ = 10}}]
                     \lstinline{11 > 10} \cmark\\
                     \hspace*{5mm}\lstinline{printf "\\n"}
                     \tcblower
@@ -79,24 +90,35 @@ Here the \lstinline!prt! function calls itself repeatedly, such that the first c
     \tcblower
     \lstinline{()}
   \end{tcolorbox}
-  \caption{Illustration of the recursion used to write the sequence ``1 2 3 ... 10'' in line~\ref{countRecursiveCall} in \Cref{countRecursive}. Each frame corresponds to a call to \lstinline{prt}, where new values overshadow old ones. All calls return \lstinline{unit}.}
+  \caption{Illustration of the recursion used to write the sequence ``1 2 3 ... 10'' in line~\ref{countRecursiveCall} in \Cref{countRecursive}. Each frame corresponds to a call to \lstinline{count}, where new values overshadow old ones. All calls return \lstinline{unit}.}
   \label{fig:countRecursiveScopes}
 \end{figure}
-The old values are no longer accessible, as indicated by subscripts in the figure. E.g., in \lstinline{prt}$_3$, the scope has access to \lstinline{a}$_3$ but not \lstinline{a}$_2$ and \lstinline{a}$_1$. Thus, in this program, the process is similar to a \lstinline{for} loop, where the counter is \lstinline{a}, and in each loop its value is reduced.
+The old values are no longer accessible, as indicated by subscripts in the figure. E.g., in \lstinline{count}$_3$, the scope has access to \lstinline{a}$_3$ but not \lstinline{a}$_2$ and \lstinline{a}$_1$. Thus, in this program, the process is similar to a \lstinline{while} loop, where the counter is \lstinline{a}, and in each loop its value is reduced.
 
 The structure of the function is typical for recursive functions. They very often follow the following pattern.
 \begin{verbatimwrite}{\ebnf/recursivePattern.ebnf}
 let rec f a =
-  §\tikzmark{recursivePatternCriteriumStart}§if <*stopping condition*>§\tikzmark{recursivePatternCriteriumStop}§
-  then §\tikzmark{recursivePatternStopStart}§<*stopping step*>§\tikzmark{recursivePatternStopEnd}§
-  else §\tikzmark{recursivePatternRecurseStart}§<*recursion step*>§\tikzmark{recursivePatternRecurseEnd}§
+  match a with
+    §\tikzmark{recursivePatternCriteriumStart}§<*stopping pattern*> ->§\tikzmark{recursivePatternCriteriumStop}§
+      §\tikzmark{recursivePatternStopStart}§<*stopping step*>§\tikzmark{recursivePatternStopEnd}§
+    | _ ->
+      §\tikzmark{recursivePatternRecurseStart}§<*recursion step*>§\tikzmark{recursivePatternRecurseEnd}§
 \end{verbatimwrite}
 \syntax[]{\ebnf/recursivePattern.ebnf}{Recursive functions consist of a stopping criterium, a stopping expression, and a recursive step.}%
 %\FrameArea{recursivePatternCriteriumStart}{recursivePatternCriteriumStop}%
 %\FrameArea{recursivePatternStopStart}{recursivePatternStopEnd}%
 %\FrameArea{recursivePatternRecurseStart}{recursivePatternRecurseEnd}%
-The \idx[match@\lstinline{match}]{\keyword{match}} -- \idx[with@\lstinline{with}]{\keyword{with}} are also very common conditional structures. In \Cref{countRecursive}, \lstinline{a > b} is the \idx{stopping condition}, \lstinline{printfn "\n"} is the \idx{stopping step}, and \lstinline{printfn "\%d " a; prt (a + 1) b} is the \idx{recursion step}.
+The \lstinline{if}--\lstinline{then} is also a very common conditional structures. In \Cref{countRecursive}, \lstinline{a > b} is the \idx{stopping condition}, \lstinline{printfn ""} is the \idx{stopping step}, and \lstinline{printfn "\%d " a; count (a + 1) b} is the \idx{recursion step}.
 
+A trick to designing recursive algorithms is to \advice{assume that the recursive function already works}. Reconsider the Divide-by-two algorith in \Cref{sec:divideByTwo}. The algorithm consists of two elements. Given an initial unsigned integer \lstinline{n}:
+\begin{enumerate}
+\item calculate \lstinline{n%2u}. This will be the right-most digit in the binary representation of \lstinline{n},
+\item solve the same problem but now for \lstinline{n/2u} until \lstinline{n=0}.
+\end{enumerate}
+Hence, we have divided the total problem into a series of simple and identical steps. Following the design steps from \Cref{sec:8step}, we decide to call the function \lstinline{divideByTwo}, and define it as a mapping from unsigned integers to strings, \lstinline{divideByTwo (n: uint): string}. From the above, we identify \lstinline{n=0} as the base case, \lstinline{divideByTwo (n/2u)} as the recursive call, and \lstinline{divideByTwo (n/2u) + string (n%2u)} as the recursive step. The resulting algorithm can in brief be written as, 
+%
+\fs{divideByTwoRecursive}{Implementing the divide-by-two algorithm using recursion.}
+%
 
 \begin{comment}
   The syntax for defining recursive functions in F\# is,
@@ -107,12 +129,15 @@ The \idx[match@\lstinline{match}]{\keyword{match}} -- \idx[with@\lstinline{with}
   \end{verbatimwrite}
   \ebnf{tmp.ebnf}{Recursive functions.}
 %
-\end{comment}
 \afterpage{\clearpage} % flush floats
+\end{comment}
 
 \section{The Call Stack and Tail Recursion}
 \label{sec:callStack}
-Fibonacci's sequence of numbers is a recursive sequence of numbers with relations to the Golden ratio and structures in biology. The Fibonacci sequence is the sequence of numbers $1, 1, 2, 3, 5, 8, 13, \ldots$. The sequence starts with $1, 1$ and the next number is recursively given as the sum of the two previous ones. A direct implementation of this is given in \Cref{fibFor}.
+Recursion is a powerful tool for designing compact and versatile algorithm. However, they can be slow and memory intensive. To understand this, we must understand how function-calls are implemented in a typical language using the Call stack, and what can be done to make recursive functions efficient.
+
+
+Consider Fibonacci's sequence of numbers which is a recursive sequence of numbers with relations to the Golden ratio and structures in biology. The Fibonacci sequence is the sequence of numbers $0, 1, 1, 2, 3, 5, 8, 13, \ldots$. The sequence starts with $0, 1$ and the next number is recursively given as the sum of the two previous ones. A direct implementation of this is given in \Cref{fibFor}.
 %
 \fs{fibRecursive}{The $n$'th Fibonacci number using recursion.}
 %
@@ -340,6 +365,28 @@ Finally, we scratch $E_1$, return to $E_0$, either physically or mentally replac
   \end{tabular*}
 \end{quote}
 Note that the output of \lstinline{printfn} is a side-effect while its return-value is unit. In any case, since this is the last line in our program, we are done tracing.
+
+\section{Recursive types}
+Discriminated unions can be defined recursively. This feature is demonstrated in \Cref{discriminatedUnionTree}.
+%
+\fs{discriminatedUnionTree}{A discriminated union modelling binary trees.}
+%
+In this example we define a tree as depicted in \Cref{fig:discriminatedUnionTree}.
+\begin{figure}
+  \Tree [.\framebox{Node} [.\framebox{Node} [. {\framebox{Leaf 1}} {\framebox{Leaf 2}} ] ] {\framebox{Leaf 3}} ]
+  \caption{The tree with 3 leaves.}
+  \label{fig:discriminatedUnionTree}
+\end{figure}
+
+
+Pattern matching must be used in order to define functions on values of a discriminated union. E.g., in \Cref{discriminatedUnionPatternMatching} we define a function that traverses a tree and prints the content of the nodes.\jon{Example uses pattern matching, which has yet to be introduced.}
+%
+\fs{discriminatedUnionPatternMatching}{A discriminated union modelling binary trees.}
+%
+
+Discriminated unions are very powerful and can often be used instead of class hierarchies. Class hierarchies are discussed in \Cref{sec:inheritance}.
+
+
 
 \section{Key concepts and terms in this chapter}
 Summary text about the key concepts from this chapter

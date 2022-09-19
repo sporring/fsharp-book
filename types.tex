@@ -112,25 +112,6 @@ Discriminated unions may also be used to store data. Where the names in enumerat
 %
 In this case, we define a discriminated union of two and three-dimensional vectors. Values of these types are created using their names followed by a tuple of their arguments. The names are also called field names. The field names may be used when creating discrimated union values, as shown in Line~\ref{discriminatedUnionsOfFieldNames}. When used, then the arguments may be given in arbitrary order, nevertheless, values for all fields must be given.
 
-Discriminated unions can be defined recursively. This feature is demonstrated in \Cref{discriminatedUnionTree}.
-%
-\fs{discriminatedUnionTree}{A discriminated union modelling binary trees.}
-%
-In this example we define a tree as depicted in \Cref{fig:discriminatedUnionTree}.
-\begin{figure}
-  \Tree [.\framebox{Node} [.\framebox{Node} [. {\framebox{Leaf 1}} {\framebox{Leaf 2}} ] ] {\framebox{Leaf 3}} ]
-  \caption{The tree with 3 leaves.}
-  \label{fig:discriminatedUnionTree}
-\end{figure}
-
-
-Pattern matching must be used in order to define functions on values of a discriminated union. E.g., in \Cref{discriminatedUnionPatternMatching} we define a function that traverses a tree and prints the content of the nodes.\jon{Example uses pattern matching, which has yet to be introduced.}
-%
-\fs{discriminatedUnionPatternMatching}{A discriminated union modelling binary trees.}
-%
-
-Discriminated unions are very powerful and can often be used instead of class hierarchies. Class hierarchies are discussed in \Cref{sec:inheritance}.
-
 \section{Records}
 \label{sec:records}
 A record is a compound of named values, and a record type is defined as follows:

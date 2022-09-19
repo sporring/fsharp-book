@@ -1,2 +1,2 @@
-$ fsharpc --nologo listFor.fsx && mono listFor.exe
+$ dotnet fsi listFor.fsx
 3 4 5 

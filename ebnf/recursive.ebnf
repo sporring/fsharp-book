@@ -1,1 +1,4 @@
-let rec <*ident*> = <*expr*> {*and <*ident*> = <*expr*>*} [*in*] <*expr*>
+let rec <*ident*> (*<*arg*> {*<*arg*>*}*) |* () =
+  <*expr*>
+{*and let <*ident*> (*<*arg*> {*<*arg*>*}*) |* () =
+  <*expr*>*}

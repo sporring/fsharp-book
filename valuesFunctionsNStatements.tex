@@ -189,7 +189,6 @@ Nesting is a natural part of structuring code, e.g., through function definition
 %%
 %%Here, the lexical scope of \lstinline!let p = 4! is for the nested scope, which ends at \lexeme{)}, returning to the lexical scope of \lstinline!let p = 3 in ...!. %Alternatively, the \keyword{begin} and \keyword{end} keywords could equally have been used.
 %\fs{letValueScopeBlockAlternative}{}
-\clearpage
 
 \section{Function Bindings}
 \label{sec:functions}
@@ -203,14 +202,16 @@ A function is a mapping between an input and output domain, as illustrated in Fi
 A key advantage of using functions when programming is that they encapsulate\idxss{encapsulation} code into smaller units, that may be reused and are easier to find errors in. F\# is a functional first programming language and offers a number of alternative methods for specifying parameters, which will be discussed in this section. Binding identifiers to functions follows a syntax similar to value-binding,
 %
 \begin{verbatimwrite}{\ebnf/functionBindings.ebnf}
-let <*funcIdent*> (*<*arg*> {*<*arg*>*} |* () = <*bodyExpr*>*)
+let <*ident*> (*<*arg*> {*<*arg*>*}*) |* () =
+  <*expr*>
 \end{verbatimwrite}
 \syntax{\ebnf/functionBindings.ebnf}{Function binding expression}
 %
-Here \lstinline[language=syntax]{<*funcIdent*>} is an identifier and is the name of the function, \lstinline[language=syntax]{<*arg*>} is zero or more identifiers, that bind to the value used when calling the function, and which is to be used in the \idx[function body]{body} of the function, the expression \lstinline[language=syntax]{<*bodyExpr*>}. The \lstinline[language=syntax]{|*} notation denotes a choice, i.e., either that on the left-hand-side or that on the right-hand-side. Thus \lstinline{let f x = x * x} and \lstinline{let f () = 3} are valid function bindings, but \lstinline{let f = 3} would be a value binding, not a function binding. The arguments and the function may be annotated with a type, in which case for arguments we write
+Here \lstinline[language=syntax]{<*ident*>} is an identifier and is the name of the function, \lstinline[language=syntax]{<*arg*>} is zero or more identifiers, that bind to the value used when calling the function, and which is to be used in the \idx[function body]{body} of the function, the expression \lstinline[language=syntax]{<*expr*>}. The \lstinline[language=syntax]{|*} notation denotes a choice, i.e., either that on the left-hand-side or that on the right-hand-side. Thus \lstinline{let f x = x * x} and \lstinline{let f () = 3} are valid function bindings, but \lstinline{let f = 3} would be a value binding, not a function binding. The arguments and the function may be annotated with a type, in which case for arguments we write
 %
 \begin{verbatimwrite}{\ebnf/functionBindingsAnnotated.ebnf}
-let <*funcIdent*> (*(<*arg*> : <*type*>) {*(<*arg*> : <*type*>)*} : <*type*> |* () : <*type*>*) = <*bodyExpr*>
+let <*ident*> (*(<*arg*> : <*type*>) {*(<*arg*> : <*type*>)*} : <*type*>*) |* (*() : <*type*>*) =
+  <*expr*>
 \end{verbatimwrite}
 \syntax{\ebnf/functionBindingsAnnotated.ebnf}{Function binding expression}
 %
@@ -257,7 +258,7 @@ Here, we use a set of nested scopes. In the scope of the function \lstinline{sol
 %
 Here, the value-binding for \lstinline!a! is redefined after it has been used to define a helper function \lstinline!f!. So which value of \lstinline!a! is used when we later apply \lstinline!f! to an argument? To resolve the confusion, remember that value-binding is lexically defined, i.e., the binding \lstinline!let f z = a * z! uses the value of \lstinline!a! as it is defined by the ordering of the lines in the script, not dynamically by when \lstinline!f! was called. Hence, \advice{think of lexical scope as substitution of an identifier with its value or function immediately at the place of definition.} Since \lstinline!a! and \lstinline!3.0! are synonymous in the first lines of the program, the function \lstinline!f! is really defined as \lstinline!let f z = 3.0 * z!.
 
-Functions do not need a name, but may be declared as an \idx[anonymous functions]{anonymous function} using the \idx[fun@\lstinline{fun}]{\keyword{fun}} keyword and the \idx[->@\lstinline{->}]{\lexeme{->}} lexeme, as shown in \Cref{functionDeclarationAnonymous}.
+Functions do not need a name, but may be declared as an \idx[anonymous functions]{anonymous function}\label{page:anonymousFunction} using the \idx[fun@\lstinline{fun}]{\keyword{fun}} keyword and the \idx[->@\lstinline{->}]{\lexeme{->}} lexeme, as shown in \Cref{functionDeclarationAnonymous}.
 %
 \fs{functionDeclarationAnonymous}{Anonymous functions are functions as values.}
 %

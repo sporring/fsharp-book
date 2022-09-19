@@ -1,4 +1,2 @@
-$ fsharpc --nologo listMultidimensional.fsx && mono listMultidimensional.exe
-[1; 2]
-2
-2
+$ dotnet fsi listMultidimensional.fsx
+Fst row = [1; 2], snd element in fst row = 2

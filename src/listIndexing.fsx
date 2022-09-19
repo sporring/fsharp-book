@@ -1,9 +1,6 @@
-let printList (lst : int list) : unit =
-  for i = 0 to lst.Length - 1 do
-    printf "%A " lst[i]
-  printfn ""
-
-let lst = [3; 4; 5]
+let lst = [3..9]
 printfn "lst = %A, lst[1] = %A" lst lst[1]
-printfn "lst.Length = %A, lst.isEmpty = %A" lst.Length lst.IsEmpty
-printList lst
+printfn "First 2 elments of lst = %A" lst[..1]
+printfn "Last 3 elements of lst = %A" lst[4..]
+printfn "Element number 3 to 5 = %A" lst[2..4]
+printfn "All elements = %A" lst[*]

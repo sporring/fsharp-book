@@ -1,1 +1,2 @@
-let <*funcIdent*> (*<*arg*> {*<*arg*>*} |* () = <*bodyExpr*>*)
+let <*ident*> (*<*arg*> {*<*arg*>*}*) |* () =
+  <*expr*>
