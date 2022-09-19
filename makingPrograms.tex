@@ -2,7 +2,7 @@
 \graphicspath{ {./figures/} }
 
 \begin{document}
-\chapter{Making programs and documenting them}
+\chapter{Making Programs and Documenting Them}
 
 \abstract{
   Programs are more than a set of instructions, which when executed pro- duces the desired result. Programming is an activity, and a program is the result of a process, in which a problem has been expressed, analyzed, subdivided, implemented, tested, and possibly rephrased. And often the process and its result are to be wrapped and documented for it to be useful by the programmer or others. In this chapter, we will zoom out, and focus on some of these surrounding processes. The chapter will describe: 
@@ -12,7 +12,8 @@
   \end{itemize}
 }
 
-\section{The 8-step guide to writing function}
+\section{The 8-step Guide to Writing Functions}
+\label{sec:8step}
 Pólya's problem solving technique described in \Cref{sec:howToSolveProblems} is a useful starting point for solving problems, and for the object-oriented programming paradign to be discussed in later chapters \Cref{chap:oopp}, approaches such as Pólya's have been put into systems. Regardless of the origin, there is always a point, where a programmer has to focus on small scale problems such as: Which functions, should be used, and how should the functions be designed? This is not an area heavily investigated in the literature, but often a skill that programmers pick up by activily engaging in programming alone or with other programmers. However, here I will venture a recipes for designing functions, which me and my collagues call The 7-step guide to writing functions. It is not meant as the ultimate guide or as required steps, but it is our experience that these steps contain essential elements that consiously or perhaps unconsioulsy always take part in designing useful and resuable functions.
 
 To decide which functions to write and how to write them:
@@ -91,7 +92,7 @@ printfn "0=1.0x^2+0.3x-1.0 => x = %A" p3
 \end{enumerate}
 
 
-\section{Programming as a commication activity}
+\section{Programming as a Commication Activity}
 \label{chap:documentation}
 Documentation is a very important part of writing programs, since it is most unlikely that you will be writing really obvious code. Moreover, what seems obvious at the point of writing may be mystifying months later to the author and to others. Documentation serves several purposes:
 \begin{enumerate}
@@ -229,7 +230,7 @@ A full description of how to use \lstinline[language=console]{mdoc} is found her
 
 Several tools exists which extracts the comments from source code and reorder the comments into manual type structures, such as Doxygen. Popular output from such tools are both HTML and \LaTeX. However, for this text, the usage of the XML-standard as a way to standardize comments will suffice.
 
-\section{Key concepts and terms in this chapter}
+\section{Key Concepts and Terms in This Chapter}
 This chapter has considered elements that are an important part of the activity of programming, but to some extent complement the specific act of writing source code. You have seen:
 \begin{itemize}
 \item How to use the \textbf{7-step guide} to design functions, which emphasizes writing examples of function usage before implementing the function itself.

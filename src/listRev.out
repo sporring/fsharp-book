@@ -1,3 +1,2 @@
-
 > List.rev [1; 2; 3];;
 val it: int list = [3; 2; 1]

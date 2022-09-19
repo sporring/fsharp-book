@@ -1,2 +1,2 @@
-$ fsharpc --nologo fibRecursiveAlt.fsx && mono fibRecursiveAlt.exe
-fib(10) = 55
+$ dotnet fsi fibRecursiveAlt.fsx
+fib(10) = 55u

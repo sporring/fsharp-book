@@ -206,7 +206,37 @@ At times, e.g., in conjunction with the higher-order functions given above, it i
 \end{description}
 E.g., given a non-empty list \lstinline{lst}, \lstinline{lst.Head = List.head lst}
 
-
+\section{Programming Intermezzo: Word Statistics}
+Natural language processing is the field of studying the natural language. This is a vast field and has seen considerable breakthroughs in our understanding of how humans communicate through writing. A common view of texts is as lists of words, so let us consider one of the most basic questions, the study of natural language may ask:
+%
+\begin{task}{probl:sumInteger}
+  What is the longest word in Hans Christian Andersen's fairy tale ``The emperor's new clothes''?
+\end{task}
+%
+The fairy tale, as published online on \url{https://www.gutenberg.org} in English and contains 1885 words. For the sake of demonstration, we will just consider the first seven words,
+\begin{quote}
+  ``Many years ago, there was an Emperor,\dots''
+\end{quote}
+and ignore punctuation. In such a small example, we quickly realize, that the answer should be ``Emperor'' which consists of 7 characters, but if we were to analyze the whole text, then the answer would not be as readily found by eye. Thus, we will write a program. To begin, we create a list of the relevant words. In \Cref{chap:IO}, we will discuss, how to read from a file, but here, we will enter them by hand:
+\begin{quote}
+  \lstinline{let wLst = ["Many";"years";"ago";"there";"was";"an";"Emperor"]}
+\end{quote}
+Strings have the \lstinline{Length} property, which if we can read it of each string in the list, then we can decide, which is the longest. The \lstinline{List.map} function allows us to make a new list as a copy of the old, but where each element \lstinline{elm} is result of \lstinline{f elm} for some function \lstinline{f}. Thus, we make an anonymous function \lstinline{fun w -> (w,w.Length)} and apply it to every element by \lstinline{List.map}:
+\begin{quote}
+  \lstinline{let wLen = List.map (fun (w: string) -> (w,w.Length)) wLst}
+\end{quote}
+Note that we chose to make a list of pairs, such that the word and its length are joined into a single data structure to safeguard us from possibly future mix-ups of words and lengths. What remains is to find the longest. For this, we must traverse, and while doing so, we must maintain an accumulator containing the longest word, we have seen so far. This is a \lstinline{List.fold} operation. \lstinline{List.fold} traverses from the head and applies a function to update the accumulator given the present state of the accumulator and the next element. An function for this is \lstinline{maxWLen},
+\begin{quote}
+  \lstinline{let maxWLen acc elm = if snd acc > snd elm then acc else elm}
+\end{quote}
+The initial value of the accumulator must be sensible, in the case that the list is empty, and which we are sure will be disregarded as soon as it is compared to any word. Here, such a value is \lstinline{("",0)}. Finally, we are ready to call \lstinline{List.fold}:
+\begin{quote}
+  \lstinline{let longest = List.fold maxWLen ("",0) wLen}
+\end{quote}
+Thus, the problem is solved with the program shown in \Cref{longestWord}.
+%
+\fs{longestWord}{Using the list module to find the longest word in an H.C. Andersen fairy tale.}
+%
 
 \section{Key concepts and terms in this chapter}
 In this chapter, you have read about

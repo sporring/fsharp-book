@@ -19,7 +19,7 @@ After you have read this chapter, you will be able to model values that contain
 
 F\# is a strongly typed language, meaning that types are known or inferred at compile time. In the previous chapters, we have used \idx{primitive types} such as \lstinline{float} and \lstinline{bool}, function types, and compound types implicitly defined by tuples. These types are used for simple programming tasks, and everything that can be programmed can be accomplished using these types. However, larger programs are often easier to read and write when using more complicated type structures. In this chapter, we will discuss type abbreviations, enumerated types, discriminated unions, records, and structs. Class types are discussed in depth in \Cref{chap:oop}.
 
-\section{Type products: Tuples}
+\section{Type Products: Tuples}
 \idx[tuple]{Tuples} are a direct extension of constants. They are immutable and have neither concatenations nor indexing operations. Tuples are unions of immutable types and have the following syntax:
 %
 \begin{verbatimwrite}{\ebnf/tuples.ebnf}
@@ -85,7 +85,7 @@ An example of using enumerations is given in \Cref{enum}.
 In this example, we define an enumerated type for medals, which allows us to work with the names rather than the values. Since the values most often are arbitrary, we can program using semantically meaningful names instead. Being able to refer to an underlying integer type allows us to interface with other -- typically low-level -- programs that require integers, and to perform arithmetic. E.g., for the medal example, we can typecast the enumerated types to integers and calculate an average medal harvest.
 \end{comment}
 
-\section{Type sums: Discriminated Unions}
+\section{Type Sums: Discriminated Unions}
 \label{sec:discriminatedUnions}
 A discriminated union is a union of a set of named cases. These cases can further be of specified types. The syntax for defining a discriminated union is as follows:
 %
@@ -220,7 +220,7 @@ The example in \Cref{compiletimeVariableType} demonstrates the statically resolv
 
 The \keyword{inline} construction is useful when generating generic functions and still profiting from static type checking. However, explicit copying of functions is often something better left to the compiler to optimize over. An alternative seems to be using runtime resolved variable types with the \lstinline[language=syntax]{'<*ident*>} syntax. Unfortunately, this is not possible in case of most operators, since they have been defined in the \lstinline{FSharp.Core} namespace to be statically resolved variable types. E.g., the \lexeme{+} operator has type \lstinline{( + ) : ^T1 -> ^T2 -> ^T3 (requires ^T1 with static member (+) and ^T2 with static member (+))}.
 
-\section{Key concepts and terms in this chapter}
+\section{Key Concepts and Terms in This Chapter}
 In this chapter you have learned about:
 \begin{itemize}
 \item the \textbf{product type} also known as a \textbf{tuple}, which is equivalent to a set product;

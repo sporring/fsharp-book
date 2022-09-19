@@ -1,4 +1,3 @@
-
 > let addSquares acc elm = acc + elm*elm
 List.fold addSquares 0 [0 .. 9];;
 val addSquares: acc: int -> elm: int -> int

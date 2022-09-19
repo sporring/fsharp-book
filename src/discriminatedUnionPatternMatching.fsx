@@ -1,8 +1,9 @@
-type Tree = Leaf of int | Node of Tree * Tree
-let rec traverse (t : Tree) : string =
-    match t with
-      Leaf(v) -> string v
-      | Node(left, right) -> (traverse left) + ", " + (traverse right)
+type Lst = Ground | Element of int*Lst
+let rec traverse (l : Lst) : string =
+    match l with
+      Ground -> ""
+      | Element(i,Ground) -> string i
+      | Element(i,rst) -> string i + ", " + (traverse rst)
 
-let tree = Node (Node (Leaf 1, Leaf 2), Leaf 3)
-printfn "%A: %s" tree (traverse tree)
+let lst = Element (1, Element (2, Element (3, Ground)))
+printfn "%A" (traverse lst)

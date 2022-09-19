@@ -1,9 +1,8 @@
-let fib n =
+let fib (n: uint) =
   let rec fibPair n pair =
-    if n < 2 then pair
-    else fibPair (n - 1) (snd pair, fst pair + snd pair)
-  if n < 1 then 0
-  elif n = 1 then 1
-  else fibPair n (0, 1) |> snd
+    if n < 2u then pair
+    else fibPair (n - 1u) (snd pair, fst pair + snd pair)
 
-printfn "fib(10) = %d" (fib 10)
+  fibPair n (0u, 1u) |> snd
+
+printfn "fib(10) = %A" (fib 10u)

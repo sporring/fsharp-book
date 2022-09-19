@@ -3,9 +3,7 @@ let rec even x =
   else odd (x - 1)
 and odd x =
   if x = 0 then false
-  else even (x - 1);;
+  else even (x - 1)
 
-let w = 5;
-printfn "%*s %*s %*s" w "i" w "even" w "odd"
-for i = 1 to w do
-  printfn "%*d %*b %*b" w i w (even i) w (odd i)
+let res = List.map (fun i -> (i, even i, odd i)) [1..3]
+printfn "(i, even, odd):\n%A" res
