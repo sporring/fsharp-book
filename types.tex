@@ -25,25 +25,25 @@ F\# is a strongly typed language, meaning that types are known or inferred at co
 \begin{verbatimwrite}{\ebnf/tuples.ebnf}
 <*expr*>{*, <*expr*>*}
 \end{verbatimwrite}
-\syntax{\ebnf/tuples.ebnf}{Tuples are list of expressions separated by commas.}
+\syntax{\ebnf/tuples.ebnf}{Tuples are a list of expressions separated by commas.}
 %
 Tuples are identified by the \lexeme{,} lexeme and often enclosed in parentheses, but that is not required. An example is a triple, also known as a 3-tuple, \lstinline!(2,true,"hello")!. In interactive mode, the type of tuples is demonstrated in \Cref{tuple}.
 %
 \fsOutput{tuple}{Tuple types are products of sets.}
 %
-The values \lstinline!2!, \lstinline!true!, and \lstinline!"hello"! are \idx[member]{members}, and the number of elements of a tuple is its \idx{length}. From the response of F\#, we see that the tuple is inferred to have the type \lstinline!int * bool * string!. The \lexeme{*} denotes the Cartesian product between sets.  Tuples can be products of any types and follow the lexical scope rules like value and function bindings. Notice also that a tuple may be printed as a single entity by the \lstinline!%A! %
+The values \lstinline!2!, \lstinline!true!, and \lstinline!"hello"! are \idx[member]{members}, and the number of elements of a tuple is its \idx{length}. From the response of F\#, we see that the tuple is inferred to have the type \lstinline!int * bool * string!. The \lexeme{*} denotes the Cartesian product between sets.  Tuples can be products of any type and follow the lexical scope rules like value and function bindings. Notice also that a tuple may be printed as a single entity by the \lstinline!%A! %
 placeholder. In the example we bound \lstinline!tp! to the tuple. The opposite is also possible, as demonstrated in \Cref{tupleDeconstruction}.
 %
 \fsOutput{tupleDeconstruction}{Definition of a tuple.}
 %
-In this example, a function is defined that takes 1 argument, a 3-tuple. If we wanted a function with 3 arguments, then the function binding should have been \lstinline{let deconstructNPrint a b c = ...}. The value binding \lstinline{let (a, b, c) = tp}, binds a tuple with 3 named members to a value, thus deconstructing it in terms of its members. This is called pattern matching and will be discussed in further details in \Cref{chap:patterns}. Since we used the \lstinline!\%A! placeholder in the \lstinline!printfn! function, the function can be called with 3-tuples of different types. F\# informs us that the tuple type is variable by writing \lstinline{'a * 'b * 'c}. The \lexeme{'} notation means that the type can be decided at run-time, see \Cref{sec:variableTypes} for more on variable types. 
+In this example, a function is defined that takes 1 argument, a 3-tuple. If we wanted a function with 3 arguments, then the function binding should have been \lstinline{let deconstructNPrint a b c = ...}. The value binding \lstinline{let (a, b, c) = tp}, binds a tuple with 3 named members to a value, thus deconstructing it in terms of its members. This is called pattern matching and will be discussed in further detail in \Cref{chap:patterns}. Since we used the \lstinline!\%A! placeholder in the \lstinline!printfn! function, the function can be called with 3-tuples of different types. F\# informs us that the tuple type is variable by writing \lstinline{'a * 'b * 'c}. The \lexeme{'} notation means that the type can be decided at run-time, see \Cref{sec:variableTypes} for more on variable types. 
 
 Pairs or 2-tuples are so common that F\# includes two built-in functions,\idx[fst@\lstinline{fst}]{\keyword{fst}} and \idx[snd@\lstinline{snd}]{\keyword{snd}}, to extract the first and second element of a pair. This is demonstrated in \Cref{pair}.
 %
 \fs{pair}{Deconstruction of pairs with the built-in functions \keyword{fst} and \keyword{snd}.}
 %
 
-Tuples of equal lengths can be compared, and the  comparison is defined similarly to string comparison. Tuples of equal length are compared element by element. E.g., \lstinline!(1,2) = (1,3)! is false, while \lstinline!(1,2) = (1,2)! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered lexicographically, such that \lstinline!('a', 'b', 'c') < ('a', 'b', 's') && ('a', 'b', 's') <  ('c', 'o', 's')! is true, that is, the \lexeme{<} operator on two tuples is true if and only if the left operand should come before the right when sorting alphabetically. See \Cref{tupleCompare} for an example.
+Tuples of equal lengths can be compared, and the comparison is defined similarly to string comparison. Tuples of equal length are compared element by element. E.g., \lstinline!(1,2) = (1,3)! is false, while \lstinline!(1,2) = (1,2)! is true. The \lexeme{<>} operator is the boolean negation of the \lexeme{=} operator. For the \lexeme{<} , \lexeme{<=}, \lexeme{>}, and \lexeme{>=} operators, the strings are ordered lexicographically, such that \lstinline!('a', 'b', 'c') < ('a', 'b', 's') && ('a', 'b', 's') <  ('c', 'o', 's')! is true, that is, the \lexeme{<} operator on two tuples is true if and only if the left operand should come before the right when sorting alphabetically. See \Cref{tupleCompare} for an example.
 %
 \fs{tupleCompare}{Tuples comparison is similar to string comparison.}
 %
@@ -63,7 +63,7 @@ Mutable tuples are value types, meaning that binding to new names makes copies, 
 %
 The use of tuples shortens code and highlights semantic content at a higher level, e.g., instead of focusing on the elements, tuples focus on their union. While this may look elegant and short there is the risk of \idx{obfuscation}, i.e., writing compact code that is difficult to read, where an unprepared reader of the code may not easily understand the computation nor appreciate its elegance without an accompanying explanation.  Hence, \advice{always keep an eye out for compact and concise ways to write code, but never at the expense of readability.}
 
-%% Jon 20220826 These have implementational advantages, but discriminated unions is supperior for solving programming problems
+%% Jon 20220826 These have implementational advantages, but discriminated unions are supperior for solving programming problems
 \begin{comment}
   \section{Enumerations}
 \label{sec:enums}
@@ -104,13 +104,13 @@ An example just using the named cases but no further specification of types is g
 %
 \fs{discriminatedUnions}{A discriminated union of medals. Compare with \Cref{enum}.}
 %
-Here, we define a discriminated union as three named cases signifying three different types of medals. Comparing with the enumerated type in \Cref{enum}, we see that the only difference is that the cases of the discriminated unions have no value. A commonly used discriminated union is the \idx{option type}, see \Cref{sec:optionType} for more detail.
+Here, we define a discriminated union as three named cases signifying three different types of medals. Compared with the enumerated type in \Cref{enum}, we see that the only difference is that the cases of the discriminated unions have no value. A commonly used discriminated union is the \idx{option type}, see \Cref{sec:optionType} for more detail.
 
 Discriminated unions may also be used to store data. Where the names in enumerated types are aliases of single values, the names used in discriminated unions can hold any value specified at the time of creation. An example is given in \Cref{discriminatedUnionsOf}.
 %
 \fs{discriminatedUnionsOf}{A discriminated union using explicit subtypes.}
 %
-In this case, we define a discriminated union of two and three-dimensional vectors. Values of these types are created using their names followed by a tuple of their arguments. The names are also called field names. The field names may be used when creating discrimated union values, as shown in Line~\ref{discriminatedUnionsOfFieldNames}. When used, then the arguments may be given in arbitrary order, nevertheless, values for all fields must be given.
+In this case, we define a discriminated union of two and three-dimensional vectors. Values of these types are created using their names followed by a tuple of their arguments. The names are also called field names. The field names may be used when creating discriminated union values, as shown in Line~\ref{discriminatedUnionsOfFieldNames}. When used, then the arguments may be given in arbitrary order, nevertheless, values for all fields must be given.
 
 \section{Records}
 \label{sec:records}
@@ -128,19 +128,19 @@ type <*ident*> = {
 %
 Records are collections of named variables and values of possibly different types. They are reference types, and thus their content is stored on \idx{The Heap}, see \Cref{sec:referenceCells} for a discussion on reference types. Records can also be \idx{struct records} using the \lstinline{[<Struct>]} attribute, in which case they are value types. See \Cref{sec:structs} for a discussion on structs. An example of using records is given in \Cref{records}. The values of individual members of a record are obtained using the \idx[.@\lstinline{.}]{\lexeme{.}} notation
 %
-\fs{records}{A record is defined for holding information about a person.}
+\fs{records}{A record is defined as holding information about a person.}
 %
-This example illustrates a how record type is used to store varied data about a person.
+This example illustrates how record type is used to store varied data about a person.
 
 If two record types are defined with the same label set, then the latter dominates the former. This is demonstrated in \Cref{recordsDominance}.
 %
-\fs{recordsDominance}{Redefined types dominate old record types, but earlier definitions are still accessible using explicit or implicit specification for bindings.}
+\fs{recordsDominance}{Redefined types dominate old record types, but earlier definitions are still accessible using the explicit or implicit specification for bindings.}
 %
 In the example, two identical record types are defined, and we use the built-in \lstinline{GetType()} method to inspect the type of bindings. We see that \lstinline{lecturer} is of \lstinline{RecordsDominance+teacher} type, since \lstinline{teacher} dominates the identical \lstinline{person} type definition. However, we may enforce the \lstinline{person} type by either specifying it for the name, as in \lstinline{let author : person = ...}, or by fully or partially specifying it in the record expression following the \lexeme{=} sign. In both cases, they are of \lstinline{RecordsDominance+person} type. The built-in \lstinline{GetType()} method is inherited from the base class for all types, see \Cref{chap:oop} for a discussion on classes and inheritance.
 
 Note that when creating a record you must supply a value to all fields, and you cannot refer to other fields of the same record, i.e., \lstinline!{name = "Jon"; age = height * 3; height = 1.75}! is illegal.
 
-Since records are per default reference types, binding creates aliases, not copies. This matters for mutable members, in which case when copying, we must explicitly create a new record with the old data. Copying can be done either by using referencing to the individual members of the source or using the short-hand \idx[with@\lstinline{with}]{\keyword{with}} notation. This is demonstrated in \Cref{recordCopy}.
+Since records are per default reference types, binding creates aliases, not copies. This matters for mutable members, in which case when copying, we must explicitly create a new record with the old data. Copying can be done either by using referencing the individual members of the source or using the short-hand \idx[with@\lstinline{with}]{\keyword{with}} notation. This is demonstrated in \Cref{recordCopy}.
 %
 \fs{recordCopy}{Bindings are references. To copy and not make an alias, explicit copying must be performed.}
 %
@@ -164,7 +164,7 @@ type <*ident*> =
 \end{verbatimwrite}
 \syntax{\ebnf/structs.ebnf}{Syntax for type abbreviation.}
 %
-The syntax makes use of the \idx[val@\lstinline{val}]{\keyword{val}} and \idx[new@\lstinline{new}]\idx{\keyword{new}} keywords. Like \keyword{let}, the keyword \keyword{val} binds a name to a value, but unlike \keyword{let}, the value is always the type's default value. The \keyword{new} keyword denotes the function used to fill values into the fields at time of creation. This function is called the \idx{constructor}. No \keyword{let} or \keyword{do}-bindings are allowed in structure definitions. Fields are accessed using the \idx[.@\lstinline{.}]{\lexeme{.}} notation. An example is given in \Cref{struct}.
+The syntax makes use of the \idx[val@\lstinline{val}]{\keyword{val}} and \idx[new@\lstinline{new}]\idx{\keyword{new}} keywords. Like \keyword{let}, the keyword \keyword{val} binds a name to a value, but unlike \keyword{let}, the value is always the type's default value. The \keyword{new} keyword denotes the function used to fill values into the fields at the time of creation. This function is called the \idx{constructor}. No \keyword{let} or \keyword{do}-bindings are allowed in structure definitions. Fields are accessed using the \idx[.@\lstinline{.}]{\lexeme{.}} notation. An example is given in \Cref{struct}.
 %
 \fs{struct}{Defining a struct type and creating a value of it.}
 %
@@ -175,7 +175,7 @@ Structs are small versions of classes and allows, e.g., for overloading\idxs{ove
 %
 We defer further discussion of these concepts to \Cref{chap:oop}.
 
-The use of structs are generally discouraged, and instead, it is recommended to use enums, records, and discriminated unions, possibly with the \lstinline{[<Struct>]} attribute for the last two in order to make them value types.
+The use of structs is generally discouraged, and instead, it is recommended to use enums, records, and discriminated unions, possibly with the \lstinline{[<Struct>]} attribute for the last two in order to make their value types.
 \end{comment}
 
 \section{Type Abbreviations}
@@ -187,7 +187,7 @@ type <*ident*> = <*aType*>
 \end{verbatimwrite}
 \syntax{\ebnf/typeAbbreviation.ebnf}{Syntax for type abbreviation.}
 %
-where the identifier is a new name, and the type-name is an existing type or a compound of existing types. \Cref{typeAbbreviation} shows examples of the defintion of several type abbreviations.
+where the identifier is a new name, and the type-name is an existing type or a compound of existing types. \Cref{typeAbbreviation} shows examples of the definition of several type abbreviations.
 %
 \fs{typeAbbreviation}{Defining four type abbreviations, three of which are compound types.}
 %
@@ -216,9 +216,9 @@ In the example, adding the \keyword{inline} does two things: Firstly, it copies 
 %
 \fs{compiletimeVariableType}{Explicitly spelling out of the statically resolved type variables from \Cref{variableTypeError}.}
 %
-The example in \Cref{compiletimeVariableType} demonstrates the statically resolved variable type syntax, \lstinline[language=syntax]{^<*ident*>}, as well as the use of \idx{type constraints}, using the keyword \idx[when@\lstinline{when}]{\keyword{when}}.  Type constraints have a rich syntax, but will not be discussed further in this book.\jon{Should I extend on type constraints? Perhaps it is better left for a specialize chapter on generic functions.} In the example, the type constraint \lstinline{when ^a : (static member ( + ) :  ^a * ^a -> ^a)} is given using the object-oriented properties of the type variable \lstinline{^a}, meaning that the only acceptable type values are those which have a member function \lstinline{(+)} taking a tuple and giving a value all of identical type, and where the type can be inferred at compile time. See \Cref{chap:oop} for details on member functions.
+The example in \Cref{compiletimeVariableType} demonstrates the statically resolved variable type syntax, \lstinline[language=syntax]{^<*ident*>}, as well as the use of \idx{type constraints}, using the keyword \idx[when@\lstinline{when}]{\keyword{when}}.  Type constraints have a rich syntax, but will not be discussed further in this book.\jon{Should I extend on type constraints? Perhaps it is better left for a specialized chapter on generic functions.} In the example, the type constraint \lstinline{when ^a : (static member ( + ) :  ^a * ^a -> ^a)} is given using the object-oriented properties of the type variable \lstinline{^a}, meaning that the only acceptable type values are those which have a member function \lstinline{(+)} taking a tuple and giving a value all of the identical types, and where the type can be inferred at compile time. See \Cref{chap:oop} for details on member functions.
 
-The \keyword{inline} construction is useful when generating generic functions and still profiting from static type checking. However, explicit copying of functions is often something better left to the compiler to optimize over. An alternative seems to be using runtime resolved variable types with the \lstinline[language=syntax]{'<*ident*>} syntax. Unfortunately, this is not possible in case of most operators, since they have been defined in the \lstinline{FSharp.Core} namespace to be statically resolved variable types. E.g., the \lexeme{+} operator has type \lstinline{( + ) : ^T1 -> ^T2 -> ^T3 (requires ^T1 with static member (+) and ^T2 with static member (+))}.
+The \keyword{inline} construction is useful when generating generic functions and still profiting from static type checking. However, explicit copying of functions is often something better left to the compiler to optimize. An alternative seems to be using runtime resolved variable types with the \lstinline[language=syntax]{'<*ident*>} syntax. Unfortunately, this is not possible in the case of most operators, since they have been defined in the \lstinline{FSharp.Core} namespace to be statically resolved variable types. E.g., the \lexeme{+} operator has type \lstinline{( + ) : ^T1 -> ^T2 -> ^T3 (requires ^T1 with static member (+) and ^T2 with static member (+))}.
 
 \section{Key Concepts and Terms in This Chapter}
 In this chapter you have learned about:

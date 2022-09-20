@@ -49,7 +49,7 @@ F\# implements lists as linked lists, as illustrated in \Cref{fig:linkedList}.
   \caption{A list is a linked list: Here is illustrated the linked list of \mbox{\lstinline!["This"; "is"; "a"; "list"]!}.}
   \label{fig:linkedList}
 \end{figure}
-A linked list is a datastructure consisting of a number of elements, where each element has an item of data, and a pointer to the next element. For lists, every element can only have one other element pointing to it. The first element in a list is called its \idx{head}, and the remainder of the list is called its \idx{tail}. The last element in a list does not point to any other, and this is denoted by the \idx{ground} symbol as shown in the figure. 
+A linked list is a data structure consisting of a number of elements, where each element has an item of data and a pointer to the next element. For lists, every element can only have one other element pointing to it. The first element in a list is called its \idx{head}, and the remainder of the list is called its \idx{tail}. The last element in a list does not point to any other, and this is denoted by the \idx{ground} symbol as shown in the figure. 
 
 A list type is identified with the \idx[list@\keyword{list}]{\keyword{list}} keyword, such that a list of integers has the type \lstinline!int list!. Like strings, lists may be indexed and sliced using the \idx[{[]}@\lstinline{[]}]{\lexeme{[]}} notation, and the first element has index 0, and the last has the one minus the list's length, see \Cref{listIndexing} for examples.
 %
@@ -81,7 +81,7 @@ A list has a number of \idx[property]{properties}, which is summarized below:
 \begin{verbatimwrite}{\ebnf/forLoopIn.ebnf}
 for <*ident*> in <*list*> do <*bodyExpr*> [*done*]
 \end{verbatimwrite}
-\syntax{\ebnf/forLoopIn.ebnf}{For-in loop with in expression.}
+\syntax{\ebnf/forLoopIn.ebnf}{For-in loop within expression.}
 In \keyword{for}-\keyword{in} loops, the loop runs through each element of the \lstinline[language=syntax]{<*list*>}, and assigns it to the identifier \lstinline[language=syntax]{<*ident*>}. This is demonstrated in \Cref{listFor}.
 %
 \fs{listFor}{The \keyword{for}-\keyword{in} loops are preferred over \keyword{for}-\keyword{to} loops.}
@@ -118,14 +118,14 @@ The example shows a \idx{ragged multidimensional list}, since each row has a dif
   \label{fig:raggedLinkedList}
 \end{figure}
 
-Operations on datastructures are often analyzed for their \idx{computational complexity}, which is a worst-case and releative measure on their running time on a given piece of hardware. The notation is sometimes called \idx{Big-O} notation or \idx{asymptotic notation}. For example, the algorithm for calculating the length of a linked list starts at the head and follows the links until the end. For a list of length $n$, this takes $n$ steps, and hence the computational complexity $\mathcal{O}(n)$. Technically speaking, if the true running time as a function of the length of the list is $f(n)$, then there exists a positive real number $A$ and a real number $n_0$ such that for all $n\leq n_0$,
+Operations on data structures are often analyzed for their \idx{computational complexity}, which is a worst-case and relative measure of their running time on a given piece of hardware. The notation is sometimes called \idx{Big-O} notation or \idx{asymptotic notation}. For example, the algorithm for calculating the length of a linked list starts at the head and follows the links until the end. For a list of length $n$, this takes $n$ steps, and hence the computational complexity $\mathcal{O}(n)$. Technically speaking, if the true running time as a function of the length of the list is $f(n)$, then there exists a positive real number $A$ and a real number $n_0$ such that for all $n\leq n_0$,
 \begin{equation}
   |f(n)| \leq Ag(n).
 \end{equation}
-I.e., if $n$ is large enough, then the running time grows no faster than $Mn$ for some constant $M$. This constant will differ per computer, but the the asymptotic notation describes the relative increase in running time as we increas the list size. Similarly, indexing an element $i$ of a list of length $n$ is also $\mathcal{O}(n)$, since in worst case, $i=n$, and the linked list must be traversed from the head to its tail. This is slow in comparison to arrays, see \Cref{sec:arrays}.
+I.e., if $n$ is large enough, then the running time grows no faster than $Mn$ for some constant $M$. This constant will differ per computer, but the asymptotic notation describes the relative increase in running time as we increase the list size. Similarly, indexing an element $i$ of a list of length $n$ is also $\mathcal{O}(n)$, since in the worst case, $i=n$, and the linked list must be traversed from the head to its tail. This is slow in comparison to arrays, see \Cref{sec:arrays}.
  
 \section{The List Module}
-Lists are so commonly used that a \idx[list module]{module} is included with F\#. A module is a library of functions and will be discussed in general in \Cref{sec:modules}. The list of functions in the list module is very long, and here, we briefly showcase some important ones. Below, the functions are grouped in 3: Simple functions, which takes and/or gives lists as argument and/or results; higher-order functions, which takes a function as argument; and those that mimic the list's properties which can be useful in conjunction with the higher-order functions. Higher-order functions are discussed in detail in \Cref{chap:higherOrderFunctions}.
+Lists are so commonly used that a \idx[list module]{module} is included with F\#. A module is a library of functions and will be discussed in general in \Cref{sec:modules}. The list of functions in the list module is very long, and here, we briefly showcase some important ones. Below, the functions are grouped into 3: Simple functions, which take and/or give lists as argument and/or results; higher-order functions, which takes a function as an argument; and those that mimic the list's properties which can be useful in conjunction with the higher-order functions. Higher-order functions are discussed in detail in \Cref{chap:higherOrderFunctions}.
 
 Some often used simple functions in alphabetical order are:
 \begin{description}
@@ -150,7 +150,7 @@ Some often used simple functions in alphabetical order are:
 \end{description}
 %The \lstinline{ofArray} and \lstinline{toArray} are related to arrays to be discussed in \Cref{sec:arrays}.
 
-Some programming patterns on lists involves performing calculations and combining list elements, and they are so common that they have been standardized. Examples of this are the higher-order functions from the module, given below. As is common, the examples are given with anonymous functions, see page~\pageref{page:anonymousFunction} in \Cref{sec:functions}.
+Some programming patterns on lists involve performing calculations and combining list elements, and they are so common that they have been standardized. Examples of this are the higher-order functions from the module, given below. As is common, the examples are given with anonymous functions, see page~\pageref{page:anonymousFunction} in \Cref{sec:functions}.
 \begin{description}
 \item[\texttt{List.collect}:] \lstinline{f:('T -> 'U list) -> lst:'T list -> 'U list}.~\\
   Applies a function \lstinline{f} to each element in \lstinline{lst}. For each element, \lstinline{f} produces a list, and the result of \lstinline{List.collect} is the concatenation of all of these lists.
@@ -172,7 +172,7 @@ Some programming patterns on lists involves performing calculations and combinin
   \end{quote}
   \fsOutputNF{listFold}{\lstinline{List.fold}}\idxss{List.fold@\lstinline{List.fold}}
 \item[\texttt{List.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> lst:'T list -> elm:'S -> 'S}.~\\
-  Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{lst} consists of \lstinline{n} elements
+  Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{lst}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{lst} consists of \lstinline{n} elements
   \lstinline{List.foldBack} calculates:
   \begin{quote}
     \lstinline{f lst[0] (f lst[1]} ($\ldots$\lstinline{(f lst[n-1] elm)} $\ldots$\lstinline{))}.
@@ -242,7 +242,7 @@ Thus, the problem is solved with the program shown in \Cref{longestWord}.
 In this chapter, you have read about
 \begin{itemize}
 \item How to create lists with the \lexeme{[]} notation
-\item That lists are implemented as linked elements which implies that prepending is fast, but concatenation and indexing is slow.
+\item That lists are implemented as linked elements which implies that prepending is fast, but concatenation and indexing are slow.
 \item The list properties such as \lstinline{Head}, \lstinline{Tail}, and \lstinline{Length}
 \item The list module with important higher-order functions such as \lstinline{List.map} and \lstinline{List.fold}.
 \end{itemize}

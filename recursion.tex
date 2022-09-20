@@ -12,7 +12,7 @@
   \item It must be a base case.
   \item The base case must be reached at some point, in order to avoid an infinite loop
   \end{enumerate}     
-  In \Cref{fig:foreverRecursion} is an illustration the concept of an infinite loop with recursion.
+  In \Cref{fig:foreverRecursion} is an illustration of the concept of an infinite loop with recursion.
   \begin{figure} % We want the figure on the first page with the chapter title
     \centering
     \includegraphics[width=0.7\textwidth]{recursiveForever} % for some reason, it does not want to read the pdf-file
@@ -29,7 +29,7 @@
 
 
 \section{Recursive Functions}
-A \idx{recursive function} is a function which calls itself, and the syntax for defining recursive functions is an extension of that for regular functions:
+A \idx{recursive function} is a function that calls itself, and the syntax for defining recursive functions is an extension of that for regular functions:
 %
 \begin{verbatimwrite}{\ebnf/recursive.ebnf}
 let rec <*ident*> (*<*arg*> {*<*arg*>*}*) |* () =
@@ -110,7 +110,7 @@ let rec f a =
 %\FrameArea{recursivePatternRecurseStart}{recursivePatternRecurseEnd}%
 The \lstinline{if}--\lstinline{then} is also a very common conditional structures. In \Cref{countRecursive}, \lstinline{a > b} is the \idx{stopping condition}, \lstinline{printfn ""} is the \idx{stopping step}, and \lstinline{printfn "\%d " a; count (a + 1) b} is the \idx{recursion step}.
 
-A trick to designing recursive algorithms is to \advice{assume that the recursive function already works}. Reconsider the Divide-by-two algorith in \Cref{sec:divideByTwo}. The algorithm consists of two elements. Given an initial unsigned integer \lstinline{n}:
+A trick to designing recursive algorithms is to \advice{assume that the recursive function already works}. Reconsider the Divide-by-two algorithm in \Cref{sec:divideByTwo}. The algorithm consists of two elements. Given an initial unsigned integer \lstinline{n}:
 \begin{enumerate}
 \item calculate \lstinline{n%2u}. This will be the right-most digit in the binary representation of \lstinline{n},
 \item solve the same problem but now for \lstinline{n/2u} until \lstinline{n=0}.
@@ -133,14 +133,14 @@ Hence, we have divided the total problem into a series of simple and identical s
 
 \section{The Call Stack and Tail Recursion}
 \label{sec:callStack}
-Recursion is a powerful tool for designing compact and versatile algorithm. However, they can be slow and memory intensive. To understand this, we must understand how function-calls are implemented in a typical language using the Call stack, and what can be done to make recursive functions efficient.
+Recursion is a powerful tool for designing compact and versatile algorithms. However, they can be slow and memory intensive. To understand this, we must understand how function calls are implemented in a typical language using the Call stack, and what can be done to make recursive functions efficient.
 
 
 Consider Fibonacci's sequence of numbers which is a recursive sequence of numbers with relations to the Golden ratio and structures in biology. The Fibonacci sequence is the sequence of numbers $1, 1, 2, 3, 5, 8, 13, \ldots$. The sequence starts with $1, 1$ and the next number is recursively given as the sum of the two previous ones. A direct implementation of this is given in \Cref{fibFor}.
 %
 \fs{fibRecursive}{The $n$'th Fibonacci number using recursion.}
 %
-Here we extended the sequence to $0, 1, 1, 2, 3, 5, \ldots$ with the starting sequence $0, 1$, allowing us to define a function for all non-negative integers without breaking the definition of the sequence. This is a general piece of advice: \advice{make functions which gives sensible output for any argument from its input domain.} 
+Here we extended the sequence to $0, 1, 1, 2, 3, 5, \ldots$ with the starting sequence $0, 1$, allowing us to define a function for all non-negative integers without breaking the definition of the sequence. This is a general piece of advice: \advice{make functions which give sensible output for any argument from its input domain.} 
 
 A visualization of the calls and the scopes created by \lstinline{fibRecursive} is shown in \Cref{fig:fibRecursiveScope}.
 \begin{figure} % make sure figure is printed after the countRecursive
@@ -225,9 +225,9 @@ The figure illustrates that each recursive step results in two calls to the func
   \caption{The function calls involved in calling \lstinline{fib 5}.}
   \label{fig:fibRecursiveScopeDeep}
 \end{figure}
-Thus, a call to the function \lstinline{fib} generates a tree of calls that is five levels deep and has \lstinline{fib(5)} number of nodes. In general for the program in \Cref{fibRecursive}, a call to \lstinline{fib(n)} produces a tree with $\text{\lstinline{fib(n)}}\leq c\alpha^n$ calls to the function for some positive constant $c$ and $\alpha \geq \frac{1+\sqrt{5}}{2}\sim 1.6$\jon{\url{https://math.stackexchange.com/questions/674533/prove-upper-bound-big-o-for-fibonaccis-sequence}}. Each call takes time and requires memory, and we have thus created a slow and somewhat memory-intensive function. This is a hugely ineffective implementation of calculating entries into Fibonacci's sequence, since many of the calls are identical. E.g., in \Cref{fig:fibRecursiveScopeDeep}, \lstinline{fib 1} is called five times. Before we examine a faster algorithm, we first need to discuss how F\# executes function calls.
+Thus, a call to the function \lstinline{fib} generates a tree of calls that is five levels deep and has \lstinline{fib(5)} number of nodes. In general for the program in \Cref{fibRecursive}, a call to \lstinline{fib(n)} produces a tree with $\text{\lstinline{fib(n)}}\leq c\alpha^n$ calls to the function for some positive constant $c$ and $\alpha \geq \frac{1+\sqrt{5}}{2}\sim 1.6$\jon{\url{https://math.stackexchange.com/questions/674533/prove-upper-bound-big-o-for-fibonaccis-sequence}}. Each call takes time and requires memory, and we have thus created a slow and somewhat memory-intensive function. This is a hugely ineffective implementation of calculating entries into Fibonacci's sequence since many of the calls are identical. E.g., in \Cref{fig:fibRecursiveScopeDeep}, \lstinline{fib 1} is called five times. Before we examine a faster algorithm, we first need to discuss how F\# executes function calls.
 
-When a function is called, then memory is dynamically allocated internally for the function on what is known as the \idx{call stack}. Stacks are used for many things in programming, but typically the call stack is considered special, since it is almost always implicitly part of any program execution. Hence, it is often just referred to as \idx{The Stack}. When a function is called, a new \idx{stack frame} is stacked (pushed) on the call stack, including its arguments, local storage such as mutable values, and where execution should return to when the function is finished. When the function finishes, the stack frame is unstacked (popped) and in its stead, the return value of the function is stacked. This return value is then unstacked and used by the caller. After unstacking the return value, the call stack is identical to its state prior to the call. \Cref{fig:TheStack} shows snapshots of the call stack when calling \lstinline{fib 5} in \Cref{fibRecursive}. 
+When a function is called, then memory is dynamically allocated internally for the function on what is known as the \idx{call stack}. Stacks are used for many things in programming, but typically the call stack is considered special since it is almost always implicitly part of any program execution. Hence, it is often just referred to as \idx{The Stack}. When a function is called, a new \idx{stack frame} is stacked (pushed) on the call stack, including its arguments, local storage such as mutable values, and where execution should return to when the function is finished. When the function finishes, the stack frame is unstacked (popped) and in its stead, the return value of the function is stacked. This return value is then unstacked and used by the caller. After unstacking the return value, the call stack is identical to its state prior to the call. \Cref{fig:TheStack} shows snapshots of the call stack when calling \lstinline{fib 5} in \Cref{fibRecursive}. 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{TheCallStack}
@@ -323,7 +323,7 @@ evaluate \lstinline{a % b}, call \lstinline{gcd b (a % b)}, and then create a ne
     10&\ref{gcd:gcd} & $E_3$ &$\big((a = 10, b = 5), \text{gcd-body}, ()\big)$\\
   \end{tabular*}
 \end{quote}
-Again we fall through to line~\ref{gcd:gcdR2}, evaluate the remainder operator and initiate a new environment,
+Again we fall through to line~\ref{gcd:gcdR2}, evaluate the remainder operator, and initiate a new environment,
 \begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
@@ -381,7 +381,7 @@ In this chapter, we have taken a second look at recursion. You have seen:
 \begin{itemize}
 \item how to define \emph{recursive functions} and \emph{mutually recursive functions}.
 \item how the \emph{call stack} influences the resources used by recursive functions, and how \emph{tail recursion} is a method for making recursive function efficient.
-\item \emph{recursive discrimated unions} and how they can be used to model linked lists.
+\item \emph{recursive discriminated unions} and how they can be used to model linked lists.
 \item how to trace-by-hand recursive functions.
 \end{itemize}
 \end{document}

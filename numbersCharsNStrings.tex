@@ -33,7 +33,7 @@ In the previous chapter, we introduced some key F\# programming tools and concep
 %Talking about programs and programming languages we make a distinction between the language's \idx{syntax}, which describes what are legal expressions and statements, and the \idx{semantics} of an expression and a statement, which describes what is meant. This is analog to human languages, where how nouns, verbs, etc. may be placed in relation to each describes the syntax of a sentence, while the meaning of a sentence is its semantics. Basic elements of F\#'s syntax are literals, which is a fixed value like the number 3.
 
 \section{Literals and Basic Types}
-All programs rely on processing of data, and an essential property of data is its \idx{type}. A \idx{literal} is a fixed value like the number 3, and if we type the number \lstinline!3! in an interactive session at the input prompt, then F\# responds as shown in \Cref{firstType}.
+All programs rely on the processing of data, and an essential property of data is its \idx{type}. A \idx{literal} is a fixed value like the number 3, and if we type the number \lstinline!3! in an interactive session at the input prompt, then F\# responds as shown in \Cref{firstType}.
 %
 \fsOutput{firstType}{Typing the number 3.}
 %
@@ -89,11 +89,11 @@ In addition to these built-in types, F\# is designed such that it is easy to def
 
 Humans like to use the \idx{decimal number} system for representing numbers. Decimal numbers are \idx{base}~10, which means that a value is represented as two sequences of decimal digits separated by a \idx{decimal point}, where each \idx{digit} $d$ has a position and a value $d \in \{0,1,2,\ldots,9\}$. The part before the decimal point is called the \idx{whole part} and the part after is called the \idx{fractional part} of the number. An \idx{integer} is a number with only a whole part and neither a decimal point nor a fractional part. As an example \lstinline!35.7! is a decimal number, whose value is $3\cdot 10^1+5\cdot 10^0+7\cdot 10^{-1}$, and \lstinline!128! is an integer, whose value is $1\cdot 10^2+2\cdot 10^1+8\cdot 10^{0}$. In F\#, a decimal number is called a \idx{floating point number}.  Floating point numbers may alternatively be given using \idx{scientific notation}, such as \lstinline!3.5e-4! and \lstinline!4e2!, where the \lstinline!e!-notation is translated to a value as \lstinline!3.5e-4!~$=3.5\cdot 10^{-4} = 0.00035$, and \lstinline!4e2!~$=4\cdot 10^2=400$.
 
-The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. Internally, programs and data are all represented as bits, hence F\# has a strong support for binary numbers. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^{-2}=5.25$. Subscripts are often used to indicate the base of a number, e.g., $101.01_2$ and $101.01_{10}$ are different numbers. Since base 10 is so common, the subscript for base 10 numbers is often omitted. 
+The basic unit of information in almost all computers is the binary digit or \idx{bit} for short. Internally, programs and data are all represented as bits, hence F\# has strong support for binary numbers. A \idx{binary number} consists of a sequence of binary digits separated by a decimal point, where each digit can have values $b \in \{0,1\}$, and the base is $2$. E.g., the binary number $101.01_2 = 1\cdot 2^2+0\cdot 2^1+1\cdot 2^0+0\cdot 2^{-1}+1\cdot 2^{-2}=5.25$. Subscripts are often used to indicate the base of a number, e.g., $101.01_2$ and $101.01_{10}$ are different numbers. Since base 10 is so common, the subscript for base 10 numbers is often omitted. 
 
-Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}. Octals uses 8 as basis and hexadecimals use 16 as basis. Each octal digit can be represented by exactly three bits, and each hexadecimal digit can represented by exactly four bits. The hexadecimal digits use \lstinline!0!--\lstinline!9! to represent the values 0--9 and \lstinline!a!--\lstinline!f! in lower or alternatively upper case to represent the values 10-15.  Thus, Octals and hexadecimals conveniently serve as shorthand for the much longer binary representation. As examples, the octal number \lstinline!37!$_8$ is $3\cdot 8^1+7\cdot 8^0=31$, and the hexadecimal number \lstinline!f3!$_{16}$ is $15\cdot 16^1+3\cdot 16^0=243$. 
+Binary numbers are closely related to \idx[octal number]{octal} and \idx[hexadecimal number]{hexadecimal numbers}. Octals use 8 as their basis and hexadecimals use 16 as their basis. Each octal digit can be represented by exactly three bits, and each hexadecimal digit can be represented by exactly four bits. The hexadecimal digits use \lstinline!0!--\lstinline!9! to represent the values 0--9 and \lstinline!a!--\lstinline!f! in lower or alternatively upper case to represent the values 10-15.  Thus, Octals and hexadecimals conveniently serve as shorthand for the much longer binary representation. As examples, the octal number \lstinline!37!$_8$ is $3\cdot 8^1+7\cdot 8^0=31$, and the hexadecimal number \lstinline!f3!$_{16}$ is $15\cdot 16^1+3\cdot 16^0=243$. 
 
-To denote integers in bases different than 10, F\# uses the prefix '0b' for binary, '0o' for octal, and '0x' for hexadecimal numbers.  For example, the value $367_{10}$ may be written as an integer \lstinline!367!, as a binary number \lstinline!0b101101111!, as a octal number \lstinline!0o557!, and as a hexadecimal number \lstinline!0x16f!. In F\#, the character sequences \lstinline!0b12! and \lstinline!ff! are not recognized as numbers.
+To denote integers in bases different than 10, F\# uses the prefix '0b' for binary, '0o' for octal, and '0x' for hexadecimal numbers.  For example, the value $367_{10}$ may be written as an integer \lstinline!367!, as a binary number \lstinline!0b101101111!, as an octal number \lstinline!0o557!, and as a hexadecimal number \lstinline!0x16f!. In F\#, the character sequences \lstinline!0b12! and \lstinline!ff! are not recognized as numbers.
 
 A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals are enclosed in single quotation marks. Appendix~\ref{sec:unicode} contains more details on code points.\spec{Spec-4.0 p.28: \texttt{char-char} is missing option \texttt{unicodegraph-long} } The character type in F\# is denoted \idx[char@\lstinline{char}]{\keyword{char}}.  Examples of characters are 'a', 'D', '3', and examples of non-characters are '23' and 'abc'. Some characters, such as the tabulation character, do not have a visual representation. These can still be represented as a character using \idx{escape sequences}. A character escape sequence starts with \lexeme{\\} followed by letter for simple escapes such as \lstinline{\t} for tabulation and \lstinline{\n} for newline. Escape sequences can also be a numerical representation of a code point, and three versions exist: The trigraph \lstinline|\DDD|, where \lstinline{D} is a decimal digit, is used to specify the first 256 code points, the hexadecimal escape codes \lstinline|\uXXXX|, where \lstinline{X} is a hexadecimal digit, is used to specify the first 65536 code points, and \lstinline|\UXXXXXXXX| is used to specify any of the approximately $4.3\cdot 10^9$ possible code points. All escape sequences are shown in \Cref{tab:escapeChar}.
 %
@@ -117,7 +117,7 @@ A \idx{character} is a \idx{Unicode} \idx{code point}, and character literals ar
     &\lstinline|\uXXXX|, \lstinline|\UXXXXXXXX|, \lstinline|\DDD|&Unicode character ('X' is any hexadecimal digit, and 'D' is any decimal digit)\\
     \hline
   \end{tabular}
-  \caption{Escape characters. The escapecode \inlinecode{\textbackslash DDD} is sometimes called a tricode.}
+  \caption{Escape characters. The escape code \inlinecode{\textbackslash DDD} is sometimes called a tricode.}
   \label{tab:escapeChar}
 \end{table}
 %
@@ -233,20 +233,20 @@ F\# supports \idx[literal type]{literal types}, where the type of a literal is i
 %The table uses a simple syntax notation such that {\lstinline[language=syntax, keywords={}]!<*integer or hexadecimal*>UL!} means that the user supplies an integer or a hexadecimal number followed by the characters 'UL'.
 
 
-The literal type is closely connected to how the values are represented internally. For example, a value of type \keyword{int32} use 32 bits and can be both positive and negative, while a \keyword{uint32} value also use 32 bits, but is unsigned. A \keyword{byte} is an 8-bit number, and \keyword{sbyte} is a signed 8-bit number. Values of type \keyword{float} use 64 bits, while \keyword{float32} only uses 32 bits. The number of bits used to represent numbers directly relates to the range and precession these types can represent. This is summarized in \Cref{tab:primitiveTypes} and discussed in more detail in \Cref{app:numbers}. String literals may be \idx{verbatim} by the @-notation or triple double quotation marks, meaning that the escape sequences are not converted to their code point. The two types of string verbatim treat quotation marks differently, as illustrated in the table. Further examples are shown in \Cref{namedLiterals}.
+The literal type is closely connected to how the values are represented internally. For example, a value of type \keyword{int32} uses 32 bits and can be both positive and negative, while a \keyword{uint32} value also uses 32 bits, but is unsigned. A \keyword{byte} is an 8-bit number, and \keyword{sbyte} is a signed 8-bit number. Values of type \keyword{float} use 64 bits, while \keyword{float32} only uses 32 bits. The number of bits used to represent numbers directly relates to the range and precision these types can represent. This is summarized in \Cref{tab:primitiveTypes} and discussed in more detail in \Cref{app:numbers}. String literals may be \idx{verbatim} by the @-notation or triple double quotation marks, meaning that the escape sequences are not converted to their code point. The two types of string verbatim treat quotation marks differently, as illustrated in the table. Further examples are shown in \Cref{namedLiterals}.
 %
 \fsOutput{namedLiterals}{Named and implied literals.}
 %
 %
 %\fsOutput{stringVerbatim}{Examples of a string literal.}
 %
-%For strings containing double quotation marks, verbatim literals have 2 possible notations, either use the @-notation and escaping double quotation marks with an extra double quotation mark, or use triple double quotation marks. \advice{The triple double quotation marks notation may not contain substrings that are triple double quotation marks, and thus @-notation is preferred.}
+%For strings containing double quotation marks, verbatim literals have 2 possible notations, either use the @-notation and escape double quotation marks with an extra double quotation mark or use triple double quotation marks. \advice{The triple double quotation marks notation may not contain substrings that are triple double quotation marks, and thus @-notation is preferred.}
 
 Many basic types are compatible, and the type of a literal may be changed by \idx{typecasting}. An example of casting to a \keyword{float} is shown in \Cref{upcastingInt}.
 %
 \fsOutput{upcastingInt}{Casting an integer to a floating point number.}
 % 
-When \lstinline|float| is given an argument, then it acts as a function rather than a type, and for the integer \lstinline|3| it returns the floating point number \lstinline|3.0|.  For more on functions see \Cref{chap:let}. Boolean values are often treated as the integer values 0 and 1, but no short-hand function names exist for their conversions. Instead, use functions from the \lstinline{System.Convert} family of functions, as demonstrated in \Cref{castingBooleans}.
+When \lstinline|float| is given an argument, then it acts as a function rather than a type, and for the integer \lstinline|3| it returns the floating point number \lstinline|3.0|.  For more on functions see \Cref{chap:let}. Boolean values are often treated as integer values 0 and 1, but no short-hand function names exist for their conversions. Instead, use functions from the \lstinline{System.Convert} family of functions, as demonstrated in \Cref{castingBooleans}.
 %
 \fsOutput{castingBooleans}{Casting booleans.}
 % 
@@ -269,7 +269,7 @@ A typical calculation, such used in \Cref{rounding}, is \begin{equation}
 \end{equation}
 is an example of an arithmetic \idx{expression}, and the above expression consists of two \idx[operand]{operands} and an \idx{operator}. Since this operator takes two operands, it is called a \idx{binary operator}. The expression is written using \idx{infix notation}, since the operands appear on each side of the operator.
 
-In order to discuss general programming structures, we will use a simplified language to describe valid syntactical structures. In this simplified language, the syntax of basic binary operators is shown in the following.
+In order to discuss general programming structures, we will use simplified language to describe valid syntactical structures. In this simplified language, the syntax of basic binary operators is shown in the following.
 %
 \begin{verbatimwrite}{\ebnf/binaryOperator.ebnf}
 <*expr*><*op*><*expr*>
@@ -415,7 +415,7 @@ Unary operators take only one argument and have the syntax:
 %
 An example of a unary operator is \lstinline!-3!, where \lstinline!-! here is used to negate a positive integer. Since the operator appears before the operand, it is a \idx{prefix operator}. 
 
-The concept of \idx{precedence} is an important concept in arithmetic expressions.\jon{minor comment on indexing and slice-ranges.} If parentheses are omitted in \Cref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6)  + 0.5|, which is erroneous since the addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition which means that function evaluation is performed first and addition second. Consider the arithmetic expression shown in \Cref{simpleArithmetic}.
+The concept of \idx{precedence} is an important concept in arithmetic expressions.\jon{minor comment on indexing and slice ranges.} If parentheses are omitted in \Cref{rounding}, then F\# will interpret the expression as \lstinline|(int 357.6)  + 0.5|, which is erroneous since the addition of an integer with a float is undefined. This is an example of precedence, i.e., function evaluation takes precedence over addition which means that function evaluation is performed first and addition second. Consider the arithmetic expression shown in \Cref{simpleArithmetic}.
 %
 \fsOutput{simpleArithmetic}{A simple arithmetic expression.}
 %
@@ -453,14 +453,14 @@ Here, the addition and multiplication functions are shown in infix notation with
   \label{tab:someOperatorPrecedences}
 \end{table}
 
-Associativity describes the order in which calculations are performed for binary operators of the same precedence. Some operator's associativity are given in \Cref{tab:someOperatorPrecedences}. In the table we see that \lexeme{*} is left associative, which means that \lstinline{3.0 * 4.0 * 5.0} is evaluated as \lstinline{(3.0 * 4.0) * 5.0}. Conversely, \lstinline{**} is right associative, so \lstinline{4.0**3.0**2.0} is evaluated as \lstinline{4.0**(3.0**2.0)}. For some operators, like multiplication, association matters little, e.g., $4*3*2=4*(3*2)=(4*3)*2$, and for other operators, like exponentiation, association makes a huge difference, e.g., $4^{(3^2)}\neq (4^3)^2$. Examples of this is shown in \Cref{precedence}.\spec{Spec-4.0, Table 18.2.1 appears to be missing Boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
+Associativity describes the order in which calculations are performed for binary operators of the same precedence. Some operator's associativity are given in \Cref{tab:someOperatorPrecedences}. In the table we see that \lexeme{*} is left associative, which means that \lstinline{3.0 * 4.0 * 5.0} is evaluated as \lstinline{(3.0 * 4.0) * 5.0}. Conversely, \lstinline{**} is right-associative, so \lstinline{4.0**3.0**2.0} is evaluated as \lstinline{4.0**(3.0**2.0)}. For some operators, like multiplication, association matters little, e.g., $4*3*2=4*(3*2)=(4*3)*2$, and for other operators, like exponentiation, the association makes a huge difference, e.g., $4^{(3^2)}\neq (4^3)^2$. Examples of this are shown in \Cref{precedence}.\spec{Spec-4.0, Table 18.2.1 appears to be missing Boolean 'and' and 'or' operations. Section 4.4 seems to be missing \&\&\& and ||| bitwise operators.}
 %
 \fsOutput{precedence}{Precedence rules define implicit parentheses.}
 %
 \advice{Whenever in doubt of association or any other basic semantic rules, it is a good idea to use parentheses. It is also a good idea to test your understanding of the syntax and semantic rules by making a simple script.}%
 
 \section{Boolean Arithmetic}
-Boolean arithmetic is the basis of almost all computers and particularly important for controlling program flow, which will be discussed in \Cref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Basic operations on Boolean values are '\idx{and}', '\idx{or}', and '\idx{not}', which in F\# are written respectively as the binary operators \lstinline!&&!, \lstinline!||!, and the function \lstinline!not!. Since the domain of Boolean values is so small, all possible combination of input on these values can be written on the tabular form, known as a \idx{truth table}, and the truth tables for the basic Boolean operators and functions are shown in \Cref{tab:truthTable}.
+Boolean arithmetic is the basis of almost all computers and is particularly important for controlling program flow, which will be discussed in \Cref{chap:flow}. Boolean values are one of 2 possible values, true or false, which is also sometimes written as 1 and 0. Basic operations on Boolean values are '\idx{and}', '\idx{or}', and '\idx{not}', which in F\# are written respectively as the binary operators \lstinline!&&!, \lstinline!||!, and the function \lstinline!not!. Since the domain of Boolean values is so small, all possible combinations of input on these values can be written on the tabular form, known as a \idx{truth table}, and the truth tables for the basic Boolean operators and functions are shown in \Cref{tab:truthTable}.
 \begin{table}
   \centering
   \rowcolors{2}{oddRowColor}{evenRowColor}
@@ -481,7 +481,7 @@ A good mnemonic for remembering the result of the 'and' and 'or' operators is to
 %
 \fsOutput{truthTable}{Boolean operators and truth tables.}
 %
-Here, we used the \lstinline|printfn| function to present the results of many expressions on something that resembles a tabular form. The spacing produced using the \lstinline|printfn| function is not elegant, and in \Cref{sec:printf} \jon{update, presently only mentioned in \Cref{chap:quickStartGuide}} we will discuss better options for producing more beautiful output. Notice that the arguments for \lstinline|printfn| was given on the next line with indentation. The indentation is an important part of telling F\# which part of what you write belong together. This is an example of the so-called lightweight syntax. Generally, F\# ignores newlines and whitespaces except when using the lightweight syntax. The difference between verbose and lightweight syntax is discussed in \Cref{chap:let}.
+Here, we used the \lstinline|printfn| function to present the results of many expressions on something that resembles a tabular form. The spacing produced using the \lstinline|printfn| function is not elegant, and in \Cref{sec:printf} \jon{update, presently only mentioned in \Cref{chap:quickStartGuide}} we will discuss better options for producing more beautiful output. Notice that the arguments for \lstinline|printfn| were given on the next line with indentation. The indentation is an important part of telling F\# which part of what you write belongs together. This is an example of the so-called lightweight syntax. Generally, F\# ignores newlines and whitespaces except when using the lightweight syntax. The difference between verbose and lightweight syntax is discussed in \Cref{chap:let}.
 
 \section{Integer Arithmetic}
 The set of integers is infinitely large, but since all computers have limited resources, it is not possible to represent it in its entirety. The various integer types listed in \Cref{tab:primitiveTypes} are finite subsets reduced by limiting their ranges. 
@@ -582,7 +582,7 @@ Arithmetic using \lstinline|float| will not cause over- and underflow problems, 
 %
 \fsOutput{floatDivisionByZero}{Floating point numbers include infinity and Not-a-Number.}
 %
-However, the \lstinline|float| type has limited precision, since there is only a finite number of numbers that can be stored in a float. E.g., addition and subtraction can give surprising results, as demonstrated in \Cref{floatImprecission}.
+However, the \lstinline|float| type has limited precision since there is only a finite number of numbers that can be stored in a float. E.g., addition and subtraction can give surprising results, as demonstrated in \Cref{floatImprecission}.
 %
 \fsOutput{floatImprecission}{Floating point arithmetic has finite precision.}
 %
@@ -593,7 +593,7 @@ Addition is the only operator defined for characters. Nevertheless, character ar
 %
 \fsOutput{upcaseChar}{Converting case by casting and integer arithmetic.}
 %
-I.e., the code point difference between upper and lower case for any alphabetical character 'a' to 'z' is constant, hence we can change case by adding or subtracting the difference between any corresponding character. Unfortunately, this does not generalize to characters from other languages.
+I.e., the code point difference between the upper and lower case for any alphabetical character 'a' to 'z' is constant, hence we can change the case by adding or subtracting the difference between any corresponding character. Unfortunately, this does not generalize to characters from other languages.
 
 A large collection of operators and functions exist for \lstinline{string}. The simplest is concatenation using the \lexeme{+} operator, as demonstrated in \Cref{stringConcatenation}.
 %
@@ -621,7 +621,7 @@ Conversion of integers between decimal and binary form is a key concept one must
 \begin{align}
   v = \sum_{i=0}^nb_i2^i
 \end{align}
-For example, $10011_2 = 1+2+16 = 19$. Converting from decimal to binary is a little more complex, but a simple divide-by-two algorithm exists. The key to understanding the divide-by-two algorithm is to realize that dividing a number by two is equivalent to shifting its binary representation one position to the right. E.g., $10 = 1010_2$ and $10/2 = 5 = 101_2$. Odd numbers have $b_0=1$, e.g., $11_{10} = 1011_2$ and $11_{10}/2 = 5.5 = 101.1_2$. Hence, if we divide any number by two and get a non-integer number, then its least significant bit was $1$. Another way to express this is to say that the least significant bit is the remainder after integer division by two. Sequential application of this idea leads directly to the divide-by-two algorithm. E.g., if we were to convert the number $11_{10}$ in decimal form to binary form, we would perform the following steps:
+For example, $10011_2 = 1+2+16 = 19$. Converting from decimal to binary is a little more complex, but a simple divide-by-two algorithm exists. The key to understanding the divide-by-two algorithm is to realize that dividing a number by two is equivalent to shifting its binary representation from one position to the right. E.g., $10 = 1010_2$ and $10/2 = 5 = 101_2$. Odd numbers have $b_0=1$, e.g., $11_{10} = 1011_2$ and $11_{10}/2 = 5.5 = 101.1_2$. Hence, if we divide any number by two and get a non-integer number, then its least significant bit was $1$. Another way to express this is to say that the least significant bit is the remainder after integer division by two. Sequential application of this idea leads directly to the divide-by-two algorithm. E.g., if we were to convert the number $11_{10}$ in decimal form to binary form, we would perform the following steps:
 \begin{align*}
   11\tikzmark{a1} \text{ div } 2 = \tikzmark{a2}5\tikzmark{a3},\;   \tikzmark{a4}11  \text{ rem }  2 & =\tikzmark{a5}1\tikzmark{a6}\\
   \nonumber \\
