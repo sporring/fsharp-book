@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "LQe/r2WFXnKKCRlPMLsicVVuhBYE07H71WiTxzw9Ze8KunrhYWy1W3Hxd7w985G4T/VX9HJkP3vVO9wGsd1O0w==",
+  "success": true,
+  "projectFilePath": "/Users/jrh630/repositories/fsharp-book/src/solve/library/library.fsproj",
+  "expectedPackageFiles": [
+    "/Users/jrh630/.nuget/packages/fsharp.core/6.0.5/fsharp.core.6.0.5.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -9,7 +9,7 @@
   Recursion is a central concept in functional programming and is used to control flow. A recursive function must obey the 3 laws of recursion:
   \begin{enumerate}
   \item The function must call itself.
-  \item It must be a base case.
+  \item It must have a base case.
   \item The base case must be reached at some point, in order to avoid an infinite loop
   \end{enumerate}     
   In \Cref{fig:foreverRecursion} is an illustration of the concept of an infinite loop with recursion.
@@ -110,7 +110,13 @@ let rec f a =
 %\FrameArea{recursivePatternRecurseStart}{recursivePatternRecurseEnd}%
 The \lstinline{if}--\lstinline{then} is also a very common conditional structures. In \Cref{countRecursive}, \lstinline{a > b} is the \idx{stopping condition}, \lstinline{printfn ""} is the \idx{stopping step}, and \lstinline{printfn "\%d " a; count (a + 1) b} is the \idx{recursion step}.
 
-A trick to designing recursive algorithms is to \advice{assume that the recursive function already works}. Reconsider the Divide-by-two algorithm in \Cref{sec:divideByTwo}. The algorithm consists of two elements. Given an initial unsigned integer \lstinline{n}:
+A trick to designing recursive algorithms is to \advice{assume that the recursive function already works}. For example,
+\begin{quote}
+\lstinline{let rec sum n = match n with 0 -> 0 | _ -> n + sum (n-1)}
+\end{quote}
+we call \lstinline{sum} in the recursive step under the assumption, that it correctly sums up values from 0 to $n-1$. Thus, we are free only to consider how to calculate the sum from 0 to $n$ given that we have $n$ and the result of \lstinline{sum (n-1)}.
+
+Reconsider the Divide-by-two algorithm in \Cref{sec:divideByTwo}. The algorithm consists of two elements. Given an initial unsigned integer \lstinline{n}:
 \begin{enumerate}
 \item calculate \lstinline{n%2u}. This will be the right-most digit in the binary representation of \lstinline{n},
 \item solve the same problem but now for \lstinline{n/2u} until \lstinline{n=0}.
@@ -307,8 +313,9 @@ In line~\ref{gcd:printfn}, \lstinline!gdc! is called before any output is genera
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
-  6&\ref{gcd:gcdR1} & $E_1$ &$\text{gcd b a} = \text{?}$\\
-  7 &\ref{gcd:gcd} & $E_2$ & $\big((a = 15, b = 10), \text{gcd-body}, ()\big)$\\
+  6&\ref{gcd:if} & $E_1$ &$\text{a<b} =$ true\\
+  7&\ref{gcd:gcdR1} & $E_1$ &$\text{gcd b a} = \text{?}$\\
+  8 &\ref{gcd:gcd} & $E_2$ & $\big((a = 15, b = 10), \text{gcd-body}, ()\big)$\\
   \end{tabular*}
 \end{quote}
 In $E_2$, \lstinline!a < b! in line~\ref{gcd:if} is false, but
@@ -318,9 +325,11 @@ evaluate \lstinline{a % b}, call \lstinline{gcd b (a % b)}, and then create a ne
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
-    8&\ref{gcd:gcdR2} & $E_2$ & $\text{a \% b} = 5$\\
-    9&\ref{gcd:gcdR2} & $E_2$ & $\text{gcd b (a \% b)} = \text{?}$\\
-    10&\ref{gcd:gcd} & $E_3$ &$\big((a = 10, b = 5), \text{gcd-body}, ()\big)$\\
+    9&\ref{gcd:if} & $E_2$ &$\text{a<b} =$ false\\
+    10&\ref{gcd:elif} & $E_2$ &$\text{b>0} =$ true\\
+    11&\ref{gcd:gcdR2} & $E_2$ & $\text{a \% b} = 5$\\
+    12&\ref{gcd:gcdR2} & $E_2$ & $\text{gcd b (a \% b)} = \text{?}$\\
+    13&\ref{gcd:gcd} & $E_3$ &$\big((a = 10, b = 5), \text{gcd-body}, ()\big)$\\
   \end{tabular*}
 \end{quote}
 Again we fall through to line~\ref{gcd:gcdR2}, evaluate the remainder operator, and initiate a new environment,
@@ -328,9 +337,11 @@ Again we fall through to line~\ref{gcd:gcdR2}, evaluate the remainder operator, 
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
-    11&\ref{gcd:gcdR2} & $E_3$ & $\text{a \% b} = 0$\\
-    12&\ref{gcd:gcdR2} & $E_3$ & $\text{gcd b (a \% b)} = \text{?}$\\
-    13&\ref{gcd:gcd} & $E_4$ & $\big((a = 5, b = 0), \text{gcd-body}, ()\big)$\\
+    14&\ref{gcd:if} & $E_3$ &$\text{a<b} =$ false\\
+    15&\ref{gcd:elif} & $E_3$ &$\text{b>0} =$ true\\
+    16&\ref{gcd:gcdR2} & $E_3$ & $\text{a \% b} = 0$\\
+    17&\ref{gcd:gcdR2} & $E_3$ & $\text{gcd b (a \% b)} = \text{?}$\\
+    18&\ref{gcd:gcd} & $E_4$ & $\big((a = 5, b = 0), \text{gcd-body}, ()\big)$\\
   \end{tabular*}
 \end{quote}
 This time both \lstinline!a < b! and \lstinline!b > 0! are false, so we fall through to line~\ref{gcd:return} and return the value of \lstinline!a! from $E_4$, which is \lstinline!5!:
@@ -338,40 +349,46 @@ This time both \lstinline!a < b! and \lstinline!b > 0! are false, so we fall thr
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
-    14&\ref{gcd:return} & $E_4$ & $\text{return} = 5$\\
+    19&\ref{gcd:if} & $E_4$ &$\text{a<b} =$ false\\
+    20&\ref{gcd:elif} & $E_4$ &$\text{b>0} =$ false\\
+    21&\ref{gcd:return} & $E_4$ & $\text{return} = 5$\\
   \end{tabular*}
 \end{quote}
-We scratch $E_4$, return to $E_3$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc}, we return the previously evaluated value,
+We scratch $E_4$, return to $E_3$, replace the ?-mark with \lstinline!5!, and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc}, we return the previously evaluated value,
 \begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
-    15&\ref{gcd:gcdR2} & $E_3$ & $\text{return} = 5$\\
+    22&\ref{gcd:gcdR2} & $E_3$ & $\text{gcd b (a \% b)} = 5$\\
+    23&\ref{gcd:gcdR2} & $E_3$ & $\text{return} = 5$\\
   \end{tabular*}
 \end{quote}
-Like before, we scratch $E_3$, return to $E_2$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc}, we return the just evaluated value,
+Like before, we scratch $E_3$, return to $E_2$, replace the ?-mark with \lstinline!5!, and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc}, we return the just evaluated value,
 \begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
-    16&\ref{gcd:gcdR2} & $E_2$ & $\text{return} = 5$\\
+    24&\ref{gcd:gcdR2} & $E_2$ & $\text{gcd b (a \% b)} = 5$\\
+    25&\ref{gcd:gcdR2} & $E_2$ & $\text{return} = 5$\\
   \end{tabular*}
 \end{quote}
-Again, we scratch $E_2$, return to $E_1$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc}, we return the just evaluated value,
+Again, we scratch $E_2$, return to $E_1$, replace the ?-mark with \lstinline!5!, and continue the evaluation of line~\ref{gcd:gcdR2}. Since this is also a branch of the last statement in \lstinline{gdc}, we return the just evaluated value,
 \begin{quote}
   \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
-    17&\ref{gcd:gcdR1} & $E_1$ & $\text{return} = 5$\\
+    26&\ref{gcd:gcdR1} & $E_1$ & $\text{gcd a b} = 5$\\
+    27&\ref{gcd:gcdR1} & $E_1$ & $\text{return} = 5$\\
   \end{tabular*}
 \end{quote}
-Finally, we scratch $E_1$, return to $E_0$, either physically or mentally replace the ?-mark with \lstinline!5! and continue the evaluation of line~\ref{gcd:gcdR2}:
+Finally, we scratch $E_1$, return to $E_0$, replace the ?-mark with \lstinline!5!, and continue the evaluation of line~\ref{gcd:printfn}:
 \begin{quote}
-  \begin{tabular*}{0.6\linewidth}{l|lll}3
+  \begin{tabular*}{0.6\linewidth}{l|lll}
     Step & Line & Env.\ & Bindings and evaluations\\
     \hline
-    18 & \ref{gcd:printfn} & $E_0$ & $\text{output = "gcd a b = 5"}$\\
-    19 & \ref{gcd:printfn} & $E_0$ & $\text{return = ()}$\\
+    28&\ref{gcd:printfn} & $E_0$ & $\text{gcd a b} = 5$\\
+    29& \ref{gcd:printfn} & $E_0$ & $\text{output = "gcd a b = 5"}$\\
+    30& \ref{gcd:printfn} & $E_0$ & $\text{return = ()}$\\
   \end{tabular*}
 \end{quote}
 Note that the output of \lstinline{printfn} is a side-effect while its return-value is unit. In any case, since this is the last line in our program, we are done tracing.

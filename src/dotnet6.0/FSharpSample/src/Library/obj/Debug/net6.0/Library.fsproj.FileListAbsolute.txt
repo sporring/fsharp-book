@@ -1,0 +1,11 @@
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/bin/Debug/net6.0/Library.deps.json
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/bin/Debug/net6.0/Library.dll
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/bin/Debug/net6.0/Library.pdb
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/bin/Debug/net6.0/Library.xml
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/obj/Debug/net6.0/Library.fsproj.AssemblyReference.cache
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/obj/Debug/net6.0/Library.AssemblyInfoInputs.cache
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/obj/Debug/net6.0/Library.AssemblyInfo.fs
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/obj/Debug/net6.0/Library.fsproj.CoreCompileInputs.cache
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/obj/Debug/net6.0/Library.dll
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/obj/Debug/net6.0/Library.xml
+/Users/jrh630/repositories/fsharp-book/src/dotnet6.0/FSharpSample/src/Library/obj/Debug/net6.0/Library.pdb

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "/+9q79odOZxWen09OlAraLbhok6Zm9JNvCYf8qs9GDuqCNrlW2cjkPjJyMHaFFaiLTCiJwZoUKOYfuDT4ixU1A==",
+  "success": true,
+  "projectFilePath": "/Users/jrh630/repositories/fsharp-book/src/solution/app/app.fsproj",
+  "expectedPackageFiles": [
+    "/Users/jrh630/.nuget/packages/diku.canvas/1.0.1/diku.canvas.1.0.1.nupkg.sha512",
+    "/Users/jrh630/.nuget/packages/fsharp.core/6.0.5/fsharp.core.6.0.5.nupkg.sha512",
+    "/Users/jrh630/.nuget/packages/stbimagesharp/2.27.11/stbimagesharp.2.27.11.nupkg.sha512",
+    "/Users/jrh630/.nuget/packages/stbimagewritesharp/1.16.7/stbimagewritesharp.1.16.7.nupkg.sha512"
+  ],
+  "logs": []
+}

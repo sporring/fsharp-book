@@ -2,6 +2,7 @@
 \graphicspath{ {./figures/} }
 
 \begin{document}
+
 \chapter{Organising Code in Libraries and Application Programs}
 \label{chap:modules}
 \abstract{
@@ -15,78 +16,127 @@ In this chapter, we will focus on a number of ways to make the code available as
 
 F\# includes several programming structures to organize code in libraries: Modules, namespaces, and classes. In this chapter, we will describe modules and namespaces. Classes will be described in detail in \Cref{chap:oop}.
 
+\section{Dotnet projects: Libraries and applications}
+\label{chap:projects}
+As our programs grow in size, it can be convenient to split the program over several files, e.g., by separating functionality into something which general and specific in  nature with respect the problem being solved. Examples of this is the \lstinline{List} module which contains general functions on lists, and which you have used in your programs. In this chapter, we will write our own modules, also known as libraries, and the programs using these libraries, we will call applications. Using the \lstinline[language=console]{dotnet} command-line tool, we are able to create project files which have a \lstinline[language=console]{.fsproj} suffix, which include information about which source code and packages belongs together. The \lstinline[language=console]{dotnet} command-line tool further helps structure the files on the filesystem by use of directories. As an example
+\begin{codeNOutput}[label=dotnetNew,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Creating an initial library-application file setup.}
+  \begin{lstlisting}[language=console,escapechar=§]
+$ dotnet new console -lang "F#" -o app
+$ dotnet new classlib -lang "F#" -o library
+$ dotnet add app/app.fsproj reference library/library.fsproj
+$ dotnet add app/app.fsproj package "DIKU.Canvas" --version 1.0.1
+\end{lstlisting}
+\end{codeNOutput}
+creates the files and directories shown in \Cref{fig:dotnetNewFileSystem}.
+\begin{figure} % make sure figure is printed after the countRecursive
+  \centering
+  \includegraphics[width=0.5\linewidth]{dotnetNew}
+  \caption{Typical initial files and directories for a library and application multifile setup and as created by \lstinline[language=console]{dotnet new} and  \lstinline[language=console]{dotnet add}.}
+  \label{fig:dotnetNewFileSystem}
+\end{figure}
+The directories \lstinline[language=console]{obj} contains additional libraries etc.\ which dotnet needs to build projects, and can safely be ignored for now. The \lstinline[language=console]{Program.fs} and \lstinline[language=console]{Library.fs} are the default filenames for the application and the library, and the \lstinline[language=console]{.fsproj} are XML-files which describes how dotnet should combine the library and the application files etc. In this case, the \lstinline[language=console]{app.fsproj} contains
+\begin{codeNOutput}[label=appFsproj,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: The initial content of \texttt{app.fsproj}.}
+  \begin{lstlisting}[language=console,escapechar=§]
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <OutputType>Exe</OutputType>
+  <TargetFramework>net6.0</TargetFramework>
+ </PropertyGroup>
+ <ItemGroup>
+  <Compile Include="Program.fs" />
+ </ItemGroup>
+ <ItemGroup>
+  <ProjectReference Include="..\library\library.fsproj" />
+ </ItemGroup>
+ <ItemGroup>
+  <PackageReference Include="DIKU.Canvas" Version="1.0.1" />
+ </ItemGroup>
+</Project>
+\end{lstlisting}
+\end{codeNOutput}
+which we see includes references to \lstinline[language=console]{Program.fs}, \lstinline[language=console]{library.fsproj}, and \lstinline[language=console]{DIKU.Canvas}.
+Likewise, the \lstinline[language=console]{library.fsproj} file
+\begin{codeNOutput}[label=libraryFsproj,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: The initial content of \texttt{library.fsproj}.}
+  \begin{lstlisting}[language=console,escapechar=§]
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <TargetFramework>net6.0</TargetFramework>
+  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+ </PropertyGroup>
+ <ItemGroup>
+  <Compile Include="Library.fs" />
+ </ItemGroup>
+</Project>
+\end{lstlisting}
+\end{codeNOutput}
+contains a reference to \lstinline[language=console]{Library.fs}.
 
-\section{Assemblies}
-\label{chap:assemblies}
+These files can be edited in any text-editor, e.g., if we wish our application source file to be called \lstinline[language=console]{Program.fsx}, we rename \lstinline[language=console]{Program.fs} to \lstinline[language=console]{Program.fsx}, in the \lstinline[language=console]{app}-directory, edit \lstinline[language=console]{app.fsproj} by replacing \lstinline[language=console]{Program.fs} with \lstinline[language=console]{Program.fsx}.
 
-\dots
-
-However, \advice{it is ill-advised to design programs to be run in an interactive session, since the scripts need to be manually copied every time it is to be run, and since the starting state may be unclear.} 
-
-
-Both the interpreter and the compiler translates the source code into a format which can be executed by the computer. While the compiler performs this translation once and stores the result in the executable file, the interpreter translates the code every time the code is executed. Thus, to run the program again with the interpreter, it must be retranslated as "\lstinline[language=console]{$fsharpi gettingStartedStump.fsx}''. %$
-In contrast, compiled code does not need to be recompiled to be run again, only re-executed using "\lstinline[language=console]{$ mono gettingStartedStump.exe}". %$
-On a MacBook Pro, with a 2.9 GHz Intel Core i5, the time the various stages take for this script are:
+As an example, change \lstinline[language=console]{Program.fs} to become what is shown in \Cref{program},
+\fsImplementation{solution/app/Program}{program}{A simple application program.}{}
+change \lstinline[language=console]{Library.fs} to become what is shown in \Cref{library}, 
+\fsImplementation{solution/library/Library}{library}{A simple library.}{}
+and run it in \idx{compile mode} by changing to the \lstinline[language=console]{app} directory and using the \lstinline[language=console]{dotnet run} command as demonstrated in \Cref{dotnetRun}.
+\begin{codeNOutput}[label=dotnetRun,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Running an application setup with one or more project files.}
+  \begin{lstlisting}[language=console,escapechar=§]
+$ cd solution/app
+$ dotnet run
+"Greetings Jon"
+\end{lstlisting}%$
+\end{codeNOutput}
+Assuming that \lstinline[language=console]{Program.fs} was rename to \lstinline[language=console]{Program.fsx} and \lstinline[language=console]{app.fsproj} was edited appropriately, \lstinline[language=console]{dotnet run} is almost the same as
+\begin{codeNOutput}[label=dotnetRun,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Running an application setup with one or more project files.}
+  \begin{lstlisting}[language=console,escapechar=§]
+$ dotnet fsi ../library/Library.fs Program.fsx
+"Greetings Jon"
+\end{lstlisting}%$
+\end{codeNOutput}
+However, \lstinline[language=console]{dotnet fsi} \idx{interprets} the library and application into executable code everytime it is called, while \lstinline[language=console]{dotnet run} only \idx{compiles} the program once. On my laptop, the time these different steps take depends on what else is running on the computer, but typical timings are
 \begin{center}
   \rowcolors{2}{oddRowColor}{evenRowColor}
   \begin{tabular}{|l|l|}
     \hline
     \rowcolor{headerRowColor} Command & Time\\
     \hline
-    \lstinline[language=console]|fsharpi gettingStartedStump.fsx| & 1.88s\\
-    \lstinline[language=console]|fsharpc gettingStartedStump.fsx| & 1.90s\\
-    \lstinline[language=console]|mono gettingStartedStump.exe| & 0.05s\\
+    \lstinline[language=console]|dotnet fsi ../library/Library.fs Program.fsx| & 1.2s\\
+    \lstinline[language=console]|dotnet run| (first time) & 4.0s\\
+    \lstinline[language=console]|dotnet run| & 1.0s\\
     \hline
 \end{tabular}
 \end{center}
-I.e., executing the script with \lstinline[language=console]|fsharpi| is slightly faster than by first compiling it with \lstinline[language=console]|fsharpc| and then executing the result with \lstinline[language=console]|mono| ($1.88\text{s} < 0.05\text{s}+1.90\text{s}$), if the script were to be executed only once, but every future execution of the script using the compiled version requires only the use of \lstinline[language=console]|mono|, which is much faster than \lstinline[language=console]|fsharpi| ($1.88\text{s}\gg 0.05\text{s}$).
+The example application, we are studying here, is tiny, but even in this case, the repeated translation by \lstinline[language=console]{dotnet fsi} is a 16\% overhead when compared to an already compiled program, and you should expect this overhead to be larger for larger programs. However, the these tiny programs the cost of the initial compilation is 400\% and not worth the effort from a time perspective.
 
-Finally, the file containing \lstinline[language=console]{gettingStartedStump.tex} may be compiled into an executable file with the program \lstinline[language=console]{fsharpc}, and run using the program \lstinline[language=console]{mono} from the console. This is demonstrated in \Cref{compiler}.
-%
-\begin{codeNOutput}[label=compiler,
-  top=-5pt,
-  bottom=-5pt,
-  left=-2pt,
-  right=-2pt,
-]{: Compiling and executing a script.}
-\begin{lstlisting}[language=console,escapechar=§]
-$ §\tikzmark{lst3_1-tl}§fsharpc gettingStartedStump.fsx §\tikzmark{lst3_1-br}§
-F# Compiler for F# 4.1 (Open Source Edition)
-Freely distributed under the Apache 2.0 Open Source License
-$ §\tikzmark{lst3_2-tl}§mono gettingStartedStump.exe§\tikzmark{lst3_2-br}§
-3
-\end{lstlisting}
-\FrameArea{lst3_1-tl}{lst3_1-br}%
-\FrameArea{lst3_2-tl}{lst3_2-br}%
-\end{codeNOutput}
-%
-The compiler reads \lstinline[language=console]{gettingStartedStump.fsx} and makes \lstinline[language=console]{gettingStartedStump.exe}, which can be run using \lstinline[language=console]{mono}.
-
-
-
-Executing programs with the interpreted directly from a file and compiling and executing the program is much preferred for programming complete programs, since the starting state is well defined, and since this better supports \idx{unit testing}, which is a method for debugging programs. Thus, \advice{prefer compiling over interpretation.}% This comments corrects wrongly placed margin note: https://tex.stackexchange.com/questions/147827/why-does-marginpar-sometimes-add-an-unnecessary-newline
-
-
-
-\section{Modules}
+\section{Libraries and applications}
 \label{sec:modules}
-An F\# \idx{module}, not to be confused with a Common Language Infrastructure module (see \Cref{chap:cli}), is a programming structure used to organize type declarations, values, functions, etc. 
+A library in F\# is expressed as a \idx{module}, which is a programming structure used to organize type declarations, values, functions, etc. The libraries should have the  suffix \lstinline[language=console]{.fs}, and here will will call them \idx{implementation files} in contrast to the signature files to be discussed below, which we will call \idx{interface files}.
 
-Every implementation and script file in F\# implicitly defines a module, and the module name is given by the filename. Consider the script file \filename{Meta.fsx} shown in \Cref{Meta}.\jon{Type definitions have not been introduced at this point!}
-%
-\fsCode{Meta}{Meta}{A script file defining the \lstinline{apply} function.}{}
-%
-Here, we have implicitly defined a module with the name \lstinline{Meta}. Another script file may now use this function, which is accessed using the \lexeme{.} notation, i.e., \lstinline{Meta.apply} will refer to this function in other programs. An application program could be as the one shown in \Cref{MetaApp}.
-%
-\fsCode{MetaApp}{MetaAppCode}{Defining a script calling the module.}{}
-%
-In the example above, we have explicitly used the module's type definition for illustration purposes. A shorter and possibly simpler program would have been to define \lstinline{add} as \lstinline{let add x y = x + y}, since F\#'s type system will infer the implied type. However, \advice{explicit definitions of types is recommended for readability.} Hence, an alternative to the above example's use of anonymous functions is: \lstinline{let add (x: float) (y: float) : float = x + y}. To compile the module and the application program, we write as demonstrated in \Cref{MetaApp}.
-%
-\fsOutput{MetaApp}{Compiling both the module and the application code. Note that file order matters when compiling several files.}
-%
-Since the F\# compiler reads through the files once, the order of the filenames in the compile command is very important. Hence, the script containing the module and function definitions must be to the left of the script containing their use. Notice also that if not otherwise specified, the F\# compiler produces an \filename{.exe} file derived from the last filename in the list of filenames.
-
-We may also explicitly define the module name using the \idx[module@\lstinline{module}]{\keyword{module}} with the following syntax,
+A module is typically a file where the module name is declared in the first liness using the \idx[module@\lstinline{module}]{\keyword{module}} with the following syntax,
 %
 \begin{verbatimwrite}{\ebnf/outerModule.ebnf}
 module <*ident*>
@@ -94,155 +144,52 @@ module <*ident*>
 \end{verbatimwrite}
 \syntax{\ebnf/outerModule.ebnf}{Outer module.}
 %
-Here, the identifier \lstinline[language=syntax]{<*ident*>} is a name not necessarily related to the filename, and the script \lstinline[language=syntax]{<*script*>} is an expression. An example is given in \Cref{MetaExplicit}.
-%
-\fsCode{MetaExplicit}{MetaExplicitCode}{Explicit definition of the outermost module.}{}
-%
-Since we have created a new file, where the module \lstinline{Meta} is explicitly defined, we can use the same application program. This is demonstrated in \Cref{MetaExplicitApp}.
-%
-\fsOutput{MetaExplicitApp}{Changing the module definition to explicit naming has no effect on the application nor the compile command.}
-%
-Since \filename{MetaExplicit.fsx} explicitly defines the module name, \lstinline{apply} is not available to an application program as \lstinline{MetaExplicit.apply}. \advice{It is recommended that module names are defined explicitly, since filenames may change due to external conditions.} In other words, filenames are typically set from the perspective of the filesystem.  The user may choose to change names to suit a filesystem structure, or different platforms may impose different file naming conventions. Thus, direct linking of filenames with the internal workings of a program is a needless complication of structure.
+Here, the identifier \lstinline[language=syntax]{<*ident*>} is a name not necessarily related to the filename, and the script \lstinline[language=syntax]{<*script*>} is an expression.
 
-The definitions inside a module may be accessed directly from an application program, omitting the \lexeme{.}-notation, by use of the \idx[open@\lstinline{open}]{\keyword{open}} keyword,
-%
-\begin{verbatimwrite}{\ebnf/openModule.ebnf}
-open <*ident*>
-\end{verbatimwrite}
-\syntax{\ebnf/openModule.ebnf}{Open module.}
-%
-We can modify \filename{MetaApp.fsx}, as shown in \Cref{MetaAppWOpen}.
-%
-\fsCode{MetaAppWOpen}{MetaAppWOpenCode}{Avoiding the \lexeme{.}-notation by the \keyword{open} keyword.}{}
-%
-In this case, the namespace of our previously defined module is included into the scope of the application functions, and its types, values, functions, etc. can be used directly, as shown in \Cref{MetaAppWOpen}.
-%
-\fsOutput{MetaAppWOpen}{How the application program opens the module has no effect on the module code nor compile command.}
-%
-The \keyword{open}-keyword should be used sparingly, since including a library's definitions into the application scope can cause surprising naming conflicts, because the user of a library typically has no knowledge of the inner workings of the library. E.g., the user may accidentally use code defined in the library, but with different type and functionality than intended, which the type system will use to deduce types in the application program, and therefore will either give syntax or runtime errors that are difficult to understand.  This problem is known as \idx{namespace pollution}, and for clarity, \advice{it is recommended to use the \keyword{open}-keyword sparingly}. Note that for historical reasons, the phrase 'namespace pollution' is used to cover pollution both due to modules and namespaces.
+Consider the example from \Cref{solveQuadraticEquation} in which functions are defined for solving the values of $x$ where $f(x)=0$ for a quadratic equation. In the following, we will split this into a library of functions and an application program. For this we setup a project system of files as described in \Cref{chap:projects}, where \lstinline[language=console]{Program.fs} has been replaced by \lstinline[language=console]{Program.fsx} and the \lstinline[language=console]{app.fsproj} has been edited appropriately. The content of  \lstinline[language=console]{Library.fs} has been changed to become what is shown in \Cref{quadraticModule}, 
+\fsImplementation{solve/library/Library}{quadraticModule}{A library for solving quadratic equations.}{}
+and \lstinline[language=console]{Program.fsx} has been changed to what is shown in \Cref{quadraticApp}.
+\fsCode{solve/app/Program}{quadraticApp}{An application using the \lstinline!Solve! module.}{}
 
-Modules may also be nested, in which case the nested definitions must use the \lexeme{=}-sign and must be appropriately indented.
-%
-\begin{verbatimwrite}{\ebnf/nestedModule.ebnf}
-module <*ident*> = <*script*>
-\end{verbatimwrite}
-\syntax{\ebnf/nestedModule.ebnf}{Nested modules.}
-%
-In lightweight syntax, a newline may be entered before the script \lstinline[language=syntax]{<*script*>}, and the script must be indented. An example is shown in \Cref{nestedModules}.
-%
-\fsCode{nestedModules}{nestedModules}{Modules may be nested.}{}
-%
-In this case, \lstinline{Meta} and \lstinline{MathFcts} are defined at the same level and said to be siblings, while \lstinline{Utilities} is defined at a higher level. In this relation, the former two are said to be the children of the latter.  Note that the nesting respects the lexical scope rules, such that the constant \lstinline{PI} is directly accessible in both modules \lstinline{Meta} and \lstinline{MathFcts}, as is the module \lstinline{Meta} in \lstinline{MathFcts}, but not \lstinline{MathFcts} in \lstinline{Meta}.  The \lexeme{.}-notation is reused to index deeper into the module hierarchy, as the example in \Cref{nestedModulesApp} shows.
-%
-\fsCode{nestedModulesApp}{nestedModulesApp}{Applications using nested modules require additional usage of the \lexeme{.} notation to navigate the nesting tree.}{}
-%
-Modules can be recursive using the \idx[rec@\lstinline{rec}]{\keyword{rec}}-keyword, meaning that in our example we can make the outer module recursive, as demonstrated in \Cref{nestedRecModules}.\jon{Dependence on version 4.1 and higher.}
-%
-\fsCode{nestedRecModules}{nestedRecModules}{Mutual dependence on nested modules requires the \keyword{rec} keyword in the module definition.}{}
-%
-The consequence is that the modules \lstinline{Meta} and \lstinline{MathFcts} are accessible in both modules, but compilation will now give a warning since soundness of the code will first be checked at runtime. In general, it is advised to \advice{avoid programming constructions whose validity cannot be checked at compile-time.}
-
-\section{Namespaces}
-An alternative way to structure code in modules is to use a \idx{namespace}, which can only hold modules and type declarations and only works in compiled mode. Namespaces are defined as explicitly defined outer modules, using the \idx[namespace@\lstinline{namespace}]{\keyword{namespace}} keyword in accordance with the following syntax.
-%
-\begin{verbatimwrite}{\ebnf/namespace.ebnf}
-namespace <*ident*>
-<*script*>
-\end{verbatimwrite}
-\syntax{\ebnf/namespace.ebnf}{Namespace.}
-%
-An example is given in \Cref{namespace}.
-%
-\fsCode{namespace}{namespace}{Defining a namespace is similar to explicitly named modules.}{}
-%
-Notice that when organizing code in a namespace, the first line of the file, other than comments and compiler directives, must be the one starting with \lstinline{namespace}.
-
-As for modules, the content of a namespace is accessed using the \lexeme{.} notation, as demonstrated in \Cref{namespaceAppCode}.
-%
-\fsCode{namespaceApp}{namespaceAppCode}{The \lexeme{.}-notation lets the application program access functions and types in a namespace.}{}
-%
-Likewise, the compilation is performed in the same way as for modules, see \Cref{namespaceApp}.
-%
-\fsOutput{namespaceApp}{Compilation of files including namespace definitions uses the same procedure as modules.}
-%
-Hence, from an application point of view, it is not immediately possible to see that \lstinline{Utilities} is defined as a namespace and not a module.  However, in contrast to modules, namespaces may span several files. E.g., we may add a third file extending the \lstinline{Utilities} namespace with the \lstinline{MathFcts} module, as demonstrated in \Cref{namespaceExtension}.
-%
-\fsCode{namespaceExtension}{namespaceExtension}{Namespaces may span several files. Here is shown an extra file which extends the \lstinline{Utilities} namespace.}{}
-%
-To compile, we now need to include all three files in the right order, see \Cref{namespaceExtensionApp}.
-%
-\fsOutput{namespaceExtensionApp}{Compilation of namespaces defined in several files requires careful consideration of order, since the compiler reads once and only once through the files in the order they are given.}
-%
-The order matters:\filename{namespaceExtension.fsx} uses the definition of \lstinline{floatFunction} in the file \filename{namespace.fsx}. You can use extensions to extend existing namespaces included with the F\# compiler.\jon{Something about intrinsic and optional extension \protect\url{https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/type-extensions}.}\jon{Perhaps something about the global namespace \lstinline{global}.}
-
-Namespaces may also be nested. In contrast to modules, nesting is defined using the \lexeme{.} notation. That is, to create a child namespace \lstinline{more} of \lstinline{Utilities}, we must use initially write \mbox{\lstinline{namespace Utilities.more}}. Indentation is ignored in the \lstinline{namespace} line, thus left-most indentation is almost always used. Namespaces follow lexical scope rules, and identically to modules, namespaces containing mutually dependent children can be declared using the \keyword{rec} keyword, e.g., \mbox{\lstinline{namespace rec Utilities}}.
-
-\section{Compiled Libraries}
-Libraries may be distributed in compiled form as \filename{.dll} files. This saves the user from having to recompile a possibly large library every time library functions needs to be compiled with an application program. In order to produce a library file from \filename{MetaExplicit.fsx} and then compile an application program, we first use the compiler's \filename{-a} option to produce the \filename{.dll}. A demonstration is given in \Cref{MetaExplicit}.
-%
-\fsOutput{MetaExplicit}{A stand-alone \filename{.dll} file is created and used with special compile commands.}
-%
-This produces the file \filename{MetaExplicit.dll}, which may be linked to an application by using the \filename{-r} option during compilation, see \Cref{MetaExplicitDLLApp}.\jon{This is the MacOS option standard, Windows is slightly different.}
-%
-\fsOutput{MetaExplicitDLLApp}{The library is linked to an application during compilation to produce runnable code.}
-%
-A library can be the result of compiling a number of files into a single \filename{.dll} file. \filename{.dll}-files may be loaded dynamically in script files (\filename{.fsx}-files) by using the 
-\begingroup % The hash sign causes problems for this combination of advice and lstinline, so we locally redefine it according to https://tex.stackexchange.com/questions/294765/file-path-with-symbol-causes-error/294791#294791
-\catcode`\#=12
-\idx{\lstinline{#r} directive},
-\endgroup
-as illustrated in \Cref{MetaHashAppCode}.
-%
-\fsCode{MetaHashApp}{MetaHashAppCode}{The \filename{.dll} file may be loaded dynamically in \filename{.fsx} script files and in interactive mode. Nevertheless, this usage is not recommended.}{}
-%
-We may now omit the explicit mentioning of the library when compiling, as shown in \Cref{MetaHashApp}.
-\begingroup % The hash sign causes problems for this combination of advice and lstinline, so we locally redefine it according to https://tex.stackexchange.com/questions/294765/file-path-with-symbol-causes-error/294791#294791
-\catcode`\#=12
-\fsOutput{MetaHashApp}{When using the \lstinline{#r} directive, then the \filename{.dll} file need not be explicitly included in the list of files to be compiled.}
-%
-\endgroup
- The \lstinline{#r} directive is also used to include a library in interactive mode. However, for the code to be compiled, the use of the \lstinline{#r} directive requires that the filesystem path to the library is coded inside the script. As for module names, direct linking of filenames with the internal workings of a program is a needless complication of structure, and 
-\begingroup % The hash sign causes problems for this combination of advice and lstinline, so we locally redefine it according to https://tex.stackexchange.com/questions/294765/file-path-with-symbol-causes-error/294791#294791
-\catcode`\#=12
-\advice{it is recommended not to rely on the use of the \lstinline{#r} directive.}
-\endgroup
-
-In the above listings we have compiled \idx[script file]{script files} into libraries. However, F\# has reserved the \filename{.fs} filename suffix for library files, and such files are called \idx[{implementation file}]{implementation files}. In contrast to script files, implementation files do not support the \lstinline{#r} directive. When compiling a list of implementation and script files, all but the last file must explicitly define a module or a namespace.
-
-Both script and implementation files may be augmented with \idx[signature file]{signature files}. A signature file contains no implementation, only type definitions. Signature files offer three distinct features:
+Module files can be accompanied by \idx[signature file]{signature files} which have the suffix \lstinline[language=console]{.fsi}. A signature file contains no implementation, only type definitions. Signature files offer three distinct features:
 \begin{enumerate}
 \item Signature files can be used as part of the documentation of code, since type information is of paramount importance for an application programmer to use a library. 
 \item Signature files may be written before the implementation file. This allows for a higher-level programming design that focuses on \emph{which} functions should be included and \emph{how} they can be composed.
 \item Signature files allow for access control. Most importantly, if a type definition is not available in the signature file, then it is not available to the application program. Such definitions are private and can only be used internally in the library code. More fine-grained control related to classes is available and will be discussed in \Cref{chap:oop}.
 \end{enumerate}
- 
-Signature files can be generated automatically using the \filename{--sig:<filename>} compiler directive. To demonstrate this feature, we will first move the definition of \lstinline{add} to the implementation file, see \Cref{MetaWAdd}.
-%
-\fsImplementation{MetaWAdd}{MetaWAddImpl}{An implementation file including the \lstinline{add} function.}{}
-%
-A signature file may be automatically generated, as shown in \Cref{MetaWAddSig}.
-%
-\fsOutput{MetaWAddSig}{Automatic generation of a signature file at compile time.}
-%
-The warning can safely be ignored, since at this point it is not our intention to produce runnable code. The above listing has generated the signature file in \Cref{MetaWAddSign}.
-%
-\fsSignature{MetaWAdd}{MetaWAddSign}{An automatically generated signature file from \filename{MetaWAdd.fs}.}{}
-%
-We can generate a library using the automatically generated signature file by writing \filename{fsharpc -a MetaWAdd.fsi MetaWAdd.fs}, which is identical to compiling the \filename{.dll} file without the signature file. However, if we remove, e.g., the type definition for \lstinline{add} in the signature file, then this function becomes private to the module and cannot be accessed outside. Hence, using the signature file in \Cref{MetaWAddRemovedSign}, and recompiling the \filename{.dll} with \Cref{MetaWAddImpl} does not generates errors. 
-%
-\fsSignature{MetaWAddRemoved}{MetaWAddRemovedSign}{Removing the type defintion for \lstinline{add} from \filename{MetaWAdd.fsi}.}{}
-%
-%
-\fsOutput{MetaWAdd}{Automatic generation of a signature file at compile time.}
-%
-However, when using the newly created \filename{MetaWAdd.dll} with an application that does not itself supply a definition of \lstinline{add}, we get a syntax error, since \lstinline{add} now is inaccessible to the application program. This is demonstrated in \Cref{MetaWOAddApp,MetaWAddRemoved}.
-%
-\fsCode{MetaWOAddApp}{MetaWOAddApp}{A version of \Cref{MetaApp} without a definition of \lstinline{add}.}{}
-%
-\fsOutput{MetaWAddRemoved}{Automatic generation of a signature file at compile time.}
-%
+These features help the programmer structure the process of programming and protects the user of a library from irrelevant data and functions. A signature file contains the type definitions and the types of the values and functions the is to be exposed to the user of the library. For example, for the library in \Cref{quadraticModule}, we can define a signature files which makes the \lstinline{solveQuadraticEquation} function but not the \lstinline{discriminant} function available to the user of the library as demonstrated in \Cref{librarySignature}.
+\fsSignature{solve/library/Library}{librarySignature}{A signature file for \Cref{quadraticModule}.}{}
+To compile the application using the signature file, we must add the created file, e.g., \lstinline[language=console]{Library.fsi}, to \lstinline[language=console]{<Compile Include="Library.fs" />} to \lstinline[language=console]{library.fsproj} as follows
+\begin{codeNOutput}[label=libraryFsprojFSI,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: The \texttt{library.fsproj} with an interface file added.}
+  \begin{lstlisting}[language=console,escapechar=§]
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <TargetFramework>net6.0</TargetFramework>
+  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+ </PropertyGroup>
+ <ItemGroup>
+  <Compile Include="Library.fsi" />
+  <Compile Include="Library.fs" />
+ </ItemGroup>
+</Project>
+\end{lstlisting}
+\end{codeNOutput}
+It is important that the signature file is written before the implementation file.
+
 
 \section{Debugging modules}
+
+
+\section{Key Concepts and Terms in This Chapter}
+In this chapter, we have \dots
+\begin{itemize}
+\item etc.
+\end{itemize}
 
 \end{document}
 

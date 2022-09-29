@@ -1,0 +1,1 @@
+List.findIndex (fun x -> x = 'k') ['a' .. 'z'];;
