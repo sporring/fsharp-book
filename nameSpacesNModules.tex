@@ -181,6 +181,74 @@ To compile the application using the signature file, we must add the created fil
 \end{codeNOutput}
 It is important that the signature file is written before the implementation file.
 
+\section{Programming Intermezzo: Postfix Arithmetic with a Stack}
+To this point, we have performed simple arithmatic using \idx{infix} notation, meaning that expressions like $(4+6*3)/2-8$ is evaluated using the precedence and association rules of the operators as
+\begin{align}
+  (4+6*3)/2-8
+  &\rightsquigarrow (4+18)/2-8\\
+  &\rightsquigarrow 22/2-8\\
+  &\rightsquigarrow 11-8\\
+  &\rightsquigarrow 3
+\end{align}
+However, there is an equaly valid notation, \idx{postfix}, in which the same expression is written as $4\; 6\; 3\; *\; +\; 2\; /\; 8\; -$. Here, the rule is to read from left to right, and whenever there are two values and an operator, $a\; b\; \text{op}$, replaced this with the value $a \text{ op } b$ and repeat until only one value remains, which is the result of the calculation. Hence,
+\begin{align}
+  4\; 6\; 3\; *\; +\; 2\; /\; 8\; -
+  &\rightsquigarrow\; 4\; 18\; +\; 2\; /\; 8\; -\\
+  &\rightsquigarrow\; 22\; 2\; /\; 8\; -\\
+  &\rightsquigarrow\; 11\; 8\; -\\
+  &\rightsquigarrow\; 3
+\end{align}
+This was implemented on a series of calculators released by Hewlett-Packard in the 1960-1980'ies, and one of the arguments for this notation was, that the expressions could be evaluated by a stack with only 3 levels. In the following, we will look at stacks as an abstract datatype and build a stack library and an arithmetic solver for such simple expressions using this stack.
+
+A stack is an abstract datatype, meaning that it is defined by its concepts, not its implementaiton. The concept of a stack is like a stack of plates in a cafeteria, they are placed in physical stack, and you can take the top plate and place a plate on the top, but you cannot access a plate in the middle of a stack. Stacks typically comes with the following functions:
+\begin{description}
+\item[init:] Create an empty stack.
+\item[pop:] Return the top element and the resulting stack.
+\item[push:] Put an element on a stack and return the resulting stack.
+\item[isEmpty:] Check whether the stack is empty.
+\end{description}
+Following the 8-step guide \Cref{sec:8step}, the above directly suggests names and includes brief descriptions (Step 1 and 2). Step 3 suggests that we write a simple test, and
+since we are fond of piping, our test program is shown in \Cref{postfixTest}.
+\fsCode{postfixTest}{postfixTest}{A simple program using a yet to be written library.}{}
+We expect this to print the result of the last \lstinline{pop} call, which should include information about the element \lstinline{2}.
+
+In the functional programming paradigm, our stack is a constant, implying that everytime we pop and push, we create new stacks. Thus, for step 4 in the 8-step guide, we must accept that all but \lstinline{isEmpty} returns a new stack, and all but \lstinline{init} must take a stack as input. Thus we arrive at a signature file for the stack-library given in \Cref{librarySignature}.
+\fsSignature{postfixLibrary}{librarySignature}{A signature file for the stack library}{} 
+A limitation to F\#'s modules is that the type specifications need explicit declaration. We would have liked to write \lstinline{type stack} and functions of some variable type \lstinline{'e}, since the stack concept is independent on the type of elements it contans. However, this is not possible, and thus, we here specialize to integer stacks. For similar reasons, we are forced to specify details about the implementation of our type. Our idea is that stacks can be implemented as lists, since lists are well suited to work with the first elements.
+
+Implementing a stack using lists is simple, since lists already contains the properties \lstinline{Head}, \lstinline{Tail}, and \lstinline{IsEmpty}, which closely mimics the needed operations for a stack. Thus we arrive at \Cref{postfixImplementation}.
+\fsImplementation{postfixLibrary}{postfixImplementation}{An implementation of a stack module.}{}
+And now we are able to run our test code as shown in \Cref{postfixTestRun}.
+\fsOutput{postfixTest}{postfixTestRun}{Running the test program}{}
+As expected, the top element and the resulting stack is \lstinline{(2,[1])}.
+
+To implement simple postfix algebra, we will use discriminated unions. That is, we define a type,
+\begin{quote}
+\lstinline{type element = Value of int | Multiply | Plus | Minus | Divide}
+\end{quote}
+This allows us to make lists of tokens such as,
+\begin{quote}
+\lstinline{[Value 4; Value 6; Value 3; Multiply; Plus]}
+\end{quote}
+for the expression $3\; 4\; 2\; /\; +$ which is equivalent to $3+4/2$ in infix notation. Next step is to understand how to use a stack to evaluate such expressions. Hence, consider the following example.
+\begin{center}
+  \begin{tabular}{r|r}
+  Unused tokens &  Evaluation stack\\\hline
+  $4\; 6\; 3\; *\; +\; 2\; /\; 8\; -$ & \lstinline![]! \\
+  $6\; 3\; *\; +\; 2\; /\; 8\; -$ & \lstinline![4]! \\
+  $3\; *\; +\; 2\; /\; 8\; -$ & \lstinline![6; 4]! \\
+  $*\; +\; 2\; /\; 8\; -$ & \lstinline![3; 6; 4]! \\
+  $+\; 2\; /\; 8\; -$ & \lstinline![18; 4]! \\
+  $2\; /\; 8\; -$ & \lstinline![22]! \\
+  $/\; 8\; -$ & \lstinline![2; 22]! \\
+  $8\; -$ & \lstinline![11]! \\
+  $-$ & \lstinline![8; 11]! \\
+   & \lstinline![3]! \\
+\end{tabular}
+\end{center}
+As claimed, we see that the stack is at most 3 long.
+
+
 
 \section{Debugging modules}
 
