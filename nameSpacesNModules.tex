@@ -18,7 +18,11 @@ F\# includes several programming structures to organize code in libraries: Modul
 
 \section{Dotnet projects: Libraries and applications}
 \label{chap:projects}
-As our programs grow in size, it can be convenient to split the program over several files, e.g., by separating functionality into something which general and specific in  nature with respect the problem being solved. Examples of this is the \lstinline{List} module which contains general functions on lists, and which you have used in your programs. In this chapter, we will write our own modules, also known as libraries, and the programs using these libraries, we will call applications. Using the \lstinline[language=console]{dotnet} command-line tool, we are able to create project files which have a \lstinline[language=console]{.fsproj} suffix, which include information about which source code and packages belongs together. The \lstinline[language=console]{dotnet} command-line tool further helps structure the files on the filesystem by use of directories. As an example
+As our programs grow in size, it can be convenient to split the program over several files, e.g., by separating functionality into something which general and specific in  nature with respect the problem being solved. Examples of this is the \lstinline{List} module which contains general functions on lists, and which you have used in your programs. In this chapter, we will write our own modules, also known as libraries, and the programs using these libraries, we will call applications. Using the \lstinline[language=console]{dotnet} command-line tool, we are able to create project files which have a \lstinline[language=console]{.fsproj} suffix, which include information about which source code and packages belongs together. The \lstinline[language=console]{dotnet} command-line tool further helps structure the files on the filesystem by use of directories.
+
+
+\begin{comment}
+As an example
 \begin{codeNOutput}[label=dotnetNew,
   top=-5pt,
   bottom=-5pt,
@@ -132,9 +136,54 @@ However, \lstinline[language=console]{dotnet fsi} \idx{interprets} the library a
 \end{center}
 The example application, we are studying here, is tiny, but even in this case, the repeated translation by \lstinline[language=console]{dotnet fsi} is a 16\% overhead when compared to an already compiled program, and you should expect this overhead to be larger for larger programs. However, the these tiny programs the cost of the initial compilation is 400\% and not worth the effort from a time perspective.
 
+\subsection{Dotnet Projects Light}
+
+A lightweight version of the above is to create a console application using
+\end{comment}
+
+\begin{codeNOutput}[label=dotnetNew,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: Creating an initial library-application file setup.}
+  \begin{lstlisting}[language=console,escapechar=§]
+$ dotnet new console -lang "F#" -o app
+\end{lstlisting}%$
+\end{codeNOutput}
+rename \lstinline[language=console]{Program.fs} to \lstinline[language=console]{Program.fsx}, and create the file \lstinline[language=console]{Library.fs} using a standard editor. You should now have a directory as shown in \Cref{fig:dotnetNewLightFileSystem}.
+\begin{figure} % make sure figure is printed after the countRecursive
+  \centering
+  \includegraphics[width=0.35\linewidth]{dotnetLightNew}
+  \caption{A set of files for a ligth version of a dotnet project.}
+  \label{fig:dotnetNewLightFileSystem}
+\end{figure}
+Now edit \lstinline[language=console]{app.fsproj} to become as shown in \Cref{appLightFsproj}.
+\begin{codeNOutput}[label=appLightFsproj,
+  top=-5pt,
+  bottom=-5pt,
+  left=-2pt,
+  right=-2pt,
+]{: The initial content of \texttt{app.fsproj}.}
+  \begin{lstlisting}[language=console,escapechar=§]
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <OutputType>Exe</OutputType>
+  <TargetFramework>net6.0</TargetFramework>
+ </PropertyGroup>
+ <ItemGroup>
+  <PackageReference Include="DIKU.Canvas" Version="1.0.1" />
+  <Compile Include="Library.fs" />
+  <Compile Include="Program.fsx" />
+ </ItemGroup>
+</Project>
+\end{lstlisting}
+\end{codeNOutput}
+The order of the references to packages, libraries, and application files are important, since \lstinline[language=console]{dotnet} will read them from top to bottom, and only if, e.g., \lstinline[language=console]{Library.fs} is above \lstinline[language=console]{Program.fsx} will the library functions be available in the application. Note also, that when a package is included in project file, then it does not need to be loaded in libraries and applications using the \lstinline{#r} directive. This version will compile and run the library and the program, but will not build the library separately.
+
 \section{Libraries and applications}
 \label{sec:modules}
-A library in F\# is expressed as a \idx{module}, which is a programming structure used to organize type declarations, values, functions, etc. The libraries should have the  suffix \lstinline[language=console]{.fs}, and here will will call them \idx{implementation files} in contrast to the signature files to be discussed below, which we will call \idx{interface files}.
+A library in F\# is expressed as a \idx{module}, which is a programming structure used to organize type declarations, values, functions, etc. The libraries should have the  suffix \lstinline[language=console]{.fs}, and here will will call them \idx{implementation files} in contrast to the signature files to be discussed below, which we will call \idx{signature files}.
 
 A module is typically a file where the module name is declared in the first liness using the \idx[module@\lstinline{module}]{\keyword{module}} with the following syntax,
 %
@@ -151,7 +200,10 @@ Consider the example from \Cref{solveQuadraticEquation} in which functions are d
 and \lstinline[language=console]{Program.fsx} has been changed to what is shown in \Cref{quadraticApp}.
 \fsCode{solve/app/Program}{quadraticApp}{An application using the \lstinline!Solve! module.}{}
 
-Module files can be accompanied by \idx[signature file]{signature files} which have the suffix \lstinline[language=console]{.fsi}. A signature file contains no implementation, only type definitions. Signature files offer three distinct features:
+\section{Specifying a Module's Interface with a Signature File}
+As the 8-step guide suggests, the design of programs is helped by first considering what the program's function is to do before actually implementing them. This also holds for libraries, and signature files can aid this process. 
+
+A \idx[signature file]{signature files} is a file accompanying \idx{implementation files} and have the suffix \lstinline[language=console]{.fsi}. A signature file contains almost no implementation, but only type definitions. Signature files offer three distinct features:
 \begin{enumerate}
 \item Signature files can be used as part of the documentation of code, since type information is of paramount importance for an application programmer to use a library. 
 \item Signature files may be written before the implementation file. This allows for a higher-level programming design that focuses on \emph{which} functions should be included and \emph{how} they can be composed.
@@ -159,27 +211,35 @@ Module files can be accompanied by \idx[signature file]{signature files} which h
 \end{enumerate}
 These features help the programmer structure the process of programming and protects the user of a library from irrelevant data and functions. A signature file contains the type definitions and the types of the values and functions the is to be exposed to the user of the library. For example, for the library in \Cref{quadraticModule}, we can define a signature files which makes the \lstinline{solveQuadraticEquation} function but not the \lstinline{discriminant} function available to the user of the library as demonstrated in \Cref{librarySignature}.
 \fsSignature{solve/library/Library}{librarySignature}{A signature file for \Cref{quadraticModule}.}{}
-To compile the application using the signature file, we must add the created file, e.g., \lstinline[language=console]{Library.fsi}, to \lstinline[language=console]{<Compile Include="Library.fs" />} to \lstinline[language=console]{library.fsproj} as follows
+To compile the application using the signature file, we must add the created file, e.g., \lstinline[language=console]{Library.fsi}, to the project file as, e.g., shown in \Cref{libraryFsprojFSI}.
 \begin{codeNOutput}[label=libraryFsprojFSI,
   top=-5pt,
   bottom=-5pt,
   left=-2pt,
   right=-2pt,
-]{: The \texttt{library.fsproj} with an interface file added.}
+]{: The \texttt{library.fsproj} with a signature file added.}
   \begin{lstlisting}[language=console,escapechar=§]
 <Project Sdk="Microsoft.NET.Sdk">
  <PropertyGroup>
+  <OutputType>Exe</OutputType>
   <TargetFramework>net6.0</TargetFramework>
-  <GenerateDocumentationFile>true</GenerateDocumentationFile>
  </PropertyGroup>
  <ItemGroup>
+  <PackageReference Include="DIKU.Canvas" Version="1.0.1" />
   <Compile Include="Library.fsi" />
   <Compile Include="Library.fs" />
+  <Compile Include="Program.fsx" />
  </ItemGroup>
 </Project>
 \end{lstlisting}
 \end{codeNOutput}
-It is important that the signature file is written before the implementation file.
+In context of the 8-step guide, it is useful to write the signature file before the implementation file, and that the signature file contains the documentation for the functions available in the application.
+
+Note that several rules apply for signature functions, and here we hightlight:
+\begin{quote}
+Exposed type abbreviations must be given both in the signature file and the implementation file
+\end{quote}
+The implication is that the signature at times must also define details about an implementation, see e.g., the example below, and thus becomes less abstract the desirable in general.
 
 \section{Programming Intermezzo: Postfix Arithmetic with a Stack}
 To this point, we have performed simple arithmatic using \idx{infix} notation, meaning that expressions like $(4+6*3)/2-8$ is evaluated using the precedence and association rules of the operators as
@@ -230,9 +290,9 @@ This allows us to make lists of tokens such as,
 \begin{quote}
 \lstinline{[Value 4; Value 6; Value 3; Multiply; Plus]}
 \end{quote}
-for the expression $3\; 4\; 2\; /\; +$ which is equivalent to $3+4/2$ in infix notation. Next step is to understand how to use a stack to evaluate such expressions. Hence, consider the following example.
+for the expression $3\; 4\; 2\; /\; +$ which is equivalent to $3+4/2$ in infix notation. Next step is to understand how to use a stack to evaluate such expressions. The idea is to process the list of tokens from its head push values to a stack. When the head of the tokens list is an operator, say 'op' then the two top elements from the stack is poped, say $a$ and $b$, the mathematical expression $c = a\text{ op }b$ is evaluated and $c$ is pushed to the stack. For our example, the evolution of the stack will be:
 \begin{center}
-  \begin{tabular}{r|r}
+  \begin{tabular}{l|r}
   Unused tokens &  Evaluation stack\\\hline
   $4\; 6\; 3\; *\; +\; 2\; /\; 8\; -$ & \lstinline![]! \\
   $6\; 3\; *\; +\; 2\; /\; 8\; -$ & \lstinline![4]! \\
@@ -246,12 +306,20 @@ for the expression $3\; 4\; 2\; /\; +$ which is equivalent to $3+4/2$ in infix n
    & \lstinline![3]! \\
 \end{tabular}
 \end{center}
-As claimed, we see that the stack is at most 3 long.
+As demonstrated, the result of the expression is the last element on the stack, once the list of tokens is empty. An F\# implementaiton is given in \Cref{postfixApp}.
+\fs{postfixApp}{An application for evaluating lists of tokens on postfix form using a stack.}
 
+\section{Generic Modules}
+\label{sec:genericModule}
+The stack is an example of an abstract datatype, and in the previous section, we implemented a stack for integers, however, stacks can be of many other types, and although we could make a stack module for each type, it would greatly improve the usefullness of our library, if we could make a stack module, which is generic, i.e., where the user can decide when writing applications, which type of values to stack. Luckily, this is supported in F\#.
 
-
-\section{Debugging modules}
-
+In \Cref{sec:variableType} we discussed the usefulness of the variable type such as \lstinline{'a}, which makes functions and types generic, that is, the same definition can be used for any type. To make a generic module, it is often useful first to make a non-generic version, as our integer stack, since it is often easier to spot errors in concrete program versions. The integer stack already works as desired, so we will now modify the module to be a stack for a variable type. In our example, we must update both the type abbreviation and function types in the signature file. The result is shown in \Cref{postfixLibraryGeneric}.
+\fsSignature{postfixLibraryGeneric}{librarySignature}{A signature file for the generic stack library}{} 
+Next step is to update the implementaiton file. During such transformations it is not uncommon to realize that restrictions must be put on the type, which is possible but which we will not consider further in this book. Since the stack does not rely on any properties of the stack elements, there is no challenge in modifying the implementation file as shown in \Cref{postfixLibraryGeneric}.
+\fsImplementation{postfixLibraryGeneric}{postfixImplementation}{An implementation of a generic stack module.}{}
+Finally, we are able to make application using stacks of various kinds, as shown in \Cref{postfixTestGeneric}.
+\fs{postfixTestGeneric}{Running the test program}{}
+In the program, we see that F\# is able to infer that a stack, on which integers are pushed, must be of \lstinline{stack<int>} type, and when characters are pushed, then the stack most be of type \lstinline{stack<char>}. Thus, we have arrived at a stack for any type, whos interface is given by the signature file, and almost all of its implementation is hidden in the implementaiton file.
 
 \section{Key Concepts and Terms in This Chapter}
 In this chapter, we have \dots

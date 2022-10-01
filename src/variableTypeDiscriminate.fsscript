@@ -1,0 +1,3 @@
+type myOption<'a> = Value of 'a | Error
+let intOption = Value 1
+let charOption = Value 'a';;

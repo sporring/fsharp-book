@@ -1,0 +1,6 @@
+type summarize<'a> = 'a list -> 'a
+let head : summarize<'a> = List.head
+let avg : summarize<float> = List.average
+let lst = [0.0..3.0]
+printfn "head lst = %A" (head lst)
+printfn "avg lst = %A" (avg lst);;

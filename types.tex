@@ -220,6 +220,13 @@ The example in \Cref{compiletimeVariableType} demonstrates the statically resolv
 
 The \keyword{inline} construction is useful when generating generic functions and still profiting from static type checking. However, explicit copying of functions is often something better left to the compiler to optimize. An alternative seems to be using runtime resolved variable types with the \lstinline[language=syntax]{'<*ident*>} syntax. Unfortunately, this is not possible in the case of most operators, since they have been defined in the \lstinline{FSharp.Core} namespace to be statically resolved variable types. E.g., the \lexeme{+} operator has type \lstinline{( + ) : ^T1 -> ^T2 -> ^T3 (requires ^T1 with static member (+) and ^T2 with static member (+))}.
 
+
+Discrimate Unions and type abbreviations can be generic as well. For example, in \Cref{variableTypeDiscriminate}, we demonstrate how an option-like wrapper can be made for any type.
+\fsOutput{variableTypeDiscriminate}{A variable discrimated union.}{}
+As shown here, the variable type \lstinline{'a} is first fixed, when a value of the \lstinline{myOption} is created, and in contrast to function types that are statically resolved, the same definition can be reused for different types of discriminated unions. Similarly, in \Cref{variableTypeAbbreviation}, we give an example of a variable type abbreviation.
+\fsOutput{variableTypeAbbreviation}{A variable type abreviation.}{}
+Here, the variable type is a function, which takes a list of some type and returns an value of the same type. For example, \lstinline{head} returns the first element of any list type, and \lstinline{avg} returns the average value of lists of floats. For a more in-depth example of generic types, see \Cref{sec:genericModule}.
+
 \section{Key Concepts and Terms in This Chapter}
 In this chapter you have learned about:
 \begin{itemize}
