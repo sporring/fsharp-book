@@ -1,2 +1,2 @@
-$ fsharpc --nologo higherOrderReturn.fsx && mono higherOrderReturn.exe
-[3; 4; 6]
+$ dotnet fsi higherOrderReturn.fsx
+[4; 5; 7]

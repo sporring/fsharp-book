@@ -1,2 +1,2 @@
-$ fsharpc --nologo higherOrderMap.fsx && mono higherOrderMap.exe
+$ dotnet fsi higherOrderMap.fsx
 [3; 4; 6]
