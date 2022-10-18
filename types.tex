@@ -20,6 +20,7 @@ After you have read this chapter, you will be able to model values that contain
 F\# is a strongly typed language, meaning that types are known or inferred at compile time. In the previous chapters, we have used \idx{primitive types} such as \lstinline{float} and \lstinline{bool}, function types, and compound types implicitly defined by tuples. These types are used for simple programming tasks, and everything that can be programmed can be accomplished using these types. However, larger programs are often easier to read and write when using more complicated type structures. In this chapter, we will discuss type abbreviations, enumerated types, discriminated unions, records, and structs. Class types are discussed in depth in \Cref{chap:oop}.
 
 \section{Type Products: Tuples}
+\label{sec:tuples}
 \idx[tuple]{Tuples} are a direct extension of constants. They are immutable and have neither concatenations nor indexing operations. Tuples are unions of immutable types and have the following syntax:
 %
 \begin{verbatimwrite}{\ebnf/tuples.ebnf}

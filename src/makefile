@@ -31,7 +31,7 @@ FSX := $(filter-out commandLineArgsSuccess.fsx, $(FSX))
 FSX := $(filter-out readKey.fsx, $(FSX))
 OS := $(patsubst %.fs,%.out,$(FSCRIPT))
 OSCRIPT := $(patsubst %.fsscript,%.out,$(FSCRIPT))
-OSX := $(patsubst %.fsx,%.out,$(FSX)) MetaExplicitApp.out MetaAppWOpen.out namespaceApp.out namespaceExtensionApp.out MetaExplicit.dll MetaExplicitDLLApp.out MetaExplicit.out MetaWAdd.fsi MetaWAddSig.out MetaWAdd.dll MetaWAdd.out MetaWAddRemoved.out baseUpcastApp.out baseUpcastBoardApp.out commandLineArgs.out commandLineArgsSuccess.out commandLineArgsFail.out MetaWOAddApp.out postfixTest.out postfixApp.out postfixTestGeneric.out postfixAppGeneric.out 
+OSX := $(patsubst %.fsx,%.out,$(FSX)) MetaExplicitApp.out MetaAppWOpen.out namespaceApp.out namespaceExtensionApp.out MetaExplicit.dll MetaExplicitDLLApp.out MetaExplicit.out MetaWAdd.fsi MetaWAddSig.out MetaWAdd.dll MetaWAdd.out MetaWAddRemoved.out baseUpcastApp.out baseUpcastBoardApp.out commandLineArgs.out commandLineArgsSuccess.out commandLineArgsFail.out MetaWOAddApp.out postfixTest.out postfixApp.out postfixTestGeneric.out postfixAppGeneric.out queueApp.out
 
 all: $(OS) $(OSX) $(OSCRIPT)
 
@@ -80,6 +80,8 @@ namespaceExtensionApp.out: namespace.fsx namespaceExtension.fsx namespaceApp.fsx
 	./fsxvar2out $@ "$$ fsharpc --nologo $^ && mono namespaceApp.exe" $^
 
 # Irregular compile
+queueApp.out: queue.fs queueApp.fsx
+	./fsxeval2out $@ "" "dotnet fsi $^"
 postfixTestGeneric.out: postfixLibraryGeneric.fsi postfixLibraryGeneric.fs postfixTestGeneric.fsx
 	./fsxeval2out $@ "" "dotnet fsi $^"
 postfixAppGeneric.out: postfixLibraryGeneric.fsi postfixLibraryGeneric.fs postfixAppGeneric.fsx
