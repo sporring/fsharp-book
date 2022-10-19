@@ -481,7 +481,7 @@ A good mnemonic for remembering the result of the 'and' and 'or' operators is to
 %
 \fsOutput{truthTable}{Boolean operators and truth tables.}
 %
-Here, we used the \lstinline|printfn| function to present the results of many expressions on something that resembles a tabular form. The spacing produced using the \lstinline|printfn| function is not elegant, and in \Cref{sec:printf} \jon{update, presently only mentioned in \Cref{chap:quickStartGuide}} we will discuss better options for producing more beautiful output. Notice that the arguments for \lstinline|printfn| were given on the next line with indentation. The indentation is an important part of telling F\# which part of what you write belongs together. This is an example of the so-called lightweight syntax. Generally, F\# ignores newlines and whitespaces except when using the lightweight syntax. The difference between verbose and lightweight syntax is discussed in \Cref{chap:let}.
+Here, we used the \lstinline|printfn| function to present the results of many expressions on something that resembles a tabular form. The spacing produced using the \lstinline|printfn| function is not elegant, and in \Cref{chap:IO} \jon{update, presently only mentioned in \Cref{chap:quickStartGuide}} we will discuss better options for producing more beautiful output. Notice that the arguments for \lstinline|printfn| were given on the next line with indentation. The indentation is an important part of telling F\# which part of what you write belongs together. This is an example of the so-called lightweight syntax. Generally, F\# ignores newlines and whitespaces except when using the lightweight syntax. The difference between verbose and lightweight syntax is discussed in \Cref{chap:let}.
 
 \section{Integer Arithmetic}
 The set of integers is infinitely large, but since all computers have limited resources, it is not possible to represent it in its entirety. The various integer types listed in \Cref{tab:primitiveTypes} are finite subsets reduced by limiting their ranges. 
@@ -609,7 +609,7 @@ Notice that the first character has index 0, and to get the last character in a 
 %
 Since index counting starts at 0, and since the string length is 7, the index of the last character is 6. 
 %An alternative notation for indexing is to use the property \lstinline|Char|, and in the example \lstinline|''abcdefg''[3]| is the same as \lstinline|a.Char 3|. 
-There is a long list of built-in functions in \lstinline|System.String| for working with strings, some of which will be discussed in \Cref{sec:strings}.
+There is a long list of built-in functions in \lstinline|System.String| for working with strings, see \url{https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-stringmodule.html} for further details.
  
 The \idx{dot notation} is an example of Structured programming, where technically speaking, the string \mbox{\lstinline|"abcdefg"|} is an immutable \idx{object} of \idx{class} \lstinline|string|, \lstinline|[]| is an object \idx{method}, and \lstinline|Length| is a property. For more on objects, classes, and methods, see \Cref{chap:oop}.  
 

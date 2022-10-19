@@ -1,3 +1,3 @@
-open stack
+open Stack
 
-init () |> push 1 |> push 2 |> pop |> printfn "%A"
+create () |> push 1.0 |> push 2.0 |> pop |> printfn "%A"

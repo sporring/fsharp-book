@@ -37,7 +37,7 @@ placeholder. In the example we bound \lstinline!tp! to the tuple. The opposite i
 %
 \fsOutput{tupleDeconstruction}{Definition of a tuple.}
 %
-In this example, a function is defined that takes 1 argument, a 3-tuple. If we wanted a function with 3 arguments, then the function binding should have been \lstinline{let deconstructNPrint a b c = ...}. The value binding \lstinline{let (a, b, c) = tp}, binds a tuple with 3 named members to a value, thus deconstructing it in terms of its members. This is called pattern matching and will be discussed in further detail in \Cref{chap:patterns}. Since we used the \lstinline!\%A! placeholder in the \lstinline!printfn! function, the function can be called with 3-tuples of different types. F\# informs us that the tuple type is variable by writing \lstinline{'a * 'b * 'c}. The \lexeme{'} notation means that the type can be decided at run-time, see \Cref{sec:variableTypes} for more on variable types. 
+In this example, a function is defined that takes 1 argument, a 3-tuple. If we wanted a function with 3 arguments, then the function binding should have been \lstinline{let deconstructNPrint a b c = ...}. The value binding \lstinline{let (a, b, c) = tp}, binds a tuple with 3 named members to a value, thus deconstructing it in terms of its members. This is called pattern matching. Since we used the \lstinline!\%A! placeholder in the \lstinline!printfn! function, the function can be called with 3-tuples of different types. F\# informs us that the tuple type is variable by writing \lstinline{'a * 'b * 'c}. The \lexeme{'} notation means that the type can be decided at run-time, see \Cref{sec:variableTypes} for more on variable types. 
 
 Pairs or 2-tuples are so common that F\# includes two built-in functions,\idx[fst@\lstinline{fst}]{\keyword{fst}} and \idx[snd@\lstinline{snd}]{\keyword{snd}}, to extract the first and second element of a pair. This is demonstrated in \Cref{pair}.
 %
@@ -99,13 +99,15 @@ type <*ident*> =
 \end{verbatimwrite}
 \syntax{\ebnf/discrimiatedUnions.ebnf}{Syntax for type abbreviation.}
 %
-Discriminated unions are reference types, i.e., their content is stored on \idx{The Heap}, see \Cref{sec:referenceCells} for a discussion on reference types. Since they are immutable, there is no risk of side-effects. As reference types, they only pass a reference when used as arguments to and returned from a function. This is in contrast to value types, which transport a complete copy of the data structure. Discriminated unions are thus effective for large data structures. Discriminated unions can also be represented as structures using the \lstinline{[<Struct>]} attribute, in which case they are value types. See \Cref{sec:structs} for a discussion on structs.
+Discriminated unions are reference types, i.e., their content is stored on \idx{The Heap}. Since they are immutable, there is no risk of side-effects. As reference types, they only pass a reference when used as arguments to and returned from a function. This is in contrast to value types, which transport a complete copy of the data structure. Discriminated unions are thus effective for large data structures. Discriminated unions can also be represented as structures using the \lstinline{[<Struct>]} attribute, in which case they are value types.
 
 An example just using the named cases but no further specification of types is given in \Cref{discriminatedUnions}.
 %
-\fs{discriminatedUnions}{A discriminated union of medals. Compare with \Cref{enum}.}
+\fs{discriminatedUnions}{A discriminated union of medals.}
 %
-Here, we define a discriminated union as three named cases signifying three different types of medals. Compared with the enumerated type in \Cref{enum}, we see that the only difference is that the cases of the discriminated unions have no value. A commonly used discriminated union is the \idx{option type}, see \Cref{sec:optionType} for more detail.
+Here, we define a discriminated union as three named cases signifying three different types of medals.
+% Compared with the enumerated type in \Cref{enum}, we see that the only difference is that the cases of the discriminated unions have no value.
+A commonly used discriminated union is the \idx{option type}, see \Cref{sec:optionType} for more detail.
 
 Discriminated unions may also be used to store data. Where the names in enumerated types are aliases of single values, the names used in discriminated unions can hold any value specified at the time of creation. An example is given in \Cref{discriminatedUnionsOf}.
 %
@@ -127,7 +129,7 @@ type <*ident*> = {
 \end{verbatimwrite}
 \syntax{\ebnf/records.ebnf}{Syntax for defining record types.}
 %
-Records are collections of named variables and values of possibly different types. They are reference types, and thus their content is stored on \idx{The Heap}, see \Cref{sec:referenceCells} for a discussion on reference types. Records can also be \idx{struct records} using the \lstinline{[<Struct>]} attribute, in which case they are value types. See \Cref{sec:structs} for a discussion on structs. An example of using records is given in \Cref{records}. The values of individual members of a record are obtained using the \idx[.@\lstinline{.}]{\lexeme{.}} notation
+Records are collections of named variables and values of possibly different types. They are reference types, and thus their content is stored on \idx{The Heap}. Records can also be \idx{struct records} using the \lstinline{[<Struct>]} attribute, in which case they are value types. An example of using records is given in \Cref{records}. The values of individual members of a record are obtained using the \idx[.@\lstinline{.}]{\lexeme{.}} notation
 %
 \fs{records}{A record is defined as holding information about a person.}
 %

@@ -112,7 +112,7 @@ let <*valueIdent*> = <*bodyExpr*>
 %
 The \idx[let@\lstinline{let}]{\keyword{let}} keyword binds a value-identifier with an expression. The above notation means that \lstinline[language=syntax]{<*valueIdent*>} is to be replaced with a name and \lstinline[language=syntax]{<*bodyExpr*>} with an expression that evaluates to a value. The binding \emph{is} available in later lines until the end of the scope it is defined in.
 
-The value identifier is annotated with a type by using the \idx[:@\lstinline{:}]{\lexeme{:}} lexeme followed by the name of a type, e.g., \lstinline{int}. The \idx[\_@\lstinline{_}]{\lexeme{\_}} lexeme may be used as a value-identifier. This lexeme is called the \idx{wildcard pattern}, and for value-bindings it means that \lstinline[language=syntax]{<*bodyExpr*>} is evaluated, but the result is discarded. See \Cref{chap:patterns} for more details on patterns.
+The value identifier is annotated with a type by using the \idx[:@\lstinline{:}]{\lexeme{:}} lexeme followed by the name of a type, e.g., \lstinline{int}. The \idx[\_@\lstinline{_}]{\lexeme{\_}} lexeme may be used as a value-identifier. This lexeme is called the \idx{wildcard pattern}, and for value-bindings it means that \lstinline[language=syntax]{<*bodyExpr*>} is evaluated, but the result is discarded.
 
 For example, letting the identifier \lstinline!p! be bound to the value \lstinline!2.0! and using it in an expression is done as shown in \Cref{letValueLightWeight}.
 %
@@ -411,6 +411,7 @@ the value of \lstinline{a} is uniquely determined, but F\# finds them to be erro
 is the only valid expression of the 3. In practice, F\# assumes that the omitted branch returns \lexeme{()}, and thus it is fine to say \mbox{\lstinline!let a = if true then ()!} and \mbox{\lstinline!if true then printfn "hej"!}. Nevertheless, it is good practice in F\# to always include an \keyword{else} branch.
 
 \section{Tracing code by hand}
+\label{sec:tracing}
 The concept of Tracing by hand will be developed throughout this book. Here we will concentrate on the basics, and as we introduce more complicated programming structures, we will develop the Tracing by hand accordingly. Tracing may seem tedious in the beginning but in conjunction with strategically placed debugging \lstinline!printfn! statements, it is a very valuable tool for debugging.
 
 Consider the program in \Cref{lexicalScopeTracing}.
