@@ -1,4 +1,4 @@
-$ fsharpc --nologo exceptionDivByZeroNamed.fsx && mono exceptionDivByZeroNamed.exe
+$ dotnet fsi exceptionDivByZeroNamed.fsx
 3 / 1 = 3
 Error: Attempted to divide by zero.
 3 / 0 = 2147483647

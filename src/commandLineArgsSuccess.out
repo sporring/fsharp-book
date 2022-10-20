@@ -1,4 +1,3 @@
-$ fsharpc --nologo commandLineArgs.fsx
-$ if mono commandLineArgs.exe Hello World; then echo "success"; else echo "failure"; fi
+$ cd commandLineArgs; if dotnet run Hello World; then echo "success"; else echo "failure"; fi
 Arguments passed to function : [|"Hello"; "World"|]
 success

@@ -4,6 +4,18 @@
 \begin{document}
 \chapter{Working With Files}
 \label{chap:IO}
+
+\abstract{
+  Most programs do not live in isolation but interacts with the world around it. For example, many programs read and write from and to files or the internet. This is in general known as input and output. We have previously seen how to interact with the user by reading and writing to the terminal. In this chapter you will learn how to:
+  \begin{itemize}
+  \item Giving programs to ability to take arguments from the terminal,
+  \item Read and write from to and from files,
+  \item Handle errors by catching exceptions and if needed, throwing them yourself, and
+%  \item Read from the internet.
+  \end{itemize}
+  Particularly with the topic of exceptions, we are leaving the domain of functional programming, and where errors before to a large extend were caught before a given program was run, we will now learn how to write programs, that can handle errors while they are running.
+}
+
 An important part of programming is handling data. A typical source of data is hard-coded bindings and expressions from libraries or the program itself, and the result is often shown on a screen as text output on the console. This is a good starting point when learning to program, and one which we have relied heavily upon in this book until now. However, many programs require more: We often need to ask a user to input data via, e.g., typing text on a keyboard, clicking with a mouse, or striking a pose in front of a camera. We also often need to load and save data to files, retrieve and deposit information from the internet, and visualize data graphically, as sounds, or by controlling electrical appliances. Here we will concentrate on working with the console, files, and the general concept of streams.
 
 File and stream input and output are supported via built-in namespaces and classes. For example, the \lstinline!printf! family of functions discussed in \Cref{sec:printf} is defined in the \lstinline!Printf! module of the \lstinline!Fsharp.Core! namespace, and it is used to put characters on the \lstinline{stdout} stream, i.e., to print on the screen. Likewise, \lstinline{ReadLine} discussed in \Cref{sec:readline} is defined in the \lstinline{System.Console} class, and it fetches characters from the \lstinline{stdin} stream, that is, reads the characters the user types on the keyboard until newline is pressed.
@@ -26,7 +38,7 @@ let <*funcIdent*> <*arg*> =
 %
 \lstinline[language=syntax]{<*funcIdent*>} is the function's name, \lstinline[language=syntax]{<*arg*>} is the name of an array of strings, and \lstinline[language=syntax]{<*bodyExpr*>} is the function body. Return value 0 implies a successful execution of the program, while a non-zero value means failure. The entry point function can only be in the rightmost file in the list of files given to \lstinline[language=console]{fsharpc}. An example is given in \Cref{commandLineArgsCode}.
 %
-\fsCode{commandLineArgs}{commandLineArgsCode}{Interacting with a user with \lstinline!ReadLine! and \lstinline!WriteLine!.}{}
+\fsImplementation{commandLineArgs/Program}{commandLineArgsCode}{Interacting with a user with \lstinline!ReadLine! and \lstinline!WriteLine!.}{}
 %
 An example execution with arguments is shown in \Cref{commandLineArgs}.
 %
@@ -109,6 +121,160 @@ An example of a dialogue is shown in \Cref{readKey}.
 %
 \fs{readKey}{Reading keys and modifiers. The user pressed 'a', 'shift-a', and 'crtl-a', and the program was terminated by pressing 'crtl-c'. The 'alt-a' combination does not work on MacOS.}
 %
+
+\section{Exceptions}
+\label{sec:exceptions}
+Exceptions are runtime errors, such as division by zero. E.g., attempting integer division by zero halts execution and a long somewhat cryptic error message is written to screen, as illustrated in \Cref{DivByZero}.
+%
+\fsOutput{DivByZero}{Division by zero halts execution with an error message.}
+%
+The error message contains much information. The first part, \lstinline[language=console]{System.DivideByZeroException: Attempted to divide by zero} is the error-name with a brief ellaboration. Then follows a list libraries that were involved when the error occurred, and finally F\# states that it \lstinline[language=console]{Stopped due to error}. \lstinline{System.DivideByZeroException} is a built-in exception type, and the built-in integer division operator chooses to raise the exception when the undefined division by zero is attempted. Many times such errors can be avoided by clever program design. However, this is not always possible or desirable, which is why F\# implements exception handling for graceful control.
+
+Exceptions are a basic-type called \idx[exn@\lstinline{exn}]{\lstinline{exn}}, and F\# has a number of built-in ones, a few of which are listed in \Cref{tab:exceptions}.\idxss{ArgumentException@\lstinline{ArgumentException}}\idxss{DivideByZeroException@\lstinline{DivideByZeroException}}\idxss{NotFiniteNumberException@\lstinline{NotFiniteNumberException}}\idxss{OverflowException@\lstinline{OverflowException}}\idxss{IndexOutOfRangeException@\lstinline{IndexOutOfRangeException}}
+\begin{table}
+  \centering
+  \rowcolors{2}{oddRowColor}{evenRowColor}
+  \begin{tabularx}{\linewidth}{|l|X|}
+    \hline
+    \rowcolor{headerRowColor} Attribute & Description\\
+    \hline
+    \lstinline!ArgumentException! & Arguments provided are invalid.\\
+    \hline
+    \lstinline!DivideByZeroException! & Division by zero.\\
+    \hline
+    \lstinline!NotFiniteNumberException! & floating point value is plus or minus infinity, or Not-a-Number (NaN).\\
+    \hline
+    \lstinline!OverflowException! & Arithmetic or casting caused an overflow.\\
+    \hline
+    \lstinline!IndexOutOfRangeException! & Attempting to access an element of an array using an index which is less than zero or equal or greater than the length of the array.\\
+    \hline
+  \end{tabularx}
+  \caption{Some built-in exceptions. The prefix \lstinline{System.} has been omitted for brevity.}
+  \label{tab:exceptions}
+\end{table}
+
+Exceptions are handled by the \keyword{try}--keyword expressions. We say that an expression may \idx[raising exception]{raise} or \idx[casting exceptions]{cast} an exception and that the \keyword{try}--expression may \idx[catching exception]{catch} and \idx[handling exception]{handle} the exception by another expression.
+
+Exceptions like in \Cref{DivByZero} may be handled by \keyword{try}--\keyword{with} expressions, as demonstrated in \Cref{exceptionDivByZero}.
+%
+\fs{exceptionDivByZero}{A division by zero is caught and a default value is returned.}
+%
+In the example, when the division operator raises the \lstinline{System.DivideByZeroException} exception, then \keyword{try}--\keyword{with} catches it and returns the value \lstinline{System.Int32.MaxValue}. Division by zero is still an undefined operation, but with the exception system, the program is able to receive a message about this undefined situation and choose an appropriate action.
+
+The \keyword{try} expressions comes in two flavors: \keyword{try}--\keyword{with} and \keyword{try}--\keyword{finally} expressions.
+
+The \idx[trywith@\keyword{try}--\keyword{with}]{\keyword{try}--\keyword{with}} expression has the following syntax,
+%
+\begin{verbatimwrite}{\ebnf/exceptionWith.ebnf}
+try
+   <*testExpr*>
+with
+   [* | *] <*pat1*> -> <*exprHndl1*>
+   | <*pa2*> -> <*exprHndl2*>
+   | <*pat3*> -> <*exprHndl3*>
+   ...
+\end{verbatimwrite}
+\syntax{\ebnf/exceptionWith.ebnf}{Syntax for the \keyword{try}--\keyword{with} exception handling.}
+%
+where \lstinline[language=syntax]{<*testExpr*>} is an expression which might raise an exception, \lstinline[language=syntax]{<*patn*>} is a pattern, and \lstinline[language=syntax]{<*exprHndln*>} is the corresponding exception handler. The value of the \keyword{try}--expression is either the value of \lstinline[language=syntax]{<*testExpr*>}, if it does not raise an exception, or the value of the exception handler \lstinline[language=syntax]{<*exprHndln*>} of the first matching pattern \lstinline[language=syntax]{<*patn*>}. The above is using lightweight syntax. Regular syntax omits newlines.
+
+In \Cref{exceptionDivByZero} \idx[dynamic type pattern]{dynamic type matching} is used (see \Cref{{sec:staticNDynamicTypePattern}}) using the \lexeme{:?} lexeme, i.e., the pattern matches exception with type \lstinline{System.DivideByZeroException} at runtime. The exception value may contain furter information and can be accessed if named using the \idx[as@\lstinline{as}]{\lstinline{as}}--keyword, as demonstrated in \Cref{exceptionDivByZeroNamed}.
+%
+\fs{exceptionDivByZeroNamed}{Exception value is bound to a name. Compare to \Cref{exceptionDivByZero}.}
+%
+Here the exception value is bound to the name \lstinline{ex}.
+
+All exceptions may be caught as the dynamic type \lstinline{System.Exception}, and F\# implements a short-hand for catching an exception and binding its value to a name as demonstrated in \Cref{exceptionDivByZeroShortHand}
+%
+\fs{exceptionDivByZeroShortHand}{An exception of type \lstinline{System.Exception} is bound to a name. Compare to \Cref{exceptionDivByZeroNamed}.}
+%
+Finally, the short-hand may be guarded with a \idx[when@\keyword{when}]{\keyword{when}}--guard, as demonstrated in \Cref{exceptionDivByZeroGuard}.
+%
+\fs{exceptionDivByZeroGuard}{An exception of type \lstinline{System.Exception} is bound to a name and guarded. Compare to \Cref{exceptionDivByZeroShortHand}.}
+%
+The first pattern only matches the \lstinline{System.Exception} exception when \lstinline{enum} is 0, in which case the exception handler returns 0.
+
+Thus, if you don't care about the type of exception, then you need only use the short-hand pattern matching and name binding demonstrated in \Cref{exceptionDivByZeroShortHand} and \Cref{exceptionDivByZeroGuard}, but if you would like to distinguish between types of exceptions, then you must use explicit type matching and possibly value binding demonstrated in \Cref{exceptionDivByZero} and \Cref{exceptionDivByZeroNamed}
+
+The \idx[trywith@\keyword{try}--\keyword{finally}]{\keyword{try}--\keyword{finally}} expression has the following syntax,
+%
+\begin{verbatimwrite}{\ebnf/exceptionFinally.ebnf}
+try
+   <*testExpr*>
+finally
+   <*cleanupExpr*>
+\end{verbatimwrite}
+\syntax{\ebnf/exceptionFinally.ebnf}{Syntax for the \keyword{try}--\keyword{finally} exception handling.}
+%
+The \keyword{try}--\keyword{finally} expression evaluates the \lstinline[language=syntax]{<*cleanupExpr*>} expression following evaluation of the \lstinline[language=syntax]{<*testExpr*>}, regardless of whether an exception is raised or not, as illustrated in \Cref{exceptionDivByZeroFinally}.
+%
+\fs{exceptionDivByZeroFinally}{The \keyword{finally} branch is executed regardless of an exception.}
+%
+Here, the \keyword{finally} branch is evaluated following the evaluation of the test expression regardless of whether the test expression raises an exception or not. However, if an exception is raised in a \keyword{try}--\keyword{finally} expression and there is no outer \keyword{try}--\keyword{with} expression, then execution stops without having evaluated the \keyword{finally} branch.
+
+
+Exceptions can be raised using the \idx[raise@\lstinline{raise}]{\lstinline{raise}}-function,
+%
+\begin{verbatimwrite}{\ebnf/raise.ebnf}
+raise (<*expr*>)
+\end{verbatimwrite}
+\syntax{\ebnf/raise.ebnf}{Syntax for the \lstinline{raise} function that raises exceptions.}
+%
+An example of raising the \lstinline{System.ArgumentException} is shown in \Cref{raiseArgumentException}
+% 
+\fs{raiseArgumentException}{Raising the division by zero with customized message.}
+%
+In this example, division by zero is never attempted and instead an exception is raised which must be handled by the caller. Note that the type of \lstinline!div! is \lstinline!int -> int -> int! because \lstinline{denom} is compared with an integer in the conditional statement. This contradicts the typical requirements for \keyword{if} statements, where every branch has to return the same type. However, any code that explicitly raise exceptions are ignored, and the type is inferred by the remaining branches.
+
+Programs may define new exceptions using the syntax,
+%
+\begin{verbatimwrite}{\ebnf/exceptionDef.ebnf}
+exception <*ident*> of <*typeId*> {** <*typeId*>*} 
+\end{verbatimwrite}
+\syntax{\ebnf/exceptionDef.ebnf}{Syntax for defining new exceptions.}
+%
+An example of defining a new exception and raising it is given in \Cref{exceptionDefinition}.
+%
+\fs{exceptionDefinition}{A user-defined exception is raised but not caught by outer construct.}
+%
+Here an exception called \lstinline!DontLikeFive! is defined, and it is raised in the function \lstinline!picky!. The example demonstrates that catching the exception as a \lstinline{System.Exception} as in \Cref{exceptionDivByZeroShortHand}, the \lstinline{Message} property includes information about the exception name but not its argument. To retrieve the argument \lstinline{"5 sucks"}, we must match the exception with the correct exception name, as demonstrated in \Cref{exceptionDefinitionNCatch}. 
+%
+\fs{exceptionDefinitionNCatch}{Catching a user-defined exception.}
+%
+
+F\# includes the \idx[failwith@\lstinline{failwith}]{\lstinline{failwith}} function to simplify the most common use of exceptions. It is defined as \lstinline!failwith : string -> exn! and takes a string and raises the built-in \lstinline!System.Exception! exception. An example of its use is shown in \Cref{exceptionFailwith}.
+%
+\fs{exceptionFailwith}{An exception raised by \lstinline{failwith}.}
+%
+To catch the \lstinline!failwith! exception, there are several choices. The exception casts a \lstinline!System.Exception! exception, which may be caught using the \lstinline!:?! pattern, as shown in \Cref{exceptionSystemException}.
+%
+\fs{exceptionSystemException}{Catching a \lstinline{failwith} exception using type matching pattern.}
+%
+However, this gives annoying warnings, since F\# internally is built such that all exception match the type of \lstinline!System.Exception!. Instead, it is better to either match using the wildcard pattern as in \Cref{exceptionMatchWildcard},
+%
+\fs{exceptionMatchWildcard}{Catching a \lstinline{failwith} exception using the wildcard pattern.}
+%
+or use the built-in \lstinline!Failure! pattern as in \Cref{exceptionFailure}.
+%
+\fs{exceptionFailure}{Catching a \lstinline{failwith} exception using the \lstinline{Failure} pattern.}
+%
+Notice how only the \lstinline!Failure! pattern allows for the parsing of the message given to \lstinline!failwith! as an argument.
+
+%, \idx[invalidArg@\lstinline{invalidArg}]{\lstinline{invalidArg}}, \idx[raise@\lstinline{raise}]{\lstinline{raise}}, and \idx[reraise@\lstinline{reraise}]{\lstinline{reraise}}. 
+Invalid arguments are such a common reason for failures, that a built-in function for handling them has been supplied in F\#. The \idx[invalidArg@\lstinline{invalidArg}]{\lstinline{invalidArg}} takes 2 strings and raises the built-in \lstinline!ArgumentException!, as shown in \Cref{exceptionInvalidArg}.
+%
+\fs{exceptionInvalidArg}{An exception raised by \lstinline{invalidArg}. Compare with \Cref{raiseArgumentException}.}
+%
+The \lstinline{invalidArg} function raises an \lstinline{System.ArgumentException}, as shown in \Cref{exceptionInvalidArgNCatch}.
+%
+\fs{exceptionInvalidArgNCatch}{Catching the exception raised by \lstinline{invalidArg}.}
+%
+
+The \keyword{try} construction is typically used to gracefully handle exceptions, but there are times where you may want to pass on the bucket, so to speak, and re-raise the exception. This can be done with the \idx[reraise@\keyword{reraise}]{\keyword{reraise}}, as shown in \Cref{exceptionReraise}.
+%
+\fs{exceptionReraise}{Reraising an exception.}
+%
+The \lstinline!reraise! function is only allowed to be the final call in the expression of a \keyword{with} rule.
 
 \section{Storing and Retrieving Data From a File}
 A file stored on the filesystem has a name, and it must be opened before it can be accessed and closed when finished. Opening files informs the operating system that your program is now going to use the file. While a file is open, the operating system will protect it depending on how the file is opened. E.g., if you are going to write to the file, then this typically implies that no one else may write to the file at the same time, since simultaneous writing to a file may leave the resulting file in an uncertain state. Sometimes the operating system will realize that a file that was opened by a program is no longer being used, e.g., since the program is no longer running, but \advice{it is good practice always to release reserved files, e.g., by closing them as soon as possible, such that other programs may have access to it.} On the other hand, it is typically safe for several programs to read the same file at the same time, but it is still important to close files after their use, such that the operating system can effectively manage the computer's resources. Reserved files are just one of the possible obstacles that you may meet when attempting to open a file. Other points of failure may be that the file does not exist, your program may not have sufficient rights for accessing it, or the device where the file is stored may have unreliable access. Thus, \advice{never assume that accessing files always works, but program defensively, e.g., by checking the return status of the file accessing functions and by \keyword{try} constructions.}
@@ -478,7 +644,7 @@ In the \lstinline!System.IO.Path! class there are a number of other frequently u
 
 \section{Programming intermezzo: Name of Existing File Dialogue}
 A typical problem when working with files is
-\begin{task}
+\begin{task}{probl:existingFile}
   Ask the user for the name of an existing file.
 \end{task}
 Such dialogues often require the program to aid the user, e.g., by telling the user which files are available, and by checking that the filename entered is an existing file.
@@ -502,7 +668,8 @@ This could be solved as,
 %
 \end{comment}
 
-\section{Reading From the Internet}
+\begin{comment}
+  \section{Reading From the Internet}
 The internet is a global collection of computers that are connected in a network using the internet protocol suite TCP/IP. The internet is commonly used for transport of data such as emails and for offering services such as web pages on the World Wide Web. Web resources are identified by 
 %\idx{Uniform Resource Identifiers} (\idx{URI}) such as \lstinline[language=console]!www.google.com!. A 
 a \idx{Uniform Resource Locator} (\idx{URL}), popularly known as a web page, and an URL contains information about where and how data from the web page is to be obtained. E.g.,
@@ -516,7 +683,7 @@ F\#'s \lstinline!System! namespace contains functions for accessing web pages as
 \fs{webRequest}{Downloading a web page and printing the first few characters.}
 %
 To connect to a URL as a stream, we first need first format the URL string as a \idx{Uniform Resource Identifiers} (\idx{URI}), which is a generalization of the URL concept, using the \lstinline!System.Uri! function. Then we must initialize the request by the \lstinline!System.Net.WebRequest! function, and the response from the host is obtained by the \lstinline!GetResponse! method. Finally, we can access the response as a stream by the \lstinline!GetResponseStream! method. In the end, we convert the stream to a \lstinline!StreamReader!, such that we can use the methods from \Cref{tab:streamReaderMethods} to access the web page. \jon{This section could be extended...}
-
+\end{comment}
 \section{Resource Management}
 \label{sec:resourceManagement}
 Streams and files are examples of computer resources that may be shared by several applications. Most operating systems allow for several applications to be running in parallel, and to avoid unnecessarily blocking and hogging of resources, all responsible applications must release resources as soon as they are done using them. F\# has language constructions for automatic releasing of resources: the \lstinline{use} binding and the \lstinline{using} function. These automatically dispose of resources when the resource's name binding falls out of scope. Technically, this is done by calling the \idx[Dispose@\lstinline{Dispose}]{\lstinline{Dispose}} method on objects that implement the \idx[System.IDisposable@\lstinline{System.IDisposable}]{\lstinline{System.IDisposable}} interface. See \Cref{sec:interfaces} for more on interfaces.
@@ -535,10 +702,22 @@ A \lstinline{use} binding provides a binding between the \lstinline[language=syn
 Here, \lstinline{file} is an \lstinline{System.IDisposable} object, and \lstinline{file.Dispose()} is called automatically before \lstinline{writeToFile} returns. This implies that the file is closed. Had we used \keyword{let} instead, then the file would first be closed when the program terminates.
 
 The higher-order function \idx[using@\lstinline{using}]{\lstinline{using}} takes a disposable object and a function, executes the function on the disposable objects, and then calls \lstinline{Dispose()} on the disposable object. This is illustrated in \Cref{using}
+
 %
 \fsCode{using}{using}{The \lstinline{using} function executes a function on an object and releases its disposable resources. Compare with \Cref{useBinding}.}{}
 %
 The main difference between \keyword{use} and \lstinline{using} is that resources allocated using \keyword{use} are disposed at the end of its scope, while \lstinline{using} disposes the resources after the execution of the function in its argument. In spite of the added control of \lstinline{using}, we \advice{prefer \keyword{use} over \lstinline{using} due to its simpler structure.}
 
+\section{Key concepts and terms in this chapter}
+In this chapter, we have looked at how to interface programs with external data sources. Key concepts have been:
+\begin{itemize}
+\item \textbf{Arguments to programs} run in the terminal can be retrieved from within a program at running time
+\item A \textbf{file} is a general concept, for places to put data to or retrieve data from.% These places can either be on a storage device or on the internet.
+\item Files are often a shared resource, and there may be other programs on a machine, which need access.
+\item To avoid chaos, the operating system \textbf{locks access to files} by other programs and therefore it is also important to \textbf{release the locks}, when your program is done.
+\item A \textbf{stream} is similar to a file for reading, however, they do not allow for random access.
+\item Errors may occur due to events outside the domain of control for a program. Such errors give rise to \textbf{exceptions}.
+\item Exceptions may be \textbf{caught} or \textbf{thrown} by our programs.
+\end{itemize}
 \end{document}
 

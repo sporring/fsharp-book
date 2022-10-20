@@ -1,9 +1,4 @@
-$ fsharpc --nologo exceptionInvalidArg.fsx && mono exceptionInvalidArg.exe
-
-Unhandled Exception:
-System.ArgumentException: is too much 'a'
-Parameter name: a
-  at <StartupCode$exceptionInvalidArg>.$ExceptionInvalidArg$fsx.main@ () [0x0000b] in <62028a57941e65a2a7450383578a0262>:0 
-[ERROR] FATAL UNHANDLED EXCEPTION: System.ArgumentException: is too much 'a'
-Parameter name: a
-  at <StartupCode$exceptionInvalidArg>.$ExceptionInvalidArg$fsx.main@ () [0x0000b] in <62028a57941e65a2a7450383578a0262>:0 
+$ dotnet fsi exceptionInvalidArg.fsx
+System.ArgumentException: is too much 'a' (Parameter 'a')
+   at <StartupCode$FSI_0001>.$FSI_0001.main@() in exceptionInvalidArg.fsx:line 1
+Stopped due to error

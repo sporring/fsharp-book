@@ -1,18 +1,15 @@
-/// Set up a url as a stream
-let url2Stream url =        
-    let uri = System.Uri url
-    let request = System.Net.WebRequest.Create uri
-    let response = request.GetResponse ()
-    response.GetResponseStream ()
+open System.Net.Http
 
-/// Read all contents of a web page as a string
-let readUrl url =
-    let stream = url2Stream url
-    let reader = new System.IO.StreamReader(stream)
-    reader.ReadToEnd ()
+let result =
+    async {
+        let client = new HttpClient ()
+        let url = "https://api.frankfurter.app/latest?amount=10.99&from=USD&to=PLN"
 
-let url = "http://fsharp.org"
-let a = 40
+        let! result =
+            client.GetAsync url
+            |> Async.AwaitTask
 
-let html = readUrl url
-printfn "Downloaded %A. First %d characters are: %A" url a html[0..a]
+        printfn "%A" result
+    }
+
+result |> Async.RunSynchronously

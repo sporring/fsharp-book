@@ -1,8 +1,5 @@
-$ fsharpc --nologo exceptionFinally.fsx && mono exceptionFinally.exe
+$ dotnet fsi exceptionFinally.fsx
 Finally expression will always be executed.
-
-Unhandled Exception:
 System.Exception: True
-  at <StartupCode$exceptionFinally>.$ExceptionFinally$fsx.main@ () [0x00000] in <62028a5303af6ab5a7450383538a0262>:0 
-[ERROR] FATAL UNHANDLED EXCEPTION: System.Exception: True
-  at <StartupCode$exceptionFinally>.$ExceptionFinally$fsx.main@ () [0x00000] in <62028a5303af6ab5a7450383538a0262>:0 
+   at <StartupCode$FSI_0001>.$FSI_0001.main@() in exceptionFinally.fsx:line 3
+Stopped due to error

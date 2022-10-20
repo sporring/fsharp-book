@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "4GpeXO0sNJ1vEipv9OFvbVr9vVOfJCS+xRoIDH0tnwd6FfMQ9rjJVbuJsuAax/3RabnLIEc2xOvTo9I82TQRMw==",
+  "success": true,
+  "projectFilePath": "/Users/jrh630/repositories/fsharp-book/src/commandLineArgs/commandLineArgs.fsproj",
+  "expectedPackageFiles": [
+    "/Users/jrh630/.nuget/packages/fsharp.core/6.0.5/fsharp.core.6.0.5.nupkg.sha512"
+  ],
+  "logs": []
+}

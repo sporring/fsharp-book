@@ -1,1 +1,1 @@
-$ fsharpc --nologo using.fsx && mono using.exe
+$ dotnet fsi using.fsx

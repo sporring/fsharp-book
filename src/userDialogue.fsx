@@ -1,4 +1,4 @@
-System.Console.WriteLine "To perform the multiplication of a and b"
+System.Console.WriteLine "To multiply a and b"
 System.Console.Write "Enter a: "
 let a = float (System.Console.ReadLine ())
 System.Console.Write "Enter b: "

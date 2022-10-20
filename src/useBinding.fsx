@@ -6,4 +6,4 @@ let writeToFile (filename : string) (str : string) : unit =
    // file.Dispose() is implicitly called here,
    // implying that the file is closed.
 
-writeToFile "use.txt" "Using 'use' closes the file, when out of scope."
+writeToFile "use.txt" "'Use' cleans up, when out of scope."

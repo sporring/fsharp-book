@@ -1,2 +1,1 @@
-$ fsharpc --nologo openFile.fsx && mono openFile.exe
-The file "openFile.fsx" was successfully opened.
+$ dotnet fsi openFile.fsx

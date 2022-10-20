@@ -1,3 +1,2 @@
-$ fsharpc --nologo commandLineArgs.fsx
-$ mono commandLineArgs.exe Hello World
+$ cd commandLineArgs; dotnet run Hello World
 Arguments passed to function : [|"Hello"; "World"|]

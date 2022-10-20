@@ -31,7 +31,7 @@ FSX := $(filter-out commandLineArgsSuccess.fsx, $(FSX))
 FSX := $(filter-out readKey.fsx, $(FSX))
 OS := $(patsubst %.fs,%.out,$(FSCRIPT))
 OSCRIPT := $(patsubst %.fsscript,%.out,$(FSCRIPT))
-OSX := $(patsubst %.fsx,%.out,$(FSX)) MetaExplicitApp.out MetaAppWOpen.out namespaceApp.out namespaceExtensionApp.out MetaExplicit.dll MetaExplicitDLLApp.out MetaExplicit.out MetaWAdd.fsi MetaWAddSig.out MetaWAdd.dll MetaWAdd.out MetaWAddRemoved.out baseUpcastApp.out baseUpcastBoardApp.out commandLineArgs.out commandLineArgsSuccess.out commandLineArgsFail.out MetaWOAddApp.out postfixTest.out postfixApp.out postfixTestGeneric.out postfixAppGeneric.out queueApp.out bTreeGenericApp.out bTreeFromPostfix.out
+OSX := $(patsubst %.fsx,%.out,$(FSX)) MetaExplicitApp.out MetaAppWOpen.out namespaceApp.out namespaceExtensionApp.out MetaExplicit.dll MetaExplicitDLLApp.out MetaExplicit.out MetaWAdd.fsi MetaWAddSig.out MetaWAdd.dll MetaWAdd.out MetaWAddRemoved.out baseUpcastApp.out baseUpcastBoardApp.out commandLineArgs.out commandLineArgsSuccess.out commandLineArgsFail.out MetaWOAddApp.out postfixTest.out postfixApp.out postfixTestGeneric.out postfixAppGeneric.out queueApp.out bTreeGenericApp.out bTreeSort.out
 
 all: $(OS) $(OSX) $(OSCRIPT)
 
@@ -82,7 +82,7 @@ namespaceExtensionApp.out: namespace.fsx namespaceExtension.fsx namespaceApp.fsx
 # Irregular compile
 bTreeFromPostfix.out: postfixLibraryGeneric.fs bTreeFromPostfix.fsx
 	./fsxeval2out $@ "" "dotnet fsi $^"
-bTreeGenericApp.out: bTreeGeneric.fsi bTreeGeneric.fs bTreeGenericApp.fsx
+bTreeSort.out: bTreeGeneric.fsi bTreeGeneric.fs bTreeSort.fsx
 	./fsxeval2out $@ "" "dotnet fsi $^"
 queueApp.out: queue.fs queueApp.fsx
 	./fsxeval2out $@ "" "dotnet fsi $^"
@@ -113,13 +113,12 @@ MetaWAdd.dll MetaWAdd.out: MetaWAdd.fsi MetaWAdd.fs
 	./fsxeval2out MetaWAdd.out "" "fsharpc --nologo -a $^"
 MetaWAddRemoved.out: MetaWAdd.dll MetaWAddRemoved.fsi MetaWOAddApp.fsx
 	./fsxeval2out $@ "" "fsharpc --nologo -r $^"
-commandLineArgs.out: commandLineArgs.fsx
-	./fsxeval2out $@ "" "fsharpc --nologo commandLineArgs.fsx" "mono commandLineArgs.exe Hello World"
-commandLineArgsSuccess.out: commandLineArgs.fsx
-	./fsxeval2out $@ "" 'fsharpc --nologo commandLineArgs.fsx' 'if mono commandLineArgs.exe Hello World; then echo "success"; else echo "failure"; fi'
-commandLineArgsFail.out: commandLineArgsFail.fsx
-	./fsxeval2out $@ "" 'fsharpc --nologo commandLineArgsFail.fsx' 'if mono commandLineArgsFail.exe; then echo "success"; else echo "failure"; fi'
-
+commandLineArgs.out: commandLineArgs/Program.fs
+	./fsxeval2out $@ "" "cd $(basename $@); dotnet run Hello World"
+commandLineArgsSuccess.out: commandLineArgs/Program.fs
+	./fsxeval2out $@ "" 'cd commandLineArgs; if dotnet run Hello World; then echo "success"; else echo "failure"; fi'
+commandLineArgsFail.out: commandLineArgsFail/Program.fs
+	./fsxeval2out $@ "" 'cd $(basename $@); if dotnet run; then echo "success"; else echo "failure"; fi'
 cleanfscript:
 	rm $(OSCRIPT)
 

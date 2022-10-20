@@ -1,7 +1,4 @@
-$ fsharpc --nologo exceptionFailwith.fsx && mono exceptionFailwith.exe
-
-Unhandled Exception:
+$ dotnet fsi exceptionFailwith.fsx
 System.Exception: hej
-  at <StartupCode$exceptionFailwith>.$ExceptionFailwith$fsx.main@ () [0x0000b] in <62028a4fddd05a03a74503834f8a0262>:0 
-[ERROR] FATAL UNHANDLED EXCEPTION: System.Exception: hej
-  at <StartupCode$exceptionFailwith>.$ExceptionFailwith$fsx.main@ () [0x0000b] in <62028a4fddd05a03a74503834f8a0262>:0 
+   at <StartupCode$FSI_0001>.$FSI_0001.main@() in exceptionFailwith.fsx:line 1
+Stopped due to error

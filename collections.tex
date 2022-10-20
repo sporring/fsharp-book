@@ -94,6 +94,79 @@ Traversal methods linearize the tree structure and in general, 2 different trave
 %
 Note that the resulting element on the stack is the original tree as expected.
 
+\section{Programming intermezzo: Sorting Integers with a Binary Tree}
+Consider the problem of sorting a list of integers
+\begin{task}{probl:sortingBTree}
+  Given a list of integers, such as \lstinline{[5; 5; 7; 8; 3; 1; 8; 9; 0; 8]}, sort them and print the result on the screen.
+\end{task}
+This is such a common task that the list module contains a function for just this, \lstinline{List.sort}, but here we will use the problem to study programming with binary trees. Our strategy will be to build a generic library for binary trees and an application with a function for sorting these values.
+
+A strategy for sorting values is to enter them into a binary tree such that a node's value is always larger than its left child and less than or equal to its right child. The list could thus result in the tree shown in \Cref{fig:sortedBTree}.
+\begin{figure}
+  \begin{center}
+    \begin{tikzpicture}
+      [
+      level 1/.style = {sibling distance = 4cm},
+      level 2/.style = {sibling distance = 2.5cm}
+      ]
+      
+      \node {5}
+      child {node {1}
+        child [missing] {[fill] circle (2pt)}
+        child {node {3}}
+        edge from parent} 
+      child {node {8}
+        child {node {5}}
+        child {node {9}}
+        edge from parent};
+    \end{tikzpicture}
+  \end{center}
+  \caption{A binary sorting tree for the list \lstinline{[5; 1; 8; 3; 9; 5]}.}
+  \label{fig:sortedBTree}
+\end{figure}
+A consequence of the sorting rule is that given a node, then its value is larger than all the values in the left sub-tree and no bigger than any values in the right sub-tree. Note also that the infix traversal of the tree gives a sorted list of values. In \Cref{fig:sortedBTree} this is \lstinline{[1; 3; 5; 5; 8; 9]}. In the spirit of our 8-step guide, let us make a sketch of the sorting algorithm to get a feeling of which types and functions could be useful. Firstly, we will need a generator of random numbers, to make sure we test many different combinations. This can be achieved with \lstinline{System.Random()} and \lstinline{List.map} as shown in \Cref{sortGenerator}
+%
+\fsCode{bTreeSort}{sortGenerator}{Generating a list of random integers in the interval 0 to 9.}{firstnumber=16,firstline=16,lastline=17} % Absolute reference!
+%
+Then we will need a type for a tree, and here we will use a generic type \lstinline{bTree<'a>}, such that we reuse it for other values that can be compared with the $\le$ operator. Our idea is to take the elements in the unsorted list to be inserted into a tree sequentially, and then finally write the result using infix traversal, e.g., as shown in \Cref{sortFold}
+%
+\fsCode{bTreeSort}{sortFold}{Using \lstinline{List.fold} to sequentially insert integers into a binary sorting tree.}{firstnumber=18,firstline=18,lastline=19} % Absolute reference!
+%
+Working with this, we realize that we will need a method for creating tree nodes and inserting them in a sorted fashion into a tree. Hence, we suggest the functions
+\begin{quote}
+  \lstinline{create: v: 'a -> bTree<'a>}\\
+  \lstinline{sortInsert: acc: bTree<'a> -> elm: 'a -> bTree<'a>}
+\end{quote}
+Given a value, the function \lstinline{sortInsert} must start at the root of the tree and traverse down the tree until it finds a node with space for a leaf that obeys the sorting rule. Thinking about this, we realize, that the tree type could well make use of the option type, e.g.,
+\begin{quote}
+  \lstinline{type bTree<'a> = Node of 'a * bTree<'a> option * bTree<'a> option}\\
+\end{quote}
+and thus, an available position can be noted by the branch having the \lstinline{None} value. Further, since we are in the functional programming paradigm, traversal must be recursive and insertion means the creation of a new tree. Finally, we arrived at the code in \Cref{sortInsert}.
+%
+\fsCode{bTreeSort}{sortInsert}{Insert a new node into an existing tree in a sorted manner.}{firstnumber=3,firstline=3,lastline=14} % Absolute reference!
+%
+When programming this, it seemed useful to have
+\begin{quote}
+  \lstinline{replaceLeft: c: bTree<'a> -> t: bTree<'a> -> bTree<'a>}\\
+  \lstinline{replaceRight: c: bTree<'a> -> t: bTree<'a> -> bTree<'a>}\\
+  \lstinline{retrieveValue: t: bTree<'a> -> 'a}\\
+  \lstinline{tryRetrieveLeft: t: bTree<'a> -> bTree<'a> option}\\
+  \lstinline{tryRetrieveRight: t: bTree<'a> -> bTree<'a> option}
+\end{quote}
+where \lstinline{replaceLeft} and \lstinline{replaceRight} replaces the left and right child \lstinline{c} respectively in node \lstinline{t}, \lstinline{retrieveValue} retrieves the value stored in node \lstinline{t}, and \lstinline{tryRetrieveLeft} \lstinline{tryRetrieveRight} follows the tradition of the other F\# modules and returns a \lstinline{Some bTree<'a>} or \lstinline{None} depending on the existence of the child node.
+
+At this point, we make a signature file for the library, and by the above arguments, we arrived at the code in \Cref{bTreeSignature}.
+%
+\fsSignature{bTreeGeneric}{bTreeSignature}{The signature for a binary tree with insertion sort.}{} % Absolute reference!
+%
+This signature file specifically targets the problem of binary tree sorting, and a general-purpose library would have other functions as well. However, here we restrict the development to the problem at hand. The implementation of these functions turns out to be simple. In \Cref{bTreeImplementation}, we have used pattern recognition in the definition of the arguments in several of the functions as, e.g., in \lstinline{retrieveValue}.
+%
+\fsImplementation{bTreeGeneric}{bTreeImplementation}{Insert a new node into an existing tree in a sorted manner.}{} % Absolute reference!
+%
+This makes the implementation particularly short, however, it may be less readable. Finally, putting it all together, a demonstration of the library and application can be seen in \Cref{bTreeSortOutput}.
+\fsOutput{bTreeSort}{bTreeSortOutput}{The result of applying insertSorted on a random list.}
+Due to the functional programming style, this implementation is robust and versatile, but not optimal. Depending on the internal workings of F\#, each insertion potentially copies the pre-insertion tree and its sub-trees many times, and it is thus not to be expected to be particularly fast or memory-conserving. 
+
 \section{Sets}
 A \idx{set} is an unordered collection of data. Sets form the bases for much mathematics and much of computer science. For instance, \lstinline{int} is the set of integers from $[2^16\ldots 2^16.1]$ and \lstinline{bool} is the set $\{\text{false}, \text{true}\}$. In fact, all types can be considered sets. Sets can be \idx[empty set]{empty}, a set with just 1 element is called a \idx{singleton set}, and at least conceptually, sets can contain an infinite number of elements. In F\# it is possible to represent \idx{infinite sets}, but a discussion of this is beyond the scope of this book. The mathematical notation for sets is well-developed:
 \begin{description}
@@ -110,7 +183,7 @@ With sets comes a small number of basic operators
 \item[Intersection:] The intersection of two sets $X$ and $Y$ is $X\cap Y = \{z: z\in X \text{ and } z\in Y\}$
 \item[Difference:] The set difference between two sets $X$ and $Y$ is $X\setminus Y = \{z: z\in X \text{ and } z\not\in Y\}$
 \end{description} 
-F\# has both a set class. Classes and objects will be discussed in further detail in \Cref{oop}. Presently, it is sufficient to think of a set class as an immutable type. F\# furhter has a set module with more functions for sets, see \url{https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-setmodule.html} for more details.
+F\# has both a set class. Classes and objects will be discussed in further detail in \Cref{sec:oop}. Presently, it is sufficient to think of a set class as an immutable type. F\# furhter has a set module with more functions for sets, see \url{https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-setmodule.html} for more details.
 
 With the set module, an empty set can be created with \lstinline{Set.empty}, and set can be created from a list \lstinline{lst} as \lstinline{Set lst}. Some of the important functions in the set module are:
 \begin{description}

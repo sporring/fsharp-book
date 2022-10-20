@@ -1,6 +1,10 @@
-$ fsharpc --nologo exceptionSystemException.fsx && mono exceptionSystemException.exe
+$ dotnet fsi exceptionSystemException.fsx
+
 
 exceptionSystemException.fsx(5,5): warning FS0067: This type test or downcast will always hold
 
+
+
 exceptionSystemException.fsx(5,5): warning FS0067: This type test or downcast will always hold
+
 So failed

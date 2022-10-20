@@ -1,5 +1,5 @@
-$ fsharpc --nologo userDialogue.fsx && mono userDialogue.exe
-To perform the multiplication of a and b
+$ dotnet fsi userDialogue.fsx                      
+To multiply a and b
 Enter a: 3.5
 Enter b: 7.4
-a * b = 25.9
+a * b = 25.900000000000002

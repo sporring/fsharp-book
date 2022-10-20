@@ -1,8 +1,5 @@
-$ fsharpc --nologo exceptionReraise.fsx && mono exceptionReraise.exe
+$ dotnet fsi exceptionReraise.fsx
 The castle of "Arrrrg"
-
-Unhandled Exception:
 System.Exception: Arrrrg
-  at <StartupCode$exceptionReraise>.$ExceptionReraise$fsx.main@ () [0x00041] in <62028a640317d799a7450383648a0262>:0 
-[ERROR] FATAL UNHANDLED EXCEPTION: System.Exception: Arrrrg
-  at <StartupCode$exceptionReraise>.$ExceptionReraise$fsx.main@ () [0x00041] in <62028a640317d799a7450383648a0262>:0 
+   at <StartupCode$FSI_0001>.$FSI_0001.main@() in exceptionReraise.fsx:line 3
+Stopped due to error

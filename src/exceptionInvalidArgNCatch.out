@@ -1,2 +1,2 @@
-$ fsharpc --nologo exceptionInvalidArgNCatch.fsx && mono exceptionInvalidArgNCatch.exe
+$ dotnet fsi exceptionInvalidArgNCatch.fsx
 Argument is no good!

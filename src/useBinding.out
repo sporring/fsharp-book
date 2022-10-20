@@ -1,1 +1,1 @@
-$ fsharpc --nologo useBinding.fsx && mono useBinding.exe
+$ dotnet fsi useBinding.fsx

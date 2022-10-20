@@ -2,30 +2,30 @@
 # Compile a list of files, run in mono, and store the outputfile into a file
 # fsxeval2out outputfile header command
 
-outputfile=$1
+here=`pwd`
+outputfilename=$1
 shift
 header=$1
 shift
 
-if [ -f $outputfile ]; then
-    mv $outputfile $outputfile.bckp
+if [ -f $here/$outputfilename ]; then
+    mv  $here/$outputfilename  $here/$outputfilename.bckp
 fi
 
 if [ "$header" ];then
-    echo $header >> $outputfile
+    echo $header >>  $here/$outputfilename
 fi
 for i in "$@"; do
-    echo "\$ $i" >> $outputfile 2>&1
-    eval "$i" >> $outputfile 2>&1
+    echo "\$ $i" >> $here/$outputfilename 2>&1
+    eval "$i" >> $here/$outputfilename 2>&1
 done
 
-here=`pwd`
-cat $outputfile | sed -e "s#$here\/##" > /tmp/$outputfile
-mv /tmp/$outputfile $outputfile
+cat $here/$outputfilename | sed -e "s#$here\/##" > /tmp/$outputfilename
+mv /tmp/$outputfilename $here/$outputfilename
 
-if [ -f $outputfile.bckp ]; then
-    cmp --silent $outputfile $outputfile.bckp && rm $outputfile.bckp
+if [ -f $here/$outputfilename.bckp ]; then
+    cmp --silent $here/$outputfilename $here/$outputfilename.bckp && rm $here/$outputfilename.bckp
 fi
-cat $outputfile
+cat $here/$outputfilename
 
 exit 0
