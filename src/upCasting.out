@@ -1,2 +1,2 @@
-$ fsharpc --nologo upCasting.fsx && mono upCasting.exe
+$ dotnet fsi upCasting.fsx
 hello howdy hi hello

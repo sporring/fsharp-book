@@ -166,6 +166,7 @@ The main difference is that with the function \lstinline{sum} we have an indepen
 
 
 \section{Asking the user for input}
+\label{sec:readline}
 The \lstinline{printfn} function allows us to write to the screen, which is useful, but sometimes we wish to start a dialogue with the user. One way to get user input is to ask the user to type something on the keyboard. Technically, input from the keyboard is called an \idx[stdin]{\lstinline{stdin}} \idx{stream}. This terminology is intended to remind us of characters streaming from the keyboard like the flow of water in a stream. Computer streams are different than water streams in that characters (or other items) only flow, when we ask for them. F\# provides many libraries of prebuilt functions, and here we will use the \lstinline{System.Console.ReadLine} function. The \lexeme{.}-lexeme is read as \lstinline{ReadLine} is a function which lies in \lstinline{Console} which in turn lies in \lstinline{System}. In the function documentation, we can read that \lstinline{System.Console.ReadLine} takes a unit value as an argument and returns the \idx[string]{\keyword{string}} the user typed. A string is a built-in type, as is an integer, and strings contain sequences of characters. The program will not advance until the user presses the newline. An example of a program that multiplies two integers supplied by a user is given in \Cref{quickStartSumInput},
 % 
 \fs{quickStartSumInput}{Asking the user for input. The user entered \lstinline{6}, pressed the return button, \lstinline{2}, and pressed return again.}

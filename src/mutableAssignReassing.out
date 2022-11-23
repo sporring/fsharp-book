@@ -1,4 +1,4 @@
-$ fsharpc --nologo mutableAssignReassing.fsx && mono mutableAssignReassing.exe
+$ dotnet fsi mutableAssignReassing.fsx
 0
 5
 -3

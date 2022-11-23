@@ -4,6 +4,13 @@
 \begin{document}
 \chapter{Testing Programs}
 \label{chap:testing}
+\abstract{
+  When programming, chances are that errors or bugs are created. Some are syntactical, which dotnet is very good at finding, but others are semantical, which can be very hard to find. To systematically seek semantical bugs, you will in this chapter learn how to 
+  \begin{itemize}
+  \item test sofware without from the persective of a user or a customer, who has no knowledge about the internal structure of the software, but who is interested in its functionality. This is known as black-box testing
+  \item test software from a perspective of the software developer, with full knowledge and with a focus on every line of code. This is of known as white-box testing
+  \end{itemize}
+}
 A software bug is an error in a computer program that causes it to produce an incorrect result or behave in an unintended manner. The term 'bug' was used by Thomas Edison in 1878\footnote{\url{https://en.wikipedia.org/wiki/Software_bug}}\footnote{\url{http://edison.rutgers.edu/NamesSearch/DocImage.php3?DocId=LB003487}}, but made popular in computer science by Grace Hopper, who found a moth interfering with the electronic circuits of the Harward Mark II electromechanical computer and coined the term \idx{bug} for errors in computer programs. The original bug is shown in \Cref{fig:bug}.
 \begin{figure}
   \centering
@@ -51,64 +58,7 @@ Many solutions to the problem have been discovered, and here we will base our pr
 % \item Let $e$ be the remainder of $a+b+c+d$ by 7. This is the doomsday.
 % \item count weekdays from nearest doomsday.
 % \end{enumerate}
-
-\section{White-box Testing}
-\idx[white-box testing]{White-box testing} considers the text of a program. The degree to which the text of the program is covered in the test is called the \idx{coverage}. Since our program is small, we have the opportunity to ensure that all functions are called at least once, which is called \idx{function coverage}, and we will also be able to test every branching in the program, which is called \idx{branching coverage}. If both are fulfilled, we say that we have \idx{statement coverage}. The procedure is as follows:
-\begin{enumerate}
-\item Decide which units to test: The program shown in \Cref{date2Day} has 3 functions, and we will consider these each as a unit, but we might as well just have chosen \lstinline!date2Day! as a single unit. The important part is that the union of units must cover the whole program text, and since \lstinline!date2Day! calls both \lstinline!januaryFirstDay! and \lstinline!sum!, designing test cases for the latter two is superfluous. However, we may have to do this anyway when debugging, and we may choose at a later point to use these functions separately, and in both cases, we will be able to reuse the testing of the smaller units.
-\item Identify branching points: The function \lstinline!januaryFirstDay! has no branching function, \lstinline!sum! has one, and depending on the input values, two paths through the code may be used, and \lstinline!date2Day! has one where the number of days in February is decided. Note that in order to test this, our test-date must be March 1 or later. In this example, there are only examples of \keyword{if}-branch points, but they may as well be loops and pattern matching expressions. In the \Cref{date2DayAnnotated} it is shown that the branch points have been given a comment and a number.
-  % 
-  \fsharp{date2DayAnnotated.fsx}{date2DayAnnotated}{In white-box testing, the branch points are identified.}
-  % 
- \item For each unit, produce an input set that tests each branch: In our example, the branch points depend on a Boolean expression, and for good measure, we are going to test each term that can lead to branching. Using 't' and 'f' for \lstinline{true} and \lstinline{false}, we thus write as shown in \Cref{tab:unitTest}.
-   % 
-   \begin{table}
-     \begin{center}
-       \rowcolors{2}{oddRowColor}{evenRowColor}
-       \setlength{\tabcolsep}{3pt}
-       \begin{tabularx}{\linewidth}{|l|l|p{3.5cm}|l|X|}
-         \hline
-         \rowcolor{headerRowColor} Unit & Branch & Condition & Input & Expected output\\
-         \hline
-         \lstinline{januaryFirstDay} & 0 & -& \lstinline{2016} & \lstinline{5}\\
-         \hline
-         \lstinline{sum} 
-         & 1 & \lstinline{0 <= j} \lstinline{\&\&}\newline\hspace*{0.5em}\lstinline{j < lst.Length} &&\\
-         & 1a & \lstinline{t \&\& t} & \lstinline{[1; 2; 3] 1} & \lstinline{3}\\
-         & 1b & \lstinline{f \&\& t} & \lstinline{[1; 2; 3] -1} & \lstinline{0}\\
-         & 1c & \lstinline{t \&\& f} & \lstinline{[1; 2; 3] 10} & \lstinline{0}\\
-         & 1d & \lstinline{f \&\& f} & - & -\\
-         \hline
-         \lstinline{date2Day} & 1 & \lstinline{(y \% 4 = 0)} \lstinline{\&\&}\newline
-         \hspace*{0.5em}\lstinline{((y \% 100 <> 0)}\newline
-         \hspace*{1em}\lstinline{||}\newline
-         \hspace*{1.5em}\lstinline{(y \% 400 = 0))} &  & \\
-         & - & \lstinline{t \&\& (t || t)} & - & -\\
-         & 1a & \lstinline{t \&\& (t || f)} & \lstinline{8 9 2016} & \lstinline{Thursday}\\
-         & 1b & \lstinline{t \&\& (f || t)} & \lstinline{8 9 2000} & \lstinline{Friday}\\
-         & 1c & \lstinline{t \&\& (f || f)} & \lstinline{8 9 2100} & \lstinline{Wednesday}\\
-         & - & \lstinline{f \&\& (t || t)} & - & -\\
-         & 1d & \lstinline{f \&\& (t || f)} & \lstinline{8 9 2015} & \lstinline{Tuesday}\\
-         & - & \lstinline{f \&\& (f || t)} & - & -\\
-         & - & \lstinline{f \&\& (f || f)} & - & -\\
-         \hline
-       \end{tabularx}
-     \end{center}
-     \caption{Unit test}
-     \label{tab:unitTest}
-   \end{table}
-   %
-   The impossible cases have been intentionally blank, e.g., it is not possible for $j<0$ and $j>n$ for some positive value $n$.
- \item Write a program that tests all these cases and checks the output, see ~\Cref{date2DayWhiteTest}.
-   % 
-   \fs[firstline=22]{date2DayWhiteTest}{The tests identified by white-box analysis. The program from \Cref{date2DayAnnotated} has been omitted for brevity.}
-   % 
-\end{enumerate}
-Notice that the output of the tests is organized such that they are enumerated per unit, hence we can rearrange as we like and still uniquely refer to a unit's test. Also, the output of the test program produces a list of tests that should return true or success or a similar positively loaded word, but without further or only little detail, such that we at a glance can identify any test that produced unexpected results.
-
-After the white-box testing has failed to find errors in the program, we have some confidence in the program, since we have run every line at least once. It is, however, in no way a guarantee that the program is error free, which is why white-box testing is often accompanied with black-box testing to be described next.
-\afterpage{\clearpage}
-
+Note that this problem has been chosen such that the solution is complicated which is a typical testing scenario, where the inner workings of the code is non-triveal.
 
 \section{Black-box Testing}
 In black-box testing, the program is considered a black box, and no knowledge is required about how a particular problem is solved. In fact, it is often useful not to have that knowledge at all. It is rarely possible to test all input to a program, so in black-box testing, the solution is tested for typical and extreme cases based on knowledge of the problem. The procedure is as follows:
@@ -187,359 +137,68 @@ After the black-box testing has failed to find errors in the program, we have so
 
   December 19, 1991; ISO/IEC 9126, the international standard for the evaluation of software quality, replaced by ISO/IEC 25010:2011. Not publicly available, \footnote{A review of the ISO/IEC 9126 is given in \url{http://www.sqa.net/iso9126.html}. A brief review of ISO/IEC 25010:2011 is given in }
 \end{comment}
-\afterpage{\clearpage}
 
-\section{Debugging by Tracing}
-\label{sec:tracing}
-Once an error has been found by testing, the \idx{debugging} phase starts. The cause of a bug can either be that the chosen algorithm is the wrong one for the job, or the implementation of it has an error. In the debugging process, we have to keep an open mind and not rely on assumptions. A frequent source of errors is that the state of a program is different than expected, e.g., because the calculation performed is different than intended, or that the return of a library function is different than expected. The most important tool for debugging is \emph{simplification}. This is similar to white-box testing, but where the units tested are very small. E.g., the suspected piece of code could be broken down into smaller functions or code snippets, which are given well-defined input, and, e.g., use \lstinline!printfn! statements to obtain the output of the code snippet. Another related technique is to use \idx{mockup code}, that is, replacing parts of the code with code that produces safe and relevant results. If the bug is not obvious, then more rigorous techniques must be used, such as \idx{tracing}. Some development interfaces have a built-in tracing system, e.g., \lstinline[language=console]{fsharpi} will print inferred types and some binding values. However, often the source of a bug is due to a misunderstanding of the flow of data through a program execution, and we will in the following section introduce \idx{Trace by hand} as a technique to simulate the execution of a program by hand. In the following section, tracing will refer to the Trace by hand method.
+\section{White-box Testing}
+\idx[white-box testing]{White-box testing} considers the text of a program. The degree to which the text of the program is covered in the test is called the \idx{coverage}. Since our program is small, we have the opportunity to ensure that all functions are called at least once, which is called \idx{function coverage}, and we will also be able to test every branching in the program, which is called \idx{branching coverage}. If both are fulfilled, we say that we have \idx{statement coverage}. The procedure is as follows:
+\begin{enumerate}
+\item Decide which units to test: The program shown in \Cref{date2Day} has 3 functions, and we will consider these each as a unit, but we might as well just have chosen \lstinline!date2Day! as a single unit. The important part is that the union of units must cover the whole program text, and since \lstinline!date2Day! calls both \lstinline!januaryFirstDay! and \lstinline!sum!, designing test cases for the latter two is superfluous. However, we may have to do this anyway when debugging, and we may choose at a later point to use these functions separately, and in both cases, we will be able to reuse the testing of the smaller units.
+\item Identify branching points: The function \lstinline!januaryFirstDay! has no branching function, \lstinline!sum! has one, and depending on the input values, two paths through the code may be used, and \lstinline!date2Day! has one where the number of days in February is decided. Note that in order to test this, our test-date must be March 1 or later. In this example, there are only examples of \keyword{if}-branch points, but they may as well be loops and pattern matching expressions. In the \Cref{date2DayAnnotated} it is shown that the branch points have been given a comment and a number.
+  % 
+  \fsharp{date2DayAnnotated.fsx}{date2DayAnnotated}{In white-box testing, the branch points are identified.}
+  % 
+ \item For each unit, produce an input set that tests each branch: In our example, the branch points depend on a Boolean expression, and for good measure, we are going to test each term that can lead to branching. Using 't' and 'f' for \lstinline{true} and \lstinline{false}, we thus write as shown in \Cref{tab:unitTest}.
+   % 
+   \begin{table}
+     \begin{center}
+       \rowcolors{2}{oddRowColor}{evenRowColor}
+       \setlength{\tabcolsep}{3pt}
+       \begin{tabularx}{\linewidth}{|l|l|p{3.5cm}|l|X|}
+         \hline
+         \rowcolor{headerRowColor} Unit & Branch & Condition & Input & Expected output\\
+         \hline
+         \lstinline{januaryFirstDay} & 0 & -& \lstinline{2016} & \lstinline{5}\\
+         \hline
+         \lstinline{sum} 
+         & 1 & \lstinline{0 <= j} \lstinline{\&\&}\newline\hspace*{0.5em}\lstinline{j < lst.Length} &&\\
+         & 1a & \lstinline{t \&\& t} & \lstinline{[1; 2; 3] 1} & \lstinline{3}\\
+         & 1b & \lstinline{f \&\& t} & \lstinline{[1; 2; 3] -1} & \lstinline{0}\\
+         & 1c & \lstinline{t \&\& f} & \lstinline{[1; 2; 3] 10} & \lstinline{0}\\
+         & 1d & \lstinline{f \&\& f} & - & -\\
+         \hline
+         \lstinline{date2Day} & 1 & \lstinline{(y \% 4 = 0)} \lstinline{\&\&}\newline
+         \hspace*{0.5em}\lstinline{((y \% 100 <> 0)}\newline
+         \hspace*{1em}\lstinline{||}\newline
+         \hspace*{1.5em}\lstinline{(y \% 400 = 0))} &  & \\
+         & - & \lstinline{t \&\& (t || t)} & - & -\\
+         & 1a & \lstinline{t \&\& (t || f)} & \lstinline{8 9 2016} & \lstinline{Thursday}\\
+         & 1b & \lstinline{t \&\& (f || t)} & \lstinline{8 9 2000} & \lstinline{Friday}\\
+         & 1c & \lstinline{t \&\& (f || f)} & \lstinline{8 9 2100} & \lstinline{Wednesday}\\
+         & - & \lstinline{f \&\& (t || t)} & - & -\\
+         & 1d & \lstinline{f \&\& (t || f)} & \lstinline{8 9 2015} & \lstinline{Tuesday}\\
+         & - & \lstinline{f \&\& (f || t)} & - & -\\
+         & - & \lstinline{f \&\& (f || f)} & - & -\\
+         \hline
+       \end{tabularx}
+     \end{center}
+     \caption{Unit test}
+     \label{tab:unitTest}
+   \end{table}
+   %
+   The impossible cases have been intentionally blank, e.g., it is not possible for $j<0$ and $j>n$ for some positive value $n$.
+ \item Write a program that tests all these cases and checks the output, see ~\Cref{date2DayWhiteTest}.
+   % 
+   \fs[firstline=22]{date2DayWhiteTest}{The tests identified by white-box analysis. The program from \Cref{date2DayAnnotated} has been omitted for brevity.}
+   % 
+\end{enumerate}
+Notice that the output of the tests is organized such that they are enumerated per unit, hence we can rearrange as we like and still uniquely refer to a unit's test. Also, the output of the test program produces a list of tests that should return true or success or a similar positively loaded word, but without further or only little detail, such that we at a glance can identify any test that produced unexpected results.
 
-To understand the method of Tracing by hand, we will consider 3 imperative programs of gradually increasing complexity: a program using function call, a program including a \lstinline{for}-loop, and a program with dynamic scope. In \Cref{sec:recursiveTracing} we give a fourth example using recursion, a concept to be introduced in \Cref{sec:recursion}.
+After the white-box testing has failed to find errors in the program, we have some confidence in the program, since we have run every line at least once. It is, however, in no way a guarantee that the program is error free, which is why white-box testing is often accompanied with black-box testing to be described next.
 
-Tracing may seem tedious in the beginning, but in conjunction with strategically placed debugging \lstinline!printfn! statements, it is a very valuable tool for debugging.
-
-\subsection{Tracing Function Calls}
-Consider the program in \Cref{lexicalScopeTracing}.
-%
-\fs{lexicalScopeTracing}{Example of lexical scope and closure environment.}
-%
-The program calls \lstinline{testScope 2.0}, and by running the program, we see that the return-value is \lstinline{6.0} and not \lstinline{8.0}, as we had expected. Hence, we will use tracing to understand the result.
-
-Tracing a program by hand means that we simulate its execution and, as part of that, keep track of the bindings, assignments closures, scopes, and input and output of the program. To do this, we need to consider the concept of \idx[environment]{environments}.
-
-Environments describe bindings available to the program at the present scope and at a particular time and place in the code. There is always an outer environment, called $E_0$, and each time we call a function or create a scope, we create a new environment. Only one environment can be active at a time, and it is updated as we simulate the execution of code with new bindings and temporary evaluations of expressions. Once a scope is closed, then its environment is deleted and a return-value is transported to its enclosing environment. In tracing, we note return-values explicitely. Likewise, output from, e.g., \lstinline{printfn} is reported with a special notation.
-
-To trace code, we make a table with 4 columns: Step, Line, Environment, and Bindings and evaluations. The Step column enumerates the steps performed. The Line column contains the program-line treated in a step {\em where} the present environment is updated. The Environment contains the name of the present environment, and Bindings $\ldots$ shows {\em what}  in the environment is updated.
-
-The code in \Cref{lexicalScopeTracing} contains a function definition and a call, hence, the first lines of our table looks like,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    0 & - & $E_0$ & ()\\
-    1 &\ref{lexicalScopeTracing:testScope} & $E_0$ & $\text{testScope} = \big((x), \text{testScope-body}, ()\big)$\\
-    2 &\ref{lexicalScopeTracing:print} & $E_0$ & $\text{testScope } 2.0 = \text{?}$
-  \end{tabular*}
-\end{quote}
-The elements of the table is to be understood as follows. Step~0 initializes the outer environment. In order for us to remember that the environment is empty, we write the unit value \lexeme{()}. Reading the code from top to bottom, the first nonempty and non-comment line we meet is line~\ref{lexicalScopeTracing:testScope}, hence, in Step~1, we update the enviroment with the binding of a function to the name \lstinline{testScope}. Since functions are values in F\#, we note their bindings by their closures: a tuple of argument names, the function-body, and the values lexically available at the place of binding. See \Cref{sec:functions} for more information on closures. Following the function-binding, the \lstinline{printfn} statement is called in line~\ref{lexicalScopeTracing:print} to print the result \lstinline{testScope 2.0}. However, before we can produce any output, we must first evaluate \lstinline{testScope 2.0}. Since we do not yet know what this function evaluates to, in Step~2 we simply write the call with a question mark. The call causes the creation of a new environment, and we continue our table as follows,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    3 & \ref{lexicalScopeTracing:testScope} & $E_1$ & $\big((x=2.0), \text{testScope-body}, ()\big)$
-  \end{tabular*}
-\end{quote}
-This means that we are going to execute the code in testScope-body. The function was called with $2.0$ as argument, causing $x=2.0$. Hence, the only binding available at the start of this environment is to the name \lstinline{x}. In the testScope-body, we make 3 further bindings and a function call. First to \lstinline{a}, then to \lstinline{f}, then to another \lstinline{a}, which will overshadow the previous binding, and finally we call \lstinline{f}. Thus, our table is updated as follows,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    4 & \ref{lexicalScopeTracing:a1} & $E_1$ & $a = 3.0$\\
-    5 & \ref{lexicalScopeTracing:f} & $E_1$ & $\text{f} = \big((z), \text{a * z}, (a = 3.0, x = 2.0)\big)$\\
-    6 & \ref{lexicalScopeTracing:a2} & $E_1$ & $a = 4.0$\\
-    7 & \ref{lexicalScopeTracing:return} & $E_1$ & $\text{f } x = \text{?}$
-  \end{tabular*}
-\end{quote}
-Note that by lexical scope, the closure of \lstinline!f! includes everything above its binding in $E_1$, and therefore we add $a = 3.0$ and $x = 2.0$ to the environment element in its closure. This has consequences for the following call to \lstinline!f! in line~\ref{lexicalScopeTracing:return}, which creates a new environment based on \lstinline{f}'s closure and the value of its arguments. The value of \lstinline{x} in Step~7 is found by looking in the previous steps for the last binding to the name \lstinline{x} in $E_1$, which occurs in Step~3. Note that the binding to a name \lstinline{x} in Step~5 is an internal binding in the closure of \lstinline{f} and is irrelevant here. Hence, we continue the table as,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    8 & \ref{lexicalScopeTracing:f} & $E_2$ & $\big((z = 2.0), \text{a * z}, (a = 3.0, x = 2.0)\big)$
-  \end{tabular*}
-\end{quote}
-Executing the body of \lstinline{f}, we initially have 3 bindings available: \lstinline{z = 2.0}, \lstinline{a = 3.0}, and \lstinline{x = 2.0}. Thus, to evaluate the expression \lstinline{a * z}, we use these bindings and write,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    9 & \ref{lexicalScopeTracing:f} & $E_2$ & $a * z = 6.0$\\
-    10 & \ref{lexicalScopeTracing:f} & $E_2$ & $\text{return} = 6.0$
-  \end{tabular*}
-\end{quote}
-The 'return'-word is used to remind us that this is the value to replace the question mark with in Step~7. Here we will make a mental note and not physically replace the question mark with the calculated value. If you are ever in doubt which call is connected with which return value, seek upwards in the table from the return statement for the first question mark. Now we delete $E_2$ and return to the enclosing environment, $E_1$. Here the function call was the last expression, hence the return-value from \lstinline{testScope} will be equal to the return-value from \lstinline{f}, and we write,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    11 & \ref{lexicalScopeTracing:f} & $E_1$ & return $= 6.0$
-  \end{tabular*}
-\end{quote}
-Similarly, we delete $E_1$ and return to the question mark in Step~2, which is replaced by the value $6.0$. We can now finish the \lstinline{printfn} statement and produce the output,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    12 & \ref{lexicalScopeTracing:print} & $E_0$ & output = ``6.0$\backslash$n'' 
-  \end{tabular*}
-\end{quote}
-The return-value of a \lstinline{printfn} statement is \lstinline{()}, and since this line is the last of our program, we return \lstinline{()} and end the program:
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    13 &\ref{lexicalScopeTracing:print} & $E_0$ & $\text{return} = ()$
-  \end{tabular*}
-\end{quote}
-The full table is shown for completeness in \Cref{tab:tracingFunctions}.
-\begin{table}
-  \centering
-  \fbox{
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    0 & - & $E_0$ & ()\\
-    1 &\ref{lexicalScopeTracing:testScope} & $E_0$ & $\text{testScope} = \big((x), \text{testScope-body}, ()\big)$\\
-    2 &\ref{lexicalScopeTracing:print} & $E_0$ & $\text{testScope } 2.0 = \text{?}$\\
-    3 & \ref{lexicalScopeTracing:testScope} & $E_1$ & $\big((x=2.0), \text{testScope-body}, ()\big)$\\
-    4 & \ref{lexicalScopeTracing:a1} & $E_1$ & $a = 3.0$\\
-    5 & \ref{lexicalScopeTracing:f} & $E_1$ & $\text{f} = \big((z), \text{a * z}, (a = 3.0, x = 2.0)\big)$\\
-    6 & \ref{lexicalScopeTracing:a2} & $E_1$ & $a = 4.0$\\
-    7 & \ref{lexicalScopeTracing:return} & $E_1$ & $\text{f } x = \text{?}$\\
-    8 & \ref{lexicalScopeTracing:f} & $E_2$ & $\big((z = 2.0), \text{a * z}, (a = 3.0, x = 2.0)\big)$\\
-    9 & \ref{lexicalScopeTracing:f} & $E_2$ & $a * z = 6.0$\\
-    10 & \ref{lexicalScopeTracing:f} & $E_2$ & $\text{return} = 6.0$\\
-    11 & \ref{lexicalScopeTracing:f} & $E_1$ & return $= 6.0$\\
-    12 & \ref{lexicalScopeTracing:print} & $E_0$ & output = ``6.0$\backslash$n'' \\
-    13 &\ref{lexicalScopeTracing:print} & $E_0$ & $\text{return} = ()$\\
-  \end{tabular*}
-  }
-\caption{The complete table produced while tracing the program in \Cref{lexicalScopeTracing} by hand.}
-\label{tab:tracingFunctions}
-\end{table}
-Hence, we conclude that the program outputs the value \lstinline{6.0}, since the function \lstinline{f} uses the first binding of \lstinline{a = 3.0}, and this is because the binding of \lstinline{f} to the expression \lstinline{a * z} creates a closure with a lexical scope. Thus, in spite that there is an overshadowing value of \lstinline{a}, when \lstinline{f} is called, this binding is ignored in the body of \lstinline{f}. To correct this, we update the code as shown in \Cref{lexicalScopeTracingCorrected}.
-%
-\fs{lexicalScopeTracingCorrected}{Tracing the code in \Cref{lexicalScopeTracing} by hand produced the table in \Cref{tab:tracingFunctions}, and to get the desired output, we correct the code as shown here.}
-%
-
-
-\subsection{Tracing Loops}
-Consider the program in \Cref{printSquares}.
-%
-\fs{printSquares}{Print the squares of a sequence of positive integers.}
-%
-The program includes a function for printing the sequence of the first $N$ squares of integers. It uses a \lstinline{for}-loop with a counting value. F\# creates a new environment each time the loop body is executed. Thus, to trace this program, we mentally \idx[unfolding loops]{unfold} the loop as shown in \Cref{printSquaresUnfold}.
-%
-\fs{printSquaresUnfold}{An unfolded version of \Cref{printSquares}.}
-%
-The unfolding contains 3 new scopes lines~\ref{printSquaresUnfold:start1}--\ref{printSquaresUnfold:end1}, lines~\ref{printSquaresUnfold:start2}--\ref{printSquaresUnfold:end2}, and lines~\ref{printSquaresUnfold:start3}--\ref{printSquaresUnfold:end3}  corresponding to the 3 times, the loop is repeated, and each scope starts by binding the counting value to the name \lstinline{i}.
-
-In the rest of this section, we will refer to the code in \Cref{printSquares}. The first rows in our tracing-table looks as follows:
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    0 & - & $E_0$ & ()\\
-    1 &\ref{printSquares:N} & $E_0$ & $N = 3$\\
-    2 &\ref{printSquares:squares} & $E_0$ & $\text{printSquares} = \big((n), \text{printSquares-body}, (N=3)\big)$\\
-    3 &\ref{printSquares:call} & $E_0$ & $\text{printSquares } N = \text{?}$\\
-  \end{tabular*}
-\end{quote}
-Note that due to the lexical scope rule, the closure of \lstinline{printSquares} includes \lstinline{N} in its environment element. Calling \lstinline{printSquares N} causes the creation of a new environment,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    4 &\ref{printSquares:squares} & $E_1$ & $\big((n=3), \text{printSquares-body}, (N=3)\big)$\\
-    \end{tabular*}
-\end{quote}
-The first statement of printSquares-body is the \lstinline{for}-loop. As our unfolding in \Cref{printSquaresUnfold} demonstrated, each time the loop-body is executed, a new scope is created with a new binding to \lstinline{i}. Reusing the notation from closures, we write
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    5 &\ref{printSquares:for} & $E_1$ & $\text{for} \dots =\text{?}$\\
-  \end{tabular*}
-\end{quote}
-and create a new environment as if it had been a function,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    6 &\ref{printSquares:for} & $E_2$ & $\big((i=1), \text{for-body}, (n=3,N=3)\big)$\\
-    \end{tabular*}
-\end{quote}
-As for functions, this denotes the bindings available at beginning of the execution of the \lstinline{for}-body. The first line in the \lstinline{for}-body is the binding of the value of an expression to \lstinline{p}. The expression is \lstinline{i*i}, and to calculate its value, we look in the \lstinline{for}-loop's pseudo-closure where we find the $i=1$ binding. Hence,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    7 &\ref{printSquares:p} & $E_2$ & $i*i = 1$\\
-    8 &\ref{printSquares:p} & $E_2$ & $p = 1$\\
-  \end{tabular*}
-\end{quote}
-The final step in the for-body is the \lstinline{printfn}-statement. Its arguments we get from the updated, active environment $E_2$ and write,
-\begin{quote}
-\begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    9 &\ref{printSquares:printfn} & $E_2$ & output = ``1 : 1$\backslash$n''\\
-  \end{tabular*}
-\end{quote}
-At this point, the \lstinline{for}-loop has reached its last line, $E_2$ is deleted, we create a new environment with the counter variable increased by 1, and repeat. Hence,
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    10 &\ref{printSquares:for} & $E_3$ & $\big((i=2), \text{for-body}, (n=3,N=3)\big)$\\
-    11 &\ref{printSquares:p} & $E_3$ & $i*i = 4$\\
-    12 &\ref{printSquares:p} & $E_3$ & $p = 4$\\
-    13 &\ref{printSquares:printfn} & $E_3$ & output = ``2 : 4$\backslash$n''\\
-  \end{tabular*}
-\end{quote}
-Again, we delete $E_3$, create $E_4$ where $i$ is incremented, and repeat, 
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    14 &\ref{printSquares:for} & $E_4$ & $\big((i=3), \text{for-body}, (n=3,N=3)\big)$\\
-    15 &\ref{printSquares:p} & $E_4$ & $i*i = 9$\\
-    16 &\ref{printSquares:p} & $E_4$ & $p = 9$\\
-    17 &\ref{printSquares:printfn} & $E_4$ & output = ``3 : 9$\backslash$n''\\
-  \end{tabular*}
-\end{quote}
-Finally, incrementing $i$ would mean that $i>n$, hence the \lstinline{for}-loop ends and as all statements returns \lstinline{()}
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    18 &\ref{printSquares:for} & $E_4$ & $\text{return} = ()$\\
-  \end{tabular*}
-\end{quote}
-At this point, the environment $E_4$ is deleted, and we return to the enclosing environment $E_1$ and the statement or expression following Step~5. Since the \lstinline{for}-loop is the last expression in the \lstinline{printSquares} function, its return value is that of the \lstinline{for}-loop, 
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    19 &\ref{printSquares:for} & $E_1$ & $\text{return} = ()$\\
-  \end{tabular*}
-\end{quote}
-Returning to Step~3 and environment $E_0$, we have now calculated the return-value of \lstinline{printSquares N} to be \lstinline{()}, and since this line is the last of our program, we return \lstinline{()} and end the program:
-\begin{quote}
-  \begin{tabular*}{0.9\linewidth}{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    20 &\ref{printSquares:for} & $E_0$ & $\text{return} = ()$\\
-  \end{tabular*}
-\end{quote}
-
-\subsection{Tracing Mutable Values}
-For mutable bindings, the scope is dynamic. For this, we need the concept of storage. Consider the program in \Cref{dynamicScopeTracing}.
-%
-\fs{dynamicScopeTracing}{Example of lexical scope and closure environment.}
-%
-To trace the dynamic behavior of this program, we add a second table to our hand tracing, which is initially empty and has the columns Step and Value to hold the Step number when the value was updated and the value stored. For \Cref{dynamicScopeTracing}, the firsts 4 steps thus look like,
-\begin{quote}
-  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    0 & - & $E_0$ & ()\\
-    1 &\ref{lexicalScopeTracing:testScope} & $E_0$ & $\text{testScope} = \big((x), \text{body}, ()\big)$\\
-    2 &\ref{lexicalScopeTracing:print} & $E_0$ & $\text{testScope } 2.0 = \text{?}$\\
-    3 &\ref{lexicalScopeTracing:testScope} & $E_1$ & $\big((x=2.0), \text{body}, ()\big)$\\
-  \end{tabular*}
-  \hspace*{0.03\linewidth}
-  \begin{tabular*}{0.25\linewidth}[t]{l|l}
-    Step & Value\\
-    \hline
-    0 & -\\
-  \end{tabular*}
-\end{quote}
-The mutable binding in line~\ref{dynamicScopeTracing:a1} creates an internal name and a dynamic storage location. The name \lstinline{a} will be bound to a reference value, which we call $\alpha_1$, and which is a unique name shared between the two tables:
-\begin{quote}
-  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    4 &\ref{lexicalScopeTracing:a1} & $E_1$ & $a = \alpha_1$\\
-  \end{tabular*}
-  \hspace*{0.03\linewidth}
-  \begin{tabular*}{0.25\linewidth}[t]{l|l}
-    Step & Value\\
-    \hline
-    4 & $\alpha_1 = 3.0$\\
-  \end{tabular*}
-\end{quote}
-The following closure of \lstinline!f! uses the reference-name instead of its value,
-\begin{quote}
-  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    5 &\ref{lexicalScopeTracing:f} & $E_1$ & $f = \big((z), a*z, (x=2.0, a=\alpha_1)\big)$\\
-  \end{tabular*}
-  \hspace*{0.03\linewidth}
-  \begin{tabular*}{0.25\linewidth}[t]{l|l}
-    Step & Value\\
-    \hline
-    4 & $\alpha_1 = 3.0$\\
-  \end{tabular*}
-\end{quote}
-In line~\ref{dynamicScopeTracing:a2}, the value in the storage is updated by the assignment operator, which we denote as,
-\begin{quote}
-  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    6 &\ref{lexicalScopeTracing:a2} & $E_1$ & $a \text{ <- } 4.0$\\
-  \end{tabular*}
-  \hspace*{0.03\linewidth}
-  \begin{tabular*}{0.25\linewidth}[t]{l|l}
-    Step & Value\\
-    \hline
-    6 & $\alpha_1 = 4.0$\\
-  \end{tabular*}
-\end{quote}
-Hence, when we evaluate the function \lstinline{f}, its closure looks up the value of \lstinline{a} by following the reference and finding the new value:
-\begin{quote}
-  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    7 &\ref{lexicalScopeTracing:return} & $E_1$ & $\text{f } x = \text{?}$\\
-    8 &\ref{lexicalScopeTracing:return} & $E_2$ & $\big((z = 2.0), a*z, (x=2.0, a=\alpha_1)\big)$\\
-    9 &\ref{lexicalScopeTracing:return} & $E_2$ & $a * z = 8.0$\\
-    10 &\ref{lexicalScopeTracing:return} & $E_2$ & return = $8.0$\\
-    10 &\ref{lexicalScopeTracing:return} & $E_1$ & return = $8.0$\\
-    11 &\ref{lexicalScopeTracing:print} & $E_0$ & output = ``8.0$\backslash$n''\\
-    12 &\ref{lexicalScopeTracing:print} & $E_0$ & $\text{return} = ()$\\
-  \end{tabular*}
-  \hspace*{0.03\linewidth}
-  \begin{tabular*}{0.25\linewidth}[t]{l|l}
-    Step & Value\\
-    \hline
-    6 & $\alpha_1 = 4.0$\\
-  \end{tabular*}
-\end{quote}
-For reference, the complete pair of tables is shown in \Cref{tab:tracingDynamicScope}.
-\begin{table}
-  \centering
-  \fbox{
-    \begin{tabular*}{0.65\linewidth}[t]{l|lll}
-    Step & Line & Env.\ & Bindings and evaluations\\
-    \hline
-    0 & - & $E_0$ & ()\\
-    1 &\ref{lexicalScopeTracing:testScope} & $E_0$ & $\text{testScope} = \big((x), \text{body}, ()\big)$\\
-    2 &\ref{lexicalScopeTracing:print} & $E_0$ & $\text{testScope } 2.0 = \text{?}$\\
-    3 &\ref{lexicalScopeTracing:testScope} & $E_1$ & $\big((x=2.0), \text{body}, ()\big)$\\
-    4 &\ref{lexicalScopeTracing:a1} & $E_1$ & $a = \alpha_1$\\
-    5 &\ref{lexicalScopeTracing:f} & $E_1$ & $f = \big((z), a*z, (x=2.0, a=\alpha_1)\big)$\\
-    6 &\ref{lexicalScopeTracing:a2} & $E_1$ & $a \text{ <- } 4.0$\\
-    7 &\ref{lexicalScopeTracing:return} & $E_1$ & $\text{f } x = \text{?}$\\
-    8 &\ref{lexicalScopeTracing:return} & $E_2$ & $\big((z = 2.0), a*z, (x=2.0, a=\alpha_1)\big)$\\
-    9 &\ref{lexicalScopeTracing:return} & $E_2$ & $a * z = 8.0$\\
-    10 &\ref{lexicalScopeTracing:return} & $E_2$ & return = $8.0$\\
-    10 &\ref{lexicalScopeTracing:return} & $E_1$ & return = $8.0$\\
-    11 &\ref{lexicalScopeTracing:print} & $E_0$ & output = ``8.0$\backslash$n''\\
-    12 &\ref{lexicalScopeTracing:print} & $E_0$ & $\text{return} = ()$\\
-  \end{tabular*}
-  \hspace*{0.03\linewidth}
-  \begin{tabular*}{0.25\linewidth}[t]{l|l}
-    Step & Value\\
-    \hline
-    0 & -\\
-    4 & $\alpha_1 = 3.0$\\
-    6 & $\alpha_1 = 4.0$\\
-  \end{tabular*}
-  }
-  \caption{The complete table produced while tracing the program in \Cref{dynamicScopeTracing} by hand.}
-\label{tab:tracingDynamicScope}
-\end{table}
-By comparing this to the value-bindings in \Cref{lexicalScopeTracing}, we see that the mutable values give rise to a different result due to the difference between lexical and dynamic scope.
-
+\section{Key Concepts and Terms in This Chapter}
+In this chapter, we have considered two approaches to debugging code. You have seen how to:
+\begin{itemize}
+\item write supporting code for \textbf{black-box testing}, which tests for errors focussing on the intended functionality of the code and ignoring how it is constructed
+\item write a \textbf{white-box test}, which in its simplest form ensures that every line of code has been run at least once
+\item structure a white-box test in terms of \textbf{unit}, which is why this is sometimes called \textbf{unit testing}.
+\end{itemize}
 \end{document}

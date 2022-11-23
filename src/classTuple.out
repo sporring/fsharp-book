@@ -1,1 +1,1 @@
-$ fsharpc --nologo classTuple.fsx && mono classTuple.exe
+$ dotnet fsi classTuple.fsx

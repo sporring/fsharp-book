@@ -1,4 +1,4 @@
-$ fsharpc --nologo classDoThen.fsx && mono classDoThen.exe
+$ dotnet fsi classDoThen.fsx
 Calling additional constructor
   Additional constructor called
   Primary constructor called

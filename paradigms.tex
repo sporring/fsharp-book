@@ -1,0 +1,736 @@
+\documentclass[fsharpNotes.tex]{subfiles}
+\graphicspath{ {./figures/} }
+
+\begin{document}
+\chapter{Programming Paradigms}
+\abstract{
+  Programming paradigms is a way to structure programs. This is particularly important for long programs, and for helping you organizing your solutions in a structured manner. Some languages are designed to support a particular paradigm, while others, like F\#, support many paradigms. In this chapter, you will learn about
+\begin{itemize}
+\item the overarching declarative and imperative paradigms
+\item the sub-paradigms functional, imperative, and object-oriented paradigms.
+\end{itemize}
+}
+
+A programming problem may have many solutions, e.g., squaring a real value, $x^2$, can in F\# be written as both \lstinline{x*x} and \lstinline{x**2.0}, and more complicated problems typically have many valid solutions. Particularly long programs can be complex and can have a high risk of programming errors. Different programming languages offer different structures to aid the programming in managing complex solutions, which is sometimes called a \idx{programming paradigm}. Paradigms may be classified as either \idx{declarative} or \idx{imperative}. Some languages such as F\# are multiparadigm, making the boundary between programming paradigms fuzzy, however, in their pure form, programs in declarative programming languages are a list of properties of the desired result without a specification on how to compute it, while programs in imperative programming languages is a specific set of instructions on how to change \idx[state]{states} on the computer in order to reach the desired result. In this book, we will primarily consider three common paradigms: the \idx[functional programming paradigm]{functional}, \idx[imperative programming paradigm]{imperative}, and \idx[object-oriented programming paradigm]{object-oriented programming paradigms}. The functional paradigm is a declarative paradigm. The object-oriented programming paradigm is an imperative paradigm.  Unfortunately, the imperative paradigm is used in the literature both to mean the overarching term of imperative paradigms and, as we do here, imperative programming without using object-oriented programming features. Thus it is ok, to say that object-oriented programming follows the imperative paradigm, but imperative programming does not necessarily follow the object-oriented paradigm.
+
+\section{The Functional Programming Paradigm}
+\label{chap:functional}
+Functional programming is a style of programming which performs computations by evaluating functions. Functional programming avoids mutable values and side-effects. It is declarative in nature, e.g., by the use of value- and function-bindings -- \keyword{let}-bindings -- and avoids statements -- \keyword{do}-bindings. Thus, the result of a function in functional programming depends only on its arguments, and therefore functions have no side-effect and are deterministic, such that repeated call to a function with the same arguments always gives the same result. In functional programming, data and functions are clearly separated, and hence data structures are dum as compared to objects in object-oriented programming paradigm, see \Cref{chap:oopp}. Functional programs clearly separate behavior from data and subscribes to the view that \emph{it is better to have 100 functions operate on one data structure than 10 functions on 10 data structures}. Simplifying the data structure has the advantage that it is much easier to communicate data than functions and procedures between programs and environments. The .Net, mono, and java's virtual machine are all examples of an attempt to rectify this, however, the argument still holds.
+
+The functional programming paradigm can trace its roots to lambda calculus introduced by Alonzo Church in 1936~\cite{church36}. Church designed lambda calculus to discuss computability. Some of the forces of the functional programming paradigm are that it is often easier to prove the correctness of code, and since no states are involved, then functional programs are often also much easier to parallelize than other paradigms.
+
+Functional programming has a number of features:
+\begin{description}
+\item[Pure functions]\idxs{pure function}~\\
+Functional programming is performed with pure functions. A pure function always returns the same value, when given the same arguments, and it has no side-effects. A function in F\# is an example of a pure function. Pure functions can be replaced by their result without changing the meaning of the program. This is known as \idx{referential transparency}.
+\item[higher-order functions]\idxs{higher-order function}~\\
+Functional programming makes use of higher-order functions, where functions may be given as arguments and returned as results of a function application. higher-order functions and \idx{first-class citizenship} are related concepts, where higher-order functions are the mathematical description of functions that operator on functions, while a first-class citizen is the computer science term for functions as values. F\# implements higher-order functions.
+\item[Recursion]\idxs{recursion}~\\
+Functional programs use recursion instead of \keyword{for}- and \keyword{while}-loops. Recursion can make programs ineffective, but compilers are often designed to optimize tail-recursion calls. Common recursive programming structures are often available as optimized higher-order functions such as \idx{iter}, \idx{map}, \idx{reduce}, \idx{fold}, and \idx{foldback}. F\# has good support for all of these features.
+\item[Immutable states]\idxs{immutable state}\idxs{immutable state}~\\
+Functional programs operate on values, not on variables. This implies lexicographical scope in contrast to mutable values, which implies dynamic scope.
+\item[Strongly typed]~\idxs{strongly typed}\\
+Functional programs are often strongly typed, meaning that types are set no later than at compile-time. F\# does have the ability to perform runtime type assertion, but for most parts it relies on explicit type annotations and type inference at compile-time. This means that type errors are caught at compile time instead of at runtime.
+\item[Lazy evaluation]\idxs{lazy evaluation}~\\
+Due to referential transparency, values can be computed any time up until the point when it is needed. Hence, they need not be computed at compilation time, which allows for infinite data structures. F\# has support for lazy evaluations using the \idx[lazy@\lstinline{lazy}]{\keyword{lazy}}-keyword, sequences using the \idx[seq@\lstinline{seq}]{\keyword{seq}}-type, and computation expressions, all of which are advanced topics and not treated in this book.
+\end{description}
+
+Immutable states imply that data structures in functional programming are different than in imperative programming. E.g., in F\# lists are immutable, so if an element of a list is to be changed, a new list must be created by copying all old values except that which is to be changed. Such an operation is therefore linear in computational complexity. In contrast, arrays are mutable values, and changing a value is done by reference to the value's position and changing the value at that location. This has constant computational complexity. While fast, mutable values give dynamic scope and makes reasoning about the correctness of a program harder, since mutable states do not have referential transparency.
+
+Functional programming may be considered a subset of \idx{imperative programming}, in the sense that functional programming does not include the concept of a state, or one may think of functional programming as only having one unchanging state. Functional programming also has a bigger focus on declaring rules for \emph{what} should be solved, and not explicitly listing statements describing \emph{how} these rules should be combined and executed in order to solve a given problem. Functional programming is often found to be less error-prone at runtime, making more stable, safer programs that are less open for, e.g., hacking.
+
+\begin{comment}
+\subsection{Functional Design}
+A key to all good programming designs is encapsulating code into modules. For functional programs, the essence is to consider data and functions as transformations of data. I.e., the basic pattern is a piping sequence, 
+\begin{quote}
+  \lstinline{x |> f |> g |> h},
+\end{quote}
+where \lstinline{x} is the input data and \lstinline{f}, \lstinline{g}, and \lstinline{h} are functions that transform the data. Of course, most long programs include lots of control structure, implying that we would need junctions in the pipe system, however, piping is a useful memo technique. 
+
+In functional programming there are some pitfalls that you should avoid:
+\begin{itemize}
+\item Creating large data structures, such as a single record containing all data. Since data is immutable, changing a single field in a monstrous record would mean a lot of copying in many parts of your program. In such cases, it is better to use a range of data structures that express isolated semantic units of your problem.
+\item Non-tail recursion. Relying on the built-in functions \lstinline{map}, \lstinline{fold}, etc., is a good start for efficiency.
+\item Single character identifiers. Since functional programming tends to produce small, well-defined functions, there is a tendency to use single character identifiers, e.g., \lstinline{let f x = ...}. In the very small, this can be defended, but the names used as identifiers can be used to increase the readability of code to yourself or to others. Typically, identifiers are long and informative in the outermost scope, while decreasing in size as you move in.
+\item Few comments. Since functional programming is very concise, there is a tendency for us as programmers to forget to add sufficient comments to the code, since at the time of writing, the meaning may be very clear and well thought through. However, experience shows that this clarity deteriorates fast with time.
+\item Identifiers that are meaningless clones of each other. Since identifiers cannot be reused except by overshadowing in deeper scopes, there is often a tendency to have a family of identifiers like \lstinline{a}, \lstinline{a2}, \lstinline{newA} etc. It is better to use names that more clearly state the semantic meaning of the values, or, if only used as temporary storage, to discard them completely in lieu of piping and function composition. However, the lattermost often requires comments describing the transformation being performed.
+\end{itemize}
+
+Thus, a design pattern for functional programs must focus on,
+\begin{itemize}
+\item What input data is to be processed
+\item How the data is to be transformed
+\end{itemize}
+For large programs, the design principle is often similar to other paradigms, which are often visualized graphically as components that take input, interact, and produce results often together with a user. The effect of functional programming is mostly seen in the small, i.e., where a subtask is to be structured functionally.
+\end{comment}
+
+\begin{comment}
+  Let's consider such a smaller subtask as an example
+  \begin{task}
+    Given a string as input consisting of a simple algebraic
+    expression, consisting of numbers and the operators '+', '-', and
+    '*', parse the string and return the result.
+  \end{task}
+\end{comment}
+
+\begin{comment}
+\subsection{todo}
+
+Lists are well suited for recursive functions and pattern matching with, e.g., \keyword{match} -- \keyword{with} as illustrated in the next example:
+%
+\fs{listPatternMatching}{Examples of list concatenation, indexing.}
+%
+The pattern \lstinline!l::rest! is the pattern for the first element followed by a list of the rest of the list. This pattern matches all lists except an empty list, hence \lstinline!rest! may be empty. Thus the wildcard pattern matching anything including the empty list will be used only when \lstinline!lst! is empty.
+
+\idx[pattern matching]{Pattern matching} with lists is quite powerful, consider the following problem:
+\begin{task}
+  Given a list of pairs of course names and course grades, calculate the average grade.
+\end{task}
+A list of course names and grades is \lstinline![("name1", grade1); ("name2", grade2); ...]!. Let's take a recursive solution. The first problem will be to iterate through the list. For this we can use pattern matching similarly to \Cref{listPatternMatching} with \lstinline!(name, grade)::rest!. The second problem will be to calculate the average. The average grade is the sum of all grades divided by the number of grades. Assume that we already have made a function, which calculates the \lstinline!sum! and \lstinline!n!, the sum and number of elements, for \lstinline!rest! then all we need is to add \lstinline!grade! to the \lstinline!sum! and \lstinline!1! to \lstinline!n!. For an empty list, \lstinline!sum! and \lstinline!n! should be \lstinline!0!. Thus, we arrive at the following solution,
+% However, an elegant alternative is available as
+% \fs{flowForLists}{}
+% This to be preferred, since we completely can ignore list boundary conditions and hence avoid out of range indexing. For comparison see a recursive implementation of the same,
+%
+\fs{avgGradesRec}{Calculating a list of average grades using recursion and pattern matching.}
+%
+%Note how this implementation avoids the use of variables in contrast to the previous examples.
+
+Pattern matching and appending is a useful combination, if we wish to produce new from old lists. E.g., a function returning a list of squared entries of its argument can be programmed as,
+%
+\fs{listSquare}{Using pattern matching and list appending elements to lists.}
+%
+This is a prototypical functional programming style solution, and which uses the \lexeme{::} for 2 different purposes: First the list \lstinline![1 .. 10]! is first matched with \lstinline!1 :: [2 .. 10]! and then we assume that we have solved the problem for \lstinline!square rest! such that all we need to do is append \lstinline!1*1! to the beginning output from \lstinline!square rest!. Hence we get, \lstinline!square [1 .. 10]! $\curvearrowright$ \lstinline!1 * 1 :: square [2 .. 10]! $\curvearrowright$ \lstinline!1 * 1 :: (2 * 2 :: square [3 .. 10])! $\curvearrowright$ \dots \lstinline!1 * 1 :: (2 * 2 :: ... 10 * 10 :: [])!, where the stopping criterium is reached when the \lstinline!elm :: rest! does not match with a, hence it is empty, which does match the wildcard pattern \lexeme{_}. More on functional programming in \Cref{chap:functional}
+
+
+Arrays only support direct pattern matching, e.g.,
+%
+\fs{arrayPatternMatching}{Only simple pattern matching is allowed for arrays.}
+%
+The given example is the first example of a 2-dimensional array, which can be implemented as arrays of arrays and here written as \lstinline!string array array!. Below further discussion of on 2 and higher dimensional arrays be discussed.  
+
+Notes:
+\begin{itemize}
+\item \url{https://en.wikipedia.org/wiki/Functional_programming}
+\item \url{https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0}
+\item \url{http://blog.jenkster.com/2015/12/what-is-functional-programming.html}
+\item \url{https://wiki.haskell.org/Functional_programming}
+\item In functional programming, data structures are dum. Separate behavior from data: "It is better to have 100 functions operate on one data structure than 10 functions on 10 data structures" -- Alan Perlis. \url{https://www.infoq.com/presentations/Value-Values}
+\end{itemize}
+\end{comment}
+
+\section{The Imperative Programming paradigm}
+\label{chap:imperative}
+\idx[imperative programming]{Imperative programming} is a paradigm for programming states. In imperative programming, the focus is on how a problem is to be solved, as a list of \idx[statement]{statements} that affects \idx{states}. In F\#, states are mutable and immutable values, and they are affected by functions and procedures. An imperative program is typically identified as using:
+\begin{description}
+\item[Mutable values]\idxs{mutable value}~\\
+Mutable values are holders of states, they may change over time, and thus have a dynamic scope.
+\item[Procedures]\idxs{procedure}~\\
+ Procedures are functions that returns \lexeme{()}, as opposed to functions that transform data. They are the embodiment of side-effects.
+\item[Side-effects]\idxs{side-effect}~\\
+Side-effects are changes of state that are not reflected in the arguments and return values of a function. The \lstinline{printf} is an example of a procedure that uses side-effects to communicate with the terminal.
+\item[Loops]\idxs{\keyword{for}}\idxs{\keyword{while}}~\\
+The \keyword{for}- and \keyword{while}-loops typically use an iteration value to update some state, e.g., \keyword{for}-loops are often used to iterate through a list and summarize its contents.
+\end{description}
+Mono state or stateless programs, as \idx{functional programming}, can be seen as a subset of imperative programming and is discussed in \Cref{chap:functional}. \idx[object-oriented programming]{Object-oriented programming} is an extension of imperative programming, where statements and states are grouped into classes. For a discussion on object-oriented programming, see \Cref{chap:oopp}.
+
+An imperative program is like a Turing machine, a theoretical machine introduced by Alan Turing in 1936~\cite{turing36}. Almost all computer hardware is designed for \idx{machine code}, which is a common term used for many low-level computer programming languages, and almost all machine languages follow the imperative programming paradigm. 
+
+A prototypical example is a baking recipe, e.g., to make a loaf of bread, do the following:
+\begin{enumerate}
+\item Mix yeast with water.
+\item Stir in salt, oil, and flour.
+\item Knead until the dough has a smooth surface.
+\item Let the dough rise until it has doubled its size.
+\item Shape dough into a loaf.
+\item Let the loaf rise until double size.
+\item Bake in the oven until the bread is golden brown.
+\end{enumerate}
+Each line in this example consists of one or more statements that are to be executed, and while executing them, states such as the size of the dough and the color of the bread changes. Some execution will halt execution until certain conditions of these states are fulfilled, e.g., the bread will not be put into the oven for baking before it has risen sufficiently.
+
+\begin{comment}
+\subsection{Imperative Design}
+Programming is the act of solving a problem by writing a program to be executed on a computer. The imperative programming paradigm focuses on states. To solve a problem, you could work through the following list of actions:
+\begin{enumerate}
+\item Understand the problem. As Pólya described it, see \Cref{chap:introduction}, the first step in any solution is to understand the problem. A good trick to check whether you understand the problem, is to briefly describe it in your own words.
+\item Identify the main values, variables, functions, and procedures needed. If the list of procedures is large, then you most likely should organize them in modules. \item For each function and procedure, write a precise description of what it should do. This can conveniently be performed as an in-code comment for the procedure, using the F\# XML documentation standard.
+\item Make mockup functions and procedures using the intended types, but do not necessarily compute anything sensible. Run through examples in your mind, using this mockup program to identify any obvious oversights.
+\item Write a suite of unit tests that tests the basic requirements for your code. The unit tests should be runnable with your mockup code. Writing unit tests will also allow you to evaluate the usefulness of the code pieces as seen from an application point of view.
+\item Replace the mockup functions in a prioritized order, i.e., write the must-have code before you write the nice-to-have code, while regularly running your unit tests to keep track of your progress.
+\item Evaluate the code in relation to the desired goal, and reiterate earlier actions as needed until the task has been sufficiently completed.
+\item Complete your documentation both in-code and outside to ensure that the intended user has sufficient knowledge to effectively use your program and to ensure that you or a fellow programmer will be able to maintain and extend the program in the future.
+\end{enumerate}
+\end{comment}
+\begin{comment} 
+\subsection{Generating random texts}
+\subsubsection{0'th order statistics}
+\fs{randomTextOrder0}{}
+
+\subsubsection{1'th order statistics}
+\fs{randomTextOrder1}{}
+
+\jon{\url{http://www.ccs.neu.edu/home/matthias/HtDP2e/part_epilogue.html}}
+\end{comment}
+
+\section{The Object-Oriented Programming Paradigm}
+\label{chap:oopp}
+\idx{Object-oriented programming} is a paradigm for encapsulating data and methods into cohesive units. Key features of object-oriented programming are:
+\begin{description}
+\item[Encapsulation]~\\
+Data and methods are collected into a cohesive unit, and an application program need only focus on how to use the object, not on its implementation details.
+\item[Inheritance]~\\
+Objects are organized in a hierarchy of gradually increased specialty. This promotes a design of code that is of general use, and code reuse.
+\item[Polymorphism]~\\
+By overriding methods from a base class, derived classes define new data types while their methods still produce results compatible with the base class definitions.
+\end{description}
+
+Object-oriented programming has a well-developed methodology for analysis and design. The analysis serves as input to the design phase, where the analysis reveals \idx{what} a program is supposed to do, and the design \idx{how} it is supposed to be doing it. The analysis should be expressed in general terms irrespective of the technologic constraints, while the design should include technological constraints such as defined by the targeted language and hardware.
+
+\begin{comment}
+The primary steps for \idx{object-oriented analysis and design} are:
+\begin{enumerate}
+\item identify objects,\label{item:analysis}\label{item:identifyObjects}
+\item describe object behavior, \label{item:objectBehaviour}
+\item describe object interactions, \label{item:objectInteraction}
+\item describe some details of the object's inner workings,\label{item:design}\label{item:objectDetails}
+\item write a precise description for classes, properties and methods using, e.g., F\#'s XML documentation standard,
+\item write mockup code,  \label{item:objectMockup}
+\item write unit tests and test the basic framework using the mockup code,\label{item:implementation}
+\item replace the mockup with real code while testing to keep track of
+  your progress. Extend the unit test as needed,
+\item evaluate code in relation to the desired goal,
+\item complete your documentation both in-code and outside.
+\end{enumerate}
+Steps~\ref{item:analysis}--\ref{item:design} are the analysis phase which gradually stops in step~\ref{item:design}, while the design phase gradually starts at step~\ref{item:design} and gradually stops when actual code is written in step~\ref{item:implementation}. Notice that the last steps are identical to imperative programming, \Cref{chap:imperative}. Programming is never a linear experience, and you will often need to go back to previous steps to update or change decisions. You should not refrain from improving your program design and implementation, but you should always be mindful of the goal. Often less than the perfect solution will suffice.
+
+An object-oriented analysis can be a daunting process. A good starting point is a \idx{use case}, \idx{problem statement}, or a \idx{user story}, which in human language describes a number of possibly hypothetical interactions between a user and a system with the purpose of solving some task. Two useful methodologies for performing an object-oriented analysis is the method of nouns-and-verbs and the unified modeling language, described in the following sections.
+
+\subsection{Identification of Objects, Behaviors, and Interactions by Nouns-and-Verbs}
+\end{comment}
+A key point in object-oriented programming is that objects should to a large extent be independent and reusable. As an example, the type \lstinline|int| models the concept of integer numbers. It can hold integer values from -2,147,483,648 to 2,147,483,647, and a number of standard operations and functions are defined for it. We may use integers in many different programs, and it is certain that the original designers did not foresee our use, but strived to make a general type applicable for many uses. Such a design is a useful goal when designing objects, that is, our objects should model the general concepts and be applicable in future uses. 
+
+\begin{comment}
+Analyzing a specific use-case, good candidates for objects are persons, places, things, events, concept etc., which are almost always characterized by being \idx{nouns} in the text. Interactions between objects are actions that bind objects together, and actions are often associated with \idx{verbs}. When choosing methods, it is important to maintain an object-centered perspective, i.e., for a general-purpose object, we should limit the need for including information about other objects. E.g., a value of type \lstinline|int| need not know anything about the program in which it is being used.
+
+Said briefly, the \idx{nouns-and-verbs method} is:
+%
+\begin{quote}
+  Nouns are object candidates, and verbs are candidate methods that describe interactions between objects.
+\end{quote}
+%
+
+\subsection{Class Diagrams in the Unified Modelling Language}
+Having found an initial list of candidate objects and interactions, it is often useful to make a drawing of these relations with an increased focus on the object's inner workings. A \idx{class diagram} is a schematic drawing of the program, highlighting its object-oriented structure, and we will use the \idx{Unified Modelling Language 2} (\idx{UML}) \cite{uml2} standard. The standard is very broad, and here we will discuss structure diagrams for use in describing objects. 
+
+A class is drawn as shown in \Cref{fig:class}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=9cm]{ClassName}{0,0}
+      \attribute{value-identifier : type}
+      \attribute{value-identifier : type = default value}
+      \operation{function-identifier (arg : type) (arg : type) ... : type}
+      % virtual operation
+      \operation[0]{function-identifier (arg : type) (arg : type) ... : type}
+    \end{class}
+    \end{tikzpicture}
+  \caption{A UML diagram for a class consists of it's name, zero or more attributes, and zero or more methods.}
+  \label{fig:class}
+\end{figure}
+In UML, classes are represented as boxes with their class name. Depending on the desired level of details, zero or more properties and methods are described. These describe the basic interface to the class and objects of its type. Abstract members that require an implementation are shown in cursive. Here we have used F\# syntax to conform with this book theme, but typically C\# syntax is used.
+\end{comment}
+% 
+\begin{comment}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}%[show background grid] 
+    \begin{class}[text width=7cm]{Class}{0,0} \attribute{+ Public}
+      \attribute{\# Protected}
+      \attribute{- Private}
+      \attribute{$\sim$ Package} 
+    \end{class}
+    \begin{class}[text width=7cm]{BankAccount}{0,-3} \attribute{+ owner : String}
+      \attribute{+ balance : Dollars}
+      \operation{+ deposit( amount : Dollars )} \operation{+ withdrawal( amount : Dollars )} \operation{\# updateBalance( newBalance : Dollars
+        )} 
+    \end{class}
+  \end{tikzpicture}
+  \caption{visibility}
+  \label{fig:visibility}
+\end{figure}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{abstractclass}[text width=5cm]{BankAccount
+      }{0 ,0}
+      \attribute{owner : String}
+      \attribute{balance : Dollars = 0}
+      \operation{deposit(amount : Dollars)} \operation[0]{withdrawl(amount : Dollars)}
+    \end{abstractclass} 
+  \end{tikzpicture}
+  \caption{abstract class}
+  \label{fig:abstractClass}
+\end{figure}
+\end{comment}
+%
+\begin{comment}
+  Interfaces are a special type of class that require an implementation. To highlight this, UML uses the notation shown in \Cref{fig:interface}.\jon{Add programming examples for each of these UML structures}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}%[show background grid] 
+    \begin{interface}[text width=9cm]{InterfaceName}{0,0}
+      \attribute{value-identifier : type}
+      \attribute{value-identifier : type = default value}
+      \operation{function-identifier (arg : type) (arg : type) ... : type}
+    \end{interface} 
+  \end{tikzpicture}
+  \caption{An interface is a class that requires an implementation.}
+  \label{fig:interface}
+\end{figure}
+
+ 
+Relations between classes and objects are indicated by lines and arrows. The most common ones are summarized in \Cref{fig:arrows}.
+\begin{figure}
+  \centering
+  \fbox{
+    \begin{tikzpicture}
+      % \draw[umlcd style dashed line] (0,4) --(8,4);
+      % \draw[splitline] (0,3) --(8,3);
+      \node [left] at (-2,5) {Associate:};
+      \node (associateLeft) [left] at (0,5) {HostA};
+      \node (associateRight) [right] at (6,5) {HostB};
+      \association{associateLeft}{objectsAinB}{0..1}{associateRight}{objectsBinA}{0..*} ;
+      
+      \node [left] at (-2,4) {\parbox[r]{2.5cm}{\raggedleft Unidirectional associate:}};
+      \node (uniAssociateLeft) [left] at (0,4) {Host};
+      \node (uniAssociateRight) [right] at (6,4) {Guest};
+      \unidirectionalAssociation{uniAssociateLeft}{guestObj}{0..*}{uniAssociateRight};
+
+      \node [left] at (-2,3) {Aggregate:};
+      \node (aggregateLeft) [left] at (0,3) {Host};
+      \node (aggregateRight) [right] at (6,3) {Guest};
+      \aggregation{aggregateLeft}{guestObj}{4}{aggregateRight};
+      
+      \node [left] at (-2,2) {Compose:};
+      \node (composeLeft) [left] at (0,2) {Owner};
+      \node (composeRight) [right] at (6,2) {Dependent};
+      \composition{composeLeft}{depObj}{1..*}{composeRight};
+      
+      \node [left] at (-2,1) {Implement:};
+      \node (interfaceDerived) [left] at (0,1) {Derived};
+      \node (interfaceBase) [right] at (6,1) {Interface};
+      \draw[umlcd style implement line] (interfaceBase) -- (interfaceDerived);
+      
+      \node [left] at (-2,0) {Inherit:};
+      \node (inheritDerived) [left] at (0,0) {Derived};
+      \node (inheritBase) [right] at (6,0) {Base};
+      \draw[umlcd style inherit line] (inheritBase) -- (inheritDerived);
+    \end{tikzpicture}
+  }
+  \caption{Arrows used in class diagrams to show relations between objects.}
+  \label{fig:arrows}
+\end{figure}
+Their meaning will be described in detail in the following. 
+
+
+\subsubsection{Associations}
+A family of relations is association, aggregation, and composition, and these are distinguished by how they handle the objects they are in relation with. The relation between the three relations is shown in \Cref{fig:associationAggregationCompositionRelation}.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\textwidth]{associationAggregationComposition}
+  \caption{The relation between Association, Aggregation and Composition in UML.}
+  \label{fig:associationAggregationCompositionRelation}
+\end{figure}
+Aggregational and compositional are specialized types of associations that imply ownership and are often called \idx[has-a relation]{has-a} relations. A composition is a collection of parts that makes up a whole. In object-oriented design, a compositional relation is a strong relation, where a guest object makes little sense without the host, as a room cannot exist without a house. An aggregation is a collection of assorted items, and in object-oriented design, an aggregational relation is a loose relation, like how a battery can meaningfully be separated from a torchlight. Some associations are neither aggregational nor compositional, and commonly just called an association. An association is a group of people or things linked for some common purpose a cooccurrence. In object-oriented design, associations between objects are the loosest possible relations, like how a student may be associated with the local coffee shop. Sometimes associational relations are called a  \idx[knows-about relation]{knows-about}.
+
+\paragraph{Association}\idxs{association}~\\
+The most general type of association, which is just called an association, is the possibility for objects to send messages to each other. This implies that one class knows about the other, e.g., uses it as arguments of a function or similar. A host is associated with a guest if the host has a reference to the guest. Objects are reference types, and therefore, any object which is not created by the host, but where a name is bound to a guest object but not explicitly copied, then this is an association relation.
+
+Bidirectional association means that classes know about each other. The UML notation is shown in \Cref{fig:association}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=0.2\linewidth]{HostA}{0,0}
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{HostB}{9,0}
+    \end{class} 
+    \association{HostA}{objectsAinB}{0..1}{HostB}{objectsBinA}{0..*}
+  \end{tikzpicture}
+  \caption{Bidirectional association is shown as a line with optional annotation.}
+  \label{fig:association}
+\end{figure}
+Association may be annotated by an identifier and a multiplicity. In the figure, HostA has 0 or more variables of type HostB named objectsBinA, while HostB has 0 or 1 variables of HostA named objectsAinB. The multiplicity notation is very similar to F\#'s slicing notation. Typical values are shown in \Cref{tab:multiplicity}.
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    n & exactly n instances\\
+    * & zero or more instances \\
+    n..m & n to m instances\\
+    n..* & from n to infinite instances\\
+    \hline
+  \end{tabular}
+  \caption{Notation for association multiplicities is similar to F\#'s slicing notation.}
+  \label{tab:multiplicity}
+\end{table}
+If the association is unidirectional, then an arrow is added for emphasis, as shown in \Cref{fig:unidirectionalAssociation}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    % \draw[help lines] (-7,-6) grid (6,0);
+    \begin{class}[text width=0.2\linewidth]{Host}{0,0}
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{Guest}{9,0}
+    \end{class}
+    \unidirectionalAssociation{Host}{guestObj}{1}{Guest}
+  \end{tikzpicture}  
+  \caption{Unidirectional association shows a one-side \emph{has-a} relation.}
+  \label{fig:unidirectionalAssociation}
+\end{figure}
+In this example, Host knows about Guest and has one instance of it, and Guest is oblivious about Host.
+
+A programming example showing a unidirectional association is given in \Cref{umlAssociation}.
+% 
+\fsCode{umlAssociation}{umlAssociation}{The \lstinline{student} is associated with a \lstinline{teacher}.}{}
+% 
+Here, the \lstinline{student} is unidirectionally associated with a \lstinline{teacher} since the \lstinline{student} can send and receive messages to and from the \lstinline{teacher}. The \lstinline{teacher}, on the other hand, does not know anything about the \lstinline{student}. In UML this is depicted as shown in \Cref{fig:umlAssociationUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=0.2\linewidth]{student}{0,0}
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{teacher}{9,0}
+    \end{class} 
+    \unidirectionalAssociation{student}{}{}{teacher}
+  \end{tikzpicture}
+  \caption{The \lstinline{teacher} and \lstinline{student} objects can access each other's functions, and thus they have an association relation.}
+  \label{fig:umlAssociationUML}
+\end{figure}
+
+\paragraph{Aggregation}\idxs{aggregation}~\\
+Aggregated relationships are a specialization of associations. As an example, an author may have written a book, but once created, the book gets a life independent of the author and may, for example, be given to a reader, and the book continues to exist even when the author dies. That is, In aggregated relations, the host object has a reference to a guest object and may have created the guest, but the guest will be shared with other objects, and when the host is deleted, the guest is not.
+
+Aggregation is illustrated using a diamond tail and an open arrow, as shown in \Cref{fig:aggregation}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=0.2\linewidth]{Host}{0,0}
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{Guest}{9,0} 
+    \end{class}
+    \aggregation{Host}{guestObj}{4}{Guest}
+  \end{tikzpicture}
+  \caption{Aggregation relations are a subset of associations where local aliases are stored for later use.}
+  \label{fig:aggregation}
+\end{figure}
+Here the Host class has stored aliases to four different Guest objects.
+
+An programming example of an aggregation relation is given in \Cref{umlAggregation}.
+% 
+\fsCode{umlAggregation}{umlAggregation}{The \lstinline{book} has an aggregated relation to \lstinline{author} and \lstinline{reader}.}{}
+% 
+In aggregated relations, there is a sense of ownership, and in the example, the \lstinline{author} object creates a \lstinline{book} object which is published and bought by a reader. Hence the \lstinline{book} change ownership during the execution of the program. In UML this is to be depicted as shown in \Cref{fig:umlAggregationUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=0.2\linewidth]{author}{0,0}
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{reader}{9,0} 
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{book}{4.5,2}
+    \end{class}
+    \aggregation{author}{}{}{book}
+    \aggregation{reader}{}{}{book}
+  \end{tikzpicture}
+  \caption{A book is an object that can be owned by both an author and a reader.}
+  \label{fig:umlAggregationUML}
+\end{figure}
+
+\paragraph{Composition}\idxs{composition}~\\
+A compositional relationship is a specialization of aggregations. As an example, a dog has legs, and dog legs can not very sensibly be given to other animals. That is, in compositional relations, the host creates the guest, and when the host is deleted, so is the guest.  A composition is a stronger relation than aggregation and is illustated using a filled filled diamond tail, as illustrated in \Cref{fig:composition}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=0.2\linewidth]{Owner}{0,0} 
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{Dependent}{9,0}
+    \end{class}
+    \composition{Owner}{depObj}{1..*}{Dependent}
+  \end{tikzpicture}
+  \caption{Composition relations are a subset of aggregation where the host controls the lifetime of the guest objects.}
+  \label{fig:composition}
+\end{figure}
+In this example, Owner has created 1 or more objects of type Dependent, and when Owner is deleted, so are these objects.
+
+A programming example of a composition relation is given in \Cref{umlComposition}.
+% 
+\fsCode{umlComposition}{umlComposition}{The \lstinline{dog} object is a composition of four \lstinline{leg} objects.}{}
+% 
+In \Cref{umlComposition}, a \lstinline{dog} object creates four \lstinline{leg} objects, and it makes less sense to be able to turn over the ownership of each \lstinline{leg} to other objects. Thus, a \lstinline{dog} is a composition of \lstinline{leg} objects. Using UML, this should be depicted as shown in \Cref{fig:umlCompositionUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=0.2\linewidth]{dog}{0,0} 
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{leg}{9,0}
+    \end{class}
+    \composition{dog}{}{}{leg}
+  \end{tikzpicture}
+  \caption{A dog is a composition of legs.}
+  \label{fig:umlCompositionUML}
+\end{figure}
+
+\subsubsection{Inheritance-type relations}
+Classes may inherit\idxs{inheritance} other classes where the parent is called the base class and the children its derived classes. Such a relation is often called an \idx[is-a relation]{is-a} relation, since the derived class \emph{is a} kind of base class.
+
+\paragraph{Inheritance}
+Inheritance is a relation between properties of classes. As an example, a student and a teacher is a type of person. All persons have names, while a student also has a reading list, and a teacher also has a a set of slides. Thus, both students and teacher may inherit from a person to gain the common property, name. In UML this is illustated with an non-filled, closed arrow as shown in \Cref{fig:inherit}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=5cm]{BaseClassName}{0,0}
+    \end{class}
+    \begin{class}[text width=5cm]{DerivedClassA}{-3,-2}
+      \inherit{BaseClassName}
+    \end{class}
+    \begin{class}[text width=5cm]{DerivedClassB}{3,-2} 
+      \inherit{BaseClassName} 
+    \end{class}
+  \end{tikzpicture}
+  \caption{Inheritance is shown by a closed arrowhead pointing to the base.}
+  \label{fig:inherit}
+\end{figure}
+Here two classes inherit the base class.
+
+A programming example of an inheritance is given in \Cref{umlInheritance}.
+% 
+\fsCode{umlInheritance}{umlInheritance}{The \lstinline{student} and the \lstinline{teacher} class inherits from the \lstinline{person} class.}{}
+% 
+In \Cref{umlInheritance}, the \lstinline{student} and the \lstinline{teacher} classes are derived from the same \lstinline{person} class. Thus, they all three have the \lstinline{name} property. Using UML, this should be depicted as shown in \Cref{fig:umlInheritanceUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=0.2\linewidth]{person}{4.5,2}
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{student}{0,0}
+      \inherit{person}
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{teacher}{9,0} 
+      \inherit{person}
+    \end{class}
+  \end{tikzpicture}
+  \caption{A student and a teacher inherit from a person class.}
+  \label{fig:umlInheritanceUML}
+\end{figure}
+
+\paragraph{Interface}
+An interface is a relation between the properties of an abstract class and a regular class. As an example, a television and a car both have buttons, that you can press, although their effect will be quite different. Thus, a television and a car may both implement the same interface. In UML, interfaces are shown similarly to inheritance, but using a stippled line, as shown in \Cref{fig:implement}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{interface}[text width=5cm]{InterfaceName}{0,0} 
+    \end{interface}
+    \begin{class}[text width=5cm]{DerivedClassA}{-3,-2}
+      \implement{InterfaceName}
+    \end{class}
+    \begin{class}[text width=5cm]{DerivedClassB}{3,-2} 
+      \implement{InterfaceName} 
+    \end{class}
+  \end{tikzpicture}
+  \caption{Implementations of interfaces is shown with stippled line and closed arrowhead pointing to the base.}
+  \label{fig:implement}
+\end{figure}
+
+A programming example of an interface is given in \Cref{umlInterface}.
+% 
+\fsCode{umlInterface}{umlInterface}{The \lstinline{television} and the \lstinline{car} class both implement the \lstinline{button} interface.}{}
+% 
+In \Cref{umlInterface}, the \lstinline{television} and the \lstinline{car} classes implement the \lstinline{button} interface. Hence, although they are different classes, they both have the \lstinline{press ()} method and, e.g., can be given as a function requiring only the existence of the \lstinline{press ()} method. Using UML, this should be depicted as shown in \Cref{fig:umlInterfaceUML}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{class}[text width=0.2\linewidth]{button}{4.5,2}
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{television}{0,0}
+      \implement{button}
+    \end{class}
+    \begin{class}[text width=0.2\linewidth]{car}{9,0} 
+      \implement{button}
+    \end{class}
+  \end{tikzpicture}
+  \caption{A student and a teacher inherit from a person class.}
+  \label{fig:umlInterfaceUML}
+\end{figure}
+
+\subsubsection{Packages}
+\paragraph{Namespace and modules}
+For visual flair, modules and namespaces are often visualized as \idx[package]{packages}, as shown in \Cref{fig:package}. A package is like a module in F\#.
+\begin{figure}
+  \centering
+  \begin{tikzpicture} 
+    \begin{package}{APackageName}
+      \begin{class}[text width=3cm]{Base}{0,0} 
+        \attribute{aValue : int = 0}
+        \operation{get:  () -> int }
+        \operation[0]{set: int -> ()} 
+      \end{class}
+      \begin{class}[text width=4cm]{Guest}{-4,-4}
+        \attribute{aString : string}
+        \operation{writeMessage : () -> ()}
+      \end{class}
+      \begin{class}[text width=5.1cm]{Derived}{4, -4}
+        \inherit{Base} 
+        \attribute{dictionary : string list}
+        \operation{checkSpelling : string -> bool}
+        \operation{set : int -> ()} 
+      \end{class}
+    \aggregation{Derived}{guestObj}{4}{Guest}
+    \end{package} 
+  \end{tikzpicture}
+  \caption{Packages are a visualizations of modules and namespaces.}
+  \label{fig:package}
+\end{figure}
+
+\subsection{Programming Intermezzo: Designing a Racing Game}
+An example is the following \idx{problem statement}:
+%
+\begin{task}
+  Write a racing game, where each player controls his or her vehicle on a track. Each vehicle must have individual features such as top acceleration, speed, and handling. The player must be able to turn the vehicle left and right, and to accelerate up and down. At the beginning of the game, each vehicle is placed behind the starting line. Once the start signal is given, then the players may start to operate their vehicles. The player who first completes 3 rounds wins.
+\end{task}
+%
+To seek a solution, we will use the \emph{nouns-and-verbs method}. Below, the problem statement is repeated with \noun{nouns} and \vb{verbs} highlighted.
+\begin{quote}
+  \vb{Write} a \noun{racing game}, where each \noun{player} \vb{controls} his or her \noun{vehicle} on a \noun{track}. Each \noun{vehicle} \vb{must have} individual \noun{features} such as \noun{top acceleration}, \noun{speed}, and \noun{handling}. The \noun{player} \vb{must be} able to \vb{turn} the vehicle left and right, and to \vb{accelerate} up and down. At the \noun{beginning} of the \noun{game}, each \noun{vehicle} \vb{is placed} behind the \noun{starting line}. Once the \noun{start signal} is given, then the \noun{players} \vb{may start} to \vb{operate} their \noun{vehicles}. The \noun{player} who first \vb{completes} 3 \noun{rounds} \vb{wins}.
+\end{quote}
+The above nouns and verbs are candidates for objects, their behaviour, and their interaction. A deeper analysis is:
+\begin{description}
+\item[Identification of objects by nouns (Step~\ref{item:identifyObjects}):]~\\
+  Identified unique nouns are: \noun{racing game (game)}, \noun{player}, \noun{vehicle}, \noun{track}, \noun{feature}, \noun{top acceleration}, \noun{speed}, \noun{handling}, \noun{beginning}, \noun{starting line}, \noun{start signal}, \noun{rounds}. From this list we seek cohesive units that are independent and reusable. The nouns
+  \begin{quote}
+    \noun{game}, \noun{player}, \noun{vehicle}, and \noun{track}
+  \end{quote}
+  seem to fulfill these requirements, while all the rest seems to be features of the former and thus not independent concepts. E.g., \noun{top acceleration} is a feature of a \noun{vehicle}, and \noun{starting line} is a feature of a \noun{track}.
+\item[Object behavior and interactions by verbs (Steps~\ref{item:objectBehaviour}  and~\ref{item:objectInteraction}):]~\\
+  To continue our object-oriented analysis, we will consider the object candidates identified above, and verbalize how they would act as models of general concepts useful in our game.
+\begin{description}
+\item[\noun{player}] The \noun{player} is associated with the following verbs:
+  \begin{itemize}
+  \item A \noun{player} \vb{controls}/\vb{operates} a \noun{vehicle}. 
+  \item A \noun{player} \vb{turns} and \vb{accelerates} a \noun{vehicle}.
+  \item A \noun{player} \vb{completes} \noun{rounds}. 
+  \item A \noun{player} \vb{wins}. 
+  \end{itemize}
+  Verbalizing a \noun{player}, we say that a \noun{player} in general must be able to control the \noun{vehicle}. In order to do this, the \noun{player} must receive information about the \noun{track} and all \noun{vehicles}, or at least some information about the nearby \noun{vehicles} and \noun{track}. Furthermore, the \noun{player} must receive information about the state of the \noun{game}, i.e., when the race starts and stops.
+\item[\noun{vehicle}] A \noun{vehicle} is controlled by a \noun{player} and further associated with the following verbs:
+  \begin{itemize}
+  \item A \noun{vehicle} \vb{has} \noun{features} \noun{top acceleration}, \noun{speed}, and \noun{handling}. 
+  \item A \noun{vehicle} \vb{is placed} on the \noun{track}.
+  \end{itemize}
+  To further describe a \noun{vehicle}, we say that a \noun{vehicle} is a model of a physical object which moves around on the \noun{track} under the influence of a \noun{player}. A \noun{vehicle} must have a number of attributes such as top acceleration, speed, and handling, and must be able to receive information about when to turn and accelerate. A \noun{vehicle} must be able to determine its location in particular if it is on or off \noun{track} and, and it must be able to determine if it has crashed into an obstacle such as another \noun{vehicle}.
+\item[\noun{track}] A \noun{track} is the place where vehicles operate and is further associated with the following verbs:
+  \begin{itemize}
+  \item A \noun{track} \vb{has} a \noun{starting line}.
+  \item A \noun{track} \vb{has} \vb{rounds}.
+  \end{itemize}
+  Thus, a \noun{track} is a fixed entity on which the \noun{vehicles} race. It has a size and a shape, a starting and a finishing line, which may be the same, and \noun{vehicles} may be placed on the \noun{track} and can move on and possibly off the \noun{track}.
+\item[\noun{game}] Finally, a \noun{game} is associated with the following verbs:
+  \begin{itemize}
+  \item A \noun{game} \vb{has} a \noun{beginning} and a \noun{start signal}. 
+  \item A \noun{game} \vb{can be} \noun{won}.
+  \end{itemize}
+  A \noun{game} is the total sum of all the \noun{players}, the \noun{vehicles}, the \noun{tracks}, and their interactions. A \noun{game} controls events, including inviting \noun{players} to race, sending the \noun{start signal}, and monitoring when a \noun{game} is finished and who \noun{won}.
+\end{description}
+From the above we see that the object candidates \noun{features} seems to be a natural part of the description of the \noun{vehicle}'s attributes, and similarly, a \noun{starting line} may be an intricate part of a \noun{track}. Also, many of the \idx{verbs} used in the problem statement and in our extended verbalization of the general concepts indicate methods that are used to interact with the object. The object-centered perspective tells us that for a general-purpose \noun{vehicle} object, we need not include information about the \noun{player}, analogous to how a value of type \lstinline|int| need not know anything about the program, in which it is being used. In contrast, the candidate \noun{game} is not as easily dismissed and could be used as a class which contains all the above.
+
+With this description, we see that 'start signal' can be included as a natural part of the game object. Being confident in our working hypothesis of the essential objects for the solution, we continue our investigation into further details about the objects and their interactions.
+
+\item[Analysis details (Step~\ref{item:objectDetails}):]~\\
+  A class diagram of our design for the proposed classes and their relations is shown in \Cref{fig:race}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture} 
+    \begin{package}{Race}
+      \footnotesize
+      \begin{class}[text width=5.5cm]{Game}{-4,0} 
+        \attribute{// Racing clock}
+        \attribute{time : int = 0}
+        \operation{// Setup game}
+        \operation{// m human and n computer}
+        \operation{// players}
+        \operation{initialize:  (m : int) (n : int) -> ()}
+        \operation{// Main loop, starts race and time,}
+        \operation{// finishes when winner found or}
+        \operation{// no players left. In each iteration,}
+        \operation{// clock is forwarded, each player}
+        \operation{// is queried for their action,}
+        \operation{// vehicles are updated, crashes}
+        \operation{// are checked and handled,}
+        \operation{// finish conditions are checked. }
+        \operation{race:  () -> () }
+      \end{class}
+      \begin{class}[text width=5.5cm]{Vehicle}{3.3,0} 
+        \attribute{// size as a circle}
+        \attribute{size : int}
+        \attribute{// Present coordinate}
+        \attribute{position : (int * int) option = None}
+        \attribute{// Present acceleration vector}
+        \attribute{acceleration : int * int = (0, 0)}
+        \attribute{// Present speed vector}
+        \attribute{velocity : int * int = (0, 0)}
+        \attribute{// Handling ability 0.0..1.0, 1.0 is best}
+        \attribute{handling : float = 0}
+        \operation{// Change acceleration by argument}
+        \operation{accelerate :  int * int -> () }
+        \operation{// Update position after a clock tick}
+        \operation{update :  () -> () }
+        \operation{// Perform crash action}
+        \operation{crash :  () -> () }
+      \end{class}
+      \begin{class}[text width=5.5cm]{Player}{3.3,-9.1} 
+        \attribute{// Number of rounds remaining}
+        \attribute{roundsLeft : int option = None}
+        \attribute{// Human or computer player}
+        \attribute{human : bool = true}
+        \operation{// Query user for acceleration}
+        \operation{getAction:  () -> (int * int) option}
+      \end{class}
+      \begin{class}[text width=5.5cm]{Track}{-4,-8.2}
+        \attribute{// A curve as by a list of}
+        \attribute{// coordinates}
+        \attribute{shape : (int * int) list}
+        \attribute{// Constant width of curve}
+        \attribute{width : int}
+        \attribute{// Index into shape list}
+        \attribute{startLine : int}
+        \attribute{// Index into shape list}
+        \attribute{finishLine : int}
+        \operation{// Is a position is on or off track}
+        \operation{onTrack: int * int -> bool}
+      \end{class}
+      \composition{Game}{player}{1..(m+n)}{Player}
+      \composition{Game}{track}{1}{Track}
+      \composition{Game}{vehicle}{m+n}{Vehicle}
+      \aggregation{Player}{vehicle}{m+n}{Vehicle}
+      \aggregation{Player}{track}{1}{Track}
+      %\aggregation{Vehicle}{track}{1}{Track}
+    \end{package}
+  \end{tikzpicture}
+  \caption{A class diagram for a racing game.}
+  \label{fig:race}
+\end{figure}
+\end{description}
+In the present description, there will be a single Game object that initializes the other objects, executes a loop updating the clock, queries the players for actions, and informs the vehicles that they should move and under what circumstances. The track has been chosen to be dumb and does not participate much in the action. Player's method getAction will be an input from a user by keyboard, joystick or similar, but the complexity of the code for a computer player will be large, since it needs to take a sensible decision based on the track and the location of the other vehicles. What at present is less clear, is whether it is the responsibility of Game or Vehicle to detect an off track or a crash event. If a vehicle is to do this, then each vehicle must have aggregated association to all other vehicles and obstacles. So, on the one hand, it would seem an elegant delegation of responsibilities that a vehicle knows whether it has crashed into an obstacle or not, but on the other hand, it seems wasteful of memory resources to have duplicated references of all obstacles in every vehicle. The final choice is thus one of elegance versus resource management, and in the above, we have favored resource management. Thus, the main loop in Game must check all vehicles for a crash event after the vehicle's positions have been updated, and in case of a crash, informs the relevant vehicles.
+
+Having created a design for a racing game, we are now ready to start coding (Step~\ref{item:objectMockup}--). It is not uncommon that transforming our design into code will reveal new structures and problems that possibly require our design to be updated. Nevertheless, a good design phase is almost always a sure course to avoid many problems once coding, since the design phase allows the programmer to think about the problem from a helicopter perspective before tackling details of specific sub-problems.
+\end{comment}
+
+
+\section{Key concepts and terms in this chapter}
+In this chapter, you have read about
+\begin{itemize}
+\item \textbf{Declarative} programming, in which a program is a list of descriptions of the solution but without information on how the solution should be computed.
+\item \textbf{Imperative} programming, where a program is a sequence of actions to be taken to modify the state of the computer to reach the solution.
+\item \textbf{Functional programming}, which is a declarative paradigm emphasizing constants, functions, and recursion.
+\item \textbf{Imperative programming}, which is a name collision with the same overarching term, and which uses states and \lstinline{for-} and \lstinline{while}-loops,
+\item \textbf{Object-oriented programming}, which extends imperative programming with data structures that can hold both states and functions.
+\end{itemize}
+\end{document}

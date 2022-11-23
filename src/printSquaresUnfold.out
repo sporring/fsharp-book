@@ -1,4 +1,4 @@
-$ fsharpc --nologo printSquaresUnfold.fsx && mono printSquaresUnfold.exe
+$ dotnet fsi printSquaresUnfold.fsx
 1: 1
 2: 4
 3: 9

@@ -65,9 +65,9 @@ namespaceApp.out: namespace.fsx namespaceApp.fsx
 vecCartesian2DApp.out: vecCartesian2D.fs vecCartesian2DApp.fsx
 	./fsxeval2out $@ "" "fsharpc --nologo $^ && mono vecCartesian2DApp.exe"
 vectorApp.out: vector.fs vectorApp.fsx
-	./fsxeval2out $@ "" "fsharpc --nologo $^ && mono vectorApp.exe"
+	./fsxeval2out $@ "" "dotnet fsi $^"
 chessApp.out: chess.fs pieces.fs chessApp.fsx
-	./fsxeval2out $@ "" "fsharpc --nologo $^ && mono chessApp.exe"
+	./fsxeval2out $@ "" "dotnet fsi $^"
 
 # Compile but with a temporary and hidden target
 baseUpcastApp.out: baseUpcast.fs baseUpcastExtension.fs baseUpcastApp.fsx

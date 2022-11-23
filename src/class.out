@@ -1,4 +1,4 @@
-$ fsharpc --nologo class.fsx && mono class.exe
+$ dotnet fsi class.fsx
 Created a car (8.0, 60.0)
 Created a car (5.0, 45.0)
 Fuel left after 100km driving:

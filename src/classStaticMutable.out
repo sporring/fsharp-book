@@ -1,2 +1,2 @@
-$ fsharpc --nologo classStaticMutable.fsx && mono classStaticMutable.exe
+$ dotnet fsi classStaticMutable.fsx
 "Hi F#", ""Hi""

@@ -2,20 +2,40 @@
 \graphicspath{ {./figures/} }
 
 \begin{document}
-\chapter{Mutable values}
+\chapter{Imperative programming}
+\label{cha:imperativeProgramming}
+\abstract{
+  Imperative programming is both and overarching term for a collection of programming paradigms and the name for specific paradigm. Here we will discuss the specific paradigm, and in \Crefrange{chap:oop}{chap:oopd} we will discuss another imperative paradigm called the object-oriented paradigm.
+  % 
+  When programming using the imperative paradigm, the programmer specifies a number of steps which to maninipulate the state of the computer for a desired result. Key features of this paradigm are \idx[mutable values]{mutable values} also know as \idx[variable]{variables} and \keyword{for}- and \keyword{while}-loops. In this chapter, you will learn
+  \begin{itemize}
+  \item How to define and use variables
+  \item How to make loops using the \keyword{for}- and \keyword{while}-keywords as an alternative to recursive functions
+  \item How to arrays as alternative to lists
+  \item How to trace-by-hand imperative programs
+  \end{itemize}
+}
+
 \section{Variables}
 \label{sec:mutableValues}
-Identifiers may be mutable, which means that the it may be rebound to a new value. Mutable identifiers are specified using the \idx[mutable@\lstinline{mutable}]{\keyword{mutable}} keyword with the following syntax:
+A state is a value that may change over time. E.g., a traffic light as shown in \Cref{fig:trafficLight}, consists of 3 colored lamps: red (top), yellow (middle), and green (bottom), and typically cycles through the cyclic sequence red, red+yellow, green, yellow.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\linewidth]{trafficLight}
+  \caption{For a traffic light, the different state of the coloured lamps can be modelled as different states of the ligth. Top lamp is red, middle is yellow, and bottom is green.}
+  \label{fig:trafficLight}
+\end{figure}
+A simple model of this could be to represent the state of each lamp as being on or off. This can be done with a mutable boolean value. To create a mutable value, we initally declare and identifyer using the \idx[mutable@\lstinline{mutable}]{\keyword{mutable}} keyword with the following syntax:
 %
 \begin{verbatimwrite}{\ebnf/variables.ebnf}
-let mutable <*ident*> = <*expr*> [*in <*expr*>*]
+let mutable <*ident*> = <*expr*>
 \end{verbatimwrite}
 \syntax{\ebnf/variables.ebnf}{Syntax for defining mutable values with an initial value.}
 %
 Changing the value of an identifier is called \idx{assignment} and is done using the \idx[{<-}@\lstinline{<-}]{\lexeme{<-}} lexeme. Assignments have the following syntax:\jon{Discussion on heap and stack should be added here.}
 %
 \begin{verbatimwrite}{\ebnf/assignment.ebnf}
-<*ident*> <- <*ident*>
+<*ident*> <- <*expr*>
 \end{verbatimwrite}
 \syntax{\ebnf/assignment.ebnf}{Value reassignment for mutable variables.}
 %
@@ -35,7 +55,7 @@ Here, an area in memory was denoted \lstinline{x}, initially assigned the intege
 % val it : bool = false
 % \end{lstlisting}
 %
-However, it is important to note that when the variable is initially defined, then the '\lexeme{=}' operator must be used, while later reassignments must use the \lexeme{<-} expression.
+%However, it is important to note that in F\#, when the variable is initially defined, then the '\lexeme{=}' operator must be used, while later reassignments must use the \lexeme{<-} expression.
 
 Assignment type mismatches will result in an error, as demonstrated in \Cref{mutableAssignReassingTypeError}. 
 %
@@ -51,7 +71,18 @@ Using variables in expressions, as opposed to the left-hand-side of an assignmen
 %
 \fsOutput{mutableAssignReturnVariable}{Returning a mutable variable returns its value.}
 %
-In the example we see that the type is a value, and not mutable. 
+In the example,  we see that the type is a value, and not mutable.
+
+In F\# it is possible to encapsulate a mutable value. For example, consider a counter function \lstinline{inc: unit->int}, which increments a counting state and returns its present value, every time we call it, i.e., calling \lstinline{inc ()} the first time should return the value 1, the second time the value 2, and so on. A first attempt could be as shown in \Cref{inc}. 
+%
+\fs{inc}{A failed version of the a counter function \lstinline{inc}.}
+%
+Even though \lstinline{inc} has an internal state, the identifier \lexeme{s} is reset to 0 every time the function is called. However, in F\# it is possible to solve this problem by using a side-effect as shown in \Cref{makeCounter}.
+%
+\fs{makeCounter}{Returning a counter function with a side-effect. Compare with \Cref{inc}.}
+%
+The reason this works is that \lstinline{makeCounter} returns a closure that includes the environment of the anonymous function at the point where it is defined. Hence, this closure includes a mutable value but does not reset it, every time it is called.
+
 
 Variables implement dynamic scope, that is, the value of an identifier depends on \emph{when} it is used. This is in contrast to lexical scope, where the value of an identifier depends on \emph{where} it is defined. As an example, consider the script in \Cref{lexicalScopeNFunction} which defines a function using lexical scope and returns the number \lstinline!6.0!, however, if \lstinline!a! is made \lstinline!mutable!, then the behavior is different, as shown in \Cref{dynamicScopeNFunction}.
 %
@@ -59,7 +90,95 @@ Variables implement dynamic scope, that is, the value of an identifier depends o
 %
 Here, the response is \lstinline!8.0!, since the value of \lstinline!a! changed before the function \lstinline!f! was called.
 
-\section{Reference Cells}
+\section{While and For Loops}
+\label{chap:flow}
+This book has previously emphasized recursion as a structure to encapsulate and repeat code. In the imperative paradigm, often \idx[for@\lstinline{for}]{\keyword{for}}- and \idx[while@\lstinline{while}]{\keyword{while}}-loops are preferred. A \idx[while@\lstinline{while}]{\keyword{while}}-loop has the following syntax:
+%
+\begin{verbatimwrite}{\ebnf/whileLoop.ebnf}
+while <*condition*> do
+  <*expr*>
+\end{verbatimwrite}
+\syntax{\ebnf/whileLoop.ebnf}{While loop.}
+%
+The \idx{condition} \lstinline[language=syntax]{<*condition*>} is an expression that evaluates to true or false. A \keyword{while}-loop repeats the \lstinline[language=syntax]{<*expr*>} expression as long as the condition is true.  The \idx[do@\lstinline{do}]{\keyword{do}} keyword is mandatory and the body of the loop is indicated by indentation as usual. The return value of the \keyword{while} expression is \lexeme{()}.
+
+The program in \Cref{count} is an example of a while-loop which counts from 1 to 10.
+%
+\fs{countWhile}{Count to 10 with a counter variable.}
+%
+Since the variable \lstinline{i} is used for counting, it is often called the counter variable. The counting is done by performing the following computation: In line~\ref{countWhileLoop}, the counter variable is first given an initial value of 1. Then in line~\ref{countWhileLoopTest}, the head of the while-loop and examines the condition. Since $1 <= 10$, the condition is true, and execution enters the body of the loop starting in line~\ref{countWhileLoopBody}. The body prints the value of the counter to the screen and increases the counter by 1. Then execution returns to the head of the while-loop and reexamines the condition. Now the condition is $2 <= 10$, which is also true, and so execution enters the body and so on until the counter has reached the value 11, in which case the condition $11 <= 10$ is false, and execution continues in line~\ref{countWhileContinue}.
+
+Counters are so common that a special syntax has been reserved for loops using counters. These are called \idx[for-to@\lstinline{for}-\lstinline{to}]{\keyword{for}-\keyword{to}}-loops. For-loops come in several variants, and here we will focus on the one using an explicit counter. Its syntax is:
+%
+\begin{verbatimwrite}{\ebnf/forLoop.ebnf}
+for <*ident*> = <*firstExpr*> to <*lastExpr*> do
+  <*expr*>
+\end{verbatimwrite}
+\syntax{\ebnf/forLoop.ebnf}{For loop.}
+%
+A for-loop initially binds the counter identifier \lstinline[language=syntax]{<*ident*>} to be the value \lstinline[language=syntax]{<*firstExpr*>}. Then execution enters the body, and \lstinline[language=syntax]{<*bodyExpr*>} is evaluated. Once done, the counter is increased, and execution evaluates \lstinline[language=syntax]{<*bodyExpr*>}  once again. This is repeated as long as the counter is not greater than \lstinline[language=syntax]{<*lastExpr*>}. Againg, the \idx[do@\lstinline{do}]{\keyword{do}} keyword is mandatory and the body of the loop is indicated by indentation as usual. The return value of the \keyword{for} expression is \lexeme{()}.
+
+The counting example from \Cref{countWhile} using a \keyword{for}-loop is shown in \Cref{count}
+%
+\fs{count}{Counting from 1 to 10 using a \keyword{for}-loop.}
+%
+As this interactive script demonstrates, the identifier \lstinline!i! takes all the values between 1 and 10, but in spite of its changing state, it is not mutable.
+
+Counting backwards is sufficiently common that F\# has a \idx[for-downto@\lstinline{for}-\lstinline{downto}]{\keyword{for}-\keyword{downto}} structure, which works exactly like a \keyword{for}-\keyword{to}-loop except that the counter is decreased by 1 in each iteration. An example of this is shown in \Cref{countBackwards}.
+%
+\fs{countBackwards}{Counting from 10 to 1 using a \keyword{for}-\keyword{downto}-loop.}
+%
+
+There is also a customized syntax for indexing lists as shown in \Cref{listFor}
+%
+\fs{listFor}{Iterating over elements of a list with the \keyword{for}-\keyword{in}-loop.}
+%
+This particular syntax for sequentially indexing into lists using a for loop is to be prefered, since it completely avoids index-out-of-bound errors.
+
+\section{Programming Intermezzo: Imperative Fibonacci numbers}
+To further compare for- and while-loops, consider the following problem.
+\begin{task}{probl:fibFor}
+  Write a program that calculates the $n$'th Fibonacci number.
+\end{task}
+Fibonacci numbers is a sequence of numbers starting with $1, 1$, and where the next number is calculated as the sum of the previous two. Hence the first ten numbers are: $1, 1, 2, 3, 5, 8, 13, 21, 34, 55$. Fibonacci numbers are related to Golden spirals shown in \Cref{fig:goldenSpiral}.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\linewidth]{Fibonacci_spiral}
+  \caption{The Fibonacci spiral is an approximation of the golden spiral. Each square has side lengths of successive Fibonacci numbers, and the curve in each square is the circular arc with a radius of the square it is drawn in.}
+  \label{fig:goldenSpiral}
+\end{figure}
+Often the sequence is extended with a preceding number $0$, to be $0, 1, 1, 2, 3, \dots$, which we will do here as well.
+
+In \Cref{fibRecursive} we gave a solution using recursion. Here we will first use a \keyword{for}-loop, as shown in \Cref{fibFor}.
+%
+\fs{fibFor}{The $n$'th Fibonacci number calculated using a for-loop.}
+%
+The basic idea of the solution is that if we are given the $(n-1)$'th and $(n-2)$'th numbers, the $n$'th number is trivial to compute. And assuming that $\text{fib}(1)$ and $\text{fib}(2)$ are given, then it is trivial to calculate $\text{fib}(3)$. For $\text{fib}(4)$, we only need $\text{fib}(3)$ and $\text{fib}(2)$, hence we may disregard $\text{fib}(1)$. Thus, we realize that we can cyclicly update the previous, current, and next values by shifting values until we have reached the desired $\text{fib}(n)$. This is implement in \Cref{fibFor} as the function \lstinline{fib}, which takes an integer \lstinline{n} as argument and returns the $n$'th Fibonacci number. The function does this iteratively using a \keyword{for}-loop, where \lstinline{i} is the counter value, and \lstinline{pair} is the pair of the $i-1$'th and $i$'th Fibonacci numbers. In the body of the loop, the $i$'th and $i+1$'th numbers are assigned to \lstinline{pair}. The \keyword{for}-loop automatically updates \lstinline{i} for next iteration. When $n<2$ the body of the for-loop is not evaluated, and $1$ is returned. This is of course wrong for $n < 1$, but we will ignore this for now.
+
+\Cref{fibWhile} shows a program similar to \Cref{fibFor} using a while-loop instead of for-loop.
+%
+\fs{fibWhile}{The $n$'th Fibonacci number calculated using a while-loop.}
+%
+The programs are almost identical. In this case, the \keyword{for}-loop is to be preferred, since more lines of code typically mean more chances of making a mistake.  However, while-loops are somewhat easier to argue correctness about.
+
+\begin{comment}
+The correctness of \lstinline!fib! in \Cref{fibWhile} can be proven using a \idx{loop invariant}. An \idx{invariant} is a statement that is always true at a particular point in a program, and a loop invariant is a statement which is true at the beginning and end of a loop. In line~\ref{fibWhileInvariant} in \Cref{fibWhile}, we may state the invariant: The variable \lstinline{pair} is the pair of the $i-1$'th and $i$'th Fibonacci numbers. This is provable by induction:
+\begin{description}
+\item[Base case:]  Before entering the while loop, \lstinline{i} is 1, \lstinline{pair} is (0, 1). Thus, the invariant is true.
+\item[Induction step:] Assuming that \lstinline{pair} is the $i-1$'th and $i$'th Fibonacci numbers, the body first assigns a new value to \lstinline{pair} as the $i$'th and $i+1$'th Fibonacci numbers, then increases $i$ by one such that at the end of the loop the \lstinline{pair} again contains the the $i-1$'th and $i$'th Fibonacci numbers. \end{description}
+Thus, since our invariant is true for the first case, and any iteration following an iteration where the invariant is true, is also true, then it is true for all iterations.
+
+Thus we know that the second value in \lstinline{pair} holds the value of the $i$'th Fibonacci number, and since we further may prove that $i = n$ when line~\ref{fibWhileInvariantContinue} is reached, then it is proven that \lstinline{fib} returns the $n$'th Fibonacci number. 
+\end{comment}
+
+While-loops also allow for logical structures other than for-loops, such as the case when the number of iteration cannot easily be decided when entering the loop. As an example, consider a slight variation of the above problem, where we wish to find the largest Fibonacci number less or equal some number. A solution to this problem is shown in \Cref{fibWhileLargest}.
+%
+\fs{fibWhileLargest}{Search for the largest Fibonacci number less than a specified number.}
+%
+The strategy here is to iteratively calculate Fibonacci numbers until we've found one larger than the argument \lstinline{n}, and then return the previous. This could not be calculated with a for-loop.
+
+\begin{comment}
+  \section{Reference Cells}
 \label{sec:referenceCells}
 %F\# has a variation of mutable variables called \idx{reference cells}. Reference cells have built-in function \idx[ref@\lstinline{ref}]{\lstinline{ref}} and operators \idx[{!}@\lstinline{!}]{\lexeme{!}} and \idx[{:=}@\lstinline{:=}]{\lexeme{:=}}, where \lstinline{ref} creates a reference variable, and the '\lexeme{!}' and the '\lexeme{:=}' operators reads and writes its value. An example of using reference cells is given in \Cref{refCell}.
 F\# has a variation of mutable variables called \idx{reference cells}. Reference cells have the built-in function \idx[ref@\lstinline{ref}]{\lstinline{ref}} and the operators \lexeme{!} and \idx[{:=}@\lstinline{:=}]{\lexeme{:=}}, where \lstinline{ref} creates a reference variable, and the '\lexeme{!}' and the '\lexeme{:=}' operators respectively reads and writes its value. An example of using reference cells is given in \Cref{refCell}.
@@ -107,6 +226,7 @@ Since F\# version 4.0, the compiler has automatically converted mutable variable
 \fs{mutableEncapsulation}{Local mutable content can be indirectly accessed outside its scope.}
 % 
 Reference cells are preferred over mutable variables for encapsulation, in order to avoid confusion.
+\end{comment}
 
 \section{Arrays}
 \label{sec:arrays}
@@ -134,7 +254,7 @@ Notice that in spite of the missing \keyword{mutable} keyword, the function \lst
 
 Arrays support \idx{slicing}, that is, indexing an array with a range result in a copy of the array with values corresponding to the range. This is demonstrated in \Cref{arraySlicing}.
 %
-\fsOutput{arraySlicing}{Examples of array slicing. Compare with \Cref{listSlicing} and \Cref{stringIndexing}.}
+\fsOutput{arraySlicing}{Examples of array slicing. Compare with \Cref{listIndexing} and \Cref{stringIndexing}.}
 %
 As illustrated, the missing start or end index imply from the first or to the last element, respectively.
 
@@ -162,117 +282,37 @@ Some important properties and methods for arrays are:
 \end{description}
 
 \subsection{The Array Module}
-There are quite a number of built-in procedures for arrays in the \lstinline{Array} module, some of which are summarized below.
+\label{sec:arrayModule}
+There are quite a number of built-in procedures for arrays in the \lstinline{Array} module, and many of them are almost identical to those in the \lstinline{List} module, discussed in \Cref{sec:listModule}. However, a few additional functions are noted below:
 \begin{description}
 \item[\texttt{Array.append}:] \lstinline{arr1:'T [] -> arr2:'T [] -> 'T []}.~\\
   Creates an new array whose elements are a concatenated copy of \lstinline{arr1} and \lstinline{arr2}.
   \fsOutputNF{arrayAppendAlt}{\lstinline{Array.append}}\idxss{Array.append@\lstinline{Array.append}}
-  % \item[\texttt{Array.compareWith}:] \lstinline{f:('T -> 'T -> int) -> arr1:'T [] -> arr2:'T [] -> int}.~\\
-  %Traverseses \lstinline{arr1} and \lstinline{arr2} in parallel evaluating \lstinline{f} on pairs of their elements. Compares two arrays using the given comparison function, element by element.
-%   \fsOutputNF{arrayComparewith}{\lstinline{Array.compareWith}}\idxss{Array.compareWith@\lstinline{Array.compareWith}}
-%\item[\texttt{Array.concat}:] \lstinline{seq<'T []> -> 'T []}. Creates an array that contains the elements of each of the supplied sequence of arrays.
-%  \fsOutputNF{arrayConcat}{\lstinline{Array.concat}}\idxss{Array.concat@\lstinline{Array.concat}}
-\item[\texttt{Array.contains}:] \lstinline{elm:'T -> arr:'T [] -> bool}.~\\
-  Returns true if \lstinline{arr} contains \lstinline{elm}.
-  \fsOutputNF{arrayContains}{\lstinline{Array.contains}}\idxss{Array.contains@\lstinline{Array.contains}}
-  % \item[\texttt{Array.copy}:] \lstinline{'T [] -> 'T []}.~\\
-  %Creates an array that contains the elements of the supplied array.
-%  \fsOutputNF{arrayCopy}{\lstinline{Array.copy}}\idxss{Array.copy@\lstinline{Array.copy}}
-%\item[\texttt{Array.create}:] \lstinline{n:int -> v:'T -> 'T []}. Creates an array of length \lstinline{n} with value \lstinline{v}.
-%  \fsOutputNF{arrayCreate}{\lstinline{Array.create}}\idxss{Array.create@\lstinline{Array.create}}
-%\item[\texttt{Array.empty}:] \lstinline{'T []}. Creates an empty array of the given type.
-%  \fsOutputNF{arrayEmpty}{\lstinline{Array.empty}}\idxss{Array.empty@\lstinline{Array.empty}}
-\item[\texttt{Array.exists}:] \lstinline{f:('T -> bool) -> arr:'T [] -> bool}.~\\
-  Returns true if any application of \lstinline{f} evaluates to true when applied to the elements of \lstinline{arr}.
-  \fsOutputNF{arrayExists}{\lstinline{Array.exists}}\idxss{Array.exists@\lstinline{Array.exists}}
-%\item[\texttt{Array.fill}:] \lstinline{'T [] -> int -> int -> 'T -> unit}. Fills a range of elements of an array with the supplied value.
-%  \fsOutputNF{arrayFill}{\lstinline{Array.fill}}\idxss{Array.fill@\lstinline{Array.fill}}
-\item[\texttt{Array.filter}:] \lstinline{f:('T -> bool) -> arr:'T [] -> 'T []}.~\\
-  Returns an array of elements from \lstinline{arr} who evaluate to true when \lstinline{f} is applied to them.
-  \fsOutputNF{arrayFilter}{\lstinline{Array.filter}}\idxss{Array.filter@\lstinline{Array.filter}}
-\item[\texttt{Array.find}:] \lstinline{f:('T -> bool) -> arr:'T [] -> 'T}.~\\
-  Returns the first element in \lstinline{arr} for which \lstinline{f} evaluates to true. The \lstinline{KeyNotFoundException} exception is raised if no element is found.  See \Cref{sec:exceptions} for more on exceptions.
-  \fsOutputNF{arrayFind}{\lstinline{Array.find}}  \idxss{Array.find@\lstinline{Array.find}}
-\item[\texttt{Array.findIndex}:] \lstinline{f:('T -> bool) -> arr:'T [] -> int}.~\\
-  Returns the index of the first element in in \lstinline{arr} for which \lstinline{f} evaluates to true. If none are found, then the \lstinline{System.Collections.Generic.KeyNotFoundException} exception is raised.  See \Cref{sec:exceptions} for more on exceptions.
-  \fsOutputNF{arrayFindindex}{\lstinline{Array.findIndex}}\idxss{Array.findIndex@\lstinline{Array.findIndex}}
-\item[\texttt{Array.fold}:] \lstinline{f:('S -> 'T -> 'S) -> elm:'S -> arr:'T [] -> 'S}.~\\
-  Updates an accumulator iteratively by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For example, when \lstinline{arr} consists of \lstinline{n+1} elements
-  \lstinline{Array.fold} calculates:
-  \begin{quote}
-    \lstinline{f (}$\ldots$ \lstinline{(f (f elm arr[0]) arr[1])} $\ldots$\lstinline{) arr[n]}.
-  \end{quote}
-  \fsOutputNF{arrayFold}{\lstinline{Array.fold}}\idxss{Array.fold@\lstinline{Array.fold}}
-\item[\texttt{Array.foldBack}:] \lstinline{f:('T -> 'S -> 'S) -> arr:'T [] -> elm:'S -> 'S}.~\\
-  Updates an accumulator iteratively backwards by applying \lstinline{f} to each element in \lstinline{arr}. The initial value of the accumulator is \lstinline{elm}. For exampel, when \lstinline{arr} consists of \lstinline{n+1} elements
-  %function to each element in a list, e.g., for a list consisting of $x_0, x_1, x_2, \ldots, x_n$, a supplied function $f$, and an initial value for the accumulator $s$, \lstinline{Array.foldBack} calculates $f(x_0, f(x_1, f(x_2, \ldots, f(x_n, s))))$.
-  \lstinline{Array.foldBack} calculates:
-  \begin{quote}
-    \lstinline{f arr[0] (f arr[1]} ($\ldots$\lstinline{(f arr[n] elm)} $\ldots$\lstinline{))}.
-  \end{quote}
-  \fsOutputNF{arrayFoldback}{\lstinline{Array.foldBack}}\idxss{Array.foldBack@\lstinline{Array.foldBack}}
-\item[\texttt{Array.forall}:] \lstinline{f:('T -> bool) -> arr:'T [] -> bool}.~\\
-  Returns true if \lstinline{f} evaluates to true for every element in \lstinline{arr}.
-  \fsOutputNF{arrayForall}{\lstinline{Array.forall}}\idxss{Array.forall@\lstinline{Array.forall}}
-  % \item[\texttt{Array.get}:] \lstinline{'T [] -> int -> 'T}.~\\
-  %Gets an element from an array.
-%  \fsOutputNF{arrayGet}{\lstinline{Array.get}}\idxss{Array.get@\lstinline{Array.get}}
-\item[\texttt{Array.init}:] \lstinline{m:int -> f:(int -> 'T) -> 'T []}.~\\
-  Create an array with \lstinline{m} elements and whose value is the result of applying \lstinline{f} to the index of the element.
-  \fsOutputNF{arrayInit}{\lstinline{Array.init}}\idxss{Array.init@\lstinline{Array.init}}
-\item[\texttt{Array.isEmpty}:] \lstinline{arr:'T [] -> bool}.~\\
-  Returns true if \lstinline{arr} is empty.
-  \fsOutputNF{arrayIsempty}{\lstinline{Array.isEmpty}}\idxss{Array.isEmpty@\lstinline{Array.isEmpty}}
-\item[\texttt{Array.iter}:] \lstinline{f:('T -> unit) -> arr:'T [] -> unit}.~\\
-  Applies \lstinline{f} to each element of \lstinline{arr}.
-  \fsOutputNF{arrayIter}{\lstinline{Array.iter}}\idxss{Array.iter@\lstinline{Array.iter}}
-  % \item[\texttt{Array.length}:] \lstinline{'T [] -> int}.~\\
-  %Returns the length of an array. The \lstinline{System.Array.Length} property does the same thing.
-%  \fsOutputNF{arrayLength}{\lstinline{Array.length}}\idxss{Array.length@\lstinline{Array.length}}
-\item[\texttt{Array.map}:] \lstinline{f:('T -> 'U) -> arr:'T [] -> 'U []}.~\\
-  Creates an new array whose elements are the results of applying \lstinline{f} to each of the elements of \lstinline{arr}.
-  \fsOutputNF{arrayMap}{\lstinline{Array.map}}\idxss{Array.map@\lstinline{Array.map}}
+\item[\texttt{Array.copy}:] \lstinline{'T [] -> 'T []}.~\\
+  Creates an array that contains the elements of the supplied array.
+  \fsOutputNF{arrayCopy}{\lstinline{Array.copy}}\idxss{Array.copy@\lstinline{Array.copy}}
 \item[\texttt{Array.ofList}:] \lstinline{lst:'T list -> 'T []}.~\\
   Creates an array whose elements are copied from \lstinline{lst}.
   \fsOutputNF{arrayOflist}{\lstinline{Array.ofList}}\idxss{Array.ofList@\lstinline{Array.ofList}}
-\item[\texttt{Array.rev}:] \lstinline{arr:'T [] -> 'T []}.~\\
-  Creates a new array whose elements are identical to \lstinline{arr} but in reverse order.
-  \fsOutputNF{arrayRev}{\lstinline{Array.rev}}\idxss{Array.rev@\lstinline{Array.rev}}
-  % \item[\texttt{Array.set}:] \lstinline{'T [] -> int -> 'T -> unit}.~\\
-  %Sets an element of an array.
-%  \fsOutputNF{arraySet}{\lstinline{Array.set}}\idxss{Array.set@\lstinline{Array.set}}
-\item[\texttt{Array.sort}:] \lstinline{arr:'T[] -> 'T []}.~\\
-  Creates a new array with the same elements as in \lstinline{arr} but in sorted order %Sorts the elements of an array and returns a new array. \lstinline{Operators.compare} is used to compare the elements.
-  \fsOutputNF{arraySort}{\lstinline{Array.sort}}\idxss{Array.sort@\lstinline{Array.sort}}
-  % \item[\texttt{Array.sub}:] \lstinline{'T [] -> int -> int -> 'T []}.~\\
-  %Creates an array that contains the supplied subrange, which is specified by starting index and length.
-%  \fsOutputNF{arraySub}{\lstinline{Array.sub}}\idxss{Array.sub@\lstinline{Array.sub}}
 \item[\texttt{Array.toList}:] \lstinline{arr:'T [] -> 'T list}.~\\
   Creates a new list whose elements are copied from \lstinline{arr}.
   \fsOutputNF{arrayTolist}{\lstinline{Array.toList}}\idxss{Array.toList@\lstinline{Array.toList}}
-\item[\texttt{Array.unzip}:] \lstinline{arr:('T1 * 'T2) [] -> 'T1 [] * 'T2 []}.~\\
-  Returns a pair of arrays of all the first elements and all the second elements of \lstinline{arr}, respectively.
-  \fsOutputNF{arrayUnzip}{\lstinline{Array.unzip}}\idxss{Array.unzip@\lstinline{Array.unzip}}
-  % \item[\texttt{Array.zeroCreate}:] \lstinline{int -> 'T []}.~\\
-  %Creates an array whose elements are initially set to the default value \lstinline{Unchecked.defaultof<'T>}.
-%  \fsOutputNF{arrayZerocreate}{\lstinline{Array.zeroCreate}}\idxss{Array.zeroCreate@\lstinline{Array.zeroCreate}}
-\item[\texttt{Array.zip}:] \lstinline{arr1:'T1 [] -> arr2:'T2 [] -> ('T1 * 'T2) []}.~\\
-  Returns a list of pairs, where elements in \lstinline{arr1} and \lstinline{arr2} are iteratively paired.
-  \fsOutputNF{arrayZip}{\lstinline{Array.zip}}\idxss{Array.zip@\lstinline{Array.zip}}
 \end{description}
 
-\section{Multidimensional Arrays}
+\subsection{Multidimensional Arrays}
 \idx[multidimensional arrays]{Multidimensional arrays} can be created as arrays of arrays (of arrays \dots). These are known as \idx{jagged arrays}, since there is no inherent guarantee that all sub-arrays are of the same size. The example in \Cref{arrayJagged} is a jagged array of increasing width.
 %
-\fs{arrayJagged}{An array of arrays. When row lengths are of non-equal elements, then it is a jagged array.}
+\fs{arrayJagged}{An array of arrays of non-equal lenghts is a jagged array.}
 %
 Indexing arrays of arrays is done sequentially, in the sense that in the above example, the number of outer arrays is \lstinline|a.Length|,  \lstinline|a[i]| is the i'th array, the length of the i'th array is \lstinline|a[i].Length|, and the j'th element of the i'th array is thus \lstinline|a[i][j]|. Often 2-dimensional rectangular arrays are used, which can be implemented as a jagged array, as shown in \Cref{arrayJaggedSquare}.
 %
 \fs{arrayJaggedSquare}{A rectangular array.} 
 %
-Note that the \keyword{for}-\keyword{in} cannot be used in \lstinline!pownArray!, e.g., 
+Note that, the \lstinline{arr[i][j]} argument in line~\ref{arrayJaggedSquare} must be parenthesized to avoid ambiguity. Further, the \keyword{for}-\keyword{in} cannot be used in \lstinline!pownArray!, e.g., 
 \begin{quote} 
-  \mbox{\lstinline{for row in arr do for elm in row do elm <- pown elm p done done}},
+  \lstinline{for row in arr do}\\
+  \lstinline{  for elm in row do}\\
+  \lstinline{    elm <- pown elm p}
  \end{quote}
 since the iterator value \lstinline!elm! is not mutable, even though \lstinline!arr! is an array.
 
@@ -291,7 +331,7 @@ Multidimensional arrays have the same properties and methods as arrays, see \Cre
 \clearpage
 
 \subsection{The Array2D Module}
-There are quite a number of built-in procedures for arrays in the \lstinline{Array2D} namespace, some of which are summarized below.\jon{rewrite description}
+The \lstinline{Array2D} module is somewhat limited. In particular neither \lstinline{fold} nor \lstinline{foldback} functions exists. Most of the module's functions are mentioned below:
 \begin{description}
 \item[\texttt{copy}:] \lstinline{arr:'T [,] -> 'T [,]}.~\\
   Creates a new array whose elements are copied from \lstinline{arr}.
@@ -467,4 +507,246 @@ There are quite a number of built-in procedures for arrays in the \lstinline{Arr
 %  \label{tab:listableComparision}
 %\end{table}
 \end{comment}    
+
+
+\section{Tracing Imperative Programs}
+Debugging imperative programs is more complicated than declarative programs. In particular, the notion of states require us to keep track of the dynamic scope of values. In the following, we will discuss trace-by-hand of \keyword{for}-loops followed by programs which involves states.
+
+\subsection{Tracing Loops}
+Consider the program in \Cref{printSquares}.
+%
+\fs{printSquares}{Print the squares of a sequence of positive integers.}
+%
+The program includes a function for printing the sequence of the first $N$ squares of integers. It uses a \lstinline{for}-loop with a counting value. F\# creates a new environment each time the loop body is executed. Thus, to trace this program, we mentally \idx[unfolding loops]{unfold} the loop as shown in \Cref{printSquaresUnfold}.
+%
+\fs{printSquaresUnfold}{An unfolded version of \Cref{printSquares}.}
+%
+The unfolding contains 3 new scopes lines~\ref{printSquaresUnfold:start1}--\ref{printSquaresUnfold:end1}, lines~\ref{printSquaresUnfold:start2}--\ref{printSquaresUnfold:end2}, and lines~\ref{printSquaresUnfold:start3}--\ref{printSquaresUnfold:end3}  corresponding to the 3 times, the loop is repeated, and each scope starts by binding the counting value to the name \lstinline{i}.
+
+In the rest of this section, we will refer to the code in \Cref{printSquares}. The first rows in our tracing-table looks as follows:
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    0 & - & $E_0$ & ()\\
+    1 &\ref{printSquares:N} & $E_0$ & $N = 3$\\
+    2 &\ref{printSquares:squares} & $E_0$ & $\text{printSquares} = \big((n), \text{printSquares-body}, (N=3)\big)$\\
+    3 &\ref{printSquares:call} & $E_0$ & $\text{printSquares } N = \text{?}$\\
+  \end{tabular*}
+\end{quote}
+Note that due to the lexical scope rule, the closure of \lstinline{printSquares} includes \lstinline{N} in its environment element. Calling \lstinline{printSquares N} causes the creation of a new environment,
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    4 &\ref{printSquares:squares} & $E_1$ & $\big((n=3), \text{printSquares-body}, (N=3)\big)$\\
+    \end{tabular*}
+\end{quote}
+The first statement of printSquares-body is the \lstinline{for}-loop. As our unfolding in \Cref{printSquaresUnfold} demonstrated, each time the loop-body is executed, a new scope is created with a new binding to \lstinline{i}. Reusing the notation from closures, we write
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    5 &\ref{printSquares:for} & $E_1$ & $\text{for} \dots =\text{?}$\\
+  \end{tabular*}
+\end{quote}
+and create a new environment as if it had been a function,
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    6 &\ref{printSquares:for} & $E_2$ & $\big((i=1), \text{for-body}, (n=3,N=3)\big)$\\
+    \end{tabular*}
+\end{quote}
+As for functions, this denotes the bindings available at beginning of the execution of the \lstinline{for}-body. The first line in the \lstinline{for}-body is the binding of the value of an expression to \lstinline{p}. The expression is \lstinline{i*i}, and to calculate its value, we look in the \lstinline{for}-loop's pseudo-closure where we find the $i=1$ binding. Hence,
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    7 &\ref{printSquares:p} & $E_2$ & $i*i = 1$\\
+    8 &\ref{printSquares:p} & $E_2$ & $p = 1$\\
+  \end{tabular*}
+\end{quote}
+The final step in the for-body is the \lstinline{printfn}-statement. Its arguments we get from the updated, active environment $E_2$ and write,
+\begin{quote}
+\begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    9 &\ref{printSquares:printfn} & $E_2$ & output = ``1 : 1$\backslash$n''\\
+  \end{tabular*}
+\end{quote}
+At this point, the \lstinline{for}-loop has reached its last line, $E_2$ is deleted, we create a new environment with the counter variable increased by 1, and repeat. Hence,
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    10 &\ref{printSquares:for} & $E_3$ & $\big((i=2), \text{for-body}, (n=3,N=3)\big)$\\
+    11 &\ref{printSquares:p} & $E_3$ & $i*i = 4$\\
+    12 &\ref{printSquares:p} & $E_3$ & $p = 4$\\
+    13 &\ref{printSquares:printfn} & $E_3$ & output = ``2 : 4$\backslash$n''\\
+  \end{tabular*}
+\end{quote}
+Again, we delete $E_3$, create $E_4$ where $i$ is incremented, and repeat, 
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    14 &\ref{printSquares:for} & $E_4$ & $\big((i=3), \text{for-body}, (n=3,N=3)\big)$\\
+    15 &\ref{printSquares:p} & $E_4$ & $i*i = 9$\\
+    16 &\ref{printSquares:p} & $E_4$ & $p = 9$\\
+    17 &\ref{printSquares:printfn} & $E_4$ & output = ``3 : 9$\backslash$n''\\
+  \end{tabular*}
+\end{quote}
+Finally, incrementing $i$ would mean that $i>n$, hence the \lstinline{for}-loop ends and as all statements returns \lstinline{()}
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    18 &\ref{printSquares:for} & $E_4$ & $\text{return} = ()$\\
+  \end{tabular*}
+\end{quote}
+At this point, the environment $E_4$ is deleted, and we return to the enclosing environment $E_1$ and the statement or expression following Step~5. Since the \lstinline{for}-loop is the last expression in the \lstinline{printSquares} function, its return value is that of the \lstinline{for}-loop, 
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    19 &\ref{printSquares:for} & $E_1$ & $\text{return} = ()$\\
+  \end{tabular*}
+\end{quote}
+Returning to Step~3 and environment $E_0$, we have now calculated the return-value of \lstinline{printSquares N} to be \lstinline{()}, and since this line is the last of our program, we return \lstinline{()} and end the program:
+\begin{quote}
+  \begin{tabular*}{0.9\linewidth}{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    20 &\ref{printSquares:for} & $E_0$ & $\text{return} = ()$\\
+  \end{tabular*}
+\end{quote}
+
+\subsection{Tracing Mutable Values}
+For mutable bindings, the scope is dynamic. For this, we need the concept of storage. Consider the program in \Cref{dynamicScopeTracing}.
+%
+\fs{dynamicScopeTracing}{Example of lexical scope and closure environment.}
+%
+To trace the dynamic behavior of this program, we add a second table to our hand tracing, which is initially empty and has the columns Step and Value to hold the Step number when the value was updated and the value stored. For \Cref{dynamicScopeTracing}, the firsts 4 steps thus look like,
+\begin{quote}
+  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    0 & - & $E_0$ & ()\\
+    1 &\ref{dynamicScopeTracing:testScope} & $E_0$ & $\text{testScope} = \big((x), \text{body}, ()\big)$\\
+    2 &\ref{dynamicScopeTracing:print} & $E_0$ & $\text{testScope } 2.0 = \text{?}$\\
+    3 &\ref{dynamicScopeTracing:testScope} & $E_1$ & $\big((x=2.0), \text{body}, ()\big)$\\
+  \end{tabular*}
+  \hspace*{0.03\linewidth}
+  \begin{tabular*}{0.25\linewidth}[t]{l|l}
+    Step & Value\\
+    \hline
+    0 & -\\
+  \end{tabular*}
+\end{quote}
+The mutable binding in line~\ref{dynamicScopeTracing:a1} creates an internal name and a dynamic storage location. The name \lstinline{a} will be bound to a reference value, which we call $\alpha_1$, and which is a unique name shared between the two tables:
+\begin{quote}
+  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    4 &\ref{dynamicScopeTracing:a1} & $E_1$ & $a = \alpha_1$\\
+  \end{tabular*}
+  \hspace*{0.03\linewidth}
+  \begin{tabular*}{0.25\linewidth}[t]{l|l}
+    Step & Value\\
+    \hline
+    4 & $\alpha_1 = 3.0$\\
+  \end{tabular*}
+\end{quote}
+The following closure of \lstinline!f! uses the reference-name instead of its value,
+\begin{quote}
+  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    5 &\ref{dynamicScopeTracing:f} & $E_1$ & $f = \big((z), a*z, (x=2.0, a=\alpha_1)\big)$\\
+  \end{tabular*}
+  \hspace*{0.03\linewidth}
+  \begin{tabular*}{0.25\linewidth}[t]{l|l}
+    Step & Value\\
+    \hline
+    4 & $\alpha_1 = 3.0$\\
+  \end{tabular*}
+\end{quote}
+In line~\ref{dynamicScopeTracing:a2}, the value in the storage is updated by the assignment operator, which we denote as,
+\begin{quote}
+  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    6 &\ref{dynamicScopeTracing:a2} & $E_1$ & $a \text{ <- } 4.0$\\
+  \end{tabular*}
+  \hspace*{0.03\linewidth}
+  \begin{tabular*}{0.25\linewidth}[t]{l|l}
+    Step & Value\\
+    \hline
+    6 & $\alpha_1 = 4.0$\\
+  \end{tabular*}
+\end{quote}
+Hence, when we evaluate the function \lstinline{f}, its closure looks up the value of \lstinline{a} by following the reference and finding the new value:
+\begin{quote}
+  \begin{tabular*}{0.65\linewidth}[t]{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    7 &\ref{dynamicScopeTracing:return} & $E_1$ & $\text{f } x = \text{?}$\\
+    8 &\ref{dynamicScopeTracing:return} & $E_2$ & $\big((z = 2.0), a*z, (x=2.0, a=\alpha_1)\big)$\\
+    9 &\ref{dynamicScopeTracing:return} & $E_2$ & $a * z = 8.0$\\
+    10 &\ref{dynamicScopeTracing:return} & $E_2$ & return = $8.0$\\
+    10 &\ref{dynamicScopeTracing:return} & $E_1$ & return = $8.0$\\
+    11 &\ref{dynamicScopeTracing:print} & $E_0$ & output = ``8.0$\backslash$n''\\
+    12 &\ref{dynamicScopeTracing:print} & $E_0$ & $\text{return} = ()$\\
+  \end{tabular*}
+  \hspace*{0.03\linewidth}
+  \begin{tabular*}{0.25\linewidth}[t]{l|l}
+    Step & Value\\
+    \hline
+    6 & $\alpha_1 = 4.0$\\
+  \end{tabular*}
+\end{quote}
+For reference, the complete pair of tables is shown in \Cref{tab:tracingDynamicScope}.
+\begin{table}
+  \centering
+  \fbox{
+    \begin{tabular*}{0.65\linewidth}[t]{l|lll}
+    Step & Line & Env.\ & Bindings and evaluations\\
+    \hline
+    0 & - & $E_0$ & ()\\
+    1 &\ref{dynamicScopeTracing:testScope} & $E_0$ & $\text{testScope} = \big((x), \text{body}, ()\big)$\\
+    2 &\ref{dynamicScopeTracing:print} & $E_0$ & $\text{testScope } 2.0 = \text{?}$\\
+    3 &\ref{dynamicScopeTracing:testScope} & $E_1$ & $\big((x=2.0), \text{body}, ()\big)$\\
+    4 &\ref{dynamicScopeTracing:a1} & $E_1$ & $a = \alpha_1$\\
+    5 &\ref{dynamicScopeTracing:f} & $E_1$ & $f = \big((z), a*z, (x=2.0, a=\alpha_1)\big)$\\
+    6 &\ref{dynamicScopeTracing:a2} & $E_1$ & $a \text{ <- } 4.0$\\
+    7 &\ref{dynamicScopeTracing:return} & $E_1$ & $\text{f } x = \text{?}$\\
+    8 &\ref{dynamicScopeTracing:return} & $E_2$ & $\big((z = 2.0), a*z, (x=2.0, a=\alpha_1)\big)$\\
+    9 &\ref{dynamicScopeTracing:return} & $E_2$ & $a * z = 8.0$\\
+    10 &\ref{dynamicScopeTracing:return} & $E_2$ & return = $8.0$\\
+    10 &\ref{dynamicScopeTracing:return} & $E_1$ & return = $8.0$\\
+    11 &\ref{dynamicScopeTracing:print} & $E_0$ & output = ``8.0$\backslash$n''\\
+    12 &\ref{dynamicScopeTracing:print} & $E_0$ & $\text{return} = ()$\\
+  \end{tabular*}
+  \hspace*{0.03\linewidth}
+  \begin{tabular*}{0.25\linewidth}[t]{l|l}
+    Step & Value\\
+    \hline
+    0 & -\\
+    4 & $\alpha_1 = 3.0$\\
+    6 & $\alpha_1 = 4.0$\\
+  \end{tabular*}
+  }
+  \caption{The complete table produced while tracing the program in \Cref{dynamicScopeTracing} by hand.}
+\label{tab:tracingDynamicScope}
+\end{table}
+By comparing this to the value-bindings in \Cref{lexicalScopeTracing}, we see that the mutable values give rise to a different result due to the difference between lexical and dynamic scope.
+
+\section{Key Concepts and Terms in This Chapter}
+In this chapter, we have looked at programming with states using the imperative programming paradigm. You have seen how to:
+\begin{itemize}
+\item define \textbf{mutable variables} and make loops with \textbf{while}- and \textbf{for}- loops
+\item work with \textbf{arrays}, \textbf{jagged arrays}, and \textbf{2-dimensional arrays}.
+\item \textbf{trace-by-hand} programs involving mutable values and for-loops.
+\end{itemize}
 \end{document}

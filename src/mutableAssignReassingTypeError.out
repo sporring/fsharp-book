@@ -1,6 +1,8 @@
-$ fsharpc --nologo mutableAssignReassingTypeError.fsx && mono mutableAssignReassingTypeError.exe
+$ dotnet fsi mutableAssignReassingTypeError.fsx
+
 
 mutableAssignReassingTypeError.fsx(3,6): error FS0001: This expression was expected to have type
     'int'    
 but here has type
     'float'    
+

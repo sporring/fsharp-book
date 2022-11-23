@@ -1,3 +1,3 @@
-$ fsharpc --nologo classAccessor.fsx && mono classAccessor.exe
+$ dotnet fsi classAccessor.fsx
 1
 2

@@ -1,4 +1,4 @@
-$ fsharpc --nologo classBase.fsx && mono classBase.exe
+$ dotnet fsi classBase.fsx
 King at (0, 0)
 Rook at (2, 0)
 King moved to (1, 0)

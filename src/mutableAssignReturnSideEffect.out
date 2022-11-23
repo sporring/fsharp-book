@@ -1,2 +1,10 @@
-$ fsharpc --nologo mutableAssignReturnSideEffect.fsx && mono mutableAssignReturnSideEffect.exe
+$ dotnet fsi mutableAssignReturnSideEffect.fsx
+
+
+mutableAssignReturnSideEffect.fsx(2,10): info FS3370: The use of ':=' from the F# library is deprecated. See https://aka.ms/fsharp-refcell-ops. For example, please change 'cell := expr' to 'cell.Value <- expr'.
+
+
+
+mutableAssignReturnSideEffect.fsx(7,3): info FS3370: The use of '!' from the F# library is deprecated. See https://aka.ms/fsharp-refcell-ops. For example, please change '!cell' to 'cell.Value'.
+
 6

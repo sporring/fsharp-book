@@ -6,7 +6,7 @@ let result =
         let url = "https://api.frankfurter.app/latest?amount=10.99&from=USD&to=PLN"
 
         let! result =
-            client.GetAsync url
+            client.GetStreamAsync url
             |> Async.AwaitTask
 
         printfn "%A" result

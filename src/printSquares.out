@@ -1,4 +1,4 @@
-$ fsharpc --nologo printSquares.fsx && mono printSquares.exe
+$ dotnet fsi printSquares.fsx
 1: 1
 2: 4
 3: 9

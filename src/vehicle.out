@@ -1,4 +1,4 @@
-$ fsharpc --nologo vehicle.fsx && mono vehicle.exe
+$ dotnet fsi vehicle.fsx
 aVehicle has 1 wheel(s)
 aCar has 4 wheel(s) with room for 4 passenger(s)
 aBike has 2 wheel(s). Is helmet required? true

@@ -1,4 +1,4 @@
-$ fsharpc --nologo classInheritance.fsx && mono classInheritance.exe
+$ dotnet fsi classInheritance.fsx
 "Hi"
 "Hi", "Hi F# programmer"
 "Hi", ""Hi" has 2 characters"

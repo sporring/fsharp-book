@@ -1,2 +1,2 @@
-$ fsharpc --nologo classSetGetShort.fsx && mono classSetGetShort.exe
+$ dotnet fsi classSetGetShort.fsx
 "Hello F#", "Hi F#", ""Hello""

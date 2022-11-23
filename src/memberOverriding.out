@@ -1,3 +1,3 @@
-$ fsharpc --nologo memberOverriding.fsx && mono memberOverriding.exe
+$ dotnet fsi memberOverriding.fsx
 c1: 0 1
 c2: 1 3

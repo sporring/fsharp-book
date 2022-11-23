@@ -1,4 +1,4 @@
-$ fsharpc --nologo classOverload.fsx && mono classOverload.exe
+$ dotnet fsi classOverload.fsx
 Hi Programmer
 Hi F# programmer
 Hello Expert

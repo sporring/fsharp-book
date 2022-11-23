@@ -1,2 +1,2 @@
-$ fsharpc --nologo classPrintf.fsx && mono classPrintf.exe
-ClassPrintf+vectorDefaultToString
+$ dotnet fsi classPrintf.fsx
+FSI_0001+vectorDefaultToString

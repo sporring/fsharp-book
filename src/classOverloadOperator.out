@@ -1,2 +1,2 @@
-$ fsharpc --nologo classOverloadOperator.fsx && mono classOverloadOperator.exe
+$ dotnet fsi classOverloadOperator.fsx
 a=2, b=3, c=3.2, d=5, e=5.2, f=5.2, g=-2, h=-1

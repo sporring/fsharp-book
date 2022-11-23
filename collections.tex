@@ -71,7 +71,7 @@ As of the writing of this book, the standard collection of Fsharp libraries does
 %
 \fsCode{bTree}{bTreeCode}{Representing a computational expression as a binary tree}{}
 % 
-Such values are not easy to read, since it relies on nested types and tuples. Luckily, it is not difficult to make a function, which converts the tree into a string for later displaying on the screen. Such functions are commonly called \idx[toString@\lstinline{toString}]{\lstinline{toString}} and will be discussed later in \Cref{oop}. Here, the strategy will be to increase indentation proportional to the depth of the nodes printed, and one version of \lstinline{toString} is shown in \Cref{bTreeToString}
+Such values are not easy to read, since it relies on nested types and tuples. Luckily, it is not difficult to make a function, which converts the tree into a string for later displaying on the screen. Such functions are commonly called \idx[toString@\lstinline{toString}]{\lstinline{toString}} and will be discussed later in \Cref{chap:oop}. Here, the strategy will be to increase indentation proportional to the depth of the nodes printed, and one version of \lstinline{toString} is shown in \Cref{bTreeToString}
 %
 \fs{bTreeToString}{A \lstinline!toString!  method aids the interpretation of tree values.}
 %
@@ -88,7 +88,7 @@ Thus, \lstinline{toString} in \Cref{bTreeToString} is a prefix traversal. In \Cr
 \fs{bTreeTraversal}{Pre-, in-, and postfix traversal of a binary tree.}
 %
 
-Traversal methods linearize the tree structure and in general, 2 different traversals are required to reconstruct the original tree. However, as we saw in \Cref{sec:stack}, a stack can be used to properly evaluate postfix representations of mathematical expressions. The code in \Cref{postfixAppGeneric} can be modified for this purpose. Firstly, no computations need to be done, but every operator must result in a node and every value in a leaf, and instead of a stack of values, we must stack the sub-trees. The result is shown in \Cref{bTreeFromPostfix}.
+Traversal methods linearize the tree structure and in general, 2 different traversals are required to reconstruct the original tree. However, as we saw in \Cref{sec:stack}, a stack can be used to properly evaluate postfix representations of mathematical expressions. The code in \Cref{postfixApp} can be modified for this purpose. Firstly, no computations need to be done, but every operator must result in a node and every value in a leaf, and instead of a stack of values, we must stack the sub-trees. The result is shown in \Cref{bTreeFromPostfix}.
 % 
 \fs{bTreeFromPostfix}{Using a stack to reconstruct a tree from its postfix traversal.}
 %
@@ -163,8 +163,8 @@ This signature file specifically targets the problem of binary tree sorting, and
 %
 \fsImplementation{bTreeGeneric}{bTreeImplementation}{Insert a new node into an existing tree in a sorted manner.}{} % Absolute reference!
 %
-This makes the implementation particularly short, however, it may be less readable. Finally, putting it all together, a demonstration of the library and application can be seen in \Cref{bTreeSortOutput}.
-\fsOutput{bTreeSort}{bTreeSortOutput}{The result of applying insertSorted on a random list.}
+This makes the implementation particularly short, however, it may be less readable. Finally, putting it all together, a demonstration of the library and application can be seen in \Cref{bTreeSort}.
+\fsOutput{bTreeSort}{The result of applying insertSorted on a random list.}
 Due to the functional programming style, this implementation is robust and versatile, but not optimal. Depending on the internal workings of F\#, each insertion potentially copies the pre-insertion tree and its sub-trees many times, and it is thus not to be expected to be particularly fast or memory-conserving. 
 
 \section{Sets}
@@ -183,7 +183,7 @@ With sets comes a small number of basic operators
 \item[Intersection:] The intersection of two sets $X$ and $Y$ is $X\cap Y = \{z: z\in X \text{ and } z\in Y\}$
 \item[Difference:] The set difference between two sets $X$ and $Y$ is $X\setminus Y = \{z: z\in X \text{ and } z\not\in Y\}$
 \end{description} 
-F\# has both a set class. Classes and objects will be discussed in further detail in \Cref{sec:oop}. Presently, it is sufficient to think of a set class as an immutable type. F\# furhter has a set module with more functions for sets, see \url{https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-setmodule.html} for more details.
+F\# has both a set class. Classes and objects will be discussed in further detail in \Cref{chap:oop}. Presently, it is sufficient to think of a set class as an immutable type. F\# furhter has a set module with more functions for sets, see \url{https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-setmodule.html} for more details.
 
 With the set module, an empty set can be created with \lstinline{Set.empty}, and set can be created from a list \lstinline{lst} as \lstinline{Set lst}. Some of the important functions in the set module are:
 \begin{description}

@@ -124,9 +124,9 @@ The example shows a \idx{ragged multidimensional list}, since each row has a dif
   \caption{A list is a ragged linked list: Here is illustrated the linked list of \mbox{\lstinline![[1;2];[3;4;5]]!}.}
   \label{fig:raggedLinkedList}
 \end{figure}
-
  
 \section{The List Module}
+\label{sec:listModule}
 Lists are so commonly used that a \idx[list module]{module} is included with F\#. A module is a library of functions and will be discussed in general in \Cref{sec:modules}. The list of functions in the list module is very long, and here, we briefly showcase some important ones. For the full list, see \url{https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-listmodule.html}. Below, the functions are grouped into 3: Simple functions, which take and/or give lists as argument and/or results; higher-order functions, which takes a function as an argument; and those that mimic the list's properties which can be useful in conjunction with the higher-order functions. Higher-order functions are discussed in detail in \Cref{chap:higherOrderFunctions}.
 
 Note that some arguments may result in an error, for example, when trying to find a non-existing element. For this, the list module has two types of functions: Those that return an option type, e.g., \lstinline{None} if the element sought is not in the list. These functions all start with \texttt{try}. Similar functions exists with names excluding \texttt{try}, and they cast an exception, in case of an error. See \Cref{sec:exceptions} for more on exceptions. In both cases, the error has to be handled, and in this book, we favor option types.

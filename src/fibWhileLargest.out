@@ -1,4 +1,4 @@
-$ fsharpc --nologo fibWhileLargest.fsx && mono fibWhileLargest.exe
+$ dotnet fsi fibWhileLargest.fsx
 largestFibLeq(1) = 1
 largestFibLeq(2) = 2
 largestFibLeq(3) = 3

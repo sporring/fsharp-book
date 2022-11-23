@@ -1,2 +1,2 @@
-$ fsharpc --nologo arrayAppend.fsx && mono arrayAppend.exe
+$ dotnet fsi arrayAppend.fsx
 [|1; 2|], [|3; 4; 5|], [|1; 2; 3; 4; 5|]

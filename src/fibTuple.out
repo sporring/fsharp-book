@@ -1,4 +1,4 @@
-$ fsharpc --nologo fibTuple.fsx && mono fibTuple.exe
+$ dotnet fsi fibTuple.fsx
 fib(1) = 1
 fib(2) = 1
 fib(3) = 2

@@ -1,2 +1,2 @@
-$ fsharpc --nologo dynamicScopeNFunction.fsx && mono dynamicScopeNFunction.exe
+$ dotnet fsi dynamicScopeNFunction.fsx
 8.0

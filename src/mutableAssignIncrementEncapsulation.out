@@ -1,4 +1,4 @@
-$ fsharpc --nologo mutableAssignIncrementEncapsulation.fsx && mono mutableAssignIncrementEncapsulation.exe
+$ dotnet fsi mutableAssignIncrementEncapsulation.fsx
 1
 2
 3

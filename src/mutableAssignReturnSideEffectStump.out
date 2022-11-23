@@ -1,3 +1,5 @@
-$ fsharpc --nologo mutableAssignReturnSideEffectStump.fsx && mono mutableAssignReturnSideEffectStump.exe
+$ dotnet fsi mutableAssignReturnSideEffectStump.fsx
 
-mutableAssignReturnSideEffectStump.fsx(3,1): warning FS0988: Main module of program is empty: nothing will happen when it is run
+
+mutableAssignReturnSideEffectStump.fsx(2,10): info FS3370: The use of ':=' from the F# library is deprecated. See https://aka.ms/fsharp-refcell-ops. For example, please change 'cell := expr' to 'cell.Value <- expr'.
+

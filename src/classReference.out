@@ -1,2 +1,2 @@
-$ fsharpc --nologo classReference.fsx && mono classReference.exe
+$ dotnet fsi classReference.fsx
 2 2

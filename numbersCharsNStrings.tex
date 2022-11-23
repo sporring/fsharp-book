@@ -82,7 +82,7 @@ Each literal represents the number 3, but their types are different, and hence t
     Exception &\underline{\keyword{exn}} & An exception\\
     \hline
   \end{tabularx}
-  \caption{List of some of the basic types. The most commonly used types are underlined. For a description of integer see Appendix~\ref{sec:binary}, for floating point numbers see Appendix~\ref{sec:floatingPoint}, for ASCII and Unicode characters see Appendix~\ref{sec:characterSets}, for objects see \Cref{chap:oop}, and for exceptions see \Cref{chap:errors}.}
+  \caption{List of some of the basic types. The most commonly used types are underlined. For a description of integer see Appendix~\ref{sec:binary}, for floating point numbers see Appendix~\ref{sec:floatingPoint}, for ASCII and Unicode characters see Appendix~\ref{sec:characterSets}, for objects see \Cref{chap:oop}, and for exceptions see \Cref{sec:exceptions}.}
   \label{tab:primitiveTypes}
 \end{table}
 In addition to these built-in types, F\# is designed such that it is easy to define new types. 
@@ -519,7 +519,7 @@ Notice that neither overflow nor underflow error gave rise to an error message, 
 %
 \fsOutput{integerDivisionByZeroError}{Integer division by zero causes an exception runtime error.}
 %
-The output looks daunting at first sight, but the first and last lines of the error message are the most important parts, which tell us what exception was cast and why the program stopped. The middle contains technical details concerning which part of the program caused the error and can be ignored for the time being. Exceptions are a type of \idx{runtime error}, and are discussed in \Cref{chap:errors}
+The output looks daunting at first sight, but the first and last lines of the error message are the most important parts, which tell us what exception was cast and why the program stopped. The middle contains technical details concerning which part of the program caused the error and can be ignored for the time being. Exceptions are a type of \idx{runtime error}, and are discussed in \Cref{sec:exceptions}
 
 Integer exponentiation is not defined as an operator but is available as the built-in function \lstinline|pown|. This function is demonstrated in \Cref{integerPown} for calculating $2^5$.
 %

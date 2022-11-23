@@ -1,4 +1,4 @@
-$ fsharpc --nologo vector.fs vectorApp.fsx && mono vectorApp.exe
+$ dotnet fsi vector.fs vectorApp.fsx
 1.5 * (1.0, 2.0) = (1.5, 3.0)
 (1.0, 2.0) + (-1.796930596, -0.1050734582) = (-0.7969305964, 1.894926542)
 vector() = (0.0, 0.0)

@@ -7,6 +7,7 @@
 %\makeatother
 
 
+
 \usepackage{wrapfig}
 
 % KOMA setup
@@ -672,8 +673,10 @@
 \renewcommand{\ebnf}{ebnf}
 
 % Verbs and nouns
-\newcommand{\vb}[1]{{\color{verb}#1}}
-\newcommand{\noun}[1]{{\color{noun}#1}}
+%\newcommand{\vb}[1]{{\color{verb}#1}}
+%\newcommand{\noun}[1]{{\color{noun}#1}}
+\newcommand{\vb}[1]{\underline{#1}}
+\newcommand{\noun}[1]{\textbf{#1}}
 % Notes to self
 \newcommand{\jon}[1]{\footnote{Jon: \textbf{#1}}}
 \renewcommand{\jon}[1]{}
@@ -681,3 +684,19 @@
 \renewcommand{\mael}[1]{}
 \newcommand{\spec}[1]{\footnote{Spec: \textbf{#1}}}
 \renewcommand{\spec}[1]{}
+
+% No newpage after part
+%\let\oldpart\part
+%\renewcommand\part{\clearpage\gdef\znewpage{\global\let\znewpage\clearpage}\oldpart}
+%\global\let\znewpage\clearpage
+\makeatletter
+\renewcommand\@endpart{\vfil
+              \if@twoside
+                \null
+                \thispagestyle{empty}%
+                \newpage
+              \fi
+              \if@tempswa
+                \twocolumn
+              \fi}
+\makeatother

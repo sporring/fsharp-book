@@ -1,4 +1,4 @@
-$ fsharpc --nologo fibFor.fsx && mono fibFor.exe
+$ dotnet fsi fibFor.fsx
 fib(1) = 1
 fib(2) = 1
 fib(3) = 2

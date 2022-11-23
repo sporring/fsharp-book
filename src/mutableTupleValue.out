@@ -1,2 +1,2 @@
-$ fsharpc --nologo mutableTupleValue.fsx && mono mutableTupleValue.exe
+$ dotnet fsi mutableTupleValue.fsx
 (3, 4) (1, 2)

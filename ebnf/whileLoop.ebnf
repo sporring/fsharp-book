@@ -1,1 +1,2 @@
-while <*condition*> do <*expr*> [*done*]
+while <*condition*> do
+  <*expr*>

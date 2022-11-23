@@ -1,1 +1,2 @@
-for <*ident*> = <*firstExpr*> to <*lastExpr*> do <*bodyExpr*> [*done*]
+for <*ident*> = <*firstExpr*> to <*lastExpr*> do
+  <*expr*>

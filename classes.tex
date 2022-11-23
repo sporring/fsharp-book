@@ -4,10 +4,18 @@
 \begin{document}
 \chapter{Classes and Objects}
 \label{chap:oop}
+\abstract{
+  In the object-oriented programming paradigm, programs are structures in classes and objects, where classes are a mixture between a type declaration and a module, and objects are values of such types. A key feature of classes is that they encapsulate both data and functions, and the paradigm has successfully facilitated the creation of very large programs. As with interface files (see \Cref{sec:modules}), data and functions inside classes and objects can be hidden or be exposed to the user, where the user here is a programmer using the classes and functions. In this chapter you will learn how to 
+  \begin{itemize}
+  \item create classes and objects which encapsulate both values and functions
+  \item expose and hide values inside a given object
+  \item create classes that acts as modules
+  \item define custom operators for your objects
+  \end{itemize}
+  \jon{This could be improved.}
+}
 
-\idx[object-oriented programming]{Object-oriented programming} is a programming paradigm that focuses on objects such as a persons, places, things, events, and concepts relevant for the problem.
-
-Object-oriented programming has a rich language for describing objects and their relations, which can seem overwhelming at first, and they will be explained in detail in this and following chapters. Here is a brief overview: The main programming structures are called a \idx[class]{classes} and \idx[object]{objects}. It is useful to think of classes as user defined types and objects as values of such types. However, there is more to classes and objects than types and values. Objects may contain both data and code, and it is sometimes useful to draw the corresponding class definition as shown in \Cref{fig:aClass}.
+\idx[object-oriented programming]{Object-oriented programming} is a programming paradigm that focuses on objects such as a persons, places, things, events, and concepts relevant for the problem. Object-oriented programming has a rich language for describing objects and their relations, which can seem overwhelming at first, and they will be explained in detail in this and following chapters. Here is a brief overview: The main programming structures are called a \idx[class]{classes} and \idx[object]{objects}. It is useful to think of classes as user defined types and objects as values of such types. However, there is more to classes and objects than types and values. Objects may contain both data and code, and it is sometimes useful to draw the corresponding class definition as shown in \Cref{fig:aClass}.
 \begin{figure}
   \centering
   \begin{tikzpicture} 
@@ -25,7 +33,7 @@ Object-oriented programming has a rich language for describing objects and their
 \end{figure}
 In this illustration, objects of type \lstinline{aClass} will each contain an int and a pair of a float and a boolean, and each object has two functions associated with them. The values stored in each object may differ, but the types are fixed by the class definition. It is common to call an object's values \idx{properties} and an object's functions \idx[method]{methods}. In short, properties and methods are collectively called \idx[member]{members}. When an object is created, memory is set aside on \idx{The Heap} to each object's property. Creating an object is commonly called \idx[instantiate]{instantiation}. The members serve as the interface to each object, and each instantiated object will have the same type of members as all objects of that class, but their content may differ.
 
-Object-oriented programming is an extension of data types, in the sense that objects contain both data and functions in a similar manner as a module, but object-oriented programming emphasizes the semantic unity of the data and functions. Thus, objects are often \idx{models} of real-world entities, and object-oriented programming leads to a particular style of programming analysis and design called \idx[object-oriented analysis]{object-oriented analysis and design}\idxs{object-oriented design} to be discussed in \Cref{chap:oopp}. 
+Object-oriented programming is an extension of data types, in the sense that objects contain both data and functions in a similar manner as a module, but object-oriented programming emphasizes the semantic unity of the data and functions. Thus, objects are often \idx{models} of real-world entities, and object-oriented programming leads to a particular style of programming analysis and design called \idx[object-oriented analysis]{object-oriented analysis and design}\idxs{object-oriented design} to be discussed in \Cref{chap:oopd}. 
 
 \section{Constructors and Members}
 \label{sec:constructor}
@@ -65,7 +73,7 @@ Consider the example in \Cref{fig:instantiation}.
         \attribute{// A car has a color}
         \attribute{color : string}
       \end{class}
-      \begin{object}[text width=3.5cm]{sportsCar}{-5,-2.5}
+      \begin{object}[text width=3.5cm]{sportsCar}{-4,-2.5}
         \instanceOf{car}
         \attribute{color = ``red''}
       \end{object}
@@ -73,7 +81,7 @@ Consider the example in \Cref{fig:instantiation}.
         \instanceOf{car}
         \attribute{color = ``green''}
       \end{object}
-      \begin{object}[text width=3.5cm]{miniBus}{5,-2.5}
+      \begin{object}[text width=3.5cm]{miniBus}{4,-2.5}
         \instanceOf{car}
         \attribute{color = ``blue''}
       \end{object}
@@ -146,9 +154,8 @@ The \lstinline{val}-keyword in this context has not been discussed previously.\j
 \clearpage
 
 \section{Objects are Reference Types}
-Objects are reference type values, implying that copying objects copies their references, not their values, and their content is stored on \idx{The Heap}, see \Cref{sec:referenceCells}. Consider the example in \Cref{classReference}.
- Thus, the binding to \lstinline{b} in line~\ref{classReferenceAlias} is an alias to \lstinline{a}, not a copy, and changing object \lstinline{a} also changes \lstinline{b}! This is a common cause of error, and you should \advice{think of objects as arrays.} For this reason, it is often seen that classes implement a copy function returning a new object with copied values, as shown in \Cref{classCopy}.
- In the example, we see that since \lstinline{b} now is a copy, we do not change it by changing \lstinline{a}. This is called a \idx{copy constructor}.
+Objects are reference type values, implying that copying objects copies their references, not their values, and their content is stored on \idx{The Heap}.%, see \Cref{sec:referenceCells}.
+Consider the example in \Cref{classReference}.  Thus, the binding to \lstinline{b} in line~\ref{classReferenceAlias} is an alias to \lstinline{a}, not a copy, and changing object \lstinline{a} also changes \lstinline{b}! This is a common cause of error, and you should \advice{think of objects as arrays.} For this reason, it is often seen that classes implement a copy function returning a new object with copied values, as shown in \Cref{classCopy}.  In the example, we see that since \lstinline{b} now is a copy, we do not change it by changing \lstinline{a}. This is called a \idx{copy constructor}.
 %
 \fs{classReference}{Objects assignment can cause aliasing.}
 %
@@ -181,7 +188,7 @@ It is often convenient to define different methods that have the same name, but 
 % 
 In the example we define an object which can produce greetings strings of the form \lstinline[language=syntax]{<*greeting*> <*name*>}, using the \lstinline{str} member. It has a default greeting ``Hi'' and name ``Programmer'', but the name can be changed by calling the \lstinline{setName} accessor with one argument, and both greeting and name can be changed by calling the overloaded \lstinline{setName} with two arguments. Overloading in class definition is allowed as long as the arguments differ in number or type.
 
-In \Cref{classAssymetry}, the notation for addition is less than elegant. For such situations, F\# supports \idx{operator overloading}. All usual operators may be overloaded (see \Cref{sec:operators}), and in contrast to regular operator overloading, the compiler uses type inference to decide which function is to be called. All operators have a functional equivalence, and to overload the binary \lexeme{+} and unary \lexeme{-} operators, we overload their functional equivalence \lstinline{(+)} and \lstinline{(~-)} as static members. This is demonstrated in \Cref{classOverloadOperator}.
+In \Cref{classAssymetry}, the notation for addition is less than elegant. For such situations, F\# supports \idx{operator overloading}. All usual operators may be overloaded, and the compiler uses type inference to decide which function is to be called. All operators have a functional equivalence, and to overload the binary \lexeme{+} and unary \lexeme{-} operators, we overload their functional equivalence \lstinline{(+)} and \lstinline{(~-)} as static members. This is demonstrated in \Cref{classOverloadOperator}.
 %
 \fs{classOverloadOperator}{Operators can be overloaded using their functional equivalents.}
 % 
@@ -277,4 +284,17 @@ The output of our combined library and application is shown in \Cref{vectorApp}.
 \fsOutput{vectorApp}{Compiling and running the code from \Cref{vector} and~\ref{vectorAppCode}.}
 %
 The output is as expected, and for the vector class, our solution seems to be a good compromise between versatility and syntactical bloating.
+
+\section{Key Concepts and Terms in This Chapter}
+In this chapter, we have introduced the concept of object-oriented programming and taken a close look at how to define classes and objects and some of the ways to use them in F\#. Particularly you have learned:
+\begin{itemize}
+\item how to create a \textbf{class} and make values of the class which are called \textbf{objects}. An object is often called an \textbf{instance} of a class, and the process of creating objects is called \textbf{instantiation}. The \textbf{constructor} is a piece of code inside a class, which is run when an object is instantiated.
+\item that the values and function \textbf{fields} and \textbf{functions}, and elements which can be accessed from the outside of an object are called \textbf{members} and are accessed using the \lexeme{.}-notation.
+\item how to create a class with \textbf{static} elements which are global w.r.t.\ the class much like a module's elements.
+\item how to write the \textbf{accessors} \textbf{set} and \textbf{get} and how to write classes which makes the \lexeme{[]}-indexing available for objects.
+\item that objects are reference types and therefore risk \textbf{aliasing}, and therefore, must often be \textbf{cloned} if an independent copy is needed.
+\item how to \textbf{overload} F\#'s operators to generate new syntax similar to the arithmetic operators of floats.
+\item how to overload the instantiation of objects with additional constructors, which can be used to supply default values to the instantiation process.
+\end{itemize}
+
 \end{document}

@@ -1,2 +1,2 @@
-$ fsharpc --nologo classRecursion.fsx && mono classRecursion.exe
+$ dotnet fsi classRecursion.fsx
 4 4 6

@@ -1,2 +1,2 @@
-$ fsharpc --nologo arrayConversion.fsx && mono arrayConversion.exe
+$ dotnet fsi arrayConversion.fsx
 [|'a'; 'b'; 'c'|], ['a'; 'b'; 'c']

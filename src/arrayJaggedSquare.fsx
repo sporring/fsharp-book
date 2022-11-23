@@ -1,7 +1,7 @@
 let pownArray  (arr : int array array) p =
   for i = 1 to arr.Length - 1 do
     for j = 1 to arr[i].Length - 1 do
-      arr[i][j] <- pown arr[i][j] p
+      arr[i][j] <- pown (arr[i][j]) p
 
 let printArrayOfArrays (arr : int array array) =           
   for row in arr do
