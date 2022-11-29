@@ -8,7 +8,7 @@ type hello () =
 /// howdy is a greeting
 type howdy () =
   inherit greeting ()
-  member this.str = "howdy"
+  member this.str = base.str + " there"
 
 let a = greeting ()
 let b = hello ()
