@@ -1,0 +1,248 @@
+<h1 id="chap:flow">While and For Loops</h1>
+<p>Non-recursive functions encapsulate code and allow for control of
+execution flow. That is, if a piece of code needs to be executed many
+times, then we can encapsulate it in the body of a function and call
+this function several times. In this chapter, we will look at more
+general control of flow via loops and conditional execution. Recursion
+is another mechanism for controlling flow, but this is deferred to .</p>
+<p>Many programming constructs need to be repeated, and F# contains many
+structures for repetition. A -loop has the following syntax:</p>
+<div class="verbatimwrite">
+<p><span>/whileLoop.ebnf</span> while &lt;*condition*&gt; do
+&lt;*expr*&gt; [*done*]</p>
+</div>
+<p>The <code class="syntax">&lt;*condition*&gt;</code> is an expression
+that evaluates to true or false. A while-loop repeats the <code
+class="syntax">&lt;*expr*&gt;</code> expression as long as the condition
+is true. Using lightweight syntax, the block following the keyword up to
+and including the keyword may be replaced by a newline and
+indentation.</p>
+<p>The program in is an example of a while-loop which counts from 1 to
+10. The variable <code>i</code> is customarily called the counter
+variable. The counting is done by performing the following computation:
+In line <a href="#countWhileLoop" data-reference-type="ref"
+data-reference="countWhileLoop">[countWhileLoop]</a>, the counter
+variable is first given an initial value of 1. Then execution enters the
+while-loop and examines the condition. Since <span
+class="math inline">1 &lt;  = 10</span>, the condition is true, and
+execution enters the body of the loop. The body prints the value of the
+counter to the screen and increases the counter by 1. Then execution
+returns to the top of the while-loop. Now the condition is <span
+class="math inline">2 &lt;  = 10</span>, which is also true, and so
+execution enters the body and so on until the counter has reached the
+value 11, in which case the condition <span
+class="math inline">11 &lt;  = 10</span> is false, and execution
+continues in line <a href="#countWhileContinue"
+data-reference-type="ref"
+data-reference="countWhileContinue">[countWhileContinue]</a>.</p>
+<p>In lightweight syntax, this would be as shown in . Notice that
+although the expression following the condition is preceded with a
+keyword, and <code class="syntax">do &lt;*expr*&gt;</code> is a
+<code>do</code>-binding, the keyword is mandatory.</p>
+<p>Counters are so common that a special syntax has been reserved for
+loops using counters. These are called -loops. For-loops come in several
+variants, and here we will focus on the one using an explicit counter.
+Its syntax is:</p>
+<div class="verbatimwrite">
+<p><span>/forLoop.ebnf</span> for &lt;*ident*&gt; = &lt;*firstExpr*&gt;
+to &lt;*lastExpr*&gt; do &lt;*bodyExpr*&gt; [*done*]</p>
+</div>
+<p>A for-loop initially binds the counter identifier <code
+class="syntax">&lt;*ident*&gt;</code> to be the value <code
+class="syntax">&lt;*firstExpr*&gt;</code>. Then execution enters the
+body, and <code class="syntax">&lt;*bodyExpr*&gt;</code> is evaluated.
+Once done, the counter is increased, and execution evaluates <code
+class="syntax">&lt;*bodyExpr*&gt;</code> once again. This is repeated as
+long as the counter is not greater than <code
+class="syntax">&lt;*lastExpr*&gt;</code>. As for while-loops, when using
+lightweight syntax the block following the keyword up to and including
+the keyword may be replaced by a newline and indentation.</p>
+<p>The counting example from using a -loop is shown in As this
+interactive script demonstrates, the identifier <code>i</code> takes all
+the values between 1 and 10, but in spite of its changing state, it is
+not mutable. Note also that the return value of the expression is , like
+the <code>printf</code> functions. The lightweight equivalent is shown
+in .</p>
+<p>Counting backwards is sufficiently common that F# has a structure,
+which works exactly like a --loop except that the counter is decreased
+by 1 in each iteration. An example of this is shown in .</p>
+<p>To further compare for- and while-loops, consider the following
+problem.</p>
+<div class="task">
+<p>Write a program that calculates the <span
+class="math inline"><em>n</em></span>’th Fibonacci number.</p>
+</div>
+<p>Fibonacci numbers is a sequence of numbers starting with <span
+class="math inline">1, 1</span>, and where the next number is calculated
+as the sum of the previous two. Hence the first ten numbers are: <span
+class="math inline">1, 1, 2, 3, 5, 8, 13, 21, 34, 55</span>. Fibonacci
+numbers are related to Golden spirals shown in .</p>
+<figure id="fig:goldenSpiral">
+<img src="Fibonacci_spiral" />
+<figcaption>The Fibonacci spiral is an approximation of the golden
+spiral. Each square has side lengths of successive Fibonacci numbers,
+and the curve in each square is the circular arc with a radius of the
+square it is drawn in.</figcaption>
+</figure>
+<p>Often the sequence is extended with a preceding number <span
+class="math inline">0</span>, to be <span
+class="math inline">0, 1, 1, 2, 3, …</span>, which we will do here as
+well.</p>
+<p>We could solve this problem with a -loop, as shown in . The basic
+idea of the solution is that if we are given the <span
+class="math inline">(<em>n</em>−1)</span>’th and <span
+class="math inline">(<em>n</em>−2)</span>’th numbers, the <span
+class="math inline"><em>n</em></span>’th number is trivial to compute.
+And assuming that <span class="math inline">fib(1)</span> and <span
+class="math inline">fib(2)</span> are given, then it is trivial to
+calculate <span class="math inline">fib(3)</span>. For <span
+class="math inline">fib(4)</span>, we only need <span
+class="math inline">fib(3)</span> and <span
+class="math inline">fib(2)</span>, hence we may disregard <span
+class="math inline">fib(1)</span>. Thus, we realize that we can cyclicly
+update the previous, current, and next values by shifting values until
+we have reached the desired <span
+class="math inline">fib(<em>n</em>)</span>. This is implement in as the
+function <code>fib</code>, which takes an integer <code>n</code> as
+argument and returns the <span class="math inline"><em>n</em></span>’th
+Fibonacci number. The function does this iteratively using a -loop,
+where <code>i</code> is the counter value, and <code>pair</code> is the
+pair of the <span class="math inline"><em>i</em> − 1</span>’th and <span
+class="math inline"><em>i</em></span>’th Fibonacci numbers. In the body
+of the loop, the <span class="math inline"><em>i</em></span>’th and
+<span class="math inline"><em>i</em> + 1</span>’th numbers are assigned
+to <code>pair</code>. The -loop automatically updates <code>i</code> for
+next iteration. When <span class="math inline"><em>n</em> &lt; 2</span>
+the body of the for-loop is not evaluated, and <span
+class="math inline">1</span> is returned. This is of course wrong for
+<span class="math inline"><em>n</em> &lt; 1</span>, but we will ignore
+this for now.</p>
+<p>shows a program similar to using a while-loop instead of for-loop.
+The programs are almost identical. In this case, the -loop is to be
+preferred, since more lines of code typically mean more chances of
+making a mistake. However, while-loops are somewhat easier to argue
+correctness about.</p>
+<p>The correctness of <code>fib</code> in can be proven using a . An is
+a statement that is always true at a particular point in a program, and
+a loop invariant is a statement which is true at the beginning and end
+of a loop. In line <a href="#fibWhileInvariant"
+data-reference-type="ref"
+data-reference="fibWhileInvariant">[fibWhileInvariant]</a> in , we may
+state the invariant: The variable <code>pair</code> is the pair of the
+<span class="math inline"><em>i</em> − 1</span>’th and <span
+class="math inline"><em>i</em></span>’th Fibonacci numbers. This is
+provable by induction:</p>
+<dl>
+<dt>Base case:</dt>
+<dd>
+<p>Before entering the while loop, <code>i</code> is 1,
+<code>pair</code> is (0, 1). Thus, the invariant is true.</p>
+</dd>
+<dt>Induction step:</dt>
+<dd>
+<p>Assuming that <code>pair</code> is the <span
+class="math inline"><em>i</em> − 1</span>’th and <span
+class="math inline"><em>i</em></span>’th Fibonacci numbers, the body
+first assigns a new value to <code>pair</code> as the <span
+class="math inline"><em>i</em></span>’th and <span
+class="math inline"><em>i</em> + 1</span>’th Fibonacci numbers, then
+increases <span class="math inline"><em>i</em></span> by one such that
+at the end of the loop the <code>pair</code> again contains the the
+<span class="math inline"><em>i</em> − 1</span>’th and <span
+class="math inline"><em>i</em></span>’th Fibonacci numbers.</p>
+</dd>
+</dl>
+<p>Thus, since our invariant is true for the first case, and any
+iteration following an iteration where the invariant is true, is also
+true, then it is true for all iterations.</p>
+<p>Thus we know that the second value in <code>pair</code> holds the
+value of the <span class="math inline"><em>i</em></span>’th Fibonacci
+number, and since we further may prove that <span
+class="math inline"><em>i</em> = <em>n</em></span> when line <a
+href="#fibWhileInvariantContinue" data-reference-type="ref"
+data-reference="fibWhileInvariantContinue">[fibWhileInvariantContinue]</a>
+is reached, then it is proven that <code>fib</code> returns the <span
+class="math inline"><em>n</em></span>’th Fibonacci number.</p>
+<p>While-loops also allow for logical structures other than for-loops,
+such as the case when the number of iteration cannot easily be decided
+when entering the loop. As an example, consider a slight variation of
+the above problem, where we wish to find the largest Fibonacci number
+less or equal some number. A solution to this problem is shown in . The
+strategy here is to iteratively calculate Fibonacci numbers until we’ve
+found one larger than the argument <code>n</code>, and then return the
+previous. This could not be calculated with a for-loop.</p>
+<h2
+id="programming-intermezzo-automatic-conversion-of-decimal-to-binary-numbers">Programming
+Intermezzo: Automatic Conversion of Decimal to Binary Numbers</h2>
+<p>Using loops and conditional expressions, we are now able to solve the
+following problem:</p>
+<div class="task">
+<p>Given an integer on decimal form, write its equivalent value on the
+binary form.</p>
+</div>
+<p>To solve this problem, consider odd numbers: They all have the
+property that the least significant bit is 1, e.g., <span
+class="math inline">1<sub>2</sub> = 1, 101<sub>2</sub> = 5</span>, in
+contrast to even numbers such as <span
+class="math inline">110<sub>2</sub> = 6</span>. Division by 2 is equal
+to right-shifting by 1, e.g., <span
+class="math inline">1<sub>2</sub>/2 = 0.1<sub>2</sub> = 0.5, 101<sub>2</sub>/2 = 10.1<sub>2</sub> = 2.5, 110<sub>2</sub>/2 = 11<sub>2</sub> = 3</span>.
+Thus, through dividing by 2 and checking the remainder, we may
+sequentially read off the least significant bit. This leads to the
+algorithm shown in . In the code, the states <code>v</code> and
+<code>str</code> are iteratively updated until <code>str</code> finally
+contains the desired solution.</p>
+<p>To prove that calculates the correct sequence, we use induction.
+First we realize that for <span
+class="math inline"><em>v</em> &lt; 1</span>, the while-loop is skipped,
+and the result is trivially true. We will concentrate on line <a
+href="#dec2binWhile" data-reference-type="ref"
+data-reference="dec2binWhile">[dec2binWhile]</a> in and will prove the
+following loop invariant: The string <code>str</code> contains all the
+bits of <code>n</code> to the right of the bit pattern remaining in
+variable <code>v</code>.</p>
+<dl>
+<dt>Base case <span
+class="math inline"><em>n</em> = 000…000<em>x</em></span>:</dt>
+<dd>
+<p>If <span class="math inline"><em>n</em></span> only uses the lowest
+bit, then <span class="math inline"><em>n</em> = 0</span> or <span
+class="math inline"><em>n</em> = 1</span>. If <span
+class="math inline"><em>n</em> = 0</span>, then it is trivially correct.
+Considering the case <span class="math inline"><em>n</em> = 1</span>:
+Before entering into the loop, <code>v</code> is 1, and <code>str</code>
+is the empty string, so the invariant is true. The condition of the
+while-loop is <span class="math inline">1 &gt; 0</span>, so execution
+enters the loop. Since integer division of 1 by 2 gives 0 with remainder
+1, <code>str</code> is set to <code>"1"</code> and <code>v</code> to 0.
+Now we reexamine the while-loop’s condition, <span
+class="math inline">0 &gt; 0</span>, which is false, so we exit the
+loop. At this point, <code>v</code> is 0 and <code>str</code> is
+<code>"1"</code>, so all bits have been shifted from <code>n</code> to
+<code>str</code>, and none are left in <code>v</code>. Thus the
+invariant is true. Finally, the program returns <code>"0b1"</code>.</p>
+</dd>
+<dt>Induction step:</dt>
+<dd>
+<p>Consider the case of <span
+class="math inline"><em>n</em> &gt; 1</span>, and assume that the
+invariant is true when entering the loop, i.e., that <span
+class="math inline"><em>m</em></span> bits already have been shifted to
+<code>str</code> and that <span
+class="math inline"><em>n</em> &gt; 2<sup><em>m</em></sup></span>. In
+this case, <code>v</code> contains the remaining bits of <code>n</code>,
+which is the integer division <code>v = n / 2**m</code>. Since <span
+class="math inline"><em>n</em> &gt; 2<sup><em>m</em></sup></span>,
+<code>v</code> is non-zero, and the loop conditions is true, so we enter
+the loop body. In the loop body we concatenate the rightmost bit of
+<code>v</code> to the left of <code>str</code> using <code>v % 2</code>,
+and right-shift <code>v</code> one bit to the right with
+<code>v &lt;- v / 2</code>. Thus, when returning to the condition the
+invariant is true, since the right-most bit in <code>v</code> has been
+shifted to <code>str</code>. This continues until all bits have been
+shifted to <code>str</code> and <code>v = 0</code>, in which case the
+loop terminates, and <code>"0b"+str</code> is returned.</p>
+</dd>
+</dl>
+<p>Thus we have proven that <code>dec2bin</code> correctly converts
+integers to strings representing binary numbers.</p>
