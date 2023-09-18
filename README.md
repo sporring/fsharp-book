@@ -11,7 +11,7 @@ This book uses F#, also known as Fsharp, which is a functional-first programming
 * Free to use and open source: F# is supported by the Fsharp foundation (https://fsharp.org) and sponsored by Microsoft.
 * Assemblies: F# is designed to be able to easily communicate with other .Net and Mono programs through the language-independent, platform-independent byte code called Common Intermediate Language (CIL) organized as assemblies. Thus, if you find that certain parts of a program are easy to express in F# and others in C++, then you will be able to combine these parts later into a single program.
 * Modern computing: F# supports all aspects of modern computing including Graphical User Interfaces, Web programming, Information-rich programming, Parallel algorithms, ...
-* Integrated development environments (IDE): F# is supported by IDEs such as Visual Studio (https://www.visualstudio.com) and Xamarin Studio (https: //www.xamarin.com).
+* Integrated development environments (IDE): F# is supported by IDEs such as Visual Studio (https://www.visualstudio.com) and Xamarin Studio (https://www.xamarin.com).
 
 It is used in the first programming course at the University of Copenhagen's bachelor in computer science program.
 
