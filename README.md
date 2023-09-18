@@ -20,7 +20,7 @@ The complete manuscript is here: [fsharpNotes](tex/fsharpNotes.pdf). The individ
 * FrontMatter
 
     * [Frontmatter](tex/frontmatter.pdf)
-    * [Introduction](tex/introduction.pdf)
+    1. [Introduction](tex/introduction.pdf)
 
 * Part I Getting Started
 
@@ -32,25 +32,26 @@ The complete manuscript is here: [fsharpNotes](tex/fsharpNotes.pdf). The individ
 
 * Part II Declarative Programming Paradigm
 
-    7. [Lists](tex/chapter_8.pdf)
-    8. [Recursion Revisited](tex/chapter_9.pdf)
-    9. [Organising Code in Libraries and Application Programs](tex/chapter_10.pdf)
-    10. [Higher-Order Functions](tex/chapter_11.pdf)
-    11. [Data Structures](tex/chapter_12.pdf)
+    8. [Lists](tex/chapter_8.pdf)
+    9. [Recursion Revisited](tex/chapter_9.pdf)
+    10. [Organising Code in Libraries and Application Programs](tex/chapter_10.pdf)
+    11. [Higher-Order Functions](tex/chapter_11.pdf)
+    12. [Data Structures](tex/chapter_12.pdf)
 
 * Part III Imperative Programming Paradigm
 
-    12. [Working With Files](tex/chapter_13.pdf)
-    13. [Imperative programming](tex/chapter_14.pdf)
-    14. [Classes and Objects](tex/chapter_15.pdf)
-    15. [Object-Oriented Design](tex/chapter_17.pdf)
+    13. [Working With Files](tex/chapter_13.pdf)
+    14. [Imperative programming](tex/chapter_14.pdf)
+    15. [Classes and Objects](tex/chapter_15.pdf)
+    16. [Derived Classes](tex/chapter_16.pdf)
+    17. [Object-Oriented Design](tex/chapter_17.pdf)
 
 * Appendices
 
-    A. [The Console in Windows, MacOS X, and Linux](tex/chhapter_18.pdf)
-    B. [Number Systems on the Computer](tex/chapter_19.pdf)
-    C. [Commonly Used Character Sets](tex/chapter_20.pdf)
-    D. [Common Language Infrastructure](tex/chapter_21.pdf)
+    18. [The Console in Windows, MacOS X, and Linux](tex/chhapter_18.pdf)
+    19. [Number Systems on the Computer](tex/chapter_19.pdf)
+    20. [Commonly Used Character Sets](tex/chapter_20.pdf)
+    21. [Common Language Infrastructure](tex/chapter_21.pdf)
 
 * Backmatter
 
