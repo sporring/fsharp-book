@@ -32,16 +32,17 @@ The complete manuscript is here: [fsharpNotes](tex/fsharpNotes.pdf). The individ
 
 * Part II Declarative Programming Paradigm
 
-    8. [Lists](tex/chapter_8.pdf)
-    9. [Recursion Revisited](tex/chapter_9.pdf)
-    10. [Organising Code in Libraries and Application Programs](tex/chapter_10.pdf)
-    11. [Higher-Order Functions](tex/chapter_11.pdf)
-    12. [Data Structures](tex/chapter_12.pdf)
+    7. [Lists](tex/chapter_7.pdf)
+    8. [Recursion Revisited](tex/chapter_8.pdf)
+    9. [Organising Code in Libraries and Application Programs](tex/chapter_9.pdf)
+    10. [Higher-Order Functions](tex/chapter_10.pdf)
+    11. [Data Structures](tex/chapter_11.pdf)
 
 * Part III Imperative Programming Paradigm
 
-    13. [Working With Files](tex/chapter_13.pdf)
-    14. [Imperative programming](tex/chapter_14.pdf)
+    12. [Working With Files](tex/chapter_12.pdf)
+    13. [Imperative programming](tex/chapter_13.pdf)
+    14. [Testing Programs](tex/chapter_14.pdf)
     15. [Classes and Objects](tex/chapter_15.pdf)
     16. [Derived Classes](tex/chapter_16.pdf)
     17. [Object-Oriented Design](tex/chapter_17.pdf)
