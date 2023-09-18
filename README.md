@@ -18,31 +18,42 @@ It is used in the first programming course at the University of Copenhagen's bac
 The complete manuscript is here: [fsharpNotes](tex/fsharpNotes.pdf). The individual chapters can also be accessed below, without cross-references:
 
 * FrontMatter
+
     * [Frontmatter](tex/frontmatter.pdf)
     * [Introduction](tex/introduction.pdf)
+
 * Part I Getting Started
+
     2. [Solving problems by writing a program](tex/chapter_2.pdf)
     3. [Using F# as a Calculator](tex/chapter_3.pdf)
     4. [Values, Functions, and Statements](tex/chapter_4.pdf)
     5. [Programming with Types](tex/chapter_5.pdf)
     6. [Making Programs and Documenting Them](tex/chapter_6.pdf)
+
 * Part II Declarative Programming Paradigm
+
     7. [Lists](tex/chapter_8.pdf)
     8. [Recursion Revisited](tex/chapter_9.pdf)
     9. [Organising Code in Libraries and Application Programs](tex/chapter_10.pdf)
     10. [Higher-Order Functions](tex/chapter_11.pdf)
     11. [Data Structures](tex/chapter_12.pdf)
+
 * Part III Imperative Programming Paradigm
+
     12. [Working With Files](tex/chapter_13.pdf)
     13. [Imperative programming](tex/chapter_14.pdf)
     14. [Classes and Objects](tex/chapter_15.pdf)
     15. [Object-Oriented Design](tex/chapter_17.pdf)
+
 * Appendices
+
     A. [The Console in Windows, MacOS X, and Linux](tex/chhapter_18.pdf)
     B. [Number Systems on the Computer](tex/chapter_19.pdf)
     C. [Commonly Used Character Sets](tex/chapter_20.pdf)
     D. [Common Language Infrastructure](tex/chapter_21.pdf)
+
 * Backmatter
+
     * [References](tex/chapter_22.pdf)
     * [Index](tex/cchapter_23.pdf)
 
