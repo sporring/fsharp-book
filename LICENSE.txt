@@ -1,0 +1,7 @@
+Copyright (c) 2024, Jon Sporring, University of Copenhagen, Denmark.
+All rights reserved according to CC 4.0 BY-NC-SA (https://creativecommons.org/licenses/by-nc-sa/4.0).
+
+Redistribution and use in source forms, with or without modification, are permitted provided that the following conditions are met:
+* You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+* You may not use the material for commercial purposes. Neither the name Jon Sporring, University of Copenhagen, nor the names of its contributors may be used to endorse or promote products derived from this image set without specific prior written permission.
+* If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
