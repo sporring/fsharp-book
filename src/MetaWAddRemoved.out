@@ -1,5 +1,2 @@
 $ fsharpc --nologo -r MetaWAdd.dll MetaWAddRemoved.fsi MetaWOAddApp.fsx
-
-MetaWOAddApp.fsx(1,25): error FS0039: The value or constructor 'add' is not defined.
-
-MetaWAddRemoved.fsi(1,1): error FS0240: The signature file 'Meta' does not have a corresponding implementation file. If an implementation file exists then check the 'module' and 'namespace' declarations in the signature and implementation files match.
+./fsxeval2out: line 20: fsharpc: command not found

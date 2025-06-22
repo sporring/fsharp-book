@@ -1,1 +1,2 @@
 $ fsharpc --nologo -a MetaWAdd.fsi MetaWAdd.fs
+./fsxeval2out: line 20: fsharpc: command not found

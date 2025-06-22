@@ -1,10 +1,27 @@
 {
   "version": 2,
-  "dgSpecHash": "4e+3KXXaDrn1T2288x4UjTmw6vsTsY1Stw3M5L/BG2R9m2ULSLZtO+BvNpkr8gHLw4Sb1Wo597ApvW8wk62q6w==",
-  "success": true,
+  "dgSpecHash": "+30+2Jy2uwI=",
+  "success": false,
   "projectFilePath": "/Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/commandLineArgsFails.fsproj",
-  "expectedPackageFiles": [
-    "/Users/jrh630/.nuget/packages/fsharp.core/6.0.5/fsharp.core.6.0.5.nupkg.sha512"
-  ],
-  "logs": []
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Unable to load the service index for source https://api.nuget.org/v3/index.json.",
+      "libraryId": "Microsoft.NETCore.App.Host.osx-arm64"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Unable to load the service index for source https://api.nuget.org/v3/index.json.",
+      "libraryId": "Microsoft.AspNetCore.App.Ref"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Unable to load the service index for source https://api.nuget.org/v3/index.json.",
+      "libraryId": "Microsoft.NETCore.App.Ref"
+    }
+  ]
 }

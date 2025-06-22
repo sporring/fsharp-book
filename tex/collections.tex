@@ -197,7 +197,7 @@ With the set module, an empty set can be created with \lstinline{Set.empty}, and
 \item[\texttt{Set.remove}:] \lstinline{x: 'T -> X: Set<'T> -> Set<'T>}~\\ returns a new set where $x\not\in X$.
 \item[\texttt{Set.union}:] \lstinline{X: Set<'a> -> Y: Set<'a> -> Set<'a>}~\\ returns a new set $X\cup Y$.
 \end{description}
-Sets can only be defined for elements, which can be compared, i.e., for which the $\ge$ and $\le$ family of operators are defined.
+In F#'s implement of sets, elements must be comparable, i.e., for which the $\ge$ and $\le$ family of operators are defined. This restriction ensures that the Sets datastructure is computationally fast. 
 
 Sets can be created from other collection types, such as lists, or by adding elements individually to an empty set, as demonstrated in \Cref{setCreate}
 %
@@ -219,7 +219,7 @@ A \idx{map} is a discrete collection of relations between a domain and a codomai
 \item[\texttt{Map.keys}:] \lstinline{m: Map<'K,'V> -> System.Collections.Generic.ICollection<'K>}~\\ returns the sequence of keys in the map \lstinline{m}. This can be turned into a set by \lstinline{Map.keys m |> Set}.
 \item[\texttt{Map.remove}:] \lstinline{k: 'K -> m: Map<'K,'V> -> Map<'K,'V>}~\\ return a new map, which does not contain a \lstinline{(k,v)} pair.
 \item[\texttt{Map.tryFind}:] \lstinline{k: 'K -> m: Map<'K,'V> -> 'V option}~\\ return the value \lstinline{v} of the \lstinline{(k,v)} pair if it exists.
-\item[\texttt{Map.values}:] \lstinline{Map<'K,'V> -> System.Collections.Generic.ICollection<'V>}~\\returns the sequence of keys in the map \lstinline{m}. This can be turned into a list by \lstinline{Map.keys m |> List.ofSeq} or a set of unique values by \lstinline{Map.keys m |> Set}.
+\item[\texttt{Map.values}:] \lstinline{Map<'K,'V> -> System.Collections.Generic.ICollection<'V>}~\\returns the sequence of values in the map \lstinline{m}. This can be turned into a list by \lstinline{Map.keys m |> List.ofSeq} or a set of unique values by \lstinline{Map.keys m |> Set}.
 \end{description}
 Like sets, maps can only be defined for keys, which can be compared, i.e., for which the $\ge$ and $\le$ family of operators are defined.
 
@@ -238,7 +238,7 @@ In this chapter, we have looked at more data structures commonly used in program
 \item A tree is a recursive data structure, consisting of \textbf{nodes} and their \textbf{children}, which are also trees. 
 \item A \textbf{binary tree} is a node with at most two children.
 \item Binary trees are typically \textbf{traversed} in \textbf{prefix}, \textbf{infix}, or \text{postfix} order.
-\item A \textbf{set} is an immutable collection of values and is well-supported F\#. Key set operators are \textbf{intersection}, \textbf{union}, and \textbf{set difference}.
+\item A \textbf{set} is an immutable collection of values and is well-supported in F\#. Key set operators are \textbf{intersection}, \textbf{union}, and \textbf{set difference}.
 \item A \textbf{map} is a discrete, \textbf{surjective} but not necessarily \textbf{injective} function between a set of \textbf{keys} and \textbf{values}.
 \end{itemize}
 \end{document}

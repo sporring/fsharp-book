@@ -125,7 +125,7 @@ The example application, we are studying here, is tiny, but even in this case, t
 
 \section{Libraries and applications}
 \label{sec:modules}
-A library in F\# is expressed as a \idx{module}, which is a programming structure used to organize type declarations, values, functions, etc. The libraries should have the suffix \lstinline[language=console]{.fs}, and here will call them \idx{implementation files} in contrast to the signature files to be discussed below, which we will call \idx{signature files}.
+A library in F\# is expressed as a \idx{module}, which is a programming structure used to organize type declarations, values, functions, etc. The libraries should have the suffix \lstinline[language=console]{.fs}, and here will call them \idx{implementation files} in contrast to the \idx{signature files} to be discussed below.
 
 A module is typically a file where the module name is declared in the first lines using the \idx[module@\lstinline{module}]{\keyword{module}} with the following syntax,
 %
@@ -177,7 +177,7 @@ To compile the application using the signature file, we must add the created fil
 \end{codeNOutput}
 In the context of the 8-step guide, it is useful to write the signature file before the implementation file, and that the signature file contains the documentation for the functions available in the application.
 
-For technical reasons in the  \lstinline[language=console]{dotnet} framework, exposed type abbreviations must be given both in the signature file and the implementation file. The implication is that the signature at times must also define implementation details, see e.g., the example below, and thus becomes less abstract the desirable in general.
+For technical reasons in the  \lstinline[language=console]{dotnet} framework, exposed type abbreviations must be given both in the signature file and the implementation file. The implication is that the signature at times must also define implementation details, see e.g., the example below, and thus becomes less abstract than desirable in general.
 
 \section{Programming Intermezzo: Postfix Arithmetic with a Stack}
 \label{sec:stack}
@@ -189,7 +189,7 @@ To this point, we have performed simple arithmetic using \idx{infix} notation, m
   &\rightsquigarrow 11-8\\
   &\rightsquigarrow 3
 \end{align}
-However, there is an equally valid notation, \idx{postfix}, in which the same expression is written as $4\; 6\; 3\; *\; +\; 2\; /\; 8\; -$. Here, the rule is to read from left to right, and whenever there are two values and an operator, $a\; b\; \text{op}$, replaced this with the value $a \text{ op } b$ and repeat until only one value remains, which is the result of the calculation. Hence,
+However, there is an equally valid notation, \idx{postfix}, in which the same expression is written as $4\; 6\; 3\; *\; +\; 2\; /\; 8\; -$. Here, the rule is to read from left to right, and whenever there are two values and an operator, $a\; b\; \text{op}$, replace this with the value $a \text{ op } b$ and repeat until only one value remains, which is the result of the calculation. Hence,
 \begin{align}
   4\; 6\; 3\; *\; +\; 2\; /\; 8\; -
   &\rightsquigarrow\; 4\; 18\; +\; 2\; /\; 8\; -\\
@@ -199,7 +199,7 @@ However, there is an equally valid notation, \idx{postfix}, in which the same ex
 \end{align}
 This was implemented on a series of calculators released by Hewlett-Packard in the 1960-1980'ies, and one of the arguments for this notation was, that the expressions could be evaluated by a stack with only 3 levels. In the following, we will look at stacks as an abstract datatype and build a library for stacks and an arithmetic solver for such simple expressions using this stack.
 
-A \idx{stack} is an abstract datatype, meaning that it is defined by its concepts, not its implementation. The concept of a stack is like a stack of plates in a cafeteria, they are placed in a physical stack, and you can take the top plate and place a plate on the top, but you cannot access a plate in the middle of a stack. Stacks typically come with the following functions:
+A \idx{stack} is an abstract datatype, meaning that it is defined by its concepts, not its implementation.\jon{Improve explanation.} The concept of a stack is like a stack of plates in a cafeteria, they are placed in a physical stack, and you can take the top plate and place a plate on the top, but you cannot access a plate in the middle of a stack. Stacks typically come with the following functions:
 \begin{description}
 \item[create:] Create an empty stack.
 \item[pop:] Return the top element and the resulting stack.

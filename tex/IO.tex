@@ -6,21 +6,21 @@
 \label{chap:IO}
 
 \abstract{
-  Most programs do not live in isolation but interacts with the world around it. For example, many programs read and write from and to files or the internet. This is in general known as input and output. We have previously seen how to interact with the user by reading and writing to the terminal. In this chapter you will learn how to:
+  Most programs do not live in isolation but interacts with the world around them. For example, many programs read and write from and to files or the internet. This is in general known as input and output. We have previously seen how to interact with the user by reading and writing to the terminal. In this chapter you will learn how to:
   \begin{itemize}
-  \item Giving programs to ability to take arguments from the terminal,
-  \item Read and write from to and from files,
-  \item Handle errors by catching exceptions and if needed, throwing them yourself, and
+  \item Giving programs the ability to take arguments from the terminal,
+  \item Read and write to and from files,
+  \item Handle errors by catching exceptions and if needed, throwing them yourself.
 %  \item Read from the internet.
   \end{itemize}
-  Particularly with the topic of exceptions, we are leaving the domain of functional programming, and where errors before to a large extend were caught before a given program was run, we will now learn how to write programs, that can handle errors while they are running.
+  Particularly with the topic of exceptions, we are leaving the domain of functional programming, and where errors before to a large extent were caught before a given program was run, we will now learn how to write programs that can handle errors while they are running.
 }
 
 An important part of programming is handling data. A typical source of data is hard-coded bindings and expressions from libraries or the program itself, and the result is often shown on a screen as text output on the console. This is a good starting point when learning to program, and one which we have relied heavily upon in this book until now. However, many programs require more: We often need to ask a user to input data via, e.g., typing text on a keyboard, clicking with a mouse, or striking a pose in front of a camera. We also often need to load and save data to files, retrieve and deposit information from the internet, and visualize data graphically, as sounds, or by controlling electrical appliances. Here we will concentrate on working with the console, files, and the general concept of streams.
 
 File and stream input and output are supported via built-in namespaces and classes. For example, \lstinline!printf! is a family of functions defined in the \lstinline!Printf! module of the \lstinline!Fsharp.Core! namespace, and it is used to put characters on the \lstinline{stdout} stream, i.e., to print on the screen. Likewise, \lstinline{ReadLine} discussed in \Cref{sec:readline} is defined in the \lstinline{System.Console} class, and it fetches characters from the \lstinline{stdin} stream, that is, reads the characters the user types on the keyboard until newline is pressed.
 
-A \idx{file} on a computer is a resource used to store data in and retrieve data from. Files are often associated with a physical device, such as a hard disk, but can also be a virtual representation in memory. Files are durable, such that other programs can access them independently, given certain rules for access. A file has a name, a size, and a type, where the type is related to the basic unit of storage such as characters, bytes, and words, (\keyword{char}, \keyword{byte}, and \keyword{int32}). Often data requires a conversion between the internal format to and from the format stored in the file. E.g., floating point numbers are sometimes converted to a UTF8 string using \lstinline!fprintf! in order to store them in a file in a human-readable form, and interpreted from UTF8 when retrieving them at a later point from the file. Files have a low-level structure, which varies from device to device, and the low-level details are less relevant for the use of the file and most often hidden for the user. Basic operations on files are \idx[create file]{creation}, \idx[open file]{opening}, \idx[read file]{reading from}, \idx[write file]{writing to}, \idx[close file]{closing}, and \idx[delete file]{deleting}.
+A \idx{file} on a computer is a resource used to store data in and retrieve data from. Files are often associated with a physical device, such as a hard disk, but can also be a virtual representation in memory. Files are durable, such that other programs can access them independently, given certain rules for access. A file has a name, a size, and a type, where the type is related to the basic unit of storage such as characters, bytes, and words, (\keyword{char}, \keyword{byte}, and \keyword{int32}). Often data requires a conversion between the internal format to and from the format stored in the file. E.g., floating point numbers are sometimes converted to a UTF8 string using \lstinline!fprintf! in order to store them in a file in a human-readable form, and interpreted from UTF8 when retrieving them at a later point from the file. Files have a low-level structure, which varies from device to device, and the low-level details are less relevant for the use of the file and most often hidden for the user. Basic operations on files are \idx[create file]{creating}, \idx[open file]{opening}, \idx[read file]{reading from}, \idx[write file]{writing to}, \idx[close file]{closing}, and \idx[delete file]{deleting}.
 
 A \idx{stream} is similar to files in that they are used to store data in and retrieve data from, but streams only allow for handling of data one element at a time, like the readout of a thermometer: we can make temperature readings as often as we like, making notes and thus saving a history of temperatures, but we cannot access the future. Hence, streams are in principle without an end, and thus have infinite size, and data from streams are programmed locally by considering the present and previous elements. In contrast, files are finite in size and allow for global operations on all the file's data. Files may be considered a stream, but the opposite is not true.\jon{Maybe add a figure illustrating the difference between files and streams.}
 
@@ -178,13 +178,13 @@ with
 %
 where \lstinline[language=syntax]{<*testExpr*>} is an expression which might raise an exception, \lstinline[language=syntax]{<*patn*>} is a pattern, and \lstinline[language=syntax]{<*exprHndln*>} is the corresponding exception handler. The value of the \keyword{try}--expression is either the value of \lstinline[language=syntax]{<*testExpr*>}, if it does not raise an exception, or the value of the exception handler \lstinline[language=syntax]{<*exprHndln*>} of the first matching pattern \lstinline[language=syntax]{<*patn*>}. The above is using lightweight syntax. Regular syntax omits newlines.
 
-In \Cref{exceptionDivByZero} \idx[dynamic type pattern]{dynamic type matching} is used using the \lexeme{:?} lexeme, i.e., the pattern matches exception with type \lstinline{System.DivideByZeroException} at runtime. The exception value may contain furter information and can be accessed if named using the \idx[as@\lstinline{as}]{\lstinline{as}}--keyword, as demonstrated in \Cref{exceptionDivByZeroNamed}.
+In \Cref{exceptionDivByZero} \idx[dynamic type pattern]{dynamic type matching} is used using the \lexeme{:?} lexeme, i.e., the pattern matches an exception with type \lstinline{System.DivideByZeroException} at runtime. The exception value may contain further information and can be accessed if named using the \idx[as@\lstinline{as}]{\lstinline{as}}--keyword, as demonstrated in \Cref{exceptionDivByZeroNamed}.
 %
 \fs{exceptionDivByZeroNamed}{Exception value is bound to a name. Compare to \Cref{exceptionDivByZero}.}
 %
 Here the exception value is bound to the name \lstinline{ex}.
 
-All exceptions may be caught as the dynamic type \lstinline{System.Exception}, and F\# implements a short-hand for catching an exception and binding its value to a name as demonstrated in \Cref{exceptionDivByZeroShortHand}
+All exceptions may be caught as the dynamic type \lstinline{System.Exception}, and F\# implements a short-hand for catching an exception and binding its value to a name as demonstrated in \Cref{exceptionDivByZeroShortHand}.
 %
 \fs{exceptionDivByZeroShortHand}{An exception of type \lstinline{System.Exception} is bound to a name. Compare to \Cref{exceptionDivByZeroNamed}.}
 %
@@ -194,7 +194,7 @@ Finally, the short-hand may be guarded with a \idx[when@\keyword{when}]{\keyword
 %
 The first pattern only matches the \lstinline{System.Exception} exception when \lstinline{enum} is 0, in which case the exception handler returns 0.
 
-Thus, if you don't care about the type of exception, then you need only use the short-hand pattern matching and name binding demonstrated in \Cref{exceptionDivByZeroShortHand} and \Cref{exceptionDivByZeroGuard}, but if you would like to distinguish between types of exceptions, then you must use explicit type matching and possibly value binding demonstrated in \Cref{exceptionDivByZero} and \Cref{exceptionDivByZeroNamed}
+Thus, if you don't care about the type of exception, then you need only use the short-hand pattern matching and name binding demonstrated in \Cref{exceptionDivByZeroShortHand} and \Cref{exceptionDivByZeroGuard}, but if you would like to distinguish between types of exceptions, then you must use explicit type matching and possibly value binding demonstrated in \Cref{exceptionDivByZero} and \Cref{exceptionDivByZeroNamed}.
 
 The \idx[trywith@\keyword{try}--\keyword{finally}]{\keyword{try}--\keyword{finally}} expression has the following syntax,
 %
@@ -261,11 +261,11 @@ or use the built-in \lstinline!Failure! pattern as in \Cref{exceptionFailure}.
 Notice how only the \lstinline!Failure! pattern allows for the parsing of the message given to \lstinline!failwith! as an argument.
 
 %, \idx[invalidArg@\lstinline{invalidArg}]{\lstinline{invalidArg}}, \idx[raise@\lstinline{raise}]{\lstinline{raise}}, and \idx[reraise@\lstinline{reraise}]{\lstinline{reraise}}. 
-Invalid arguments are such a common reason for failures, that a built-in function for handling them has been supplied in F\#. The \idx[invalidArg@\lstinline{invalidArg}]{\lstinline{invalidArg}} takes 2 strings and raises the built-in \lstinline!ArgumentException!, as shown in \Cref{exceptionInvalidArg}.
+Invalid arguments are such a common reason for failures, that a built-in function for handling them has been supplied in F\#. The \idx[invalidArg@\lstinline{invalidArg}]{\lstinline{invalidArg}} function takes 2 strings and raises the built-in \lstinline!ArgumentException!, as shown in \Cref{exceptionInvalidArg}.
 %
 \fs{exceptionInvalidArg}{An exception raised by \lstinline{invalidArg}. Compare with \Cref{raiseArgumentException}.}
 %
-The \lstinline{invalidArg} function raises an \lstinline{System.ArgumentException}, as shown in \Cref{exceptionInvalidArgNCatch}.
+The \lstinline{invalidArg} function raises a \lstinline{System.ArgumentException}, as shown in \Cref{exceptionInvalidArgNCatch}.
 %
 \fs{exceptionInvalidArgNCatch}{Catching the exception raised by \lstinline{invalidArg}.}
 %
@@ -408,7 +408,7 @@ Notice how the example uses a defensive programming style, where the \keyword{tr
 
 In F\#, the distinction between files and streams is not very clear. F\# offers built-in support for accessing files as bytes through the \lstinline!System.IO.FileStream! class, and for characters in a particular encoding through the \lstinline!System.IO.TextReader! and \lstinline!System.IO.TextWriter!.
 
-A successfully opened \lstinline!System.IO.FileStream! file by, e.g., \lstinline!System.IO.File.OpenRead! from \Cref{tab:File.Open}, will result in an \lstinline!FileStream! object. From this object we can extract information about the file, such as the permitted operations and more listed in \Cref{tab:fileStreamProperties}. %
+A successfully opened \lstinline!System.IO.FileStream! file by, e.g., \lstinline!System.IO.File.OpenRead! from \Cref{tab:File.Open}, will result in a \lstinline!FileStream! object. From this object we can extract information about the file, such as the permitted operations and more listed in \Cref{tab:fileStreamProperties}. %
 \idxss{\lstinline{System.IO.FileStream.CanRead}}%
 \idxss{\lstinline{System.IO.FileStream.CanSeek}}%
 \idxss{\lstinline{System.IO.FileStream.CanWrite}}%
@@ -438,7 +438,7 @@ A successfully opened \lstinline!System.IO.FileStream! file by, e.g., \lstinline
   \caption{Some properties of the \lstinline!System.IO.FileStream! class.}
   \label{tab:fileStreamProperties}
 \end{table}
-This information is important in order to restrict the operation that we will perform on the file. Some typical operations are listed in and~\ref{tab:fileStreamMethods}.%
+This information is important in order to restrict the operation that we will perform on the file. Some typical operations are listed in \Cref{tab:fileStreamMethods}.%
 \idxss{\lstinline{System.IO.FileStream.Close}}%
 \idxss{\lstinline{System.IO.FileStream.Flush}}%
 \idxss{\lstinline{System.IO.FileStream.Read}}%
@@ -542,7 +542,7 @@ A simple example of opening a text-file and processing it is given in \Cref{read
 Here the program reads the source code of itself, and prints it to the console.
 
 \section{Working With Files and Directories.}
-F\# has support for managing files, summarized in the \lstinline!System.IO.File! class and summarized in \Cref{tab:File.Others}.%
+F\# has support for managing files in the \lstinline!System.IO.File! class and summarized in \Cref{tab:File.Others}.%
 \idxss{\lstinline{System.IO.File.Copy}}%
 \idxss{\lstinline{System.IO.File.Delete}}%
 \idxss{\lstinline{System.IO.File.Exists}}%
@@ -653,7 +653,7 @@ We will limit our request to the present directory and use \lstinline{System.Con
 %
 \fsCode{filenamedialogue}{filenamedialogue}{Ask the user to input a name of an existing file.}{}
 %
-Note that it is programmed using a \lstinline{while}-loop and with a flag \lstinline{fileExists} used to exit the loop. The solution has a caveat: What should be done if the user decides not to enter a filename at all. \advice{Including a 'cancel'-option is a good style for any user interface, and should be offered when possible.} In a text-based dialogue, this would require us to use an input, which cannot be a filename, to ensure that all possible filenames and 'cancel'-option is available to the user. This problem has not been addressed in the code. 
+The solution has a caveat: What should be done if the user decides not to enter a filename at all. \advice{Including a 'cancel'-option is a good style for any user interface, and should be offered when possible.} In a text-based dialogue, this would require us to use an input, which cannot be a filename, to ensure that all possible filenames and 'cancel'-option is available to the user. This problem has not been addressed in the code. 
 
 \begin{comment}
 A practice problem could be,
@@ -686,7 +686,7 @@ To connect to a URL as a stream, we first need first format the URL string as a 
 \end{comment}
 \section{Resource Management}
 \label{sec:resourceManagement}
-Streams and files are examples of computer resources that may be shared by several applications. Most operating systems allow for several applications to be running in parallel, and to avoid unnecessarily blocking and hogging of resources, all responsible applications must release resources as soon as they are done using them. F\# has language constructions for automatic releasing of resources: the \lstinline{use} binding and the \lstinline{using} function. These automatically dispose of resources when the resource's name binding falls out of scope. Technically, this is done by calling the \idx[Dispose@\lstinline{Dispose}]{\lstinline{Dispose}} method on objects that implement the \idx[System.IDisposable@\lstinline{System.IDisposable}]{\lstinline{System.IDisposable}} interface. See \Cref{sec:interfaces} for more on interfaces.
+Streams and files are examples of computer resources that may be shared by several applications. Most operating systems allow for several applications to be running in parallel, and to avoid unnecessary blocking and hogging of resources, all responsible applications must release resources as soon as they are done using them. F\# has language constructions for automatic releasing of resources: the \lstinline{use} binding and the \lstinline{using} function. These automatically dispose of resources when the resource's name binding falls out of scope. Technically, this is done by calling the \idx[Dispose@\lstinline{Dispose}]{\lstinline{Dispose}} method on objects that implement the \idx[System.IDisposable@\lstinline{System.IDisposable}]{\lstinline{System.IDisposable}} interface. See \Cref{sec:interfaces} for more on interfaces.
 
 The \idx[use@\lstinline{use}]{\keyword{use}} keyword is similar to \keyword{let}:
 %
@@ -699,7 +699,7 @@ A \lstinline{use} binding provides a binding between the \lstinline[language=syn
 %
 \fsCode{useBinding}{useBinding}{Using \lstinline{use} instead of \lstinline{let} releases disposable resources at end of scope.}{}
 %
-Here, \lstinline{file} is an \lstinline{System.IDisposable} object, and \lstinline{file.Dispose()} is called automatically before \lstinline{writeToFile} returns. This implies that the file is closed. Had we used \keyword{let} instead, then the file would first be closed when the program terminates.
+Here, \lstinline{file} is a \lstinline{System.IDisposable} object, and \lstinline{file.Dispose()} is called automatically before \lstinline{writeToFile} returns. This implies that the file is closed. Had we used \keyword{let} instead, then the file would first be closed when the program terminates.
 
 The higher-order function \idx[using@\lstinline{using}]{\lstinline{using}} takes a disposable object and a function, executes the function on the disposable objects, and then calls \lstinline{Dispose()} on the disposable object. This is illustrated in \Cref{using}
 
