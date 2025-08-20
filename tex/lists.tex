@@ -33,7 +33,7 @@ After you have read this chapter, you will be able to model situations such as
 \end{verbatimwrite}
 \syntax{\ebnf/lists.ebnf}{The syntax for a list using the sequence expression.}
 %
-For example, \mbox{\lstinline![1; 2; 3]!} is a list of integers, \mbox{\lstinline!["This"; "is"; "a"; "list"]!} is a list of strings, \mbox{\lstinline![(fun x -> x); (fun x -> x*x)]!} is a list of functions, and \lstinline![]! is the empty list. Lists may also be given as ranges,
+For example, \lstinline![]! is the empty list, \mbox{\lstinline![1; 2; 3]!} is a list of integers, \mbox{\lstinline!["This"; "is"; "a"; "list"]!} is a list of strings, and since functions are also values, \mbox{\lstinline![(fun x -> x); (fun x -> x*x)]!} is a list of functions. Lists may also be given as ranges,
 %
 \begin{verbatimwrite}{\ebnf/listsRange.ebnf}
 [<*expr*> .. <*expr*> [*.. <*expr*>*]]

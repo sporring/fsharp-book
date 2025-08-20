@@ -1,1 +1,1 @@
-$ fsharpc --nologo umlAggregation.fsx && mono umlAggregation.exe
+$ dotnet fsi umlAggregation.fsx

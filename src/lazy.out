@@ -1,4 +1,4 @@
-$ fsharpc --nologo lazy.fsx && mono lazy.exe
+$ dotnet fsi lazy.fsx
 Before: Value is not created.
 calulating
 After: 4

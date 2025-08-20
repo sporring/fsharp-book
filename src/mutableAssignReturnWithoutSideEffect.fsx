@@ -3,7 +3,7 @@ let updateFactor () =
 
 let multiplyWithFactor x =
   let a = ref 1
-  a := updateFactor ()
-  !a * x
+  a.Value <- updateFactor ()
+  a.Value * x
   
 printfn "%d" (multiplyWithFactor 3)

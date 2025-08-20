@@ -1,4 +1,3 @@
-
 > let sum (x : float) (y : float) : float = x + y;;
 val sum: x: float -> y: float -> float
 

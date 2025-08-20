@@ -1,3 +1,5 @@
 > 3 / 0;;
 System.DivideByZeroException: Attempted to divide by zero.
    at <StartupCode$FSI_0002>.$FSI_0002.main@() in /Users/jrh630/repositories/fsharp-book/src/stdin:line 1
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)

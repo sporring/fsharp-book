@@ -1,2 +1,2 @@
 > Array.sort [|3; 1; 2|];;
-val it: int[] = [|1; 2; 3|]
+val it: int array = [|1; 2; 3|]

@@ -1,1 +1,1 @@
-$ fsharpc --nologo umlInheritance.fsx && mono umlInheritance.exe
+$ dotnet fsi umlInheritance.fsx

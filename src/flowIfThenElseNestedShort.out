@@ -1,4 +1,4 @@
-$ fsharpc --nologo flowIfThenElseNestedShort.fsx && mono flowIfThenElseNestedShort.exe
+$ dotnet fsi flowIfThenElseNestedShort.fsx
 1
 2
 0

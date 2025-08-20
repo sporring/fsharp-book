@@ -1,2 +1,0 @@
-$ fsharpc --nologo -a MetaExplicit.fsx
-./fsxeval2out: line 20: fsharpc: command not found

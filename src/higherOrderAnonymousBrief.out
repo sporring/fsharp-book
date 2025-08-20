@@ -1,2 +1,2 @@
-$ fsharpc --nologo higherOrderAnonymousBrief.fsx && mono higherOrderAnonymousBrief.exe
+$ dotnet fsi higherOrderAnonymousBrief.fsx
 [3; 4; 6]

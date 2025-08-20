@@ -21,7 +21,8 @@
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgs/obj/Debug/net6.0/commandLineArgs.AssemblyInfoInputs.cache
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgs/obj/Debug/net6.0/commandLineArgs.AssemblyInfo.fs
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgs/obj/Debug/net6.0/commandLineArgs.fsproj.CoreCompileInputs.cache
-/Users/jrh630/repositories/fsharp-book/src/commandLineArgs/obj/Debug/net6.0/commandLineArgs.fsproj.CopyComplete
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgs/obj/Debug/net6.0/commandLineArgs.dll
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgs/obj/Debug/net6.0/commandLineArgs.pdb
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgs/obj/Debug/net6.0/commandLineArgs.genruntimeconfig.cache
+/Users/jrh630/repositories/fsharp-book/src/commandLineArgs/obj/Debug/net6.0/commandLineArgs.sourcelink.json
+/Users/jrh630/repositories/fsharp-book/src/commandLineArgs/obj/Debug/net6.0/commandL.786F770A.Up2Date

@@ -1,4 +1,4 @@
-$ fsharpc --nologo higherOrderComposition.fsx && mono higherOrderComposition.exe
+$ dotnet fsi higherOrderComposition.fsx
 9
 9
 5

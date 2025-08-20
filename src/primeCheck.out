@@ -1,4 +1,4 @@
-$ fsharpc --nologo primeCheck.fsx && mono primeCheck.exe
+$ dotnet fsi primeCheck.fsx
 10 % i = 0?
 i = 2? true
 i = 3? false

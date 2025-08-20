@@ -1,2 +1,0 @@
-$ fsharpc --nologo MetaExplicit.fsx MetaAppWOpen.fsx && mono MetaAppWOpen.exe
-3.0 + 4.0 = 7.0

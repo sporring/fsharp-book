@@ -1,10 +1,10 @@
-$ fsharpc --nologo recordsDominance.fsx && mono recordsDominance.exe
+$ dotnet fsi recordsDominance.fsx
 { name = "Jon"
   age = 50
-  height = 1.75 } : RecordsDominance+teacher
+  height = 1.75 } : FSI_0001+teacher
 { name = "Jon"
   age = 50
-  height = 1.75 } : RecordsDominance+person
+  height = 1.75 } : FSI_0001+person
 { name = "Jon"
   age = 50
-  height = 1.75 } : RecordsDominance+person
+  height = 1.75 } : FSI_0001+person

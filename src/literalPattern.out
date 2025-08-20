@@ -1,2 +1,2 @@
-$ fsharpc --nologo literalPattern.fsx && mono literalPattern.exe
+$ dotnet fsi literalPattern.fsx
 "We will need to build a bigger machine..."

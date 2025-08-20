@@ -1,2 +1,2 @@
-$ fsharpc --nologo letFunctionLightWeight.fsx && mono letFunctionLightWeight.exe
+$ dotnet fsi letFunctionLightWeight.fsx
 1221.0

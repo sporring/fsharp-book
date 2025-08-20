@@ -7,7 +7,7 @@ let rec sieve (acc : int seq) (haystack : int seq) (v : int) : int seq =
   else
     acc
 
-let maxPrime = 7927
+let maxPrime = 1000
 let primes = sieve Seq.empty<int> s maxPrime
 printfn "%A" primes
 for i in primes do

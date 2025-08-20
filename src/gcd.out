@@ -1,2 +1,2 @@
-$ fsharpc --nologo gcd.fsx && mono gcd.exe
+$ dotnet fsi gcd.fsx
 gcd 10 15 = 5

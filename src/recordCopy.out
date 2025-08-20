@@ -1,4 +1,4 @@
-$ fsharpc --nologo recordCopy.fsx && mono recordCopy.exe
+$ dotnet fsi recordCopy.fsx
 author : { name = "Jon"
   age = 51 }
 authorAlias : { name = "Jon"

@@ -1,2 +1,5 @@
-$ fsharpc --nologo namespace.fsx namespaceExtension.fsx namespaceApp.fsx && mono namespaceApp.exe
-3.0 + 4.0 = 7.0
+$ dotnet fsi namespace.fsx namespaceExtension.fsx namespaceApp.fsx
+
+
+namespace.fsx(1,1): error FS0010: Unexpected keyword 'namespace' in interaction
+

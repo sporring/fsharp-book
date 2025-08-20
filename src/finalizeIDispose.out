@@ -1,8 +1,8 @@
-$ fsharpc --nologo finalizeIDispose.fsx && mono finalizeIDispose.exe
+$ dotnet fsi finalizeIDispose.fsx
 Creating a scope
 Instantiated example-object
-This instance has been in existence for 00:00:00.0247120
+This instance has been in existence for 00:00:00.0006496
 Finalizing example-object
-This instance has been in existence for 00:00:00.0815014
+This instance has been in existence for 00:00:00.0021135
 Scope deleted
 Program done

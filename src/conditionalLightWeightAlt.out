@@ -1,4 +1,4 @@
-$ fsharpc --nologo conditionalLightWeightAlt.fsx && mono conditionalLightWeightAlt.exe
+$ dotnet fsi conditionalLightWeightAlt.fsx
 "I owe 3 apples"
 "I owe 1 apple"
 "I have no apples"

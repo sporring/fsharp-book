@@ -1,2 +1,2 @@
-$ fsharpc --nologo higherOrderPiping.fsx && mono higherOrderPiping.exe
+$ dotnet fsi higherOrderPiping.fsx
 2 -> 3

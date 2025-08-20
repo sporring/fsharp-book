@@ -1,17 +1,18 @@
 open System
-open System.Net
+open System.Net.Http
 open Control.CommonExtensions   
 
-// Fetch the contents of a web page asynchronously
-let fetchUrlAsync url =        
-    async {                             
-        let req = WebRequest.Create(Uri(url)) 
-        use! resp = req.AsyncGetResponse()  // new keyword "use!"  
-        use stream = resp.GetResponseStream() 
-        use reader = new IO.StreamReader(stream) 
-        let html = reader.ReadToEnd() 
+// Create a single shared HttpClient instance
+let httpClient = new HttpClient()
+
+// Fetch the contents of a web page asynchronously using HttpClient
+let fetchUrlAsync (url: string) =    
+    async {
+        let! response = httpClient.GetAsync(url) |> Async.AwaitTask
+        let! html = response.Content.ReadAsStringAsync() |> Async.AwaitTask
         printfn "finished downloading %s" url 
-        }
+        return html
+    }
 
 // a list of sites to fetch
 let sites = ["http://www.bing.com";

@@ -1,2 +1,2 @@
-$ fsharpc --nologo guardPattern.fsx && mono guardPattern.exe
+$ dotnet fsi guardPattern.fsx
 A person aged 50 is a/an adult

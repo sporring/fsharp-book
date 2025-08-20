@@ -1,3 +1,3 @@
-$ fsharpc --nologo tupleOfMutables.fsx && mono tupleOfMutables.exe
+$ dotnet fsi tupleOfMutables.fsx
 1, 2, (1, 2)
 3, 2, (1, 2)

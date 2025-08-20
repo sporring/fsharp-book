@@ -2,4 +2,6 @@ $ dotnet fsi exceptionReraise.fsx
 The castle of "Arrrrg"
 System.Exception: Arrrrg
    at <StartupCode$FSI_0001>.$FSI_0001.main@() in exceptionReraise.fsx:line 3
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
 Stopped due to error

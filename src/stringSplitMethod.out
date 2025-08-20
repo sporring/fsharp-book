@@ -1,2 +1,2 @@
 > "Hello World".Split();;
-val it: string[] = [|"Hello"; "World"|]
+val it: string array = [|"Hello"; "World"|]

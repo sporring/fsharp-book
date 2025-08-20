@@ -1,3 +1,3 @@
-$ fsharpc --nologo functionDeclarationCurrying.fsx && mono functionDeclarationCurrying.exe
+$ dotnet fsi functionDeclarationCurrying.fsx
 15
 6

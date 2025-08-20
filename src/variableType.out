@@ -1,2 +1,2 @@
-$ fsharpc --nologo variableType.fsx && mono variableType.exe
+$ dotnet fsi variableType.fsx
 3 3.0

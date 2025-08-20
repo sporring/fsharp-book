@@ -1,2 +1,2 @@
 > Array.create 4 3.14;;
-val it: float[] = [|3.14; 3.14; 3.14; 3.14|]
+val it: float array = [|3.14; 3.14; 3.14; 3.14|]

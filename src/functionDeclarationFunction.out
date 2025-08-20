@@ -1,2 +1,2 @@
-$ fsharpc --nologo functionDeclarationFunction.fsx && mono functionDeclarationFunction.exe
+$ dotnet fsi functionDeclarationFunction.fsx
 120

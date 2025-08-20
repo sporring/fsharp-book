@@ -1,8 +1,6 @@
-$ fsharpc --nologo finalize.fsx && mono finalize.exe
+$ dotnet fsi finalize.fsx
 Creating a scope
 Instantiated example-object
-This instance has been in existence for 00:00:00.0247147
+This instance has been in existence for 00:00:00.0006461
 Scope deleted
 Program done
-Finalizing example-object
-This instance has been in existence for 00:00:10.1010633

@@ -1,4 +1,4 @@
-$ fsharpc --nologo activeMultiCasePattern.fsx && mono activeMultiCasePattern.exe
+$ dotnet fsi activeMultiCasePattern.fsx
 0: It's gold!
 1: It's silver.
 2: It's no more than bronze.

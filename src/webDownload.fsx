@@ -1,13 +1,17 @@
 open System
-open System.Net
+open System.Net.Http
 
-let fetchUrl url =        
-    let req = WebRequest.Create(Uri(url)) 
-    use resp = req.GetResponse() 
-    use stream = resp.GetResponseStream() 
-    use reader = new IO.StreamReader(stream) 
-    let html = reader.ReadToEnd() 
-    printfn "finished downloading %s" url
+
+// Create a single shared HttpClient instance
+let httpClient = new HttpClient()
+
+let fetchUrl (url: string) =        
+    async {
+        let! response = httpClient.GetAsync(url) |> Async.AwaitTask
+        let! html = response.Content.ReadAsStringAsync() |> Async.AwaitTask
+        printfn "finished downloading %s" url
+        return html
+    }
 
 // a list of sites to fetch
 let sites = ["http://www.bing.com";

@@ -1,2 +1,2 @@
-$ fsharpc --nologo letPattern.fsx && mono letPattern.exe
+$ dotnet fsi letPattern.fsx
 (3, 4): 3 4 3

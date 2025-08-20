@@ -1,4 +1,4 @@
-$ fsharpc --nologo records.fsx && mono records.exe
+$ dotnet fsi records.fsx
 { name = "Jon"
   age = 50
   height = 1.75 }

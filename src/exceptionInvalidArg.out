@@ -1,4 +1,6 @@
 $ dotnet fsi exceptionInvalidArg.fsx
 System.ArgumentException: is too much 'a' (Parameter 'a')
    at <StartupCode$FSI_0001>.$FSI_0001.main@() in exceptionInvalidArg.fsx:line 1
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
 Stopped due to error

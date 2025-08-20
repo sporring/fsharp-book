@@ -1,4 +1,4 @@
-$ fsharpc --nologo operatorDefinitions.fsx && mono operatorDefinitions.exe
+$ dotnet fsi operatorDefinitions.fsx
 13
 16
 true

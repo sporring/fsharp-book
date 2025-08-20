@@ -1,4 +1,4 @@
-$ fsharpc --nologo activePattern.fsx && mono activePattern.exe
+$ dotnet fsi activePattern.fsx
 { x = 2.0
   y = 3.0 }:
  Cartesian (2.0, 3.0)

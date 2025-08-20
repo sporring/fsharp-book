@@ -1,6 +1,6 @@
-$ fsharpc --nologo flexibleTypes.fsx && mono flexibleTypes.exe
-FlexibleTypes+Base
-FlexibleTypes+Deriv1
+$ dotnet fsi flexibleTypes.fsx
+FSI_0001+Base
+FSI_0001+Deriv1
 "hej"
-FlexibleTypes+Deriv2
+FSI_0001+Deriv2
 "good bye"

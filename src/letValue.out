@@ -1,2 +1,2 @@
-$ fsharpc --nologo letValue.fsx && mono letValue.exe
+$ dotnet fsi letValue.fsx
 9.0

@@ -1,4 +1,4 @@
-$ fsharpc --nologo refEncapsulation.fsx && mono refEncapsulation.exe
+$ dotnet fsi refEncapsulation.fsx
 1
 2
 3

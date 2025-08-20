@@ -1,2 +1,2 @@
-$ fsharpc --nologo roundingWLet.fsx && mono roundingWLet.exe
+$ dotnet fsi roundingWLet.fsx
 357.6 -> 358

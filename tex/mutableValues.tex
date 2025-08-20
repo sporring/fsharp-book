@@ -237,7 +237,7 @@ One dimensional \idx{arrays}, or just arrays for short, are mutable lists of the
 \end{verbatimwrite}
 \syntax{\ebnf/arrays.ebnf}{The syntax for an array using the sequence expression.}
 %
-E.g., \mbox{\lstinline![|1; 2; 3|]!} is an array of integers, \mbox{\lstinline![|"This"; "is"; "an"; "array"|]!} is an array of strings, \mbox{\lstinline![|(fun x -> x); (fun x -> x*x)|]!} is an array of functions, \lstinline![||]! is the empty array.  Arrays may also be given as ranges,
+E.g., \lstinline![||]! is the empty array, \mbox{\lstinline![|1; 2; 3|]!} is an array of integers, \mbox{\lstinline![|"This"; "is"; "an"; "array"|]!} is an array of strings, and \mbox{\lstinline![|(fun x -> x); (fun x -> x*x)|]!} is an array of functions.  Arrays may also be given as ranges,
 %
 \begin{verbatimwrite}{\ebnf/arrayRange.ebnf}
 [|<*expr*> .. <*expr*> [*.. <*expr*>*]|]

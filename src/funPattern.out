@@ -1,2 +1,2 @@
-$ fsharpc --nologo funPattern.fsx && mono funPattern.exe
+$ dotnet fsi funPattern.fsx
 hello

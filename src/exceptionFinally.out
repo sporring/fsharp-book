@@ -2,4 +2,6 @@ $ dotnet fsi exceptionFinally.fsx
 Finally expression will always be executed.
 System.Exception: True
    at <StartupCode$FSI_0001>.$FSI_0001.main@() in exceptionFinally.fsx:line 3
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
 Stopped due to error

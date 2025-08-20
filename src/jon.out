@@ -1,3 +1,1 @@
-$ fsharpc --nologo jon.fsx && mono jon.exe
-
-jon.fsx(3,1): warning FS0988: Main module of program is empty: nothing will happen when it is run
+$ dotnet fsi jon.fsx

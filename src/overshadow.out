@@ -1,4 +1,4 @@
-$ fsharpc --nologo overshadow.fsx && mono overshadow.exe
+$ dotnet fsi overshadow.fsx
 I'm Hans
 I'm Prof. Jon
 I'm Jon

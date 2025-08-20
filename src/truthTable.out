@@ -1,4 +1,3 @@
-
 > printfn "a b a*b a+b not a"                                       
 printfn "%A %A %A %A %A"
   false false (false && false) (false || false) (not false)

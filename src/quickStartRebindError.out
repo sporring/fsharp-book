@@ -1,3 +1,5 @@
-$ fsharpc --nologo -a quickStartRebindError.fsx
+$ dotnet fsi quickStartRebindError.fsx
+
 
 quickStartRebindError.fsx(2,5): error FS0037: Duplicate definition of value 'a'
+

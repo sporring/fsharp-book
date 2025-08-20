@@ -1,4 +1,4 @@
-$ fsharpc --nologo sourceLocation.fsx && mono sourceLocation.exe
+$ dotnet fsi sourceLocation.fsx
 Line: 2
 Source Directory: /Users/jrh630/repositories/fsharp-book/src
 Source File: sourceLocation.fsx

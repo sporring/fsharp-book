@@ -1,3 +1,3 @@
-$ fsharpc --nologo letValueScopeBlockAlternative.fsx && mono letValueScopeBlockAlternative.exe
+$ dotnet fsi letValueScopeBlockAlternative.fsx
  4
  3

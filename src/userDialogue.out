@@ -1,5 +1,5 @@
-$ dotnet fsi userDialogue.fsx                      
+$ dotnet fsi userDialogue.fsx
 To multiply a and b
-Enter a: 3.5
-Enter b: 7.4
-a * b = 25.900000000000002
+Enter a: 2.0 
+Enter b: 4.5
+a * b = 9

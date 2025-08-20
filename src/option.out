@@ -1,3 +1,3 @@
-$ fsharpc --nologo option.fsx && mono option.exe
+$ dotnet fsi option.fsx
 Some 3 None
 3 false true

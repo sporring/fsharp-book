@@ -197,7 +197,7 @@ With the set module, an empty set can be created with \lstinline{Set.empty}, and
 \item[\texttt{Set.remove}:] \lstinline{x: 'T -> X: Set<'T> -> Set<'T>}~\\ returns a new set where $x\not\in X$.
 \item[\texttt{Set.union}:] \lstinline{X: Set<'a> -> Y: Set<'a> -> Set<'a>}~\\ returns a new set $X\cup Y$.
 \end{description}
-In F#'s implement of sets, elements must be comparable, i.e., for which the $\ge$ and $\le$ family of operators are defined. This restriction ensures that the Sets datastructure is computationally fast. 
+In F\#'s implement of sets, elements must be comparable, i.e., for which the $\ge$ and $\le$ family of operators are defined. This restriction ensures that the Sets datastructure is computationally fast. 
 
 Sets can be created from other collection types, such as lists, or by adding elements individually to an empty set, as demonstrated in \Cref{setCreate}
 %

@@ -1,2 +1,2 @@
-$ fsharpc --nologo switch.fsx && mono switch.exe
+$ dotnet fsi switch.fsx
 Silver : You almost won

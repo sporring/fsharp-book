@@ -1,4 +1,4 @@
-$ fsharpc --nologo newDoThen.fsx && mono newDoThen.exe
+$ dotnet fsi newDoThen.fsx
 New empty constructor of classExtraConstructor
 New classExtraConstructor with (0.0, 0.0, "(", ", ", ")")
 Construction done <fun:-ctor@11-5>

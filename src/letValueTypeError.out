@@ -1,5 +1,5 @@
 $ dotnet fsi letValueTypeError.fsx
 
 
-letValueTypeError.fsx(2,18): error FS0001: The type 'int' does not support the operator 'Pow'
+letValueTypeError.fsx(2,18): error FS0001: The type 'int' does not support the operator 'op_Exponentiation'
 

@@ -1,1 +1,0 @@
-$ fsharpc --nologo --sig:MetaWAdd.fsi -a MetaWAdd.fs

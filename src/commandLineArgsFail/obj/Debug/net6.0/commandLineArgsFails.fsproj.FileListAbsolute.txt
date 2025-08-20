@@ -21,7 +21,8 @@
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/obj/Debug/net6.0/commandLineArgsFails.AssemblyInfoInputs.cache
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/obj/Debug/net6.0/commandLineArgsFails.AssemblyInfo.fs
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/obj/Debug/net6.0/commandLineArgsFails.fsproj.CoreCompileInputs.cache
-/Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/obj/Debug/net6.0/commandLineArgsFails.fsproj.CopyComplete
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/obj/Debug/net6.0/commandLineArgsFails.dll
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/obj/Debug/net6.0/commandLineArgsFails.pdb
 /Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/obj/Debug/net6.0/commandLineArgsFails.genruntimeconfig.cache
+/Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/obj/Debug/net6.0/commandLineArgsFails.sourcelink.json
+/Users/jrh630/repositories/fsharp-book/src/commandLineArgsFail/obj/Debug/net6.0/commandL.BF30F20F.Up2Date

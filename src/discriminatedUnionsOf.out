@@ -1,2 +1,2 @@
-$ fsharpc --nologo discriminatedUnionsOf.fsx && mono discriminatedUnionsOf.exe
+$ dotnet fsi discriminatedUnionsOf.fsx
 Vec2D (1.0, -1.2) and Vec3D (1.0, 0.9, -1.2)

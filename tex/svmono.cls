@@ -229,12 +229,12 @@ passing it to article class \MessageBreak
 
 % various sizes and settings for monographs
 
-\setlength{\textwidth}{117mm}
+\setlength{\textwidth}{165mm}
 %\setlength{\textheight}{12pt}\multiply\textheight by 45\relax
-\setlength{\textheight}{191mm}
+\setlength{\textheight}{220mm}
 \setlength{\topmargin}{0cm}
-\setlength\oddsidemargin   {63\p@}
-\setlength\evensidemargin  {63\p@}
+\setlength\oddsidemargin   {0mm}
+\setlength\evensidemargin  {0mm}
 \setlength\marginparwidth{90\p@}
 \setlength\headsep   {12\p@}
 
@@ -1882,7 +1882,7 @@ to\z@{\kern0.55\wd0\vrule\@height0.45\ht0\hss}\box0}}}}
     \vskip 1.5em               % Vertical space after date.
   \fi
  \vfill
- {\Large Springer Nature\par}
+% {\Large Springer Nature\par}
 %\vskip 5\p@
 %\large
 %  Berlin\enspace Heidelberg\enspace New\kern0.1em York\\

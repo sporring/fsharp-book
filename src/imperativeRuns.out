@@ -1,1 +1,1 @@
-$ fsharpc --nologo imperativeRuns.fsx && mono imperativeRuns.exe
+$ dotnet fsi imperativeRuns.fsx

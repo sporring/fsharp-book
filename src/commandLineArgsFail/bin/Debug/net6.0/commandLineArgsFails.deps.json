@@ -8,17 +8,17 @@
     ".NETCoreApp,Version=v6.0": {
       "commandLineArgsFails/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "6.0.5"
+          "FSharp.Core": "9.0.300"
         },
         "runtime": {
           "commandLineArgsFails.dll": {}
         }
       },
-      "FSharp.Core/6.0.5": {
+      "FSharp.Core/9.0.300": {
         "runtime": {
           "lib/netstandard2.1/FSharp.Core.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.522.36304"
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.3.25.22803"
           }
         },
         "resources": {
@@ -71,12 +71,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "FSharp.Core/6.0.5": {
+    "FSharp.Core/9.0.300": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Bpqxoh/UUTq7fHd0a1Ndv/ml1BEtwqmpruKzIMaNnNXgdBSZOEA7wQtoXyc+eKwxq4TQrbHpAbM6yaZAzqotvw==",
-      "path": "fsharp.core/6.0.5",
-      "hashPath": "fsharp.core.6.0.5.nupkg.sha512"
+      "sha512": "sha512-2ZDoF/N7WPidmaflrTnPucUJfaV5XkIHCh4h77yET7ihuv2dR2ksSsIiiDd34Z9YmwyYEQocpDl1r6RXFr0DMg==",
+      "path": "fsharp.core/9.0.300",
+      "hashPath": "fsharp.core.9.0.300.nupkg.sha512"
     }
   }
 }

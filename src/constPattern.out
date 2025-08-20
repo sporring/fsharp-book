@@ -1,2 +1,2 @@
-$ fsharpc --nologo constPattern.fsx && mono constPattern.exe
+$ dotnet fsi constPattern.fsx
 Gold

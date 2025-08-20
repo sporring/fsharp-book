@@ -1,4 +1,4 @@
-$ fsharpc --nologo flowForLists.fsx && mono flowForLists.exe
+$ dotnet fsi flowForLists.fsx
 Course: Introduction to programming, Grade: 95
 Course: Linear algebra, Grade: 80
 Course: User Interaction, Grade: 85

@@ -1,1 +1,1 @@
-$ fsharpc --nologo umlAssociation.fsx && mono umlAssociation.exe
+$ dotnet fsi umlAssociation.fsx

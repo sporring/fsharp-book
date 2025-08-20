@@ -1,2 +1,0 @@
-$ fsharpc --nologo seqInfinteValue.fsx && mono seqInfinteValue.exe
-seq [1; 2; 3; 1; ...]

@@ -1,3 +1,5 @@
-$ fsharpc --nologo -a letValueScopeLowerError.fsx
+$ dotnet fsi letValueScopeLowerError.fsx
+
 
 letValueScopeLowerError.fsx(2,5): error FS0037: Duplicate definition of value 'p'
+

@@ -1,4 +1,4 @@
-$ fsharpc --nologo drawingColors.fsx && mono drawingColors.exe
+$ dotnet fsi drawingColors.fsx
 The color Color [A=255, R=127, G=255, B=212] is (ff, 7f, ff, d4)
 The color Color [Red] is (ff, ff, 0, 0)
 The color Color [Green] is (ff, 0, 80, 0)

@@ -1,4 +1,4 @@
-$ fsharpc --nologo override.fsx && mono override.exe
+$ dotnet fsi override.fsx
 I'm Prof. Jon
 I'm Prof. Jon
 I'm Prof. Jon

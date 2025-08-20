@@ -1,4 +1,3 @@
-
 > let toUpper c = c + char (int 'A' - int 'a')
 String.map toUpper "abcd";;
 val toUpper: c: char -> char

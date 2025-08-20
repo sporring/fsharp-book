@@ -1,4 +1,4 @@
-$ fsharpc --nologo functionTuplePiping.fsx && mono functionTuplePiping.exe
+$ dotnet fsi functionTuplePiping.fsx
 1
 1 2
 1 2 3

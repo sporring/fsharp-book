@@ -1,2 +1,2 @@
 > Array.unzip [|(1, 'a'); (2, 'b'); (3, 'c')|];;
-val it: int[] * char[] = ([|1; 2; 3|], [|'a'; 'b'; 'c'|])
+val it: int array * char array = ([|1; 2; 3|], [|'a'; 'b'; 'c'|])

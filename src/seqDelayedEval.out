@@ -1,2 +1,0 @@
-$ fsharpc --nologo seqDelayedEval.fsx && mono seqDelayedEval.exe
-(calculating item 0)0 (calculating item 2)2 (calculating item 4)4 (calculating item 6)6 (calculating item 8)8 (calculating item 10)10 

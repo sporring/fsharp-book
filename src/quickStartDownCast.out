@@ -1,2 +1,2 @@
-$ fsharpc --nologo quickStartDownCast.fsx && mono quickStartDownCast.exe
+$ dotnet fsi quickStartDownCast.fsx
 357.6 -> 357

@@ -1,2 +1,0 @@
-$ fsharpc --nologo seqComputationExpr.fsx && mono seqComputationExpr.exe
-0 2 4 6 8 10 

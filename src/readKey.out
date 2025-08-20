@@ -1,4 +1,4 @@
-$ dotnet fsi readKey.fsx 
+$ dotnet fsi readKey.fsx
 Start typing
 You pressed: A
 You pressed: SHIFT+A

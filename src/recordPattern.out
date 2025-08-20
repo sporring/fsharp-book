@@ -1,2 +1,2 @@
-$ fsharpc --nologo recordPattern.fsx && mono recordPattern.exe
+$ dotnet fsi recordPattern.fsx
 The zip-code is: 2100

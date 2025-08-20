@@ -1,2 +1,2 @@
-$ fsharpc --nologo typePattern.fsx && mono typePattern.exe
+$ dotnet fsi typePattern.fsx
 The sum is 6

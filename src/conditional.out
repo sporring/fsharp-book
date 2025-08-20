@@ -1,4 +1,4 @@
-$ fsharpc --nologo conditional.fsx && mono conditional.exe
+$ dotnet fsi conditional.fsx
 "I owe 3 apples"
 "I owe 1 apple"
 "I have no apples"
