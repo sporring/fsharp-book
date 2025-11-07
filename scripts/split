@@ -31,6 +31,6 @@ for ((i=0; i < ${#pagenumbers[@]} - 1; ++i)); do
   if [ $c -lt $a ]; then
       b=${pagenumbers[i+1]} # end page number
       [ "$b" = "end" ] || b=$[b-1]
-      pdftk "$infile" cat $a-$b output "${outputprefix}"_$[i-3].pdf
+      pdftk "$infile" cat $a-$b output "${outputprefix}"_$[i-2].pdf
   fi
 done
